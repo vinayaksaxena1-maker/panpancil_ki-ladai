@@ -1,0 +1,309 @@
+/* ==========================================================================
+   Saltz AI · The Time-Table Gauntlet (Classroom UI & 7 Screens Overhaul)
+   Aesthetic: Authentic Green Chalkboard, Indian Classroom Slate & Sheesham Wood
+   Resilience: 5-State Component Craftsman (Default, Hover, Skeleton, Fallback, Empty)
+   ========================================================================== */
+
+:root {
+  --pf-chalkboard: #1c2b22;
+  --pf-chalkboard-dark: #131d17;
+  --pf-chalkboard-light: #25392d;
+  --pf-slate: #202426;
+  --pf-slate-light: #2d3336;
+  --pf-chalk-white: #f6f3eb;
+  --pf-chalk-faint: rgba(246, 243, 235, 0.65);
+  --pf-chalk-gold: #f5d76e;
+  --pf-wood-rim: #7c441b;
+  --pf-wood-rim-dark: #4e290f;
+  --pf-wood-rim-light: #9e5b29;
+  --pf-desk-wood: #24160d;
+  --pf-notebook-cream: #faf5e8;
+  --pf-notebook-rule: rgba(48, 86, 138, 0.14);
+  --pf-notebook-margin: rgba(214, 69, 69, 0.28);
+}
+
+/* --------------------------------------------------------------------------
+   SCREEN 1: Home Hub & Notebook Diary
+   -------------------------------------------------------------------------- */
+body {
+  background-color: var(--pf-chalkboard-dark) !important;
+}
+
+.chit.chooser,
+.schoolpaper,
+.notebook {
+  background: var(--pf-notebook-cream) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35) !important;
+  border: 1px solid rgba(80, 56, 30, 0.25) !important;
+  border-radius: 6px !important;
+}
+
+.chit.chooser::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 36px;
+  width: 2px;
+  height: 100%;
+  background: var(--pf-notebook-margin);
+  pointer-events: none;
+}
+
+/* Home Fight Card (Next Match Kicker) */
+.home-fight {
+  background: #fbf8f0 !important;
+  border: 2px solid #dfd7c2 !important;
+  border-radius: 8px !important;
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s ease !important;
+}
+
+.home-fight:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 0 10px rgba(245, 215, 110, 0.3) !important;
+}
+
+.home-fight-art {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25) !important;
+  border: 4px solid #ffffff !important;
+  background: #ffffff !important;
+}
+
+/* --------------------------------------------------------------------------
+   SCREEN 2: Pen Locker / Geometry Tin Box
+   -------------------------------------------------------------------------- */
+.tin-wrap,
+.penchip-tray {
+  background: linear-gradient(145deg, #2a332c, #1a221c) !important;
+  border: 2px solid #4a5c4f !important;
+  border-radius: 10px !important;
+  box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.08), 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+.penchip {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: var(--pf-chalk-white) !important;
+  border-radius: 6px !important;
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+
+.penchip:hover {
+  background: rgba(245, 215, 110, 0.15) !important;
+  border-color: var(--pf-chalk-gold) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(245, 215, 110, 0.25) !important;
+}
+
+.penchip.selected,
+.penchip[aria-selected="true"] {
+  background: linear-gradient(135deg, rgba(245, 215, 110, 0.25), rgba(245, 215, 110, 0.08)) !important;
+  border: 2px solid var(--pf-chalk-gold) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+/* --------------------------------------------------------------------------
+   SCREEN 3: Campaign Map ("The Time-Table Gauntlet")
+   -------------------------------------------------------------------------- */
+.corridor-root,
+.cc-grid,
+.cc-board {
+  background: var(--pf-chalkboard) !important;
+  border: 3px solid var(--pf-wood-rim) !important;
+  border-radius: 8px !important;
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6), 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+.cc-tile,
+.corridor-tile,
+button[data-room] {
+  background: var(--pf-slate) !important;
+  border: 1px solid var(--pf-slate-light) !important;
+  color: var(--pf-chalk-white) !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.cc-tile:hover,
+button[data-room]:hover {
+  border-color: var(--pf-chalk-gold) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4), 0 0 12px rgba(245, 215, 110, 0.3) !important;
+}
+
+.cc-tile.now,
+button[data-room].now {
+  border: 2px solid var(--pf-chalk-gold) !important;
+  background: linear-gradient(145deg, #2b3a30, #1c2b22) !important;
+}
+
+/* --------------------------------------------------------------------------
+   SCREEN 4: In-Game 3D HUD & Desk Scoreboard
+   -------------------------------------------------------------------------- */
+.game-hud,
+.class9d-score,
+.scoreboard {
+  background: rgba(20, 32, 25, 0.92) !important;
+  border: 1px solid rgba(245, 215, 110, 0.35) !important;
+  color: var(--pf-chalk-white) !important;
+  border-radius: 20px !important;
+  padding: 6px 16px !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+.scoreboard strong,
+.class9d-turn {
+  color: var(--pf-chalk-gold) !important;
+  font-family: inherit !important;
+  letter-spacing: 0.5px !important;
+}
+
+/* --------------------------------------------------------------------------
+   SCREEN 5: Victory Certificate & Card
+   -------------------------------------------------------------------------- */
+.pc-card,
+.pc-stage {
+  background: #fbf7ec !important;
+  border: 3px double #a88d58 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45) !important;
+}
+
+.pc-site {
+  color: var(--pf-wood-rim) !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px !important;
+}
+
+.gostamp,
+.stampbtn,
+.entry-solo-action {
+  background: linear-gradient(180deg, #d33c2a 0%, #b22817 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid #7d170b !important;
+  border-radius: 4px !important;
+  font-weight: 700 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+  box-shadow: 0 4px 12px rgba(178, 40, 23, 0.4) !important;
+  transition: all 0.15s ease !important;
+}
+
+.gostamp:hover,
+.stampbtn:hover,
+.entry-solo-action:hover {
+  background: linear-gradient(180deg, #e44532 0%, #c42d1b 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(178, 40, 23, 0.5) !important;
+}
+
+.gostamp:active,
+.stampbtn:active,
+.entry-solo-action:active {
+  transform: translateY(1px) !important;
+  box-shadow: 0 2px 6px rgba(178, 40, 23, 0.3) !important;
+}
+
+/* --------------------------------------------------------------------------
+   SCREEN 6: Pass & Play / Local Mode
+   -------------------------------------------------------------------------- */
+.entry-route.is-local {
+  background: linear-gradient(135deg, #1d3326, #122119) !important;
+  border: 2px solid #3c634c !important;
+  color: var(--pf-chalk-white) !important;
+  border-radius: 8px !important;
+}
+
+.entry-route.is-local:hover {
+  border-color: var(--pf-chalk-gold) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* --------------------------------------------------------------------------
+   SCREEN 7: Settings Sheet
+   -------------------------------------------------------------------------- */
+.amb-sheet,
+.dialogue-card {
+  background: var(--pf-slate) !important;
+  border: 2px solid var(--pf-wood-rim) !important;
+  color: var(--pf-chalk-white) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6) !important;
+}
+
+.menulink {
+  color: var(--pf-chalk-white) !important;
+  transition: all 0.15s ease !important;
+}
+
+.menulink:hover {
+  color: var(--pf-chalk-gold) !important;
+  padding-left: 4px !important;
+}
+
+/* --------------------------------------------------------------------------
+   5-STATE COMPONENT RESILIENCE (component-state-craftsman)
+   -------------------------------------------------------------------------- */
+
+/* State 1: Default (Chalkboard & Desi Slate High Contrast) */
+button,
+a.storebadge,
+.boardbtn {
+  transition: all 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* State 2: Hover & Active Tactile Elevation */
+button:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px) scale(0.99);
+}
+
+/* State 3: Loading Skeleton Shimmer */
+@keyframes pf-chalk-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.pf-skeleton,
+.loading-slate {
+  background: linear-gradient(90deg, #17241d 25%, #25392d 50%, #17241d 75%) !important;
+  background-size: 200% 100% !important;
+  animation: pf-chalk-shimmer 1.8s infinite ease-in-out !important;
+  border-radius: 6px !important;
+}
+
+/* State 4: Error & Fallback Slate */
+.pf-fallback-slate,
+.error-chit {
+  background: #251616 !important;
+  border: 2px dashed #b83d30 !important;
+  color: #f7ebea !important;
+  border-radius: 8px !important;
+  padding: 16px !important;
+  text-align: center !important;
+}
+
+/* State 5: Empty Data Tin State */
+.pf-empty-tin {
+  border: 2px dashed rgba(246, 243, 235, 0.22) !important;
+  border-radius: 10px !important;
+  padding: 24px !important;
+  text-align: center !important;
+  color: var(--pf-chalk-faint) !important;
+}
+
+/* Turnstile / Anti-Bot Shield (Prevent false modals) */
+.humancheckpaper,
+[class*="humancheck"] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
