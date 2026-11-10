@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
-  <title>Pen Fight &middot; The Unofficial Sport of the Last Bench</title>
-  <meta name="description" content="Classic Indian school pen fight game with nostalgic pens, authentic desk physics, and fair play." />
+  <title>Pen Fight &middot; the unofficial sport of the last bench</title>
+  <meta name="description" content="You spent half of school flicking a pen across the desk while the teacher wrote on the board. Same game, same pens, real stakes, now on your phone." />
   <meta name="theme-color" content="#c4691a" />
   <meta name="color-scheme" content="dark" />
   <style>
@@ -27,30 +27,29 @@
       top: 0;
       left: 0;
     }
+    .pf-sitenav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 8;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 18px;
+      padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+      font-family: 'Patrick Hand', cursive;
+      font-size: 16px;
+      line-height: 1.2;
+      text-align: center;
+      color: #f3ede0;
+      background: linear-gradient(180deg, transparent, rgba(26, 20, 14, 0.55) 28%);
+    }
+    .pf-sitenav a {
+      color: inherit;
+      text-underline-offset: 3px;
+    }
   </style>
-  <script>
-    // Native Haptic Bridge & Safe Fallback
-    window.__pfHaptic = function(intensity) {
-      try {
-        if (window.__pfNativeBridge && window.__pfNativeBridge.postMessage) {
-          window.__pfNativeBridge.postMessage('haptic:' + (intensity || 'medium'));
-        }
-      } catch (e) {}
-    };
-
-    // Listen to touch releases / flick actions to vibrate native hardware
-    window.addEventListener('touchend', function() {
-      window.__pfHaptic('light');
-    }, { passive: true });
-
-    // Global error suppressor for unowned backend to ensure 0 crash rate
-    window.addEventListener('error', function(event) {
-      if (event.message && (event.message.includes('supabase') || event.message.includes('fetch') || event.message.includes('network'))) {
-        console.warn('[Offline Mode Guard]', event.message);
-        event.preventDefault();
-      }
-    });
-  </script>
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/patrick-hand.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/anton.woff2" crossorigin />
   <link rel="preload" as="image" href="assets/art/school-classroom-door.jpg" fetchpriority="high" />
