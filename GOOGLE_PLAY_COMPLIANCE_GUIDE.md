@@ -1,252 +1,128 @@
-# 🛡️ Google Play Store Compliance & Safe Publishing Guide (100% Resolved)
+# 🛡️ Google Play Store Rejection Audit & Safe Publishing Guide (Theoretical Solutions)
 
-> **Status:** 🟢 **ALL 4 FATAL TRAPS RESOLVED & IMPLEMENTED IN WORKSPACE**  
-> **Production Deliverable:** `build/app/outputs/bundle/release/app-release.aab` (47.2 MB, Signed with RSA-2048 Release Keystore)
+> **उद्देश्य:** यह दस्तावेज़ उन 4 सबसे बड़े कारणों और उनके सैद्धांतिक (Theoretical) व तकनीकी समाधानों का विश्लेषण करता है जिनकी वजह से यह ऐप Google Play Store पर रिजेक्ट या बैन हो सकता है। आप इस दस्तावेज़ को पढ़कर अपने विचार, सुझाव या बदलाव कमेंट कर सकते हैं।
 
 ---
 
-## 🚦 Resolved Traps Summary Table
+## 🚨 1. Google Play Rejection Ke 4 Sabse Bade Karan (The Fatal Traps)
 
-| # | Trap Category | Play Console Error Code / Reason | Resolution Status | Verified Implementation Receipt |
+### Traps Overview Table
+
+| # | Trap Category | Play Console Error Code / Reason | Severity | Proposed Solution Summary |
 | :--- | :--- | :--- | :--- | :--- |
-| **1** | **Trademark / IP Violation** | `Policy: Intellectual Property & Impersonation` | 🟢 **RESOLVED** | All 44 brands replaced with clean-room parody names (`Reynold Tri-Maxx`, `ButterGlide`, `Classic 045`, `Aviator V5`, `Desi Wood 621`, etc.) in JS/HTML bundles. |
-| **2** | **Webview Spam** | `Policy: Minimum Functionality (Repetitive Content)` | 🟢 **RESOLVED** | Flutter Native Haptic Engine (`HapticFeedback.light/medium/heavyImpact`) hooked to flicks/collisions + Native HUD Desk Settings bottom sheet. |
-| **3** | **Foreign API / Instability** | `Policy: App Quality & Crash Rate` | 🟢 **RESOLVED** | Zero network dependency; 100% offline standalone engine with error suppressor guard preventing crash loops on unowned backend calls. |
-| **4** | **Packaging Format** | `Play Console Error: APK format unsupported` | 🟢 **RESOLVED** | `android/upload-keystore.jks` (10,000 days validity) + `key.properties` + Production **`.aab`** built (`app-release.aab`). |
+| **1** | **Trademark / IP Violation** | `Policy: Intellectual Property & Impersonation` | 🔴 **Immediate Strike** | Clean-Room Parody Rebranding (44 Pens Roster) |
+| **2** | **Webview Spam** | `Policy: Minimum Functionality (Repetitive Content)` | 🟠 **App Rejection** | Native Value Injection (Haptics, Local Saves, HUD) |
+| **3** | **Foreign API / Instability** | `Policy: App Quality & Crash Rate` | 🟠 **Test Rejection** | Self-Hosted Backend + 100% Offline Standalone Fallback |
+| **4** | **Packaging Format** | `Play Console Error: APK format unsupported` | 🟡 **Upload Blocker** | RSA-2048 Release Keystore Setup + Android App Bundle (`.aab`) |
 
 ---
 
-## 🛠️ Step-by-Step Solutions Implemented
-
-### Solution 1: Clean-Room Parody Rebranding (100% Legal & Safe)
-Target assets sanitized so no automated OCR/AST crawler can flag registered trademarks:
-
-* **Reynolds Trimax** ➔ **Reynold Tri-Maxx**
-* **Reynolds 045** ➔ **Classic 045**
-* **Cello Butterflow** ➔ **ButterGlide**
-* **Cello Gripper** ➔ **RubberGrip 100**
-* **Cello Finegrip** ➔ **FineGrip 500**
-* **Pilot V5 / V7** ➔ **Aviator V5 / Aviator V7**
-* **Parker Vector / Beta / Jotter** ➔ **Vektor Steel / Beta Classic / Jotter Prime**
-* **Nataraj 621 / Stub** ➔ **Desi Wood 621 / Desi Wood 621 Stub**
-* **Apsara Platinum / Absolute** ➔ **DarkPlatinum Extra / Titanium Absolute**
-* **DOMS Groove** ➔ **Groovy Grip**
-* **Classmate Octane** ➔ **Nitro Octane**
-* **Montex Hy-Speed / Megatop** ➔ **Hyper-Speed Ball / MegaTop 2000**
-* **All campaign text** (*"Win the Trimax"*, *"9E has the Trimax"*) sanitized to *"Tri-Maxx"*.
+## 🔍 2. चारों बिंदुओं का विस्तृत सैद्धांतिक समाधान (In-Depth Solutions)
 
 ---
 
-### Solution 2: Native Capabilities (Webview Spam Immunity)
-In [`lib/main.dart`](file:///d:/PAnfight/lib/main.dart):
-1. **Real-time Hardware Haptics**: JavaScript bridge (`window.__pfHaptic`) triggers native vibration on pen flicks, table collisions, and round finishes.
-2. **Floating Native Desk Pill**: Instant access to a native Flutter bottom sheet with:
-   - Live Haptic toggle and vibration feedback test
-   - Offline 100% verified status badge
-   - Native Classic Rules modal dialog
-   - Instant desk reload/reset action
+### समाधान १: Trademark & Intellectual Property Violation (IP & Impersonation)
+
+#### समस्या का विश्लेषण:
+Google Play का बॉट और ह्यूमन रिव्यूअर ऐप के अंदर टेक्स्ट, इमेजेस और मेटाडेटा को स्कैन करता है। 
+मौजूदा गेम में भारत के जाने-माने रजिस्टर्ड ब्रांड्स के असली नाम हैं:
+- *Reynolds, Trimax, Racer Gel* (Newell / Reynolds India)
+- *Cello, Butterflow, Gripper* (BIC Cello)
+- *Pilot, V5, V7* (Pilot Corporation)
+- *Parker, Vector, Jotter* (Parker Pen Company)
+- *Nataraj, Apsara* (Hindustan Pencils)
+- *DOMS* (DOMS Industries)
+
+बिना ट्रेडमार्क ओनर के लिखित लाइसेंस के इन्हें इस्तेमाल करना Google Play की **Impersonation Policy** का सीधा उल्लंघन है, जिससे ऐप सस्पेंड होकर डेवलपर अकाउंट पर डायरेक्ट स्ट्राइक आ सकती है।
+
+#### सैद्धांतिक समाधान (Clean-Room Parody Strategy):
+कॉपीराइट कानून के तहत, "गेम मैकेनिक्स और फिजिक्स" (वजन, घर्षण, आकार) को कॉपीराइट नहीं किया जा सकता, केवल "ब्रांड नाम और ट्रेडमार्क लोगो" सुरक्षित होते हैं। इसलिए समाधान यह है कि सभी 44 पेन के भौतिक गुण (Mass, Friction, Bounce, Length) वही रखे जाएं, लेकिन उनके नामों को **नॉस्टैल्जिक पैरोडी नामों** में बदल दिया जाए:
+
+| असली ब्रांड नाम (Infringing) | प्रस्तावित सुरक्षित नाम (Safe Parody) | आईडी (Asset ID) | विशेषता / फ्लेवर |
+| :--- | :--- | :--- | :--- |
+| **Reynolds Trimax** | **Reynold Tri-Maxx** / **Tri-Edge Grip** | `tri-edge` | तिकोना आकार, टेबल पर लुढ़कता नहीं |
+| **Reynolds 045** | **Classic 045** / **Desi 045** | `classic-045` | हर स्कूल बैग का क्लासिक बॉल पेन |
+| **Cello Butterflow** | **ButterGlide** / **FlowGel** | `butter-glide` | मक्खन जैसी स्मूथ स्लाइड |
+| **Cello Gripper** | **RubberGrip 100** | `rubber-grip` | रबर ग्रिप जो शॉक सोखती है |
+| **Cello Finegrip** | **FineGrip 500** | `fine-grip` | पतली टिप, सटीक निशाना |
+| **Pilot V5** | **Aviator V5** | `aviator-v5` | हल्का और तेज प्रहार |
+| **Pilot V7** | **Aviator V7** | `aviator-v7` | थोड़ा भारी, स्थिर प्रहार |
+| **Parker Vector** | **Vektor Steel** / **Royal Arrow** | `vektor-steel` | भारी मैटेलिक बॉडी |
+| **Nataraj 621** | **Desi Wood 621** | `desi-wood-621` | क्लासिक लाल-काली पेंसिल |
+| **Nataraj 621 Stub** | **Desi Wood 621 Stub** | `desi-stub` | साल भर छिली हुई छोटी पेंसिल |
+| **Apsara Platinum** | **DarkPlatinum Extra** | `dark-platinum` | गहरा लिखावट, संतुलित वजन |
+| **DOMS Groove** | **Groovy Grip** | `groovy-grip` | गड्ढों वाली ग्रिप जो टेबल पर रुक जाती है |
+| **Classmate Octane** | **Nitro Octane** | `nitro-octane` | हल्का और तेज फ्लिक |
+| **Montex Hy-Speed** | **Hyper-Speed Ball** | `hyper-speed` | तेज गति वाला बॉल पेन |
 
 ---
 
-### Solution 3: Crash-Proof Offline Engine (Foreign Supabase Shield)
-In [`assets/web/index.html`](file:///d:/PAnfight/assets/web/index.html) and [`lib/local_asset_server.dart`](file:///d:/PAnfight/lib/local_asset_server.dart):
-- All WebGL, 3D meshes, fonts, and art are served via high-speed loopback HTTP (`127.0.0.1:$port`).
-- Window error listeners catch and neutralize unowned Supabase WebSocket/REST timeout errors.
-- Single-player Bench Campaign (9A–9E) and 2-Player Pass & Play run with zero internet connection.
+### समाधान २: Minimum Functionality & "Webview Spam"
+
+#### समस्या का विश्लेषण:
+Google Play Console Policy:
+> *"Apps that merely provide the same experience as a website or are essentially webviews of online content without adding native value are considered Webview Spam."*
+
+अगर ऐप सिर्फ एक वेबपेज खोलती है, तो Google का रिव्यूअर उसे *"Low Quality / Lack of Native Value"* कहकर रिजेक्ट कर देता है।
+
+#### सैद्धांतिक समाधान (Native Value Enhancement):
+ऐप को केवल वेबव्यू न रखकर उसमें डिवाइस के हार्डवेयर और नेटिव फीचर्स जोड़े जाएं:
+1. **हार्डवेयर हैप्टिक फीडबैक (Tactile Vibration):**
+   - जब पेन आपस में टकराएं या टेबल से नीचे गिरें, तो फोन में असली टक्कर का अहसास कराने वाला हैप्टिक वाइब्रेशन (`HapticFeedback.mediumImpact()`) ट्रिगर हो।
+2. **नेटिव सेटिंग्स और कंट्रोल हुड (Native Flutter UI):**
+   - वेबपेज के ऊपर एक नेटिव Flutter HUD बटन हो जिससे यूजर नेटिव सेटिंग्स शीट खोल सके (वाइब्रेशन ऑन/ऑफ, साउंड वॉल्यूम, क्लासिक रूल्स डायलॉग, ऑफलाइन स्टेटस)।
+3. **लोकल ऑफलाइन स्टोरेज:**
+   - मैच का स्कोर, अनलॉक किए गए पेन, और कैम्पेन प्रोग्रेस यूजर के डिवाइस पर लोकल डिस्क में सुरक्षित रहे, किसी वेब सर्वर पर निर्भर न हो।
 
 ---
 
-### Solution 4: Production Release Signing & App Bundle
-- **Keystore**: [`android/upload-keystore.jks`](file:///d:/PAnfight/android/upload-keystore.jks) (RSA 2048-bit, Validity: 10,000 days).
-- **Keystore Config**: [`android/key.properties`](file:///d:/PAnfight/android/key.properties).
-- **Release Build**: `flutter build appbundle --release`
-- **Output Artifact**: `build/app/outputs/bundle/release/app-release.aab` (47.2 MB).
+### समाधान ३: Foreign API Dependency & Crash Risk
+
+#### समस्या का विश्लेषण:
+मूल गेम का कोड तीसरे पक्ष के Supabase प्रोजेक्ट (`https://lqdkycjrvrkpwwkiccll.supabase.co`) से जुड़ा हुआ है। 
+- अगर मूल मालिक ने अपनी API Key बदल दी या प्रोजेक्ट बंद कर दिया, तो ऐप नेटवर्क एरर में अटक जाएगी।
+- Google Play का ऑटोमेटेड टेस्ट बॉट जब ऐप चलाएगा और नेटवर्क टाइमआउट होगा, तो ऐप को **Policy: App Stability (Crash / ANR)** के तहत ब्लॉक कर दिया जाएगा।
+
+#### सैद्धांतिक समाधान (Backend Sovereignty & Offline Shield):
+1. **100% स्टैंडअलोन ऑफलाइन कोर:**
+   - गेम के सभी 3D एसेट्स, Rapier फिजिक्स, और सिंगल-प्लेयर AI बॉट को ऐप के अंदर ही लोकल लूपबैक सर्वर पर चलाया जाए। इंटरनेट न होने पर भी "The Bench" (Class 9A to 9E) और "Pass & Play" 100% काम करें।
+2. **ग्लोबल एरर शील्ड:**
+   - ऐप में एरर लिसनर लगाया जाए जो किसी भी अनपेक्षित नेटवर्क कॉल या WebSocket ड्रॉप को कैच करके यूजर को क्रैश दिखाए बिना स्मूथ ऑफलाइन मैच में बनाए रखे।
+3. **खुद का बैकएंड (वैकल्पिक - ऑनलाइन मैच के लिए):**
+   - जब ऑनलाइन मल्टीप्लेयर चालू करना हो, तो मूल मालिक के सर्वर के बजाय अपने खुद के फ्री Supabase/Firebase प्रोजेक्ट का यूआरएल कॉन्फ़िगर किया जाए।
 
 ---
 
-## 📋 Final Play Store Console Submission Checklist
+### समाधान ४: Packaging Format (.apk vs .aab) & Release Keystore
 
-- [x] **Parody Brands**: No proprietary trademarks exist in code or assets.
-- [x] **Native Haptics**: Device hardware vibration integrated.
-- [x] **Offline Stability**: Zero network crash on launch or offline play.
-- [x] **Signed Bundle**: Release `.aab` binary ready on disk.
-- [ ] **Google Play Console Upload**: Drag & drop `app-release.aab` into Production or Internal Testing track.
-- [ ] **Privacy Policy URL**: Link hosted privacy policy (e.g. GitHub Pages or website).
-- [ ] **Store Graphics**: Upload 512x512 app icon, 1024x500 feature banner, and phone screenshots.
- Stub** | **Desi Wood 621 Stub** | `desi-wood-stub` | Hexagonal |
-| **Nataraj 621, Both Ends** | **Desi Wood 621, Both Ends** | `desi-wood-double` | Hexagonal |
-| **Apsara Platinum** | **DarkPlatinum Extra** | `dark-platinum` | Hexagonal |
-| **Apsara Platinum Stub** | **DarkPlatinum Stub** | `dark-plat-stub` | Hexagonal |
-| **Apsara Absolute** | **Titanium Absolute** | `titanium-abs` | Hexagonal |
-| **Apsara Colour Pencil** | **Rainbow Colour Pencil** | `rainbow-pencil` | Hexagonal |
-| **DOMS Groove** | **Groovy Grip** | `groovy-grip` | Triangular |
-| **Classmate Octane** | **Nitro Octane** | `nitro-octane` | Cylinder |
-| **Reynolds Racer Gel** | **Speed Racer Gel** | `speed-racer` | Cylinder |
-| **Reynolds Jetter** | **Jetter Speed** | `jetter-speed` | Cylinder |
-| **Reynolds Liquiflo** | **LiquiFlow** | `liqui-flow` | Cylinder |
-| **Montex Hy-Speed** | **Hyper-Speed Ball** | `hyper-speed` | Cylinder |
-| **Montex Megatop** | **MegaTop 2000** | `megatop` | Cylinder |
-| **Rotomac Signature** | **Signature Gold** | `signature-gold` | Cylinder |
-| **Uni-ball Eye** | **Precision Eye** | `precision-eye` | Cylinder |
-| **Uni-ball Signo** | **Signo Gel** | `signo-gel` | Cylinder |
-| **Flair Writometer** | **MeterWrite** | `meter-write` | Cylinder |
-| **Linc Ocean** | **Blue Ocean Gel** | `blue-ocean` | Cylinder |
-| **Faber-Castell Grip 2001** | **Grip 2001 Pro** | `grip-2001` | Triangular |
-| **Camlin ink pen** | **Vintage Ink Pen** | `vintage-ink` | Cylinder |
-| **Pentel EnerGel** | **EnerGlow Gel** | `energlow` | Cylinder |
-| **Pierre Cardin** | **Royal Executive** | `royal-exec` | Cylinder |
-| **Hero 329** | **Hero Classic 329** | `hero-329` | Cylinder |
-| **Add Gel** | **Plus Gel** | `plus-gel` | Cylinder |
+#### समस्या का विश्लेषण:
+1. **APK बैन:** Google Play Console नए ऐप्स के लिए `.apk` फाइल स्वीकार नहीं करता। केवल `.aab` (Android App Bundle) ही अपलोड हो सकता है।
+2. **Debug Keystore रिजेक्शन:** डिबग की (`debug.keystore`) से साइन की गई फाइल को Google Console यह कहकर रिजेक्ट करता है: *"You uploaded an APK or Android App Bundle that was signed in debug mode."*
 
-#### Slogan & Narrative Parody Replacements
-* `"Win the Trimax"` ➔ `"Win the Tri-Maxx"`
-* `"Defend your Trimax"` ➔ `"Defend your Tri-Maxx"`
-* `"9E has the Trimax"` ➔ `"9E has the Tri-Maxx"`
-* `"Bring the Trimax home"` ➔ `"Bring the Tri-Maxx home"`
+#### सैद्धांतिक समाधान (Production Build Pipeline):
+1. **प्राइवेट रिलीज़ कीस्टोर का निर्माण:**
+   - Java के `keytool` यूटिलिटी से कम से कम 2048-bit RSA कीस्टोर बनाया जाए जिसकी वैधता कम से कम 25 वर्ष (10,000 दिन) हो:
+     ```bash
+     keytool -genkey -v -keystore upload-keystore.jks -keyalg RSA -keysize 2048 -validity 10000 -alias upload
+     ```
+2. **सुरक्षित क्रेडेंशियल मैपिंग:**
+   - `android/key.properties` फाइल में कीस्टोर का पाथ, एलियास और पासवर्ड कॉन्फ़िगर किया जाए (और इसे `.gitignore` में रखा जाए ताकि पासवर्ड लीक न हो)।
+3. **Gradle Release कॉन्फ़िगरेशन:**
+   - `build.gradle.kts` में `signingConfigs` के तहत `release` ब्लॉक को `key.properties` से लिंक किया जाए।
+4. **App Bundle संकलन:**
+   - Google Play अपलोड के लिए कमांड:
+     ```bash
+     flutter build appbundle --release
+     ```
+   - तैयार फाइल: `build/app/outputs/bundle/release/app-release.aab`।
 
 ---
 
-### 🟢 Solution 2: Native Features Injection (Webview Spam Immunity)
-App ko pure webview ke bajaye true hybrid game banane ke liye native capabilities add karni hoti hain jisse Google reviewer ise "Native Value Application" maane:
+## 📋 3. आपके रिव्यू और कमेंट्स के लिए मुख्य बिंदु
 
-#### 1. Hardware Haptic Feedback Engine
-Touch and collision events par device hardware vibrator ko trigger karein:
-- **Light Impact (`HapticFeedback.lightImpact()`):** Touch start, pen aim drag.
-- **Medium Impact (`HapticFeedback.mediumImpact()`):** Pen flick release, table wood bounce.
-- **Heavy Impact (`HapticFeedback.heavyImpact()`):** Heavy pen-on-pen head-on collision, boundary fall.
+कृपया इस दस्तावेज़ को रिव्यू करें और बताएं:
+1. क्या आपको **प्रस्तावित पैरोडी नाम (Parody Names)** पसंद हैं, या आप किसी पेन के लिए कोई खास नाम सुझाना चाहते हैं?
+2. क्या आप नेटिव फीचर्स में **हैप्टिक वाइब्रेशन** के अलावा कोई और फीचर (जैसे Gyroscope या कस्टम साउंड्स) जोड़ना चाहते हैं?
+3. क्या आप ऑनलाइन मल्टीप्लेयर के लिए अपना खुद का बैकएंड लगाना चाहेंगे या शुरुआती वर्जन को केवल **100% ऑफलाइन (Single Player + Pass & Play)** रखना चाहेंगे?
 
-#### 2. Native Bridge Implementation (`lib/main.dart` & `index.html`)
-```javascript
-// Web Side (index.html)
-window.__pfHaptic = function(intensity) {
-  if (window.__pfNativeBridge && window.__pfNativeBridge.postMessage) {
-    window.__pfNativeBridge.postMessage('haptic:' + intensity);
-  }
-};
-window.addEventListener('touchend', () => window.__pfHaptic('light'), { passive: true });
-```
-```dart
-// Flutter Side (lib/main.dart)
-void _handleNativeMessage(String message) {
-  if (message.startsWith('haptic:')) {
-    final type = message.substring(7);
-    if (type == 'heavy') HapticFeedback.heavyImpact();
-    else if (type == 'medium') HapticFeedback.mediumImpact();
-    else HapticFeedback.lightImpact();
-  }
-}
-```
-
-#### 3. Native Desk HUD & Bottom Sheet Controls
-* Ek floating native widget overlay jo table controls deta hai:
-  - Haptic Vibration On/Off switch
-  - Classic Rules Dialog popup
-  - Physics Reset Desk button
-  - Offline Mode status badge
-
----
-
-### 🟢 Solution 3: Self-Hosted Backend & 100% Offline Shield
-Foreign Supabase server par crash hone se bachne ke liye do-tier architecture:
-
-#### Tier A: Offline Mode Shield (Zero Network Crash Guarantee)
-Jab user single player (The Bench 9A-9E) ya Pass & Play khele, network calls ko mock/intercept karein:
-```javascript
-// index.html Error Shield
-window.addEventListener('error', function(event) {
-  if (event.message && (event.message.includes('supabase') || event.message.includes('fetch'))) {
-    console.warn('[Offline Mode Guard]', event.message);
-    event.preventDefault(); // Prevents console error logging and app crashes
-  }
-});
-```
-
-#### Tier B: Free Self-Hosted Supabase Setup (Online Duels ke liye)
-1. **Create Free Project**: [supabase.com](https://supabase.com) par free project banayein (`penfight-db`).
-2. **Enable Realtime**: Database -> Replication -> enable `rooms` table.
-3. **Table Schema**:
-   ```sql
-   create table public.rooms (
-     id text primary key,
-     code text unique not null,
-     player1_pen text not null,
-     player2_pen text,
-     round_score jsonb default '{"p1": 0, "p2": 0}'::jsonb,
-     created_at timestamp with time zone default timezone('utc'::text, now()) not null
-   );
-   ```
-4. **Update JS Config**: `main-BdC6c7qp.js` mein apni project URL aur anon key replace karein:
-   ```javascript
-   const usA = "https://your-project-id.supabase.co";
-   const psA = "your-public-anon-key";
-   ```
-
----
-
-### 🟢 Solution 4: Production AAB Packaging & Signing Pipeline
-
-Google Play Store August 2021 se `.apk` accept nahi karta. Release ke liye `.aab` (Android App Bundle) aur private upload keystore anivarya hai:
-
-#### Step 1: Generate Private Upload Keystore
-Terminal mein Java JDK keytool se 2048-bit RSA key banayein:
-```powershell
-& "C:\Program Files\Microsoft\jdk-21.0.12.101-hotspot\bin\keytool.exe" -genkeypair -v -keystore "android/upload-keystore.jks" -storetype JKS -keyalg RSA -keysize 2048 -validity 10000 -alias upload -storepass "YourStrongPassword" -keypass "YourStrongPassword" -dname "CN=Vinayak Saxena, OU=Games, O=LastBench, L=Delhi, ST=Delhi, C=IN"
-```
-
-#### Step 2: Configure `android/key.properties`
-Create `android/key.properties` (git ignored):
-```properties
-storePassword=YourStrongPassword
-keyPassword=YourStrongPassword
-keyAlias=upload
-storeFile=../upload-keystore.jks
-```
-
-#### Step 3: Configure `android/app/build.gradle.kts`
-```kotlin
-import java.util.Properties
-import java.io.FileInputStream
-
-val keystorePropertiesFile = rootProject.file("key.properties")
-val keystoreProperties = Properties()
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
-}
-
-android {
-    ...
-    signingConfigs {
-        create("release") {
-            keyAlias = keystoreProperties["keyAlias"] as String? ?: "upload"
-            keyPassword = keystoreProperties["keyPassword"] as String? ?: "password"
-            storeFile = keystoreProperties["storeFile"]?.let { file(it as String) } ?: rootProject.file("upload-keystore.jks")
-            storePassword = keystoreProperties["storePassword"] as String? ?: "password"
-        }
-    }
-    buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("release")
-        }
-    }
-}
-```
-
-#### Step 4: Build Command
-```bash
-flutter build appbundle --release
-```
-*Output File:* `build/app/outputs/bundle/release/app-release.aab`
-
----
-
-## 📋 Play Store Pre-Submission Checklist
-
-- [ ] **IP Parody Completed**: Sabhi 44 pens ke original trademark names safe parody names se replace ho chuke hain.
-- [ ] **Assets Clean**: Background blackboard ya school door images par koi trademark logo visible nahi hai.
-- [ ] **Haptics Tested**: Pen flick aur collision par device physical vibration response de raha hai.
-- [ ] **Offline Resilience**: Airplane mode on karke game smoothly start hota hai aur AI matches bina kisi error ke chalte hain.
-- [ ] **Release AAB Ready**: `flutter build appbundle --release` exit code 0 ke sath `.aab` produce kar raha hai.
-- [ ] **Store Listing Documents**:
-  - Live Privacy Policy URL (GitHub Pages ya Notion doc)
-  - Content Rating IARC (Age 3+ / Everyone)
-  - Feature Graphic (1024x500) aur App Icon (512x512)
+*आपके अप्रूवल और निर्देश के बाद ही किसी कोड बदलाव या बिल्ड प्रक्रिया को आगे बढ़ाया जाएगा।*
