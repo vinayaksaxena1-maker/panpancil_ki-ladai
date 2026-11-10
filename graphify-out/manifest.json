@@ -1,0 +1,104 @@
+{
+  "SUPABASE_PHASE2_SETUP.sql": {
+    "mtime": 1794304983.5106368,
+    "seen": 1794323891.3413246,
+    "ast_hash": "fae9c75d7360d2cdef850c25d1cc9199",
+    "semantic_hash": "fae9c75d7360d2cdef850c25d1cc9199"
+  },
+  "android/app/build.gradle.kts": {
+    "mtime": 1794298495.139346,
+    "seen": 1794323891.3413246,
+    "ast_hash": "d5510527882ff78d9f34146dfafbfe58",
+    "semantic_hash": "d5510527882ff78d9f34146dfafbfe58"
+  },
+  "android/app/src/main/kotlin/lastbench/penfight/penfight/MainActivity.kt": {
+    "mtime": 1794296390.070699,
+    "seen": 1794323891.3413246,
+    "ast_hash": "26ff46a3191672f36076adbf2524977f",
+    "semantic_hash": "26ff46a3191672f36076adbf2524977f"
+  },
+  "android/build.gradle.kts": {
+    "mtime": 1794296390.0827744,
+    "seen": 1794323891.3413246,
+    "ast_hash": "803fe22651fbe96ed401eb0b66a492d1",
+    "semantic_hash": "803fe22651fbe96ed401eb0b66a492d1"
+  },
+  "android/settings.gradle.kts": {
+    "mtime": 1794296390.2990847,
+    "seen": 1794323891.3413246,
+    "ast_hash": "a34513cd87cef855195771f6a457a218",
+    "semantic_hash": "a34513cd87cef855195771f6a457a218"
+  },
+  "assets/web/assets/index-CwxsA5-c.js": {
+    "mtime": 1794298290.6221278,
+    "seen": 1794323891.3413246,
+    "ast_hash": "f5c7509caa0e5ff674edf60c3a7ff96d",
+    "semantic_hash": "f5c7509caa0e5ff674edf60c3a7ff96d"
+  },
+  "assets/web/assets/main-BdC6c7qp.js": {
+    "mtime": 1794304946.7512982,
+    "seen": 1794323891.3413246,
+    "ast_hash": "f6e813eb1b07514b03cb74b18f9a61b1",
+    "semantic_hash": "f6e813eb1b07514b03cb74b18f9a61b1"
+  },
+  "assets/web/assets/version.json": {
+    "mtime": 1794296463.8885825,
+    "seen": 1794323891.3413246,
+    "ast_hash": "09222387288af7a4db4c8b33d656e93c",
+    "semantic_hash": "09222387288af7a4db4c8b33d656e93c"
+  },
+  "assets/web/index-CwxsA5-c.js": {
+    "mtime": 1794298290.6201577,
+    "seen": 1794323891.3413246,
+    "ast_hash": "f5c7509caa0e5ff674edf60c3a7ff96d",
+    "semantic_hash": "f5c7509caa0e5ff674edf60c3a7ff96d"
+  },
+  "assets/web/main-BdC6c7qp.js": {
+    "mtime": 1794298495.2078521,
+    "seen": 1794323891.3413246,
+    "ast_hash": "179fb73065f52adf9ebfbe35be5064b6",
+    "semantic_hash": "179fb73065f52adf9ebfbe35be5064b6"
+  },
+  "assets/web/vercel.json": {
+    "mtime": 1794300591.7838047,
+    "seen": 1794323891.3413246,
+    "ast_hash": "c427f89137c5bc004ec67b49b25af80b",
+    "semantic_hash": "c427f89137c5bc004ec67b49b25af80b"
+  },
+  "assets/web/version.json": {
+    "mtime": 1794296463.8885825,
+    "seen": 1794323891.3413246,
+    "ast_hash": "09222387288af7a4db4c8b33d656e93c",
+    "semantic_hash": "09222387288af7a4db4c8b33d656e93c"
+  },
+  "lib/local_asset_server.dart": {
+    "mtime": 1794296514.1396801,
+    "seen": 1794323891.3413246,
+    "ast_hash": "7fbeb1b83762b59abca9c88dfa9cabf3",
+    "semantic_hash": "7fbeb1b83762b59abca9c88dfa9cabf3"
+  },
+  "lib/main.dart": {
+    "mtime": 1794299231.486848,
+    "seen": 1794323891.3413246,
+    "ast_hash": "e60a0925beedea287e7762bbd22dc2be",
+    "semantic_hash": "e60a0925beedea287e7762bbd22dc2be"
+  },
+  "lib/pen_mod_system.dart": {
+    "mtime": 1794298655.3552525,
+    "seen": 1794323891.3413246,
+    "ast_hash": "693b2991ea96d86f032832dfe449e1db",
+    "semantic_hash": "693b2991ea96d86f032832dfe449e1db"
+  },
+  "test/widget_test.dart": {
+    "mtime": 1794296537.4221542,
+    "seen": 1794323891.3413246,
+    "ast_hash": "3053383b9c52c786ac863224fe0bbbb6",
+    "semantic_hash": "3053383b9c52c786ac863224fe0bbbb6"
+  },
+  "web/manifest.json": {
+    "mtime": 1794296390.4506056,
+    "seen": 1794323891.3413246,
+    "ast_hash": "5c5bf95e5f800264bd335683953d75f9",
+    "semantic_hash": "5c5bf95e5f800264bd335683953d75f9"
+  }
+}

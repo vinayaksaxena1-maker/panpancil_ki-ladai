@@ -62,6 +62,23 @@
         event.preventDefault();
       }
     });
+
+    // Phase 2: Live Supabase Integration Config
+    window.__PENFIGHT_CONFIG__ = {
+      VITE_SUPABASE_URL: "https://boavalkwiixcpkwvccyk.supabase.co",
+      VITE_SUPABASE_PUBLISHABLE_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvYXZhbGt3aWl4Y3Brd3ZjY3lrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2Njc2MjYsImV4cCI6MjA5ODI0MzYyNn0.J9UJeIbQPkIguBg6NfuCb5Fbjpi1lqRhxZQ6i2QF-zs"
+    };
+    if (typeof fetch === 'function') {
+      fetch('/api/config')
+        .then(function(r) { return r.json(); })
+        .then(function(cfg) {
+          if (cfg && cfg.supabaseUrl && cfg.supabaseAnonKey) {
+            window.__PENFIGHT_CONFIG__.VITE_SUPABASE_URL = cfg.supabaseUrl;
+            window.__PENFIGHT_CONFIG__.VITE_SUPABASE_PUBLISHABLE_KEY = cfg.supabaseAnonKey;
+          }
+        })
+        .catch(function() {});
+    }
   </script>
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/patrick-hand.woff2" crossorigin />
   <link rel="preload" as="font" type="font/woff2" href="assets/fonts/anton.woff2" crossorigin />
