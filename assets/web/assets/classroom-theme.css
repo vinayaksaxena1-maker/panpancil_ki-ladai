@@ -1,25 +1,80 @@
 /* ==========================================================================
-   Saltz AI · The Time-Table Gauntlet (Classroom UI & 7 Screens Overhaul)
-   Aesthetic: Authentic Green Chalkboard, Indian Classroom Slate & Sheesham Wood
-   Resilience: 5-State Component Craftsman (Default, Hover, Skeleton, Fallback, Empty)
+   Saltz AI · The Time-Table Gauntlet (Gully Manga Gauntlet Theme System)
+   Fusing: Persona 5 + Spider-Verse + Raj Comics Vintage Pulp Manga
+   Tokens Source: Stitch Project 4551224319816372239
    ========================================================================== */
 
 :root {
-  --pf-chalkboard: #1c2b22;
-  --pf-chalkboard-dark: #131d17;
-  --pf-chalkboard-light: #25392d;
-  --pf-slate: #202426;
-  --pf-slate-light: #2d3336;
-  --pf-chalk-white: #f6f3eb;
-  --pf-chalk-faint: rgba(246, 243, 235, 0.65);
-  --pf-chalk-gold: #f5d76e;
-  --pf-wood-rim: #7c441b;
-  --pf-wood-rim-dark: #4e290f;
-  --pf-wood-rim-light: #9e5b29;
-  --pf-desk-wood: #24160d;
-  --pf-notebook-cream: #faf5e8;
-  --pf-notebook-rule: rgba(48, 86, 138, 0.14);
-  --pf-notebook-margin: rgba(214, 69, 69, 0.28);
+  /* Stitch Gully Manga Gauntlet Core Palette */
+  --pf-manga-mustard: #ffb703;
+  --pf-manga-red: #e63946;
+  --pf-manga-cyan: #00f5d4;
+  --pf-manga-ink: #121212;
+  --pf-manga-shadow-blue: #1d1e2c;
+  --pf-manga-newsprint: #fdf0d5;
+  --pf-manga-border: 4px solid #121212;
+  --pf-manga-shadow: 4px 4px 0px #121212;
+  --pf-manga-shadow-hover: 6px 6px 0px #121212;
+  --pf-manga-shadow-active: 0px 0px 0px #121212;
+  --pf-font-display: 'Anybody', sans-serif;
+  --pf-font-body: 'Space Grotesk', sans-serif;
+
+  /* Legacy Variable Bridges mapped directly to Manga Palette */
+  --pf-chalkboard: var(--pf-manga-ink);
+  --pf-chalkboard-dark: #0e0e0e;
+  --pf-chalkboard-light: var(--pf-manga-shadow-blue);
+  --pf-slate: var(--pf-manga-ink);
+  --pf-slate-light: var(--pf-manga-shadow-blue);
+  --pf-chalk-white: var(--pf-manga-newsprint);
+  --pf-chalk-faint: rgba(253, 240, 213, 0.75);
+  --pf-chalk-gold: var(--pf-manga-mustard);
+  --pf-wood-rim: var(--pf-manga-ink);
+  --pf-wood-rim-dark: var(--pf-manga-ink);
+  --pf-wood-rim-light: var(--pf-manga-mustard);
+  --pf-desk-wood: #181924;
+  --pf-notebook-cream: var(--pf-manga-newsprint);
+  --pf-notebook-rule: rgba(18, 18, 18, 0.08);
+  --pf-notebook-margin: rgba(230, 57, 70, 0.35);
+}
+
+/* Global Manga Typography & Hard Cel-Shading */
+body, html {
+  font-family: var(--pf-font-body) !important;
+  background-color: var(--pf-manga-ink) !important;
+  color: var(--pf-manga-newsprint) !important;
+}
+
+h1, h2, h3, .brand, .brandcore, .entry-people-heading h3 {
+  font-family: var(--pf-font-display) !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.02em !important;
+  text-transform: uppercase !important;
+}
+
+/* Hard Cel-Shaded Action Buttons */
+.stampbtn,
+button.stampbtn,
+.entry-app-row {
+  font-family: var(--pf-font-display) !important;
+  font-weight: 800 !important;
+  background: var(--pf-manga-mustard) !important;
+  color: var(--pf-manga-ink) !important;
+  border: var(--pf-manga-border) !important;
+  box-shadow: var(--pf-manga-shadow) !important;
+  border-radius: 4px !important;
+  transition: transform 0.08s ease, box-shadow 0.08s ease !important;
+}
+
+.stampbtn:hover,
+button.stampbtn:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: var(--pf-manga-shadow-hover) !important;
+}
+
+.stampbtn:active,
+button.stampbtn:active {
+  transform: translate(4px, 4px) !important;
+  box-shadow: var(--pf-manga-shadow-active) !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -306,4 +361,462 @@ button:active:not(:disabled) {
   display: none !important;
   visibility: hidden !important;
   pointer-events: none !important;
+}
+
+/* User-Requested: Game Heading with Icon (Download Buttons Hidden) */
+.entry-app-get {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.entry-app-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: rgba(19, 29, 23, 0.7) !important;
+  border: 1px solid rgba(246, 243, 235, 0.15) !important;
+  border-radius: 12px !important;
+  padding: 8px 14px !important;
+  margin-top: 10px !important;
+}
+
+.entry-app-icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--pf-brass-gold, #c49a45) !important;
+  flex-shrink: 0 !important;
+}
+
+.entry-app-copy {
+  margin: 0 !important;
+}
+
+.entry-app-copy strong {
+  display: block !important;
+  font-size: 15px !important;
+  letter-spacing: 0.5px !important;
+  color: var(--pf-chalk-white, #f6f3eb) !important;
+}
+
+.entry-app-copy small {
+  display: block !important;
+  font-size: 12px !important;
+  color: var(--pf-chalk-faint, rgba(246, 243, 235, 0.6)) !important;
+}
+
+/* Guarantee download buttons and legacy get-the-app text never show */
+.entry-app .entry-people-heading,
+.entry-app h3,
+.entry-app-get,
+.entry-app-get * {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.entry-app-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: rgba(19, 29, 23, 0.85) !important;
+  border: 1px solid rgba(246, 243, 235, 0.2) !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  margin: 12px 0 6px 0 !important;
+}
+
+.entry-app-icon {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 8px !important;
+  border: 1px solid #c49a45 !important;
+  flex-shrink: 0 !important;
+}
+
+.entry-app-copy strong {
+  display: block !important;
+  font-size: 15px !important;
+  color: #f6f3eb !important;
+}
+
+.entry-app-copy small {
+  display: block !important;
+  font-size: 12px !important;
+  color: rgba(246, 243, 235, 0.65) !important;
+}
+
+
+/* --------------------------------------------------------------------------
+   PHASE 1: Classroom HQ (Gully Manga Gauntlet Home Notebook Reskin)
+   Inspired by Stitch Screen 1 (Classroom HQ - 3b8b244ecf85418eb51c71633f38102c)
+   -------------------------------------------------------------------------- */
+
+/* Substrate Canvas & Backdrop */
+body, html {
+  background-color: #0e0e0e !important;
+  background-image: 
+    radial-gradient(#1f202b 1.5px, transparent 1.5px),
+    linear-gradient(180deg, #121212 0%, #0e0e0e 100%) !important;
+  background-size: 16px 16px, 100% 100% !important;
+}
+
+/* Home Notebook Shell: Transformed into Comic Splash Page */
+.chit.chooser,
+.v2paper,
+.schoolpaper {
+  background: #fdf0d5 !important;
+  color: #121212 !important;
+  border: 4px solid #121212 !important;
+  border-radius: 12px !important;
+  box-shadow: 6px 6px 0px #0e0e0e !important;
+  background-image: radial-gradient(rgba(18, 18, 18, 0.08) 1.5px, transparent 1.5px) !important;
+  background-size: 8px 8px !important;
+}
+
+/* Notebook Header & Title */
+.brand, .brandcore {
+  font-family: var(--pf-font-display) !important;
+  font-weight: 900 !important;
+  color: #121212 !important;
+  letter-spacing: -0.03em !important;
+}
+
+/* Left Page: Solo Campaign / YOUR NEXT FIGHT Card */
+.nextfight,
+.solo-journey,
+.v2pick-card {
+  background: #ffffff !important;
+  border: 3px solid #121212 !important;
+  border-radius: 8px !important;
+  box-shadow: 4px 4px 0px #121212 !important;
+  padding: 16px !important;
+  position: relative !important;
+  transform: rotate(-1deg) !important;
+}
+
+/* Comic Asymmetric Tag on Next Fight */
+.nextfight::before {
+  content: "READY TO CLASH" !important;
+  position: absolute !important;
+  top: -12px !important;
+  right: 12px !important;
+  background: #00f5d4 !important;
+  color: #121212 !important;
+  font-family: var(--pf-font-body) !important;
+  font-weight: 700 !important;
+  font-size: 10px !important;
+  letter-spacing: 0.08em !important;
+  padding: 2px 8px !important;
+  border: 2px solid #121212 !important;
+  box-shadow: 2px 2px 0px #121212 !important;
+  border-radius: 3px !important;
+  transform: rotate(2deg) !important;
+}
+
+/* Primary Action Button: FIGHT NOW! / START SOLO */
+#pf-v2-continue,
+.nextfight button,
+.stampbtn,
+button[data-act="start-solo"],
+.v2startbtn {
+  background: #ffb703 !important;
+  color: #121212 !important;
+  font-family: var(--pf-font-display) !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  border: 4px solid #121212 !important;
+  border-radius: 6px !important;
+  box-shadow: 4px 4px 0px #121212 !important;
+  padding: 12px 24px !important;
+  cursor: pointer !important;
+  transition: transform 0.08s ease, box-shadow 0.08s ease !important;
+}
+
+#pf-v2-continue:hover,
+.stampbtn:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0px #121212 !important;
+}
+
+#pf-v2-continue:active,
+.stampbtn:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 0px 0px 0px #121212 !important;
+}
+
+/* Right Page: ARENA MODES Grid (Friend, Tournament, Local, Instant) */
+.entry-people-grid,
+.v2modes-list,
+.modegroup {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+/* Individual Mode Buttons as Cel-Shaded Comic Cards */
+.entry-people-item,
+.modebtn,
+.playlink,
+.howlink {
+  background: #ffffff !important;
+  border: 2.5px solid #121212 !important;
+  border-radius: 6px !important;
+  box-shadow: 3px 3px 0px #121212 !important;
+  color: #121212 !important;
+  font-family: var(--pf-font-body) !important;
+  font-weight: 700 !important;
+  padding: 10px 14px !important;
+  transition: transform 0.08s ease, box-shadow 0.08s ease !important;
+}
+
+.entry-people-item:hover,
+.modebtn:hover,
+.playlink:hover {
+  transform: translate(-1.5px, -1.5px) !important;
+  box-shadow: 4.5px 4.5px 0px #121212 !important;
+  background: #fff8ec !important;
+}
+
+/* Mode Highlights */
+.modebtn[data-mode="friend"],
+.playlink[data-mode="friend"] {
+  border-left: 6px solid #00f5d4 !important;
+}
+
+.modebtn[data-mode="tournament"],
+.playlink[data-mode="tournament"] {
+  border-left: 6px solid #ffb703 !important;
+}
+
+.modebtn[data-mode="local"],
+.playlink[data-mode="local"] {
+  border-left: 6px solid #e63946 !important;
+}
+
+.modebtn[data-mode="instant"],
+.playlink[data-mode="instant"] {
+  border-left: 6px solid #00f5d4 !important;
+}
+
+/* Player Badge Card (Top Left) */
+.userbadge,
+.player-tag,
+.mycard {
+  background: #1d1e2c !important;
+  color: #fdf0d5 !important;
+  border: 3px solid #121212 !important;
+  border-radius: 6px !important;
+  box-shadow: 3px 3px 0px #121212 !important;
+  padding: 8px 12px !important;
+}
+
+.userbadge strong,
+.player-tag strong {
+  color: #ffb703 !important;
+  font-family: var(--pf-font-display) !important;
+}
+
+
+/* ==========================================================================
+   PHASE 1: Classroom HQ Precise Component Styling (Gully Manga Gauntlet)
+   Targeting: .entry-layout, .entry-solo-path, .entry-routes, .entry-route
+   ========================================================================== */
+
+/* Main Two-Column Layout */
+.entry-layout {
+  display: flex !important;
+  gap: 20px !important;
+  align-items: stretch !important;
+}
+
+/* Header Pick Your Fight */
+.entry-heading .pickq {
+  font-family: var(--pf-font-display) !important;
+  font-weight: 900 !important;
+  font-size: 28px !important;
+  color: #121212 !important;
+  letter-spacing: -0.02em !important;
+  text-transform: uppercase !important;
+}
+
+.entry-heading p {
+  font-family: var(--pf-font-body) !important;
+  color: rgba(18, 18, 18, 0.75) !important;
+  font-size: 14px !important;
+}
+
+/* Left Column: Solo Campaign Panel */
+.entry-solo-path,
+.entry-solo-path section,
+.entry-solo-path .v2card {
+  background: #ffffff !important;
+  border: 3.5px solid #121212 !important;
+  border-radius: 8px !important;
+  box-shadow: 5px 5px 0px #121212 !important;
+  padding: 18px !important;
+  position: relative !important;
+}
+
+/* Big Start Solo Action Button */
+.entry-solo-path button,
+.entry-solo-path .stampbtn,
+button[data-act="start-solo"] {
+  width: 100% !important;
+  background: #ffb703 !important;
+  color: #121212 !important;
+  font-family: var(--pf-font-display) !important;
+  font-weight: 900 !important;
+  font-size: 19px !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  border: 3.5px solid #121212 !important;
+  border-radius: 6px !important;
+  box-shadow: 4px 4px 0px #121212 !important;
+  padding: 12px 18px !important;
+  cursor: pointer !important;
+  transition: transform 0.08s ease, box-shadow 0.08s ease !important;
+}
+
+.entry-solo-path button:hover,
+button[data-act="start-solo"]:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0px #121212 !important;
+}
+
+.entry-solo-path button:active,
+button[data-act="start-solo"]:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 0px 0px 0px #121212 !important;
+}
+
+/* Right Column: Arena Modes List */
+.entry-people-heading h3,
+#entry-people-title {
+  font-family: var(--pf-font-display) !important;
+  font-weight: 900 !important;
+  font-size: 18px !important;
+  color: #121212 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+  margin-bottom: 12px !important;
+}
+
+.entry-routes {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+/* Individual Mode Buttons (Tournament, Local, Instant, Friend) */
+.entry-route {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  background: #ffffff !important;
+  border: 3px solid #121212 !important;
+  border-radius: 6px !important;
+  box-shadow: 4px 4px 0px #121212 !important;
+  padding: 10px 14px !important;
+  cursor: pointer !important;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease !important;
+}
+
+.entry-route:hover {
+  transform: translate(-2px, -2px) !important;
+  box-shadow: 6px 6px 0px #121212 !important;
+  background: #fff9ed !important;
+}
+
+.entry-route:active {
+  transform: translate(3px, 3px) !important;
+  box-shadow: 0px 0px 0px #121212 !important;
+}
+
+.entry-route-title strong {
+  font-family: var(--pf-font-display) !important;
+  font-weight: 900 !important;
+  font-size: 16px !important;
+  color: #121212 !important;
+  text-transform: uppercase !important;
+  letter-spacing: -0.01em !important;
+}
+
+.entry-route-copy small {
+  font-family: var(--pf-font-body) !important;
+  font-size: 12px !important;
+  color: rgba(18, 18, 18, 0.7) !important;
+}
+
+/* Action Arrow Badge */
+.entry-route-action {
+  font-family: var(--pf-font-display) !important;
+  font-weight: 900 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  color: #121212 !important;
+  background: #00f5d4 !important;
+  padding: 4px 10px !important;
+  border: 2px solid #121212 !important;
+  border-radius: 4px !important;
+  box-shadow: 2px 2px 0px #121212 !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* Mode-Specific Color Accents */
+.entry-route.is-tournament {
+  border-left: 8px solid #ffb703 !important;
+}
+
+.entry-route[data-act="local"] {
+  border-left: 8px solid #e63946 !important;
+}
+
+.entry-route[data-act="queue"] {
+  border-left: 8px solid #00f5d4 !important;
+}
+
+.entry-route[data-act="friend"] {
+  border-left: 8px solid #3a86ff !important;
+}
+
+/* Comic Badge Pills (TONIGHT, NEW) */
+.newtag,
+.entry-route-badge {
+  background: #ffb703 !important;
+  color: #121212 !important;
+  font-family: var(--pf-font-body) !important;
+  font-weight: 800 !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 2px 6px !important;
+  border: 1.5px solid #121212 !important;
+  border-radius: 3px !important;
+  box-shadow: 1.5px 1.5px 0px #121212 !important;
+  margin-left: 6px !important;
+}
+
+/* Ensure all arena mode buttons have clean white card background with high contrast */
+.entry-route,
+.entry-route[data-act="local"],
+.entry-route.is-tournament {
+  background: #ffffff !important;
+  color: #121212 !important;
+}
+
+.entry-route[data-act="local"] .entry-route-title strong,
+.entry-route[data-act="local"] .entry-route-copy small,
+.entry-route[data-act="local"] span {
+  color: #121212 !important;
+}
+
+.entry-route[data-act="local"] svg {
+  stroke: #121212 !important;
 }
