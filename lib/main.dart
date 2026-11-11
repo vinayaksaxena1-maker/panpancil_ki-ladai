@@ -22,7 +22,7 @@ class PenFightApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Pen Fight',
+      title: 'Pen Fight: The Time-Table Gauntlet',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
@@ -70,6 +70,12 @@ class _PenFightShellState extends State<PenFightShell> {
             _handleNativeMessage(message.message);
           },
         )
+        ..addJavaScriptChannel(
+          'Haptics',
+          onMessageReceived: (JavaScriptMessage message) {
+            _handleNativeMessage(message.message);
+          },
+        )
         ..setNavigationDelegate(
           NavigationDelegate(
             onPageStarted: (String url) {
@@ -94,7 +100,7 @@ class _PenFightShellState extends State<PenFightShell> {
             },
             onNavigationRequest: (NavigationRequest request) {
               final uri = Uri.parse(request.url);
-              if (uri.host == '127.0.0.1' || uri.host == 'localhost' || uri.host == 'www.penfight.xyz') {
+              if (uri.host == '127.0.0.1' || uri.host == 'localhost' || uri.host == 'panpancil-ki-ladai.vercel.app') {
                 return NavigationDecision.navigate;
               }
               launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -135,6 +141,19 @@ class _PenFightShellState extends State<PenFightShell> {
         HapticFeedback.heavyImpact();
       } else if (type == 'medium') {
         HapticFeedback.mediumImpact();
+      } else if (type == 'selection') {
+        HapticFeedback.selectionClick();
+      } else {
+        HapticFeedback.lightImpact();
+      }
+    } else if (message == 'heavy' || message == 'medium' || message == 'light' || message == 'selection') {
+      if (!_hapticsEnabled) return;
+      if (message == 'heavy') {
+        HapticFeedback.heavyImpact();
+      } else if (message == 'medium') {
+        HapticFeedback.mediumImpact();
+      } else if (message == 'selection') {
+        HapticFeedback.selectionClick();
       } else {
         HapticFeedback.lightImpact();
       }
@@ -346,12 +365,15 @@ class _PenFightShellState extends State<PenFightShell> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: const Color(0xFF261D15),
-        title: const Text('Pen Fight Rules', style: TextStyle(color: Color(0xFFF3EDE0))),
+        title: const Text('The Time-Table Gauntlet Rules', style: TextStyle(color: Color(0xFFF3EDE0))),
         content: const Text(
-          '1. Two pens on the desk. You take turns flicking.\n'
-          '2. Knock the opponent\'s pen off the desk edge to score a point.\n'
-          '3. If your own pen falls off, it counts as a foul.\n'
-          '4. First player to score 3 rounds wins the match and claims the pen!',
+          '1. The Gauntlet: 11 Periods from Morning Assembly to Last Bell.\n'
+          '2. Two pens on the desk. You take turns flicking.\n'
+          '3. Knock the opponent\'s pen off the desk edge to score and advance.\n'
+          '4. If your own pen falls off, it counts as a foul.\n'
+          '5. Unlock 5 Stealth Badges (Kacha Lemon to Last-Bench Don).\n'
+          '6. First player to score 3 rounds wins the match and claims the pen!\n\n'
+          'Powered by Saltz AI Authentic Desk Physics.',
           style: TextStyle(color: Color(0xFFD4A373), height: 1.4),
         ),
         actions: [

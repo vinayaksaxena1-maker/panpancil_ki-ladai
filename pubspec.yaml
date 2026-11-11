@@ -56,11 +56,18 @@ flutter:
 
   assets:
     - assets/web/
+    - assets/web/api/
     - assets/web/assets/
     - assets/web/art/
+    - assets/web/art/belt/
+    - assets/web/art/trophy/
     - assets/web/fonts/
+    - assets/web/rooms/
     - assets/web/assets/art/
+    - assets/web/assets/art/belt/
+    - assets/web/assets/art/trophy/
     - assets/web/assets/fonts/
+    - assets/web/assets/rooms/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

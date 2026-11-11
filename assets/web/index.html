@@ -3,8 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no" />
-  <title>Pen Fight &middot; The Unofficial Sport of the Last Bench</title>
-  <meta name="description" content="Classic Indian school pen fight game with nostalgic pens, authentic desk physics, and fair play." />
+  <title>Pen Fight: The Time-Table Gauntlet &middot; Saltz AI</title>
+  <meta name="description" content="Classic Indian school pen fight game with nostalgic pens, authentic desk physics, and The Time-Table Gauntlet." />
+  <script>
+    window.triggerHaptic = function(type) {
+      try {
+        if (window.__pfNativeBridge && window.__pfNativeBridge.postMessage) {
+          window.__pfNativeBridge.postMessage('haptic:' + (type || 'medium'));
+        } else if (window.Haptics && window.Haptics.postMessage) {
+          window.Haptics.postMessage(type || 'medium');
+        }
+      } catch(e) {}
+    };
+  </script>
   <meta name="theme-color" content="#c4691a" />
   <meta name="color-scheme" content="dark" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=2" />

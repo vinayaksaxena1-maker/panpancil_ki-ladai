@@ -793,13 +793,13 @@ Phase 6: Keystore, Bundle & Play Store Upload         ➔ [GATE 6: LOCKED 🔒]
 
 ---
 
-### 📱 चरण ५ (Phase 5): Flutter Native Integration & Time-Table Sync (Sub-Phases) [LOCKED 🔒]
+### 📱 चरण ५ (Phase 5): Flutter Native Integration & Time-Table Sync (Sub-Phases) [COMPLETED ✅]
 * **उद्देश्य:** Phase 3 और Phase 4 में तैयार "The Time-Table Gauntlet" वेब बंडल को Flutter में सिंक करना, वेरिएंट १ आइकन व Backimg लगाना, और हार्डवेयर हैप्टिक्स जोड़ना ताकि गेम 100% नेटिव व Google Play कम्प्लायंट बने।
 * **नियम:** प्रत्येक सब-फेज एक स्वतंत्र कार्य है। एक समय में सिर्फ एक सब-फेज निष्पादित होगा और उसकी सत्यापन रसीद मिलने के बाद ही अगला सब-फेज शुरू किया जाएगा।
 
 ---
 
-#### 🔹 उप-चरण ५.१ (Sub-Phase 5.1): Web Bundle Local Sync & Offline Pipeline [LOCKED 🔒]
+#### 🔹 उप-चरण ५.१ (Sub-Phase 5.1): Web Bundle Local Sync & Offline Pipeline [COMPLETED ✅]
 * **उद्देश्य:** Phase 3 और Phase 4 में तैयार पूर्णतः ब्रांडेड और पैरोडी-क्लीन वेब बंडल को Flutter में सिंक करना ताकि गेम 100% ऑफलाइन चल सके।
 * **लक्षित फाइलें:**
   - `assets/web/` (Flutter का लोकल एसेट फोल्डर)
@@ -810,7 +810,7 @@ Phase 6: Keystore, Bundle & Play Store Upload         ➔ [GATE 6: LOCKED 🔒]
 
 ---
 
-#### 🔹 उप-चरण ५.२ (Sub-Phase 5.2): Android App Icons & Native Branding [LOCKED 🔒]
+#### 🔹 उप-चरण ५.२ (Sub-Phase 5.2): Android App Icons & Native Branding [COMPLETED ✅]
 * **उद्देश्य:** Android सिस्टम के अंदर आधिकारिक ऐप आइकन, नाम और Saltz AI पब्लिशर पहचान स्थापित करना।
 * **लक्षित फाइलें:**
   - `android/app/src/main/res/mipmap-*/ic_launcher.png` (सभी 5 रेजोल्यूशन्स)
@@ -841,7 +841,7 @@ Phase 6: Keystore, Bundle & Play Store Upload         ➔ [GATE 6: LOCKED 🔒]
 
 ---
 
-#### 🔹 उप-चरण ५.४ (Sub-Phase 5.4): Native Desk HUD & Bottom Sheet Controls [LOCKED 🔒]
+#### 🔹 उप-चरण ५.४ (Sub-Phase 5.4): Native Desk HUD & Bottom Sheet Controls [COMPLETED ✅]
 * **सक्रिय कौशल (Active Skill):** `flutter-fix-layout-issues` (Flutter HUD, वुडन पिल और बॉटम शीट में RenderFlex लेआउट ओवरफ्लो व अनबाउंडेड हाइट प्रिवेंशन)
 * **उद्देश्य:** 3D स्क्रीन के ऊपर नेटिव Flutter विजेट्स की लेयर जोड़ना ताकि ऐप एक प्रामाणिक नेटिव गेम लगे।
 * **लक्षित फाइलें:**
@@ -858,7 +858,7 @@ Phase 6: Keystore, Bundle & Play Store Upload         ➔ [GATE 6: LOCKED 🔒]
 
 ---
 
-#### 🔹 उप-चरण ५.५ (Sub-Phase 5.5): Static Analysis & Local Debug APK Test [LOCKED 🔒]
+#### 🔹 उप-चरण ५.५ (Sub-Phase 5.5): Static Analysis & Local Debug APK Test [COMPLETED ✅]
 * **सक्रिय कौशल (Active Skill):** `dart-run-static-analysis` (`flutter analyze` और `dart analyze` से 0 एरर्स व 0 वार्निंग्स सुनिश्चित करना)
 * **उद्देश्य:** पूरे Flutter कोडबेस की गहन शुद्धता जांच और लोकल डिवाइस पर पहला टेस्ट APK इंस्टॉल करना।
 * **लक्षित फाइलें:**

@@ -91,6 +91,8 @@ class LocalAssetServer {
     if (lower.endsWith('.woff2')) return ContentType('font', 'woff2');
     if (lower.endsWith('.woff')) return ContentType('font', 'woff');
     if (lower.endsWith('.png')) return ContentType('image', 'png');
+    if (lower.endsWith('.webp')) return ContentType('image', 'webp');
+    if (lower.endsWith('.mp3')) return ContentType('audio', 'mpeg');
     if (lower.endsWith('.jpg') || lower.endsWith('.jpeg')) {
       return ContentType('image', 'jpeg');
     }
