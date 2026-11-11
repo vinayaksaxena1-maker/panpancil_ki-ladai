@@ -5,19 +5,26 @@
    ========================================================================== */
 
 :root {
-  /* Stitch Gully Manga Gauntlet Core Palette */
+  /* Stitch Gully Manga Gauntlet Core Palette (Persona 5 + Spider-Verse + Raj Comics) */
   --pf-manga-mustard: #ffb703;
   --pf-manga-red: #e63946;
   --pf-manga-cyan: #00f5d4;
   --pf-manga-ink: #121212;
   --pf-manga-shadow-blue: #1d1e2c;
   --pf-manga-newsprint: #fdf0d5;
+  --pf-manga-card-surface: #ffffff;
   --pf-manga-border: 4px solid #121212;
+  --pf-manga-border-thin: 2.5px solid #121212;
   --pf-manga-shadow: 4px 4px 0px #121212;
   --pf-manga-shadow-hover: 6px 6px 0px #121212;
   --pf-manga-shadow-active: 0px 0px 0px #121212;
   --pf-font-display: 'Anybody', sans-serif;
   --pf-font-body: 'Space Grotesk', sans-serif;
+
+  /* Pure CSS 45-Degree Manga Halftone Rasters & Comic Speedlines */
+  --pf-manga-halftone-cream: radial-gradient(rgba(18, 18, 18, 0.12) 1.5px, transparent 1.5px);
+  --pf-manga-halftone-dark: radial-gradient(rgba(255, 183, 3, 0.15) 1px, transparent 1px);
+  --pf-manga-speed-stripes: linear-gradient(45deg, transparent 25%, rgba(255, 255, 255, 0.25) 25%, rgba(255, 255, 255, 0.25) 50%, transparent 50%, transparent 75%, rgba(255, 255, 255, 0.25) 75%, rgba(255, 255, 255, 0.25) 100%);
 
   /* Legacy Variable Bridges mapped directly to Manga Palette */
   --pf-chalkboard: var(--pf-manga-ink);
@@ -33,8 +40,8 @@
   --pf-wood-rim-light: var(--pf-manga-mustard);
   --pf-desk-wood: #181924;
   --pf-notebook-cream: var(--pf-manga-newsprint);
-  --pf-notebook-rule: rgba(18, 18, 18, 0.08);
-  --pf-notebook-margin: rgba(230, 57, 70, 0.35);
+  --pf-notebook-rule: transparent;
+  --pf-notebook-margin: transparent;
 }
 
 /* Global Manga Typography & Hard Cel-Shading */
@@ -78,49 +85,63 @@ button.stampbtn:active {
 }
 
 /* --------------------------------------------------------------------------
-   SCREEN 1: Home Hub & Notebook Diary
+   SCREEN 1: Home Hub (Classroom HQ) Manga Comic Splash Panel
    -------------------------------------------------------------------------- */
 body {
-  background-color: var(--pf-chalkboard-dark) !important;
+  background-color: var(--pf-manga-ink) !important;
+  color: var(--pf-manga-newsprint) !important;
 }
 
+/* Eliminate all legacy notebook red lines and ruled margins */
+.chit.chooser::before,
+.schoolpaper::before,
+.notebook::before,
+.v2paper::before {
+  display: none !important;
+  content: none !important;
+}
+
+/* Main Home Notebook Container converted to Cel-Shaded Comic Page */
 .chit.chooser,
 .schoolpaper,
-.notebook {
-  background: var(--pf-notebook-cream) !important;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.35) !important;
-  border: 1px solid rgba(80, 56, 30, 0.25) !important;
-  border-radius: 6px !important;
+.notebook,
+.v2paper {
+  background: var(--pf-manga-newsprint) !important;
+  background-image: var(--pf-manga-halftone-cream) !important;
+  background-size: 8px 8px !important;
+  color: var(--pf-manga-ink) !important;
+  border: var(--pf-manga-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 6px 6px 0px #0e0e0e !important;
+  position: relative !important;
 }
 
-.chit.chooser::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 36px;
-  width: 2px;
-  height: 100%;
-  background: var(--pf-notebook-margin);
-  pointer-events: none;
-}
-
-/* Home Fight Card (Next Match Kicker) */
-.home-fight {
-  background: #fbf8f0 !important;
-  border: 2px solid #dfd7c2 !important;
+/* Home Fight Card (Next Match Kicker) - Persona 5 Comic Tilted Card */
+.home-fight,
+.nextfight,
+.solo-journey,
+.v2pick-card {
+  background: var(--pf-manga-card-surface) !important;
+  border: var(--pf-manga-border) !important;
   border-radius: 8px !important;
-  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.18s ease !important;
+  box-shadow: 5px 5px 0px #121212 !important;
+  transform: rotate(-1.5deg) !important;
+  transition: transform 0.12s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.12s ease !important;
+  position: relative !important;
 }
 
-.home-fight:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 0 10px rgba(245, 215, 110, 0.3) !important;
+.home-fight:hover,
+.nextfight:hover,
+.v2pick-card:hover {
+  transform: rotate(-1deg) translate(-2px, -2px) !important;
+  box-shadow: 7px 7px 0px #121212 !important;
 }
 
 .home-fight-art {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25) !important;
-  border: 4px solid #ffffff !important;
-  background: #ffffff !important;
+  box-shadow: 3px 3px 0px #121212 !important;
+  border: 3px solid #121212 !important;
+  background: var(--pf-manga-card-surface) !important;
+  border-radius: 6px !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -623,6 +644,112 @@ button[data-act="start-solo"],
   font-family: var(--pf-font-display) !important;
 }
 
+
+/* ==========================================================================
+   STITCH CLASSROOM HQ FULL-SCREEN ARCHITECTURE SHELL & FOOTER DOCK
+   ========================================================================== */
+.chitwrap.show:has(.stitch-hq-shell),
+body:has(.stitch-hq-shell) .chitwrap {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: #131313 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+  transform: none !important;
+}
+
+.chit.chooser.stitch-hq-shell,
+.chitwrap.show .chit.chooser.stitch-hq-shell {
+  position: relative !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: #131313 !important;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.9) !important;
+  transform: none !important; /* CRITICAL: removes rotation so position: fixed header & footer align properly */
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  scrollbar-width: none !important;
+}
+
+.chit.chooser.stitch-hq-shell::-webkit-scrollbar {
+  display: none !important;
+}
+
+.chit.chooser.stitch-hq-shell::before,
+.chit.chooser.stitch-hq-shell::after {
+  display: none !important;
+  content: none !important;
+}
+
+/* Header & Top Bar: Sticky at top */
+.stitch-hq-shell header {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 50 !important;
+  background-color: rgba(19, 19, 19, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid #2a2a2a !important;
+  flex-shrink: 0 !important;
+}
+
+/* Main Content Area: Proper spacing & clearance */
+.stitch-hq-shell main {
+  flex: 1 0 auto !important;
+  width: 100% !important;
+  padding-top: 1rem !important;
+  padding-bottom: 7.5rem !important; /* Ensures bottom card and quests are NEVER blocked by footer */
+  background: #131313 !important;
+  min-height: auto !important;
+}
+
+.stitch-hq-shell main > div {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1.5rem !important; /* 24px clean breathing space between cards */
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  padding-bottom: 2rem !important;
+}
+
+/* Sections distinct separation */
+.stitch-hq-shell section {
+  width: 100% !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Fixed Bottom Navigation Bar Dock */
+.stitch-hq-shell nav {
+  position: fixed !important;
+  bottom: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 100% !important;
+  max-width: 440px !important;
+  z-index: 60 !important;
+  background-color: rgba(19, 19, 19, 0.96) !important;
+  backdrop-filter: blur(16px) !important;
+  border-top: 1.5px solid #2a2a2a !important;
+  box-shadow: 0 -6px 24px rgba(0, 0, 0, 0.75) !important;
+  flex-shrink: 0 !important;
+}
 
 /* ==========================================================================
    PHASE 1: Classroom HQ Precise Component Styling (Gully Manga Gauntlet)
