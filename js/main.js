@@ -1,0 +1,502 @@
+import * as THREE from 'three';
+import RAPIER from 'rapier';
+import { createDeskMesh } from './desk.js';
+import { PEN_CONFIGS, createPenMesh } from './pens.js';
+import { synth } from './sound.js';
+
+// Table dimensions (meters)
+const DESK_WIDTH = 0.70;      // 70 cm width
+const DESK_DEPTH = 0.45;      // 45 cm depth
+const DESK_THICKNESS = 0.030; // 3 cm thickness
+
+// Authentic baseline physics
+const GRAVITY = -9.81;
+const DESK_FRICTION = 0.33;
+const DESK_RESTITUTION = 0.10;
+const PEN_LINEAR_DAMPING = 0.06;
+const PEN_ANGULAR_DAMPING = 0.80;
+const PEN_RESTITUTION = 0.38;
+const PEN_FRICTION = 0.30;
+
+// Input & flick parameters
+const DEAD_ZONE_PX = 12;
+const J_MIN = 0.0015;
+const J_MAX = 0.0275;
+const GAMMA = 1.45;
+const MAX_PULL_VIEWPORT_RATIO = 0.34;
+
+// Settle thresholds
+const SETTLE_LIN_VEL = 0.015;
+const SETTLE_ANG_VEL = 0.15;
+
+class GameEngine {
+  constructor() {
+    this.container = document.getElementById('canvas-container');
+    this.scene = null;
+    this.camera = null;
+    this.renderer = null;
+    this.world = null;
+
+    // Entities
+    this.playerPen = null;
+    this.opponentPen = null;
+    this.deskMesh = null;
+
+    // Flick Interaction State
+    this.isDragging = false;
+    this.activeFlickZone = 'cap';
+    this.flickAnchorPoint = new THREE.Vector3();
+    this.dragStart = new THREE.Vector2();
+    this.dragCurrent = new THREE.Vector2();
+    this.smoothedDrag = new THREE.Vector2();
+    this.isSimulating = false;
+    this.turn = 'player';
+    this.stableStartTime = 0;
+
+    // 3D Raycasting
+    this.raycaster = new THREE.Raycaster();
+    this.mouse = new THREE.Vector2();
+    this.aimArrow = null;
+
+    // HUD references
+    this.powerMeterEl = document.getElementById('power-fill');
+    this.turnBadgeEl = document.getElementById('turn-badge');
+    this.statusMsgEl = document.getElementById('status-msg');
+
+    // 120 Hz Fixed Timestep Accumulator & Interpolation State
+    this.lastTime = 0;
+    this.accumulator = 0;
+    this.fixedTimeStep = 1 / 120;
+  }
+
+  async init() {
+    // 1. Initialize Rapier WASM (120 Hz deterministic physics)
+    await RAPIER.init();
+    const gravity = new RAPIER.Vector3(0.0, GRAVITY, 0.0);
+    this.world = new RAPIER.World(gravity);
+    this.world.timestep = 1 / 120;
+
+    // 2. Setup Three.js Scene with clean blackboard green background
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x183b32);
+
+    // Warm classroom lighting
+    const ambientLight = new THREE.AmbientLight(0xfff3e0, 1.3);
+    this.scene.add(ambientLight);
+
+    const deskLight = new THREE.DirectionalLight(0xffffff, 2.2);
+    deskLight.position.set(0.6, 1.8, 0.6);
+    deskLight.castShadow = true;
+    deskLight.shadow.mapSize.width = 2048;
+    deskLight.shadow.mapSize.height = 2048;
+    this.scene.add(deskLight);
+
+    // Camera: FOV 52, Position (0, 0.44, 0.68), LookAt (0, 0, -0.52)
+    const aspect = window.innerWidth / window.innerHeight;
+    this.camera = new THREE.PerspectiveCamera(52, aspect, 0.05, 20);
+    this.camera.position.set(0, 0.44, 0.68);
+    this.camera.lookAt(0, 0, -0.52);
+
+    // 3. WebGL Renderer
+    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.container.appendChild(this.renderer.domElement);
+
+    // 4. Clean Desk Mesh & Physics Body (0.70m x 0.45m x 0.03m)
+    this.deskMesh = createDeskMesh(DESK_WIDTH, DESK_DEPTH, DESK_THICKNESS);
+    this.scene.add(this.deskMesh);
+
+    const deskBodyDesc = RAPIER.RigidBodyDesc.fixed().setTranslation(0, -DESK_THICKNESS / 2, 0);
+    const deskBody = this.world.createRigidBody(deskBodyDesc);
+    const deskColliderDesc = RAPIER.ColliderDesc.cuboid(DESK_WIDTH / 2, DESK_THICKNESS / 2, DESK_DEPTH / 2)
+      .setFriction(DESK_FRICTION)
+      .setRestitution(DESK_RESTITUTION);
+    this.world.createCollider(deskColliderDesc, deskBody);
+
+    // 5. Spawn 2 Pens FLAT HORIZONTALLY (East-West widthwise across desk)
+    // Player Pen: Reynolds Trimax near player edge
+    this.playerPen = this.spawnPen(PEN_CONFIGS.trimax, new THREE.Vector3(0, PEN_CONFIGS.trimax.radius, 0.145), -Math.PI / 2);
+    // Opponent Pen: Cello Butterflow near opponent edge
+    this.opponentPen = this.spawnPen(PEN_CONFIGS.butterflow, new THREE.Vector3(0, PEN_CONFIGS.butterflow.radius, -0.145), Math.PI / 2);
+
+    // 6. Aim Arrow Helper
+    const dir = new THREE.Vector3(0, 0, -1);
+    this.aimArrow = new THREE.ArrowHelper(dir, new THREE.Vector3(0, 0, 0), 0.1, 0xf2c75c, 0.04, 0.03);
+    this.aimArrow.visible = false;
+    this.scene.add(this.aimArrow);
+
+    // 7. Event Listeners & Natural Touch Controls
+    window.addEventListener('resize', () => this.onWindowResize());
+    this.setupNaturalTouchControls();
+
+    // Start 120 Hz render loop
+    this.animate();
+  }
+
+  spawnPen(config, pos, rotY) {
+    const mesh = createPenMesh(config);
+    this.scene.add(mesh);
+
+    const bodyDesc = RAPIER.RigidBodyDesc.dynamic()
+      .setTranslation(pos.x, pos.y, pos.z)
+      .setLinearDamping(config.linearDamping || PEN_LINEAR_DAMPING)
+      .setAngularDamping(config.angularDamping || PEN_ANGULAR_DAMPING)
+      .setCcdEnabled(true);
+
+    const q = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), rotY);
+    bodyDesc.setRotation({ x: q.x, y: q.y, z: q.z, w: q.w });
+
+    const body = this.world.createRigidBody(bodyDesc);
+
+    const halfLen = config.length / 2;
+    const colliderDesc = RAPIER.ColliderDesc.cuboid(config.radius, config.radius, halfLen)
+      .setMass(config.mass)
+      .setFriction(config.friction || PEN_FRICTION)
+      .setRestitution(config.restitution || PEN_RESTITUTION);
+
+    this.world.createCollider(colliderDesc, body);
+
+    const pPos = new THREE.Vector3(pos.x, pos.y, pos.z);
+    return {
+      config,
+      mesh,
+      body,
+      isFallen: false,
+      initialPos: pos.clone(),
+      initialRotY: rotY,
+      prevPos: pPos.clone(),
+      prevQuat: q.clone(),
+      currPos: pPos.clone(),
+      currQuat: q.clone()
+    };
+  }
+
+  setupNaturalTouchControls() {
+    const getIntersectionPoint = (e) => {
+      this.mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      this.mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      this.raycaster.setFromCamera(this.mouse, this.camera);
+      const deskPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+      const target = new THREE.Vector3();
+      this.raycaster.ray.intersectPlane(deskPlane, target);
+      return target;
+    };
+
+    const onPointerDown = (e) => {
+      if (this.isSimulating || this.turn !== 'player') return;
+
+      const hit = getIntersectionPoint(e);
+      if (!hit) return;
+
+      const pPos = this.playerPen.body.translation();
+      const pRot = this.playerPen.body.rotation();
+      const penQuat = new THREE.Quaternion(pRot.x, pRot.y, pRot.z, pRot.w);
+      const halfLen = this.playerPen.config.length / 2;
+
+      // Real 3D endpoints in world space
+      const capLocal = new THREE.Vector3(0, 0, halfLen * 0.85).applyQuaternion(penQuat);
+      const nibLocal = new THREE.Vector3(0, 0, -halfLen * 0.85).applyQuaternion(penQuat);
+
+      const capWorld = new THREE.Vector3(pPos.x, pPos.y, pPos.z).add(capLocal);
+      const nibWorld = new THREE.Vector3(pPos.x, pPos.y, pPos.z).add(nibLocal);
+
+      const distToCap = hit.distanceTo(capWorld);
+      const distToNib = hit.distanceTo(nibWorld);
+
+      if (Math.min(distToCap, distToNib) > 0.30) {
+        return; // Touched away from pen
+      }
+
+      if (distToCap <= distToNib) {
+        this.activeFlickZone = 'cap';
+        this.flickAnchorPoint.copy(capWorld);
+      } else {
+        this.activeFlickZone = 'nib';
+        this.flickAnchorPoint.copy(nibWorld);
+      }
+
+      this.isDragging = true;
+      this.dragStart.set(e.clientX, e.clientY);
+      this.dragCurrent.set(e.clientX, e.clientY);
+      this.smoothedDrag.set(e.clientX, e.clientY);
+
+      this.aimArrow.position.set(this.flickAnchorPoint.x, 0.015, this.flickAnchorPoint.z);
+      this.aimArrow.visible = true;
+
+      if (this.statusMsgEl) {
+        this.statusMsgEl.innerText = this.activeFlickZone === 'cap' ? '🎯 Aiming from DHAKKAN (Cap)...' : '🎯 Aiming from NIB (Tip)...';
+      }
+    };
+
+    const onPointerMove = (e) => {
+      if (!this.isDragging) return;
+      this.dragCurrent.set(e.clientX, e.clientY);
+      this.smoothedDrag.lerp(this.dragCurrent, 0.45);
+
+      const pxDiffX = this.smoothedDrag.x - this.dragStart.x;
+      const pxDiffY = this.smoothedDrag.y - this.dragStart.y;
+      const dragPx = Math.hypot(pxDiffX, pxDiffY);
+
+      if (dragPx < DEAD_ZONE_PX) {
+        if (this.powerMeterEl) this.powerMeterEl.style.width = '0%';
+        return;
+      }
+
+      const maxPullPx = window.innerHeight * MAX_PULL_VIEWPORT_RATIO;
+      const pullFrac = Math.min((dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
+      const curvedPower = Math.pow(pullFrac, GAMMA);
+
+      if (this.powerMeterEl) {
+        this.powerMeterEl.style.width = `${curvedPower * 100}%`;
+      }
+
+      const aimDir = new THREE.Vector3(-pxDiffX, 0, -pxDiffY).normalize();
+      this.aimArrow.setDirection(aimDir);
+      this.aimArrow.setLength(Math.min(curvedPower * 0.24, 0.24));
+    };
+
+    const onPointerUp = () => {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      this.aimArrow.visible = false;
+      if (this.powerMeterEl) this.powerMeterEl.style.width = '0%';
+
+      const pxDiffX = this.smoothedDrag.x - this.dragStart.x;
+      const pxDiffY = this.smoothedDrag.y - this.dragStart.y;
+      const dragPx = Math.hypot(pxDiffX, pxDiffY);
+
+      if (dragPx >= DEAD_ZONE_PX) {
+        this.executePlayerFlick(-pxDiffX, -pxDiffY, dragPx);
+      }
+    };
+
+    window.addEventListener('pointerdown', onPointerDown);
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  }
+
+  executePlayerFlick(dirX, dirZ, dragPx) {
+    this.isSimulating = true;
+    synth.playFlick();
+
+    const maxPullPx = window.innerHeight * MAX_PULL_VIEWPORT_RATIO;
+    const pullFrac = Math.min((dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
+    const curvedPower = Math.pow(pullFrac, GAMMA);
+    const impulseMag = J_MIN + curvedPower * (J_MAX - J_MIN);
+
+    const dirWorld = new THREE.Vector3(dirX, 0, dirZ).normalize();
+    const impulse = new RAPIER.Vector3(
+      dirWorld.x * impulseMag,
+      0.0,
+      dirWorld.z * impulseMag
+    );
+
+    const flickPt = new RAPIER.Vector3(
+      this.flickAnchorPoint.x,
+      this.flickAnchorPoint.y,
+      this.flickAnchorPoint.z
+    );
+
+    this.playerPen.body.applyImpulseAtPoint(impulse, flickPt, true);
+
+    if (this.statusMsgEl) this.statusMsgEl.innerText = "Flick executed! Waiting to settle...";
+  }
+
+  executeBotFlick() {
+    this.isSimulating = true;
+    synth.playFlick();
+
+    const pPos = this.playerPen.body.translation();
+    const oPos = this.opponentPen.body.translation();
+
+    // Bot aims from its cap towards player pen with slight realistic error
+    const dir = new THREE.Vector3(pPos.x - oPos.x, 0, pPos.z - oPos.z).normalize();
+    const errorAngle = (Math.random() - 0.5) * 0.18;
+    dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), errorAngle);
+
+    const dist = Math.hypot(pPos.x - oPos.x, pPos.z - oPos.z);
+    const powerFraction = Math.min(Math.max(dist / 0.40, 0.35), 0.85);
+    const botImpulse = J_MIN + Math.pow(powerFraction, GAMMA) * (J_MAX - J_MIN);
+
+    const impulse = new RAPIER.Vector3(dir.x * botImpulse, 0.0, dir.z * botImpulse);
+    const flickPt = new RAPIER.Vector3(oPos.x, oPos.y, oPos.z);
+
+    this.opponentPen.body.applyImpulseAtPoint(impulse, flickPt, true);
+
+    if (this.statusMsgEl) this.statusMsgEl.innerText = "Opponent ne flick kiya!";
+  }
+
+  checkPhysicsSettled() {
+    if (!this.isSimulating) return;
+
+    const pLin = this.playerPen.body.linvel();
+    const pAng = this.playerPen.body.angvel();
+    const oLin = this.opponentPen.body.linvel();
+    const oAng = this.opponentPen.body.angvel();
+
+    const pSpeed = Math.hypot(pLin.x, pLin.y, pLin.z);
+    const pRotSpeed = Math.hypot(pAng.x, pAng.y, pAng.z);
+    const oSpeed = Math.hypot(oLin.x, oLin.y, oLin.z);
+    const oRotSpeed = Math.hypot(oAng.x, oAng.y, oAng.z);
+
+    const pPos = this.playerPen.body.translation();
+    const oPos = this.opponentPen.body.translation();
+
+    const isOutOfBounds = (pos) => (
+      pos.y < -0.02 || 
+      Math.abs(pos.x) > (DESK_WIDTH / 2 + 0.02) || 
+      Math.abs(pos.z) > (DESK_DEPTH / 2 + 0.02)
+    );
+
+    if (!this.playerPen.isFallen && isOutOfBounds(pPos)) {
+      this.playerPen.isFallen = true;
+      synth.playThud();
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "💥 Player ki pen desk se gir gayi!";
+    }
+
+    if (!this.opponentPen.isFallen && isOutOfBounds(oPos)) {
+      this.opponentPen.isFallen = true;
+      synth.playThud();
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "🎉 Opponent ki pen table se out!";
+    }
+
+    const isAtRest = (pSpeed < SETTLE_LIN_VEL && pRotSpeed < SETTLE_ANG_VEL) &&
+                     (oSpeed < SETTLE_LIN_VEL && oRotSpeed < SETTLE_ANG_VEL);
+
+    if (isAtRest) {
+      if (!this.stableStartTime) {
+        this.stableStartTime = performance.now();
+      } else if (performance.now() - this.stableStartTime >= 300) {
+        this.stableStartTime = 0;
+        this.isSimulating = false;
+        this.resolveTurnOutcome();
+      }
+    } else {
+      this.stableStartTime = 0;
+    }
+  }
+
+  resolveTurnOutcome() {
+    if (this.playerPen.isFallen && this.opponentPen.isFallen) {
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "⚖️ Dono pens gir gayin! Draw / Re-flick!";
+      setTimeout(() => this.resetRound(), 1500);
+      return;
+    }
+
+    if (this.opponentPen.isFallen) {
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "🏆 Round Player jeeta! Badhai ho!";
+      setTimeout(() => this.resetRound(), 1800);
+      return;
+    }
+
+    if (this.playerPen.isFallen) {
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "❌ Opponent round jeet gaya!";
+      setTimeout(() => this.resetRound(), 1800);
+      return;
+    }
+
+    // Switch Turn
+    this.turn = (this.turn === 'player') ? 'bot' : 'player';
+    if (this.turnBadgeEl) {
+      this.turnBadgeEl.innerText = this.turn === 'player' ? "Your Turn (Drag to Flick)" : "Classmate's Turn...";
+      this.turnBadgeEl.style.background = this.turn === 'player' ? "#3f8b61" : "#c85b4a";
+    }
+    if (this.statusMsgEl) {
+      this.statusMsgEl.innerText = this.turn === 'player' ? "Apni bari: pen par touch karke drag karo!" : "Opponent ki bari...";
+    }
+
+    if (this.turn === 'bot') {
+      setTimeout(() => this.executeBotFlick(), 600);
+    }
+  }
+
+  resetRound() {
+    this.playerPen.isFallen = false;
+    this.opponentPen.isFallen = false;
+
+    // Reset pens flat horizontally (widthwise across desk)
+    const qPlayer = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
+    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.trimax.radius, 0.145), true);
+    this.playerPen.body.setRotation({ x: qPlayer.x, y: qPlayer.y, z: qPlayer.z, w: qPlayer.w }, true);
+    this.playerPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
+    this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
+    this.playerPen.prevPos.set(0, PEN_CONFIGS.trimax.radius, 0.145);
+    this.playerPen.currPos.copy(this.playerPen.prevPos);
+    this.playerPen.prevQuat.copy(qPlayer);
+    this.playerPen.currQuat.copy(qPlayer);
+
+    const qBot = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
+    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.butterflow.radius, -0.145), true);
+    this.opponentPen.body.setRotation({ x: qBot.x, y: qBot.y, z: qBot.z, w: qBot.w }, true);
+    this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
+    this.opponentPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
+    this.opponentPen.prevPos.set(0, PEN_CONFIGS.butterflow.radius, -0.145);
+    this.opponentPen.currPos.copy(this.opponentPen.prevPos);
+    this.opponentPen.prevQuat.copy(qBot);
+    this.opponentPen.currQuat.copy(qBot);
+
+    this.turn = 'player';
+    if (this.turnBadgeEl) {
+      this.turnBadgeEl.innerText = "Your Turn (Drag to Flick)";
+      this.turnBadgeEl.style.background = "#3f8b61";
+    }
+    if (this.statusMsgEl) this.statusMsgEl.innerText = "Ready! Touch Dhakkan or Nib & flick!";
+  }
+
+  onWindowResize() {
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  storePreviousTransforms() {
+    for (const pen of [this.playerPen, this.opponentPen]) {
+      if (!pen || !pen.body) continue;
+      pen.prevPos.copy(pen.currPos);
+      pen.prevQuat.copy(pen.currQuat);
+      const t = pen.body.translation();
+      const r = pen.body.rotation();
+      pen.currPos.set(t.x, t.y, t.z);
+      pen.currQuat.set(r.x, r.y, r.z, r.w);
+    }
+  }
+
+  interpolateTransforms(alpha) {
+    for (const pen of [this.playerPen, this.opponentPen]) {
+      if (!pen || !pen.mesh) continue;
+      pen.mesh.position.lerpVectors(pen.prevPos, pen.currPos, alpha);
+      pen.mesh.quaternion.slerpQuaternions(pen.prevQuat, pen.currQuat, alpha);
+    }
+  }
+
+  animate(timestamp = 0) {
+    requestAnimationFrame((t) => this.animate(t));
+
+    if (!this.lastTime) this.lastTime = timestamp;
+    let dt = (timestamp - this.lastTime) / 1000;
+    this.lastTime = timestamp;
+    if (dt > 0.1) dt = 0.1;
+
+    this.accumulator += dt;
+
+    while (this.accumulator >= this.fixedTimeStep) {
+      this.storePreviousTransforms();
+      this.world.step();
+      this.checkPhysicsSettled();
+      this.accumulator -= this.fixedTimeStep;
+    }
+
+    const alpha = Math.min(this.accumulator / this.fixedTimeStep, 1.0);
+    this.interpolateTransforms(alpha);
+
+    this.renderer.render(this.scene, this.camera);
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  window.gameEngine = new GameEngine();
+  window.gameEngine.init();
+});
