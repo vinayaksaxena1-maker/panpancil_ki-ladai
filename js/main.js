@@ -4,6 +4,7 @@ import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=blackboard_
 import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 import { career, TROPHIES, TITLES } from './career.js';
+import { MatchRules, MatchState } from './rules.js?v=p2_s1';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
 const DESK_WIDTH = 0.70;      // 70 cm width (X-axis, East-West)
@@ -51,9 +52,20 @@ class GameEngine {
     this.dragCurrent = new THREE.Vector2();
     this.smoothedDrag = new THREE.Vector2();
     this.isSimulating = false;
-    this.turn = 'player';
     this.stableStartTime = 0;
     this.difficulty = 'normal'; // Default: Normal Mode (Balanced Competition)
+
+    // Phase 2 Step 2.1: Match Loop & Turn State Machine
+    this.rules = new MatchRules({
+      targetWins: 3, // Best of 5 (First to 3 wins)
+      mode: 'bot',
+      onScoreUpdate: (pScore, oScore, round) => {
+        if (this.statusMsgEl && !this.rules.matchOver) {
+          this.statusMsgEl.innerText = `Round ${round} (Best of 5) | [P1: ${pScore} - ${oScore} Opponent]`;
+        }
+      }
+    });
+    this.rules.startMatch('bot');
 
     // Phase 1 Pure Physics Sandbox State
     this.playerPenConfigKey = 'reynolds045';
@@ -263,7 +275,7 @@ class GameEngine {
     };
 
     const onPointerDown = (e) => {
-      if (this.isSimulating || this.turn !== 'player') return;
+      if (this.isSimulating || !this.rules.isInteractionAllowed('player')) return;
 
       const hit = getIntersectionPoint(e);
       if (!hit) return;
@@ -359,6 +371,8 @@ class GameEngine {
     this.isSimulating = true;
     this.simStartTime = performance.now();
     this.stableStartTime = 0;
+    this.rules.onFlickExecuted('player');
+    this.updateTurnBadge();
     synth.playFlick();
 
     const maxPullPx = window.innerHeight * MAX_PULL_VIEWPORT_RATIO;
@@ -385,11 +399,13 @@ class GameEngine {
   }
 
   executeBotFlick() {
-    if (this.turn !== 'bot' || !this.opponentPen || this.opponentPen.isFallen) return;
+    if (this.isSimulating || this.rules.matchOver || !this.opponentPen || this.opponentPen.isFallen) return;
 
     this.isSimulating = true;
     this.simStartTime = performance.now();
     this.stableStartTime = 0;
+    this.rules.onFlickExecuted('opponent');
+    this.updateTurnBadge();
     synth.playFlick();
 
     const mode = this.difficulty || 'normal';
@@ -571,6 +587,7 @@ class GameEngine {
     const isTimedOut = (performance.now() - this.simStartTime) > 3500;
 
     if (isAtRest || isTimedOut) {
+      this.rules.onSettlingStarted();
       if (!this.stableStartTime && !isTimedOut) {
         this.stableStartTime = performance.now();
       } else if (isTimedOut || performance.now() - this.stableStartTime >= 250) {
@@ -585,52 +602,73 @@ class GameEngine {
   }
 
   resolveTurnOutcome() {
-    if (this.playerPen.isFallen && this.opponentPen.isFallen) {
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "⚖️ Dono pens table se bahar! Re-flick!";
+    const outcome = this.rules.evaluateTurnOutcome(this.playerPen.isFallen, this.opponentPen.isFallen);
+
+    // 1. Blackboard chalk announcement
+    if (outcome.type === 'DRAW_REFLICK') {
       updateBlackboardDisplay("ROUND DRAW! RE-FLICK");
-      setTimeout(() => {
-        updateBlackboardDisplay(null);
-        this.resetRound();
-      }, 1500);
-      return;
+    } else if (outcome.type === 'MATCH_WIN_PLAYER') {
+      updateBlackboardDisplay(`PLAYER WINS MATCH! [${outcome.score.player} - ${outcome.score.opponent}]`);
+    } else if (outcome.type === 'MATCH_WIN_OPPONENT') {
+      updateBlackboardDisplay(`OPPONENT WINS MATCH! [${outcome.score.opponent} - ${outcome.score.player}]`);
+    } else if (outcome.winner === 'player') {
+      updateBlackboardDisplay(`ROUND WON! [P1: ${outcome.score.player} - ${outcome.score.opponent}]`);
+    } else if (outcome.winner === 'opponent') {
+      updateBlackboardDisplay(`ROUND LOST! [P1: ${outcome.score.player} - ${outcome.score.opponent}]`);
+    } else {
+      updateBlackboardDisplay(`R${outcome.currentRound} [P1: ${outcome.score.player} - ${outcome.score.opponent}]`);
     }
 
-    if (this.opponentPen.isFallen) {
-      updateBlackboardDisplay("OPPONENT OUT!");
-      if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = "🎉 Opponent pen table se bahar gir gayi!";
-      }
-      setTimeout(() => {
-        updateBlackboardDisplay(null);
-        this.resetRound();
-      }, 1600);
-      return;
-    }
-
-    if (this.playerPen.isFallen) {
-      updateBlackboardDisplay("PLAYER OUT!");
-      if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = "💥 Player pen table se bahar gir gayi!";
-      }
-      setTimeout(() => {
-        updateBlackboardDisplay(null);
-        this.resetRound();
-      }, 1600);
-      return;
-    }
-
-    // Switch Turn (Player <-> Opponent)
-    this.turn = (this.turn === 'player') ? 'bot' : 'player';
-    if (this.turnBadgeEl) {
-      this.turnBadgeEl.innerText = this.turn === 'player' ? "Your Turn (Drag to Flick)" : "Opponent Aiming...";
-      this.turnBadgeEl.style.background = this.turn === 'player' ? "#3f8b61" : "#c85b4a";
-    }
+    // 2. HUD Status message
     if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = this.turn === 'player' ? "Apni bari: pen par touch karke drag karo!" : "Opponent shot le raha hai...";
+      this.statusMsgEl.innerText = outcome.message;
     }
 
-    if (this.turn === 'bot') {
+    // 3. Update Turn Badge
+    this.updateTurnBadge();
+
+    // 4. Decisive Round or Double Fall -> Reset round with score intact
+    if (outcome.reFlick || outcome.winner) {
+      if (!outcome.matchOver) {
+        setTimeout(() => {
+          updateBlackboardDisplay(null);
+          this.resetRound();
+        }, 1600);
+      } else {
+        // Match Over!
+        this.updateTurnBadge();
+        if (this.statusMsgEl) {
+          this.statusMsgEl.innerText = outcome.winner === 'player'
+            ? `🏆 Match Winner! Player ${outcome.score.player} - ${outcome.score.opponent} Opponent (Tap 🔄 Reset to Play Again)`
+            : `💀 Match Lost! Opponent ${outcome.score.opponent} - ${outcome.score.player} Player (Tap 🔄 Reset to Retry)`;
+        }
+      }
+      return;
+    }
+
+    // 5. Safe Duel (Both on table) -> Pass turn
+    if (outcome.nextTurn === 'opponent') {
       setTimeout(() => this.executeBotFlick(), 750);
+    }
+  }
+
+  updateTurnBadge() {
+    if (!this.turnBadgeEl) return;
+    if (this.rules.matchOver) {
+      this.turnBadgeEl.innerText = this.rules.winner === 'player' ? "🏆 MATCH WON" : "💀 MATCH LOST";
+      this.turnBadgeEl.style.background = this.rules.winner === 'player' ? "#3f8b61" : "#c85b4a";
+      return;
+    }
+
+    if (this.rules.state === MatchState.P1_AIMING) {
+      this.turnBadgeEl.innerText = "Your Turn (Drag to Flick)";
+      this.turnBadgeEl.style.background = "#3f8b61";
+    } else if (this.rules.state === MatchState.OPPONENT_AIMING) {
+      this.turnBadgeEl.innerText = "Opponent Aiming...";
+      this.turnBadgeEl.style.background = "#c85b4a";
+    } else if (this.rules.state === MatchState.SIMULATING || this.rules.state === MatchState.SETTLING) {
+      this.turnBadgeEl.innerText = "Flicking...";
+      this.turnBadgeEl.style.background = "#d9822b";
     }
   }
 
@@ -661,10 +699,11 @@ class GameEngine {
   }
 
   resetSandbox() {
-    updateBlackboardDisplay("SANDBOX RESET");
+    this.rules.startMatch(this.rules.mode || 'bot');
+    updateBlackboardDisplay("MATCH RESET: 0 - 0");
     setTimeout(() => updateBlackboardDisplay(null), 1200);
     this.resetRound();
-    if (this.statusMsgEl) this.statusMsgEl.innerText = "🔄 Sandbox Reset: Ready to test flick & collision physics!";
+    if (this.statusMsgEl) this.statusMsgEl.innerText = "🔄 Match Reset: Round 1 (Best of 5) | [P1: 0 - 0 Opponent]";
   }
 
   resetRound() {
@@ -699,13 +738,16 @@ class GameEngine {
     this.opponentPen.prevQuat.copy(qBot);
     this.opponentPen.currQuat.copy(qBot);
 
-    this.turn = 'player';
-    if (this.turnBadgeEl) {
-      this.turnBadgeEl.innerText = "Your Turn (Drag to Flick)";
-      this.turnBadgeEl.style.background = "#3f8b61";
-    }
-    if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = "Ready! Touch Dhakkan or Nib & flick!";
+    if (this.powerMeterEl) this.powerMeterEl.style.width = '0%';
+    if (this.aimArrow) this.aimArrow.visible = false;
+
+    if (!this.rules.matchOver) {
+      this.rules.prepareNextRound();
+      this.rules.setState(MatchState.P1_AIMING);
+      this.updateTurnBadge();
+      if (this.statusMsgEl) {
+        this.statusMsgEl.innerText = `Round ${this.rules.currentRound} (Best of 5) | [P1: ${this.rules.score.player} - ${this.rules.score.opponent} Opponent]`;
+      }
     }
   }
 
