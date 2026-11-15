@@ -95,7 +95,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
-| **Phase 2** | Rules, Match Loop & Bot AI | 🟡 **80% (In Progress)** | Step 2.1 Match Loop & Turns (`js/rules.js`), Step 2.2 Bot AI (`js/bot.js`), Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`js/progression.js`) complete & verified | Step 2.5 LocalStorage Persistence (`storage.js`) |
+| **Phase 2** | Rules, Match Loop & Bot AI | 🟢 **100% Complete (Gate 2 Ready)** | Step 2.1 Match Loop & Turns (`js/rules.js`), Step 2.2 Bot AI (`js/bot.js`), Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`js/progression.js`), Step 2.5 LocalStorage Persistence (`js/storage.js`) complete & verified | None. All 5 steps completed & verified via automated tests. |
 | **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
@@ -238,11 +238,11 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - **16 Badges Evaluator:** Pure criteria evaluators (*First Blood*, *Clean Sweep*, *Comeback Hero*, *Edge Survivor*, *Hard Champion*, *Heavy Knockout*, *Iron Defense*, *Monitor Dethroned*, *Intersection Hero*, *Senior Slayer*, *School Legend*, *Cut-Shot Master*, *Rapid Duel*, *5 Win Streak*, *2-Player Dost*, *Compass Box Master*).
   - *Verification Receipt:* Puppeteer automated tests passed (8/8 tests pass). XP calculation, clean sweep bonus, level promotion, badge unlock triggers, 11 stages hierarchy, aur full state serialization verified.
 
-- [ ] **Step 2.5: Offline LocalStorage Persistence & State Hydration (`js/storage.js`):**
-  - **Clean Schema:** `penfight_career` (profile, level, xp, unlockedPens, selectedPen, matchStats, badgesUnlocked).
-  - **Hydration:** Game boot par data memory me load ho, match khatam hone par auto-save ho.
+- [x] **Step 2.5 (COMPLETED): Offline LocalStorage Persistence & State Hydration (`js/storage.js`):**
+  - **Clean Schema:** `penfight_save_v2` (profile, progression [XP, stage, stats, badges, pensUsed], unlockedPens, settings). 100% offline (Google Play Families Data Safety compliant).
+  - **Two-way Hydration:** Game boot par memory me load ho, selected pens/mode/difficulty hydrate hon, match khatam hone par auto-save ho.
   - **Safety & Reset:** Corrupt data recovery fallback aur development reset method (`clearCareerData()`).
-  - *Verification Receipt:* Browser refresh karne par XP, level, aur unlocked pens reset nahi honge, wahi se resume honge.
+  - *Verification Receipt:* Puppeteer automated tests passed (8/8 tests pass). Settings & pen auto-save, full page refresh hydration test, corrupt JSON graceful fallback, aur `clearCareerData()` reset verified.
 
 - 🎯 **APPROVAL GATE 2:** Sandbox me Bot aur 2P ke khilaf poora Best-of-5 match khel kar test karna. "Kya turns, bot aim, 2-player mode, score counting, aur refresh par data save 100% chal raha hai?"
 

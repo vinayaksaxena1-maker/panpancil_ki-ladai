@@ -4,6 +4,7 @@ import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=blackboard_
 import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
+import { storage } from './storage.js?v=p2_s5';
 import { MatchRules, MatchState } from './rules.js?v=p2_s1';
 import { PCOpponentController } from './bot.js?v=p2_s2';
 
@@ -54,27 +55,40 @@ class GameEngine {
     this.smoothedDrag = new THREE.Vector2();
     this.isSimulating = false;
     this.stableStartTime = 0;
-    // Phase 2 Step 2.2: Mathematical Bot AI Controller
-    this.botAI = new PCOpponentController({ difficulty: 'normal', thinkTimeMs: 800 });
 
-    // Phase 2 Step 2.4: 11-Level Progression & 16 Badges Engine
-    this.progression = new ProgressionEngine();
+    // Phase 2 Step 2.5: Offline LocalStorage Persistence & Hydration
+    this.storage = storage;
+    const savedState = this.storage.load();
+
+    // Hydrate progression engine from persistent storage
+    this.progression = new ProgressionEngine(savedState.progression);
+
+    // Hydrate pen configs
+    this.playerPenConfigKey = savedState.profile.selectedPlayerPen || 'reynolds045';
+    this.opponentPenConfigKey = savedState.profile.selectedOpponentPen || 'trimax';
+
+    // Hydrate game mode & difficulty
+    const initialMode = savedState.settings.mode || 'bot';
+    const initialDiff = savedState.settings.difficulty || 'normal';
+
+    // Phase 2 Step 2.2: Mathematical Bot AI Controller
+    this.botAI = new PCOpponentController({ difficulty: initialDiff, thinkTimeMs: 800 });
 
     // Phase 2 Step 2.1: Match Loop & Turn State Machine
     this.rules = new MatchRules({
       targetWins: 3, // Best of 5 (First to 3 wins)
-      mode: 'bot',
+      mode: initialMode,
       onScoreUpdate: (pScore, oScore, round) => {
         if (this.statusMsgEl && !this.rules.matchOver) {
-          this.statusMsgEl.innerText = `Round ${round} (Best of 5) | [P1: ${pScore} - ${oScore} Opponent]`;
+          const is2P = this.rules.mode === 'pass_and_play';
+          const p2Name = is2P ? 'P2' : 'Opponent';
+          this.statusMsgEl.innerText = `Round ${round} (Best of 5) | [P1: ${pScore} - ${oScore} ${p2Name}]`;
         }
       }
     });
-    this.rules.startMatch('bot');
+    this.rules.startMatch(initialMode);
 
     // Phase 1 Pure Physics Sandbox State
-    this.playerPenConfigKey = 'reynolds045';
-    this.opponentPenConfigKey = 'trimax';
     this.collisionSoundCooldown = false;
 
     // 3D Raycasting
@@ -153,17 +167,19 @@ class GameEngine {
     this.world.createCollider(deskColliderDesc, deskBody);
 
     // 6. Spawn 2 Pens FLAT HORIZONTALLY (East-West widthwise across desk, ~70cm runway)
-    // Player Pen: Reynolds 045 near player edge (z = +0.35m, nib pointing left, cap right)
+    // 6. Spawn 2 Pens FLAT HORIZONTALLY (East-West widthwise across desk, ~70cm runway)
+    const pConfig = PEN_CONFIGS[this.playerPenConfigKey] || PEN_CONFIGS.reynolds045;
+    const oConfig = PEN_CONFIGS[this.opponentPenConfigKey] || PEN_CONFIGS.trimax;
+
     this.playerPen = this.spawnPen(
-      PEN_CONFIGS.reynolds045, 
-      new THREE.Vector3(0, PEN_CONFIGS.reynolds045.radius, 0.35), 
+      pConfig, 
+      new THREE.Vector3(0, pConfig.radius, 0.35), 
       Math.PI / 2
     );
 
-    // Opponent Pen: Reynolds Trimax near far edge (z = -0.35m, nib pointing left, cap right)
     this.opponentPen = this.spawnPen(
-      PEN_CONFIGS.trimax, 
-      new THREE.Vector3(0, PEN_CONFIGS.trimax.radius, -0.35), 
+      oConfig, 
+      new THREE.Vector3(0, oConfig.radius, -0.35), 
       Math.PI / 2
     );
 
@@ -181,6 +197,9 @@ class GameEngine {
       }
     });
     this.setupNaturalTouchControls();
+
+    // Sync UI controls with persistent storage state
+    this.syncUIWithStorage();
 
     // Start 120 Hz render loop
     this.animate();
@@ -209,11 +228,43 @@ class GameEngine {
     this.camera.updateProjectionMatrix();
   }
 
+  syncUIWithStorage() {
+    const saved = this.storage.load();
+    const modeEl = document.getElementById('mode-select');
+    if (modeEl && saved.settings && saved.settings.mode) {
+      modeEl.value = saved.settings.mode;
+    }
+    const diffEl = document.getElementById('diff-select');
+    if (diffEl && saved.settings && saved.settings.difficulty) {
+      diffEl.value = saved.settings.difficulty;
+      if (saved.settings.mode === 'pass_and_play') {
+        diffEl.style.display = 'none';
+      }
+    }
+    const p1Select = document.querySelector('select[title="Player 1 Pen"]');
+    if (p1Select && this.playerPenConfigKey) {
+      p1Select.value = this.playerPenConfigKey;
+    }
+    const p2Select = document.getElementById('p2-pen-select');
+    if (p2Select && this.opponentPenConfigKey) {
+      p2Select.value = this.opponentPenConfigKey;
+      if (saved.settings && saved.settings.mode === 'pass_and_play') {
+        p2Select.title = 'Player 2 Pen';
+      }
+    }
+    const lvl = this.progression.getCurrentLevel();
+    if (this.statusMsgEl) {
+      this.statusMsgEl.innerText = `Lvl ${lvl.level}: ${lvl.title} (${this.progression.xp} XP) | Flick to play!`;
+    }
+  }
+
   setDifficulty(mode) {
     if (!['easy', 'normal', 'hard'].includes(mode)) return;
     this.botAI.setDifficulty(mode);
     const diffSelect = document.getElementById('diff-select');
     if (diffSelect && diffSelect.value !== mode) diffSelect.value = mode;
+
+    this.storage.save({ settings: { difficulty: mode } });
 
     if (this.statusMsgEl) {
       this.statusMsgEl.innerText = `Bot AI: ${this.botAI.getPreset().label}`;
@@ -235,6 +286,8 @@ class GameEngine {
     if (p2Select) {
       p2Select.title = mode === 'pass_and_play' ? 'Player 2 Pen' : 'Bot Pen';
     }
+
+    this.storage.save({ settings: { mode: mode } });
 
     if (this.statusMsgEl) {
       this.statusMsgEl.innerText = mode === 'pass_and_play'
@@ -563,6 +616,9 @@ class GameEngine {
           roundHistory: this.rules.roundHistory.map(r => r.winner)
         });
 
+        // Step 2.5: Auto-save progression state to persistent storage
+        this.storage.save({ progression: this.progression.getState() });
+
         const badgeMsg = progResult.newBadges.length > 0 
           ? ` 🎖️ ${progResult.newBadges.map(b => b.title).join(', ')}!` 
           : '';
@@ -637,6 +693,7 @@ class GameEngine {
         this.world.removeRigidBody(this.playerPen.body);
       }
       this.playerPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, 0.35), Math.PI / 2);
+      this.storage.save({ profile: { selectedPlayerPen: penKey } });
     } else {
       this.opponentPenConfigKey = penKey;
       if (this.opponentPen) {
@@ -644,12 +701,21 @@ class GameEngine {
         this.world.removeRigidBody(this.opponentPen.body);
       }
       this.opponentPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, -0.35), Math.PI / 2);
+      this.storage.save({ profile: { selectedOpponentPen: penKey } });
     }
 
     this.resetRound();
     if (this.statusMsgEl) {
       this.statusMsgEl.innerText = `${side === 'player' ? 'Player' : 'Opponent'} pen: ${config.name} (${config.type}, ${(config.mass * 1000).toFixed(1)}g)`;
     }
+  }
+
+  clearCareerData() {
+    this.storage.clear();
+    this.progression.reset();
+    this.syncUIWithStorage();
+    this.resetSandbox();
+    return "Career data cleared successfully";
   }
 
   resetSandbox() {
