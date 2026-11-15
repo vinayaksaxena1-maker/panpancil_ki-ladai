@@ -95,7 +95,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
-| **Phase 2** | Rules, Match Loop & Bot AI | 🟡 **20% (In Progress)** | Step 2.1 Match Loop & Turns (`js/rules.js`) complete & verified | Step 2.2 Mathematical Bot AI (`bot.js`), Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`progression.js`), Step 2.5 LocalStorage Persistence (`storage.js`) |
+| **Phase 2** | Rules, Match Loop & Bot AI | 🟡 **40% (In Progress)** | Step 2.1 Match Loop & Turns (`js/rules.js`), Step 2.2 Bot AI (`js/bot.js`) complete & verified | Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`progression.js`), Step 2.5 LocalStorage Persistence (`storage.js`) |
 | **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
@@ -209,15 +209,16 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - **Round Reset:** Re-centering pens to spawn duel positions ($Z: \pm0.35m$) smoothly without page reload.
   - *Verification Receipt:* Player aur Opponent बारी-बारी फ्लिक कर सकें, पॉइंट्स 3 तक सही गिने जाएँ, और ड्रा होने पर री-फ्लिक हो। Puppeteer automated tests passed (7/7 tests pass). Live scoreboard & blackboard announcements connected.
 
-- [ ] **Step 2.2: Mathematical `PCOpponentController` (`js/bot.js`):**
+- [x] **Step 2.2 (COMPLETED): Mathematical `PCOpponentController` (`js/bot.js`):**
   - **Targeting Kinematics:** 3D Raycasting to player pen ($\vec{D} = \text{Pos}_{\text{player}} - \text{Pos}_{\text{bot}}$).
   - **3 Difficulty Tiers:**
-    - *Easy Mode:* Angular spread error $\pm 16^\circ$, weak force scaling, random contact point offset (kabhi chhootega, kabhi halki takkar).
-    - *Normal Mode:* Realistic human spread $\pm 6.5^\circ$, distance-clamped proportional impulse (50/50 fair duel).
-    - *Hard Mode:* Razor aim $\pm 3^\circ$, tactical edge cut-shots targeting player pen's tip/cap to induce high angular spin torque.
-  - **Human Pacing:** 0.8s contemplation pause before bot flicks (lagna chahiye ki samne koi insaan khel raha hai).
-  - **Dynamic Tester Toggle:** Sandbox HUD me Easy/Normal/Hard switch taaki Gate 2 verification ke liye tino modes live test ho sakein.
-  - *Verification Receipt:* Bot tino modes me alag accuracy se shot maare, aur Best-of-5 me player ko challenge de sake.
+    - *Easy Mode:* Angular spread error $\pm 16^\circ$ ($0.28\text{ rad}$), weak punch scaling ($0.15-0.40$), 0% spin cut-shots.
+    - *Normal Mode:* Realistic human spread $\pm 6.5^\circ$ ($0.11\text{ rad}$), balanced punch ($0.45-0.75$), 20% spin cut-shots.
+    - *Hard Mode:* Razor aim $\pm 3^\circ$ ($0.05\text{ rad}$), aggressive punch ($0.85-1.25$), 60% spin cut-shots.
+  - **Human Pacing:** 0.8s contemplation pause before bot flicks.
+  - **Start-of-Round Safety Invariant:** Runway $> 0.42\text{m}$ par bot impulse clamp taaki turn-1 par instant KO na ho sake.
+  - **Dynamic Tester Toggle:** Sandbox HUD me Easy/Normal/Hard selector (`#diff-select`).
+  - *Verification Receipt:* Puppeteer automated tests passed (7/7 tests pass). AI presets, difficulty switching, impulse bounds, aur UI sync 100% verified.
 
 - [ ] **Step 2.3: Local 2-Player "Pass & Play" Engine:**
   - **1-Phone Dual Duel:** Ek hi phone par bina internet do dost aamne-saamne baithkar khel sakein.

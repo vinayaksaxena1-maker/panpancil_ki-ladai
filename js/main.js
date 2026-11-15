@@ -5,6 +5,7 @@ import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 import { career, TROPHIES, TITLES } from './career.js';
 import { MatchRules, MatchState } from './rules.js?v=p2_s1';
+import { PCOpponentController } from './bot.js?v=p2_s2';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
 const DESK_WIDTH = 0.70;      // 70 cm width (X-axis, East-West)
@@ -53,7 +54,8 @@ class GameEngine {
     this.smoothedDrag = new THREE.Vector2();
     this.isSimulating = false;
     this.stableStartTime = 0;
-    this.difficulty = 'normal'; // Default: Normal Mode (Balanced Competition)
+    // Phase 2 Step 2.2: Mathematical Bot AI Controller
+    this.botAI = new PCOpponentController({ difficulty: 'normal', thinkTimeMs: 800 });
 
     // Phase 2 Step 2.1: Match Loop & Turn State Machine
     this.rules = new MatchRules({
@@ -206,22 +208,12 @@ class GameEngine {
 
   setDifficulty(mode) {
     if (!['easy', 'normal', 'hard'].includes(mode)) return;
-    this.difficulty = mode;
-
-    document.querySelectorAll('.diff-btn').forEach(btn => {
-      btn.classList.remove('active', 'easy', 'normal', 'hard');
-      if (btn.dataset.diff === mode) {
-        btn.classList.add('active', mode);
-      }
-    });
+    this.botAI.setDifficulty(mode);
+    const diffSelect = document.getElementById('diff-select');
+    if (diffSelect && diffSelect.value !== mode) diffSelect.value = mode;
 
     if (this.statusMsgEl) {
-      const modeLabels = {
-        easy: "Easy Mode (Aasan)",
-        normal: "Normal Mode (Balanced)",
-        hard: "Hard Mode (Class Champion)"
-      };
-      this.statusMsgEl.innerText = `Bot AI: ${modeLabels[mode]}`;
+      this.statusMsgEl.innerText = `Bot AI: ${this.botAI.getPreset().label}`;
     }
   }
 
@@ -401,141 +393,14 @@ class GameEngine {
   executeBotFlick() {
     if (this.isSimulating || this.rules.matchOver || !this.opponentPen || this.opponentPen.isFallen) return;
 
-    this.isSimulating = true;
-    this.simStartTime = performance.now();
-    this.stableStartTime = 0;
-    this.rules.onFlickExecuted('opponent');
-    this.updateTurnBadge();
-    synth.playFlick();
-
-    const mode = this.difficulty || 'normal';
-    const pPos = this.playerPen.body.translation();
-    const oPos = this.opponentPen.body.translation();
-    const oRot = this.opponentPen.body.rotation();
-    const oQuat = new THREE.Quaternion(oRot.x, oRot.y, oRot.z, oRot.w);
-
-    const halfW = DESK_WIDTH / 2;
-    const halfL = DESK_LENGTH / 2;
-
-    const toPlayer = new THREE.Vector3(pPos.x - oPos.x, 0, pPos.z - oPos.z);
-    const distanceToTarget = toPlayer.length();
-
-    // 1. Tactical Target Selection per Mode
-    let aimOffsetX = 0;
-    if (mode === 'hard') {
-      const distToLeft = Math.abs(pPos.x - (-halfW));
-      const distToRight = Math.abs(halfW - pPos.x);
-      if (distToLeft < distToRight && distToLeft < 0.22) {
-        aimOffsetX = -0.018; // Deflect towards left drop
-      } else if (distToRight < 0.22) {
-        aimOffsetX = 0.018;  // Deflect towards right drop
-      }
-    } else if (mode === 'normal') {
-      // Normal Mode: subtle edge cut only if player is near extreme edge
-      const distToLeft = Math.abs(pPos.x - (-halfW));
-      const distToRight = Math.abs(halfW - pPos.x);
-      if (distToLeft < 0.12) aimOffsetX = -0.010;
-      else if (distToRight < 0.12) aimOffsetX = 0.010;
-    }
-    // Easy Mode: zero offset, aims straight at player center
-
-    const targetPos = new THREE.Vector3(pPos.x + aimOffsetX, oPos.y, pPos.z);
-    const dir = new THREE.Vector3().subVectors(targetPos, new THREE.Vector3(oPos.x, oPos.y, oPos.z));
-    dir.y = 0;
-    dir.normalize();
-
-    // 2. Aim Error Variance per Mode
-    let aimErrorRad = 0;
-    if (mode === 'easy') {
-      aimErrorRad = (Math.random() - 0.5) * 0.28; // ±16° wide error spread (easy to dodge/miss)
-    } else if (mode === 'normal') {
-      aimErrorRad = (Math.random() - 0.5) * 0.11; // ±6.5° realistic human spread
-    } else {
-      aimErrorRad = (Math.random() - 0.5) * 0.05; // ±3° precise sharp spread
-    }
-    dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), aimErrorRad);
-
-    // 3. Distance Kinematics & Velocity Calculation
-    const effectiveDecel = (DESK_FRICTION * 9.81) + 0.40; // ~3.6 m/s²
-    let targetSpeed = 0;
-
-    // CRITICAL INVARIANT: START-OF-ROUND SAFETY (Zero Turn-1 Instant KO in ALL modes)
-    // When distance > 0.42m (e.g. 0.70m initial runway), Bot advances into play zone without blasting player off
-    if (distanceToTarget > 0.42) {
-      if (mode === 'easy') {
-        // Advances ~55-70% of runway, safely stopping in middle zone
-        targetSpeed = Math.sqrt(2 * effectiveDecel * distanceToTarget * 0.65);
-      } else if (mode === 'normal') {
-        // Advances into mid-desk / gentle approach, reaching player with soft graze
-        const reach = Math.sqrt(2 * effectiveDecel * distanceToTarget);
-        targetSpeed = reach * 0.90 + 0.15;
-      } else {
-        // Hard: Controlled approach / tactical mid-desk pressure
-        const reach = Math.sqrt(2 * effectiveDecel * distanceToTarget);
-        targetSpeed = reach * 0.95 + 0.30;
-      }
-    } else {
-      // MID-TO-CLOSE RANGE (< 0.42m) — Realistic Contest
-      const reachSpeed = Math.sqrt(2 * effectiveDecel * Math.max(distanceToTarget, 0.10));
-      if (mode === 'easy') {
-        // Weak punch, often falls short or grazes gently
-        const punchSpeed = 0.15 + Math.random() * 0.25;
-        targetSpeed = reachSpeed + punchSpeed;
-      } else if (mode === 'normal') {
-        // Balanced punch, solid competition without overpowered instant blast
-        const punchSpeed = 0.45 + Math.random() * 0.30;
-        targetSpeed = reachSpeed + punchSpeed;
-      } else {
-        // Hard: Strong punch speed
-        const punchSpeed = 0.85 + Math.random() * 0.40;
-        targetSpeed = reachSpeed + punchSpeed;
-      }
-    }
-
-    // Clamp speed safely per mode
-    const maxSpeedLimit = mode === 'easy' ? 2.0 : (mode === 'normal' ? 2.5 : 3.2);
-    targetSpeed = Math.min(targetSpeed, maxSpeedLimit);
-
-    const botMass = this.opponentPen.config.mass || 0.0155;
-    let botImpulseMagnitude = botMass * targetSpeed;
-
-    // 4. Self-Preservation Check (Prevent over-flick suicide near edges)
-    if (mode !== 'easy') {
-      const distToPlayerEdge = Math.abs(halfL - targetPos.z);
-      if (distToPlayerEdge < 0.10 && distanceToTarget < 0.25) {
-        botImpulseMagnitude *= 0.85;
-      }
-    }
-
-    // Safe impulse clamping
-    botImpulseMagnitude = Math.min(Math.max(botImpulseMagnitude, 0.008), 0.048);
-
-    // 5. Spin Cut-Shot vs Direct Strike
-    // Easy: 0% spin (pure center hit)
-    // Normal: 20% subtle spin
-    // Hard: 60% aggressive spin
-    const spinChance = mode === 'easy' ? 0.0 : (mode === 'normal' ? 0.20 : 0.60);
-    const useSpinShot = Math.random() < spinChance;
-    const penHalfLen = (this.opponentPen.config.length || 0.146) / 2;
-    const flickOffsetLocal = new THREE.Vector3(0, 0, 0);
-
-    if (useSpinShot) {
-      const spinMultiplier = mode === 'hard' ? 0.72 : 0.40;
-      const hitEnd = Math.random() > 0.5 ? spinMultiplier : -spinMultiplier;
-      flickOffsetLocal.set(0, 0, penHalfLen * hitEnd);
-    }
-
-    const flickPtWorld = flickOffsetLocal.clone().applyQuaternion(oQuat).add(new THREE.Vector3(oPos.x, oPos.y, oPos.z));
-
-    const impulse = new RAPIER.Vector3(dir.x * botImpulseMagnitude, 0.0, dir.z * botImpulseMagnitude);
-    const flickPt = new RAPIER.Vector3(flickPtWorld.x, flickPtWorld.y, flickPtWorld.z);
-
-    this.opponentPen.body.applyImpulseAtPoint(impulse, flickPt, true);
-
-    const shotMsg = mode === 'easy' 
-      ? "Opponent ka halka shot" 
-      : (mode === 'normal' ? "Opponent ka balanced shot!" : "⚡ Opponent ka aggressive shot!");
-    if (this.statusMsgEl) this.statusMsgEl.innerText = shotMsg;
+    this.botAI.scheduleTurn(this, () => {
+      this.isSimulating = true;
+      this.simStartTime = performance.now();
+      this.stableStartTime = 0;
+      this.rules.onFlickExecuted('opponent');
+      this.updateTurnBadge();
+      synth.playFlick();
+    });
   }
 
   checkPhysicsSettled() {
