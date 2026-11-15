@@ -95,7 +95,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
-| **Phase 2** | Rules, Match Loop & Bot AI | 🟡 **60% (In Progress)** | Step 2.1 Match Loop & Turns (`js/rules.js`), Step 2.2 Bot AI (`js/bot.js`), Step 2.3 Pass & Play 2P Mode complete & verified | Step 2.4 Progression & Badges (`progression.js`), Step 2.5 LocalStorage Persistence (`storage.js`) |
+| **Phase 2** | Rules, Match Loop & Bot AI | 🟡 **80% (In Progress)** | Step 2.1 Match Loop & Turns (`js/rules.js`), Step 2.2 Bot AI (`js/bot.js`), Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`js/progression.js`) complete & verified | Step 2.5 LocalStorage Persistence (`storage.js`) |
 | **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
@@ -227,17 +227,16 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - **Mode Selector:** Sandbox me "VS Bot" ↔ "Pass & Play (2P)" live dropdown selector (`#mode-select`).
   - *Verification Receipt:* Puppeteer automated tests passed (7/7 tests pass). 2P mode toggle, dynamic `#diff-select` visibility, strict input locks per player, turn badges, aur mobile UI layout verified via screenshot receipt.
 
-- [ ] **Step 2.4: 11-Level Progression & 16 Badges Ledger (`js/progression.js`):**
-  - **XP Calculation:** Match Win = `+50 XP`, Clean Sweep 3-0 = `+75 XP`, Match Loss = `+15 XP`.
+- [x] **Step 2.4 (COMPLETED): 11-Level Progression & 16 Badges Ledger (`js/progression.js`):**
+  - **XP Kinematics:** Base Win = `+50 XP`, Clean Sweep (3-0) bonus = `+75 XP`, Difficulty bonus (`+15/+30 XP`), Match Loss = `+15 XP` (Consolation).
   - **Class & Sub-section Campaign Hierarchy:**
     - *Tier 1: Class 7-A (Home Class)* ➔ Stage 1: Last Bench Duel (Easy), Stage 2: Middle Row Rival (Normal), Stage 3: Section 7-A Monitor (Hard Boss).
     - *Tier 2: Inter-Section Knockouts (Class 7-B & 7-C)* ➔ Stage 4: 7-B Lunch Break Challenger, Stage 5: 7-C Specialist, Stage 6: Class 7 Overall Champion.
     - *Tier 3: The Seniors Duel (Class 8-A, 8-B, 8-C)* ➔ Stage 7: 8-A Frontbencher, Stage 8: 8-B Backbencher Gang, Stage 9: 8-C Heavy Trimax King.
     - *Tier 4: School Grand Finale* ➔ Stage 10: Staff Room Corridor Cup, Stage 11: School Championship Final.
-  - **11 Ranks Ladder:** $0 \rightarrow 3250$ XP curve (*Backbencher* se *School Champion* tak).
-  - **Dynamic Pen Unlocks:** Level 3 par Butterflow, Level 6 par Pilot V5, Level 8 par Trimax, Level 9 par Apsara Platinum unlock conditions.
-  - **16 Badges Evaluator:** Pure criteria functions (e.g. *First Blood*, *Edge Survivor*, *Clean Sweep*, *Desk Boss*).
-  - *Verification Receipt:* Match khatam hone par XP calculate ho, Class 7 se Class 8 sections unlock hon, aur eligible badges trigger hon.
+  - **11 Progression Levels:** $0 \rightarrow 4300$ XP (*Naya Admission* se *School Pen Fight Legend* tak).
+  - **16 Badges Evaluator:** Pure criteria evaluators (*First Blood*, *Clean Sweep*, *Comeback Hero*, *Edge Survivor*, *Hard Champion*, *Heavy Knockout*, *Iron Defense*, *Monitor Dethroned*, *Intersection Hero*, *Senior Slayer*, *School Legend*, *Cut-Shot Master*, *Rapid Duel*, *5 Win Streak*, *2-Player Dost*, *Compass Box Master*).
+  - *Verification Receipt:* Puppeteer automated tests passed (8/8 tests pass). XP calculation, clean sweep bonus, level promotion, badge unlock triggers, 11 stages hierarchy, aur full state serialization verified.
 
 - [ ] **Step 2.5: Offline LocalStorage Persistence & State Hydration (`js/storage.js`):**
   - **Clean Schema:** `penfight_career` (profile, level, xp, unlockedPens, selectedPen, matchStats, badgesUnlocked).

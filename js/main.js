@@ -3,7 +3,7 @@ import RAPIER from 'rapier';
 import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=blackboard_ready_v3';
 import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
-import { career, TROPHIES, TITLES } from './career.js';
+import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
 import { MatchRules, MatchState } from './rules.js?v=p2_s1';
 import { PCOpponentController } from './bot.js?v=p2_s2';
 
@@ -56,6 +56,9 @@ class GameEngine {
     this.stableStartTime = 0;
     // Phase 2 Step 2.2: Mathematical Bot AI Controller
     this.botAI = new PCOpponentController({ difficulty: 'normal', thinkTimeMs: 800 });
+
+    // Phase 2 Step 2.4: 11-Level Progression & 16 Badges Engine
+    this.progression = new ProgressionEngine();
 
     // Phase 2 Step 2.1: Match Loop & Turn State Machine
     this.rules = new MatchRules({
@@ -550,12 +553,31 @@ class GameEngine {
       } else {
         // Match Over!
         this.updateTurnBadge();
+        const isWin = outcome.winner === 'player';
+        const progResult = this.progression.processMatchEnd({
+          isWin,
+          score: outcome.score,
+          difficulty: this.difficulty || 'normal',
+          mode: this.rules.mode,
+          playerPen: this.playerPenConfigKey || 'reynolds045',
+          roundHistory: this.rules.roundHistory.map(r => r.winner)
+        });
+
+        const badgeMsg = progResult.newBadges.length > 0 
+          ? ` 🎖️ ${progResult.newBadges.map(b => b.title).join(', ')}!` 
+          : '';
+
         if (this.statusMsgEl) {
           const winnerName = outcome.winner === 'player' ? (is2P ? 'Player 1' : 'Player') : (is2P ? 'Player 2' : 'Opponent');
           const p1Final = outcome.score.player;
           const p2Final = outcome.score.opponent;
-          this.statusMsgEl.innerText = `🏆 ${winnerName} Wins the Match! [${p1Final} - ${p2Final}] (Tap 🔄 Reset to Play Again)`;
+          this.statusMsgEl.innerText = `🏆 ${winnerName} Wins! [${p1Final} - ${p2Final}] | +${progResult.earnedXp} XP (${progResult.levelInfo.title})${badgeMsg}`;
         }
+
+        const chalkMsg = isWin 
+          ? `VICTORY! +${progResult.earnedXp} XP (${progResult.levelInfo.title})`
+          : `DEFEAT! +${progResult.earnedXp} XP (${progResult.levelInfo.title})`;
+        updateBlackboardDisplay(chalkMsg);
       }
       return;
     }
