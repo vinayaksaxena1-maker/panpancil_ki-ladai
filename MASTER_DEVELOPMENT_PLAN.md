@@ -8,12 +8,16 @@
 
 ## 🛑 Strict Governance & Iron Sovereignty Rules
 
-1. **Rule 1 (Sole Single Source of Truth):**
-   - Sirf aur sirf root folder me maujood `MASTER_DEVELOPMENT_PLAN.MD` aur `STITCH_AI_MASTER_PROMPT.MD` ko follow kiya jayega. Koi bhi feature, task ya code inhi do master plans ke hisab se aage badhega.
-2. **Rule 2 (External Folders Strictly Read-Only Benchmark):**
-   - `D:\PAnfight\CLEAN_ROOM_SPECIFICATION.MD` ya koi bhi bahari folder sirf aur sirf user ke external reference ke liye hai. Unka koi bhi plan, path, link ya dependency root project (`D:\FInal`) me bilkul nahi hogi.
+1. **Rule 1 (Sole Master Driver & Roadmap):**
+   - Root plan hi poora roadmap chalayega (`MASTER_DEVELOPMENT_PLAN.MD` aur `STITCH_AI_MASTER_PROMPT.MD`).
+   - Game architecture, 11 levels (Naya Khiladi ➔ Last Bench Legend), 6 authorized pens, 16 badges, 7 ranking tiers, aur Stitch 2D UI sirf aur sirf inhi root plans ke hisab se govern honge.
+2. **Rule 2 (Silent Emergency Physics Reference Dictionary):**
+   - `D:\PAnfight\CLEAN_ROOM_SPECIFICATION.MD` sirf ek silent physics reference dictionary (help desk) ki tarah background me rahega.
+   - Agar kisi physics formula, Center of Mass (COM), friction constant, ya math equation me AI kahin phanse, toh wahan se help li ja sakti hai.
+   - Par uska koi level, student/opponent name (e.g. Bunty/9A), ya roadmap root game me execute nahi hoga. Help lene par AI chat me explicitly formula declare karega.
 3. **Rule 3 (100% Standalone Repository Sovereignty):**
-   - Game ka 100% saara data, assets, code, audio, textures, physics aur documentation isi project folder (`D:\FInal`) me hoga. Yeh repo GitHub par akele push hone par poori tarah complete, independent aur playable rahegi.
+   - Game ka 100% saara data, assets, code, audio, textures, physics aur documentation isi project folder (`D:\FInal`) me local rahega.
+   - Root codebase me koi external import ya direct path dependency nahi hogi, taaki GitHub par push karne par yeh repository bina kisi external directory ke 100% complete aur playable rahe.
 4. **Gate-by-Gate Execution (Approval Gates):**
    - Agla phase tab tak shuru **NAHI** hoga jab tak pichla phase chalakar (browser/terminal/device me) test pass na ho jaye aur user explicitly **"APPROVED / NEXT"** na bole.
 5. **Zero Unsolicited Deviation:**
