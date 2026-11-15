@@ -22,13 +22,51 @@
    - Agla phase tab tak shuru **NAHI** hoga jab tak pichla phase chalakar (browser/terminal/device me) test pass na ho jaye aur user explicitly **"APPROVED / NEXT"** na bole.
 5. **Zero Unsolicited Deviation:**
    - AI apne man se koi library, formula, pen count, ya UI structure change/skip nahi karega.
-6. **No 44-Pen / External Bloat:**
+6. **No 44-Pen / External Bloat (Strict 6 Pens & 11 Levels):**
    - Strict 6 pens: *Reynolds Trimax, Reynolds 045, Cello Butterflow, Pilot V5, Nataraj 621, Apsara Platinum*.
-   - Strict 11 levels (Naya Khiladi ➔ Last Bench Legend).
+   - Strict 11 levels: *Naya Khiladi (0 XP) ➔ Last Bench Legend (3250 XP)*.
    - Strict 16 badges & 7 ranking tiers.
 7. **Clean Layer Separation:**
    - **3D World (Three.js + Rapier):** Desk, Pens, Lighting, Physics Collisions, Flick mechanics.
    - **2D UI Layer (HTML/CSS via Stitch):** Top Scoreboard, Power Bar, Menus, Cards, Trophy Cabinet.
+
+---
+
+## 🎖️ Complete Level Ladder & Pen Inventory Specifications
+
+### 📈 11 Levels & Progression (Kahan aur Kaise Banenge)
+* **Kahan dikhega:** Player Profile aur dedicated **"Level Journey Ladder"** screen par (School merit list / classroom journey design).
+* **Phases ka batwara:**
+  * **Phase 2 (Visual UI - Step 2.3):** 11-step visual merit ladder screen banegi (har step tappable hoga, lock/unlocked status aur XP requirement dikhayega).
+  * **Phase 4 (Logic & Storage - Step 4.3):** XP calculation engine, level-up trigger, aur `localStorage` save system implement hoga.
+* **11 Levels List:**
+  1. **Level 1 — Naya Khiladi:** 0 XP (Starting Tier)
+  2. **Level 2 — Bench Beginner:** 100 XP
+  3. **Level 3 — Pen Rookie:** 250 XP
+  4. **Level 4 — Desk Challenger:** 450 XP
+  5. **Level 5 — Flick Expert:** 700 XP
+  6. **Level 6 — Class Champion:** 1000 XP
+  7. **Level 7 — Pen Master:** 1350 XP
+  8. **Level 8 — Desk Legend:** 1750 XP
+  9. **Level 9 — School Star:** 2200 XP
+  10. **Level 10 — Grand Champion:** 2700 XP
+  11. **Level 11 — Last Bench Legend:** 3250 XP (Maximum / Grand Finale)
+
+### 🖋️ 6 Authorized Pens & Tin Compass Box (Player Ko Apne Jeete Pen Kahan Dikhenge)
+* **Kahan dikhega:** Player ko apne saare unlocked/jeete hue pens **"Tin Compass Box" (Pencil Geometry Box Screen)** ke andar 6 structured slots me dikhenge:
+  * Box open hone par 6 pen cards aayenge (3D preview, Weight, Length, Friction, Accuracy stat bars, aur Special Trait).
+  * Jo pen player jeet chuka hai wo unlocked aur **"Equip / Select"** karne ke liye ready rahegi.
+* **Phases ka batwara:**
+  * **Phase 1 (3D Mesh & Physics):** 6 Pens ki 3D geometry aur Rapier rigid-body physics (`js/pens.js`) — *Already Done*.
+  * **Phase 2 (Visual UI - Step 2.3):** Nostalgic Tin Compass Box Screen aur Pen selection cards ka UI layout.
+  * **Phase 4 (Logic & Dynamic Swapping - Step 4.3):** Pen unlock progression (Levels jeet kar pen unlock hona) aur selected pen ka live 3D table par spawn hona.
+* **6 Pens List & Traits:**
+  1. **Reynolds 045:** Classic transparent ballpoint (Default Unlocked - Balanced).
+  2. **Cello Butterflow:** Smooth glider with rubber grip (Level 3 Unlock - Low Friction).
+  3. **Pilot V5:** Needle-point precision pen (Level 5 Unlock - Fast Sharp Cut).
+  4. **Nataraj 621:** Classic red-black wooden hexagonal pencil (Level 7 Unlock - Long Lever Arm).
+  5. **Apsara Platinum:** Extra dark dense hexagonal pencil (Level 9 Unlock - High Mass Balance).
+  6. **Reynolds Trimax:** Heavy triangular tank (Level 11 Grand Prize - Anti-Roll Desk Champion).
 
 ---
 
