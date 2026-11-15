@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import RAPIER from 'rapier';
 import { createDeskMesh } from './desk.js?v=chalkboard_sharp';
-import { PEN_CONFIGS, createPenMesh } from './pens.js?v=2';
+import { PEN_CONFIGS, createPenMesh } from './pens.js?v=cel_shaded_pbr';
 import { synth } from './sound.js';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
@@ -102,12 +102,18 @@ class GameEngine {
     this.camera = new THREE.PerspectiveCamera(54, window.innerWidth / window.innerHeight, 0.05, 20);
     this.updateCameraView();
 
-    // 4. WebGL Renderer
-    this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+    // 4. WebGL Renderer with High DPR + MSAA + ACES Filmic Tone Mapping
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: false,
+      powerPreference: 'high-performance'
+    });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.05;
     this.container.appendChild(this.renderer.domElement);
 
     // 5. Central Desk & Classroom Environment
