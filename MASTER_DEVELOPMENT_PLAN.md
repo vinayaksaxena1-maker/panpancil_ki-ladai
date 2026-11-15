@@ -139,14 +139,14 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   * *Easy:* High aim error spread ($\pm 16^\circ$), weak punch speed.
   * *Normal:* Realistic human error spread ($\pm 6.5^\circ$), balanced approach.
   * *Hard:* Sharp aim ($\pm 3^\circ$), high speed, aur 60% spin cut-shots.
-* **Phase 1 ki Galti:** AI ne Phase 4 ki logic aur Phase 2 ka UI wait kiye bina Phase 1 ke sandbox par temporary button chipka diye the.
+* **Phase 1 Resolution & Clean-up (Sahi Kiya Gaya):** Phase 1 ke sandbox se Easy/Norm/Hard buttons aur out-of-order difficulty logic ko 100% hata diya gaya hai. Phase 1 ab sirf pure 3D physics verification ke liye hai. Yeh feature apne nirdharit Phase 2 (UI Setup) aur Phase 4 (Bot Kinematics) me hi implement hoga.
 
 ### 2. 📋 Score Card (Scoreboard & Match Result)
 * **Visual 2D HUD & Result Modal (Kahan dikhega):** **Phase 2 (Step 2.4 — HUD & Gameplay Overlays)**
   * Transparent top scoreboard (P1 avatar vs Opponent avatar, round indicators, selected pen names) aur Match Win/Loss certificate modal Stitch AI banayega.
 * **Match Rules & Score Counting (Code me kahan chalega):** **Phase 4 (Step 4.1 — Match Loop State Machine)**
   * Best of 5 format (first to 3 wins), double fall = re-flick, round won logic, aur result save.
-* **Phase 1 ki Galti:** AI ne Phase 1 me hi 3D blackboard par Best of 5 aur fake win popup daal diya tha, jise Step 1.6 me decouple karke pure physics banaya gaya.
+* **Phase 1 Resolution & Clean-up (Sahi Kiya Gaya):** 3D blackboard aur HUD se Best-of-5 scoring, player/opponent KO counters, aur result modals ko 100% decouple aur remove kar diya gaya hai. Blackboard par ab sirf pure physics duel chalk info aati hai. Scoreboard ka poora visual card Phase 2 (Step 2.4) aur round-counting logic Phase 4 (Step 4.1) me banegi.
 
 ---
 

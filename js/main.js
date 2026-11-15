@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import RAPIER from 'rapier';
-import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=blackboard_live';
+import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=blackboard_ready_v3';
 import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 import { career, TROPHIES, TITLES } from './career.js';
@@ -58,7 +58,6 @@ class GameEngine {
     // Phase 1 Pure Physics Sandbox State
     this.playerPenConfigKey = 'reynolds045';
     this.opponentPenConfigKey = 'trimax';
-    this.knockouts = { player: 0, opponent: 0 };
     this.collisionSoundCooldown = false;
 
     // 3D Raycasting
@@ -588,31 +587,35 @@ class GameEngine {
   resolveTurnOutcome() {
     if (this.playerPen.isFallen && this.opponentPen.isFallen) {
       if (this.statusMsgEl) this.statusMsgEl.innerText = "⚖️ Dono pens table se bahar! Re-flick!";
-      updateBlackboardDisplay(this.knockouts.player, this.knockouts.opponent, "ROUND DRAW! RE-FLICK");
+      updateBlackboardDisplay("ROUND DRAW! RE-FLICK");
       setTimeout(() => {
-        updateBlackboardDisplay(this.knockouts.player, this.knockouts.opponent, null);
+        updateBlackboardDisplay(null);
         this.resetRound();
       }, 1500);
       return;
     }
 
     if (this.opponentPen.isFallen) {
-      this.knockouts.player++;
-      updateBlackboardDisplay(this.knockouts.player, this.knockouts.opponent, "OPPONENT KNOCKED OUT!");
+      updateBlackboardDisplay("OPPONENT OUT!");
       if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = `🎉 Opponent pen out of table! [Player ${this.knockouts.player} - ${this.knockouts.opponent} Opponent]`;
+        this.statusMsgEl.innerText = "🎉 Opponent pen table se bahar gir gayi!";
       }
-      setTimeout(() => this.resetRound(), 1600);
+      setTimeout(() => {
+        updateBlackboardDisplay(null);
+        this.resetRound();
+      }, 1600);
       return;
     }
 
     if (this.playerPen.isFallen) {
-      this.knockouts.opponent++;
-      updateBlackboardDisplay(this.knockouts.player, this.knockouts.opponent, "PLAYER KNOCKED OUT!");
+      updateBlackboardDisplay("PLAYER OUT!");
       if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = `💥 Player pen out of table! [Player ${this.knockouts.player} - ${this.knockouts.opponent} Opponent]`;
+        this.statusMsgEl.innerText = "💥 Player pen table se bahar gir gayi!";
       }
-      setTimeout(() => this.resetRound(), 1600);
+      setTimeout(() => {
+        updateBlackboardDisplay(null);
+        this.resetRound();
+      }, 1600);
       return;
     }
 
@@ -658,10 +661,8 @@ class GameEngine {
   }
 
   resetSandbox() {
-    this.knockouts.player = 0;
-    this.knockouts.opponent = 0;
-    updateBlackboardDisplay(0, 0, "SANDBOX RESET");
-    setTimeout(() => updateBlackboardDisplay(0, 0, null), 1200);
+    updateBlackboardDisplay("SANDBOX RESET");
+    setTimeout(() => updateBlackboardDisplay(null), 1200);
     this.resetRound();
     if (this.statusMsgEl) this.statusMsgEl.innerText = "🔄 Sandbox Reset: Ready to test flick & collision physics!";
   }

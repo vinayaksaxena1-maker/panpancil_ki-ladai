@@ -122,7 +122,7 @@ let bbCanvas = null;
 let bbCtx = null;
 let bbTexture = null;
 
-export function renderBlackboardChalk(p1Score = 0, botScore = 0, announcement = null) {
+export function renderBlackboardChalk(announcement = null) {
   if (!bbCtx) return;
 
   // Dark slate chalkboard green
@@ -152,34 +152,32 @@ export function renderBlackboardChalk(p1Score = 0, botScore = 0, announcement = 
   bbCtx.fillStyle = 'rgba(245, 248, 245, 0.85)';
   bbCtx.fillText('Thought for the day: "Practice makes a man perfect"', 230, 130);
 
-  // Center: "PEN FIGHT 3D" Sandbox Info Box
+  // Center: "PEN FIGHT 3D" Sandbox Info Box (Zero Scoreboard - Pure Physics)
   bbCtx.strokeStyle = 'rgba(245, 248, 245, 0.65)';
   bbCtx.lineWidth = 3;
-  bbCtx.strokeRect(300, 155, 424, 215);
+  bbCtx.strokeRect(280, 160, 464, 190);
 
-  bbCtx.font = 'bold 36px monospace';
+  bbCtx.font = 'bold 38px monospace';
   bbCtx.fillStyle = 'rgba(245, 248, 245, 0.95)';
-  bbCtx.fillText('PEN FIGHT 3D', 400, 205);
+  bbCtx.fillText('PEN FIGHT 3D', 380, 215);
+
+  bbCtx.font = '22px monospace';
+  bbCtx.fillStyle = '#f2c75c';
+  bbCtx.fillText('PHASE 1: 3D PHYSICS SANDBOX', 330, 255);
 
   bbCtx.font = '20px monospace';
-  bbCtx.fillStyle = '#f2c75c';
-  bbCtx.fillText('PHASE 1: 3D PHYSICS SANDBOX', 345, 240);
-
-  // Knockout Counter
-  bbCtx.font = 'bold 28px monospace';
-  bbCtx.fillStyle = 'rgba(245, 248, 245, 0.95)';
-  bbCtx.fillText(`PLAYER KOs : ${p1Score}`, 350, 290);
-  bbCtx.fillText(`OPPONENT KOs: ${botScore}`, 350, 335);
+  bbCtx.fillStyle = 'rgba(245, 248, 245, 0.75)';
+  bbCtx.fillText('Tactile Slide, Impact & Drop Test', 315, 305);
 
   // Announcement / Mode Footer
   bbCtx.font = 'bold 24px monospace';
   if (announcement) {
     bbCtx.fillStyle = '#f2c75c'; // Bright yellow chalk announcement
-    bbCtx.fillText(announcement, 330, 425);
+    bbCtx.fillText(announcement, 330, 415);
   } else {
-    bbCtx.fillStyle = 'rgba(245, 248, 245, 0.70)';
+    bbCtx.fillStyle = 'rgba(245, 248, 245, 0.65)';
     bbCtx.font = '20px monospace';
-    bbCtx.fillText('TACTILE SLIDE & COLLISION TEST', 335, 425);
+    bbCtx.fillText('Drag Nib or Cap backwards to flick', 315, 415);
   }
 
   if (bbTexture) {
@@ -187,8 +185,8 @@ export function renderBlackboardChalk(p1Score = 0, botScore = 0, announcement = 
   }
 }
 
-export function updateBlackboardDisplay(p1Score, botScore, announcement = null) {
-  renderBlackboardChalk(p1Score, botScore, announcement);
+export function updateBlackboardDisplay(announcement = null) {
+  renderBlackboardChalk(announcement);
 }
 
 export function createProceduralBlackboardTexture() {
