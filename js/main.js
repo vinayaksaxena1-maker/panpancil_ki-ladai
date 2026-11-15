@@ -357,6 +357,8 @@ class GameEngine {
 
   executePlayerFlick(dirX, dirZ, dragPx) {
     this.isSimulating = true;
+    this.simStartTime = performance.now();
+    this.stableStartTime = 0;
     synth.playFlick();
 
     const maxPullPx = window.innerHeight * MAX_PULL_VIEWPORT_RATIO;
@@ -386,6 +388,8 @@ class GameEngine {
     if (this.turn !== 'bot' || !this.opponentPen || this.opponentPen.isFallen) return;
 
     this.isSimulating = true;
+    this.simStartTime = performance.now();
+    this.stableStartTime = 0;
     synth.playFlick();
 
     const mode = this.difficulty || 'normal';
@@ -545,22 +549,33 @@ class GameEngine {
       this.playerPen.isFallen = true;
       synth.playThud();
       if (this.statusMsgEl) this.statusMsgEl.innerText = "💥 Player ki pen desk se gir gayi!";
+      this.playerPen.body.setLinvel(new RAPIER.Vector3(0, -1.5, 0), true);
+      this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
     }
 
     if (!this.opponentPen.isFallen && isOutOfBounds(oPos)) {
       this.opponentPen.isFallen = true;
       synth.playThud();
       if (this.statusMsgEl) this.statusMsgEl.innerText = "🎉 Opponent ki pen table se out!";
+      this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, -1.5, 0), true);
+      this.opponentPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
     }
 
-    const isAtRest = (pSpeed < SETTLE_LIN_VEL && pRotSpeed < SETTLE_ANG_VEL) &&
-                     (oSpeed < SETTLE_LIN_VEL && oRotSpeed < SETTLE_ANG_VEL);
+    // A fallen pen is already eliminated — only the remaining pen on the desk needs to settle!
+    const pRest = this.playerPen.isFallen || (pSpeed < SETTLE_LIN_VEL && pRotSpeed < SETTLE_ANG_VEL);
+    const oRest = this.opponentPen.isFallen || (oSpeed < SETTLE_LIN_VEL && oRotSpeed < SETTLE_ANG_VEL);
+    const isAtRest = pRest && oRest;
 
-    if (isAtRest) {
-      if (!this.stableStartTime) {
+    // Safety timeout: max 3.5s simulation
+    if (!this.simStartTime) this.simStartTime = performance.now();
+    const isTimedOut = (performance.now() - this.simStartTime) > 3500;
+
+    if (isAtRest || isTimedOut) {
+      if (!this.stableStartTime && !isTimedOut) {
         this.stableStartTime = performance.now();
-      } else if (performance.now() - this.stableStartTime >= 300) {
+      } else if (isTimedOut || performance.now() - this.stableStartTime >= 250) {
         this.stableStartTime = 0;
+        this.simStartTime = 0;
         this.isSimulating = false;
         this.resolveTurnOutcome();
       }
@@ -698,6 +713,9 @@ class GameEngine {
   }
 
   resetRound() {
+    this.isSimulating = false;
+    this.simStartTime = 0;
+    this.stableStartTime = 0;
     this.playerPen.isFallen = false;
     this.opponentPen.isFallen = false;
 
