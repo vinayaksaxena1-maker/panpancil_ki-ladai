@@ -40,6 +40,13 @@
    - User Directive: *"Phase 1 ko lock kar do bina meri approval ke engine me koi change nahi hoga."*
    - Core files: `js/pens.js`, `js/desk.js`, Three.js scene setup, 120Hz Rapier WASM simulation loop, 6 parametric pen geometries, mass distribution, friction constants, table boundaries, aur drop detection strictly FROZEN hain.
    - Aage ke sabhi phases (Phase 2 Rules & AI, Phase 3 Stitch UI, Phase 4 Audio) Phase 1 ko immutable (unalterable) base foundation maan kar chalenge. Bina explicit user approval ke engine files me koi bhi badlav karna strictly prohibited hai.
+10. **Rule 10 (Official Google Play Store Policy & Architecture Compliance):**
+   - Game ka koi bhi code, architecture ya asset Google Play Store ki official policies ke khilaf nahi jayega.
+   - **Compliance Tools & Routing Boundaries:**
+     - **`retrieving-developer-knowledge`:** Official Google Developer documentation se Target SDK API level 34/35 requirements, 64-bit ABI rules, aur Data Safety declarations fetch aur verify karne ke liye use hoga.
+     - **`search_web`:** Google Play Developer Policy Center (`support.google.com/googleplay/android-developer`) se latest store policy updates (Families Policy, 20-tester requirement, zero data tracking policies) live verify karne ke liye use hoga.
+     - **`android-cli`:** Android SDK platform tools, Gradle configurations (`minSdkVersion 24`, `targetSdkVersion 34/35`, NDK 64-bit ABI filters), aur local emulator/device testing ke liye use hoga.
+   - **Data Safety Mandate:** Game 100% offline rahega (`localStorage` only). Zero analytics, zero unnecessary permissions (`INTERNET`, `CAMERA`, `STORAGE` etc. blocked from manifest), taaki Google Play Data Safety form 100% "No data collected, No data shared" rahe.
 
 ---
 
@@ -91,7 +98,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | **Phase 2** | Rules, Match Loop & Bot AI | ⚪ **0% (Next Active Phase)** | Physics sandbox ready | Step 2.1 Match Loop & Turns (`rules.js`), Step 2.2 Mathematical Bot AI (`bot.js`), Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`progression.js`), Step 2.5 LocalStorage Persistence (`storage.js`) |
 | **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
-| **Phase 5** | Flutter Android APK Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Flutter webview container, asset bundling, Android back button, release APK build |
+| **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
 ---
 
@@ -302,12 +309,24 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 
 ---
 
-### 📱 Phase 5: Flutter Android APK Packaging & Delivery
+### 📱 Phase 5: Google Play Compliant Android Packaging & Delivery
 *(Current Status: ⚪ 0% — Strict Gate-by-Gate Policy)*
-*Goal: 60 FPS offline Android APK.*
+*Goal: Google Play Console Ready, 60 FPS, 100% Offline Android App Bundle (.aab).*
 
-- [ ] **Step 5.1:** Flutter project integration (`webview_flutter` container).
-- [ ] **Step 5.2:** Bundle all WebGL, Rapier WASM, HTML, and assets in `assets/web/`.
-- [ ] **Step 5.3:** Android back-button handling, full-screen immersive mode, and touch calibration.
-- [ ] **Step 5.4:** Build Release APK (`flutter build apk --release`).
-- 🎯 **APPROVAL GATE 5:** Final APK installed and verified on physical Android phone.
+- [ ] **Step 5.1: Policy Pre-Flight & SDK Verification (`retrieving-developer-knowledge` + `search_web`):**
+  - Verify live Google Play Target API requirements (API Level 34/35) and 64-bit architecture mandate.
+  - Data Safety Audit: Ensure AndroidManifest.xml contains zero unwanted permissions (strictly offline game, "No user data collected or shared").
+- [ ] **Step 5.2: Flutter Container & Offline Asset Embedding (`webview_flutter`):**
+  - Self-contained Flutter shell wrapping local WebGL, Rapier WASM, Three.js, and synthesized audio in `assets/web/`.
+  - Zero remote HTTP network dependencies (fully playable in airplane mode).
+- [ ] **Step 5.3: Android Native Build Configuration (`android-cli`):**
+  - Configure `android/app/build.gradle`:
+    - `compileSdkVersion 34` / `targetSdkVersion 34` (or 35).
+    - `minSdkVersion 24` (Android 7.0+ covers 95%+ of active devices).
+    - NDK ABI Filters: `ndk { abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86_64' }` (100% 64-bit compliant).
+- [ ] **Step 5.4: Target Audience & Families Policy Safety:**
+  - Setup store rating compliance profile for "General Audience / Everyone (13+)" to bypass heavy child-directed COPPA restrictions.
+  - Immersive full-screen sticky mode, Android hardware back-button handling, and 60 FPS touch calibration.
+- [ ] **Step 5.5: Production Release Build (`.aab` Generation):**
+  - Execute `flutter build appbundle --release` to generate clean, signed Android App Bundle (`.aab`).
+- 🎯 **APPROVAL GATE 5:** Final signed `.aab` / `.apk` installed and verified on physical Android phone (60 FPS gameplay, clean back-button handling, zero network calls, zero crashes in Google Play Console pre-launch report).
