@@ -216,10 +216,15 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 
 - [ ] **Step 2.4: 11-Level Progression & 16 Badges Ledger (`js/progression.js`):**
   - **XP Calculation:** Match Win = `+50 XP`, Clean Sweep 3-0 = `+75 XP`, Match Loss = `+15 XP`.
+  - **Class & Sub-section Campaign Hierarchy:**
+    - *Tier 1: Class 7-A (Home Class)* ➔ Stage 1: Last Bench Duel (Easy), Stage 2: Middle Row Rival (Normal), Stage 3: Section 7-A Monitor (Hard Boss).
+    - *Tier 2: Inter-Section Knockouts (Class 7-B & 7-C)* ➔ Stage 4: 7-B Lunch Break Challenger, Stage 5: 7-C Specialist, Stage 6: Class 7 Overall Champion.
+    - *Tier 3: The Seniors Duel (Class 8-A, 8-B, 8-C)* ➔ Stage 7: 8-A Frontbencher, Stage 8: 8-B Backbencher Gang, Stage 9: 8-C Heavy Trimax King.
+    - *Tier 4: School Grand Finale* ➔ Stage 10: Staff Room Corridor Cup, Stage 11: School Championship Final.
   - **11 Ranks Ladder:** $0 \rightarrow 3250$ XP curve (*Backbencher* se *School Champion* tak).
   - **Dynamic Pen Unlocks:** Level 3 par Butterflow, Level 6 par Pilot V5, Level 8 par Trimax, Level 9 par Apsara Platinum unlock conditions.
   - **16 Badges Evaluator:** Pure criteria functions (e.g. *First Blood*, *Edge Survivor*, *Clean Sweep*, *Desk Boss*).
-  - *Verification Receipt:* Match khatam hone par XP calculate ho, level badhe, aur eligible badges trigger hon.
+  - *Verification Receipt:* Match khatam hone par XP calculate ho, Class 7 se Class 8 sections unlock hon, aur eligible badges trigger hon.
 
 - [ ] **Step 2.5: Offline LocalStorage Persistence & State Hydration (`js/storage.js`):**
   - **Clean Schema:** `penfight_career` (profile, level, xp, unlockedPens, selectedPen, matchStats, badgesUnlocked).
@@ -241,6 +246,7 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - Main Menu Home Screen (with hero desk duel illustration, Mode selection: Story / Pass & Play / Practice).
 - [ ] **Step 3.3:** Batch B (Identity, Collection & Levels):
   - Player Profile report card & 11-Level Merit Ladder visual journey ($0 \rightarrow 3250$ XP).
+  - **Visual Campaign Map (Class 7 ➔ Class 8 Path):** Ruled notebook page layout with hand-drawn pencil path (`Class 7-A ➔ 7-B ➔ 7-C ➔ Class 8-A ➔ 8-B ➔ School Champion`), defeated sections get teacher's red ink tick marks (✔️), locked sections have nostalgic rubber stamp locks ("Period Ongoing").
   - Pen Collection Tin Compass Box Screen (6 pen slots, stat bars, equip action).
 - [ ] **Step 3.4:** Batch C (HUD, Match Setup & Score Overlays):
   - Transparent in-game HUD (Top Scoreboard connected to Phase 2 state machine, turn badge, power meter).
