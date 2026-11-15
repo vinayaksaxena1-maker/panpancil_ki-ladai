@@ -811,7 +811,7 @@
                   </svg>
 
                   <div class="flex flex-col items-center z-15 select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                    <span class="text-[8px] text-white font-black px-2 py-0.5 rounded border border-blue-400/60 tracking-wider shadow-md uppercase" style="background: linear-gradient(rgba(30, 58, 138, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%); font-family: 'Patrick Hand', cursive; backdrop-filter: blur(2px);">REYNOLDS 045</span>
+                    <span id="menu-player-pen-label" class="text-[8px] text-white font-black px-2 py-0.5 rounded border border-blue-400/60 tracking-wider shadow-md uppercase" style="background: linear-gradient(rgba(30, 58, 138, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%); font-family: 'Patrick Hand', cursive; backdrop-filter: blur(2px);">REYNOLDS 045</span>
                     <span class="text-[7px] text-blue-200 font-bold mt-0.5 tracking-tight" style="font-family: 'Patrick Hand', cursive;">● READY TO FLICK</span>
                   </div>
 
@@ -821,8 +821,8 @@
                   </div>
 
                   <div class="flex flex-col items-center z-15 select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                    <span class="text-[8px] text-white font-black px-2 py-0.5 rounded border border-red-400/60 tracking-wider shadow-md uppercase" style="background: linear-gradient(rgba(127, 29, 29, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%); font-family: 'Patrick Hand', cursive; backdrop-filter: blur(2px);">CELLO GRIPPER</span>
-                    <span class="text-[7px] text-rose-200 font-bold mt-0.5 tracking-tight" style="font-family: 'Patrick Hand', cursive;">CHALLENGER ●</span>
+                    <span id="menu-opp-pen-label" class="text-[8px] text-white font-black px-2 py-0.5 rounded border border-red-400/60 tracking-wider shadow-md uppercase" style="background: linear-gradient(rgba(127, 29, 29, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%); font-family: 'Patrick Hand', cursive; backdrop-filter: blur(2px);">CELLO GRIPPER</span>
+                    <span id="menu-opp-sub-label" class="text-[7px] text-rose-200 font-bold mt-0.5 tracking-tight" style="font-family: 'Patrick Hand', cursive;">CHALLENGER ●</span>
                   </div>
                 </div>
 
@@ -846,7 +846,7 @@
                     <div class="w-6 h-6 rounded bg-blue-100 text-primary flex items-center justify-center border border-blue-300/60">
                       <span class="material-symbols-outlined text-[15px]">school</span>
                     </div>
-                    <span class="bg-primary-fixed text-primary font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive; text-shadow: 0.3px 0.3px 0.5px rgba(0, 40, 142, 0.3);">STG 03/11</span>
+                    <span id="menu-story-stage-badge" class="bg-primary-fixed text-primary font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive; text-shadow: 0.3px 0.3px 0.5px rgba(0, 40, 142, 0.3);">STG 01/11</span>
                   </div>
                   <div class="mt-1">
                     <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Story Mode</h4>
@@ -886,7 +886,7 @@
                     <div class="w-6 h-6 rounded bg-teal-100 text-teal-800 flex items-center justify-center border border-teal-300/60">
                       <span class="material-symbols-outlined text-[15px]">hardware</span>
                     </div>
-                    <span class="bg-surface-container-high text-on-surface-variant font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive;">4/6 PENS</span>
+                    <span id="menu-pens-badge" class="bg-surface-container-high text-on-surface-variant font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive;">2/6 PENS</span>
                   </div>
                   <div class="mt-1">
                     <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Compass Box</h4>
@@ -906,7 +906,7 @@
                     <div class="w-6 h-6 rounded bg-rose-100 text-tertiary flex items-center justify-center border border-rose-300/60">
                       <span class="material-symbols-outlined text-[15px]">emoji_events</span>
                     </div>
-                    <span class="bg-tertiary-fixed text-on-tertiary-fixed font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive;">9/16 CUPS</span>
+                    <span id="menu-trophies-badge" class="bg-tertiary-fixed text-on-tertiary-fixed font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive;">0/16 CUPS</span>
                   </div>
                   <div class="mt-1">
                     <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Trophy Rack</h4>
@@ -1199,12 +1199,49 @@
         } catch(e) {}
       }
 
+      const CAMPAIGN_OPPONENTS = [
+        { stage: 1, name: "BUNTY", pen: "NATARAJ 621" },
+        { stage: 2, name: "ROHAN", pen: "REYNOLDS 045" },
+        { stage: 3, name: "ADITYA", pen: "BUTTERFLOW" },
+        { stage: 4, name: "SAMEER", pen: "REYNOLDS 045" },
+        { stage: 5, name: "FARHAN", pen: "PILOT V5" },
+        { stage: 6, name: "VIKRAM", pen: "PILOT V5" },
+        { stage: 7, name: "NIKHIL", pen: "BUTTERFLOW" },
+        { stage: 8, name: "ROCKY", pen: "TRIMAX GOLD" },
+        { stage: 9, name: "KABIR", pen: "TRIMAX GOLD" },
+        { stage: 10, name: "ARJUN", pen: "APSARA PLATINUM" },
+        { stage: 11, name: "DEV", pen: "TRIMAX LEGEND" }
+      ];
+
+      const PEN_DISPLAY_NAMES = {
+        reynolds045: "REYNOLDS 045",
+        trimax: "TRIMAX GOLD",
+        butterflow: "BUTTERFLOW",
+        pilotV5: "PILOT V5",
+        nataraj621: "NATARAJ 621",
+        apsaraPlatinum: "APSARA PLATINUM"
+      };
+
+      function getMenuLevel(xp = 0) {
+        if (xp < 100) return { title: "Lvl 1: Naya Admission", nextXp: 100, prevXp: 0 };
+        if (xp < 250) return { title: "Lvl 2: Front Bencher", nextXp: 250, prevXp: 100 };
+        if (xp < 450) return { title: "Lvl 3: Notebook Scribbler", nextXp: 450, prevXp: 250 };
+        if (xp < 700) return { title: "Lvl 4: Middle Row Rival", nextXp: 700, prevXp: 450 };
+        if (xp < 1050) return { title: "Lvl 5: Lunch Break Champ", nextXp: 1050, prevXp: 700 };
+        if (xp < 1500) return { title: "Lvl 6: Section 7-A Topper", nextXp: 1500, prevXp: 1050 };
+        if (xp < 2050) return { title: "Lvl 7: Last Bench Specialist", nextXp: 2050, prevXp: 1500 };
+        if (xp < 2700) return { title: "Lvl 8: Senior Challenger", nextXp: 2700, prevXp: 2050 };
+        if (xp < 3450) return { title: "Lvl 9: Trimax Veteran", nextXp: 3450, prevXp: 2700 };
+        if (xp < 4300) return { title: "Lvl 10: Corridor Master", nextXp: 4300, prevXp: 3450 };
+        return { title: "Lvl 11: School Legend", nextXp: 5000, prevXp: 4300 };
+      }
+
       function syncMenuProfile() {
         try {
           const rawSave = localStorage.getItem('penfight_save_v2');
           if (rawSave) {
             const parsed = JSON.parse(rawSave);
-            const studentName = (parsed && parsed.profile && parsed.profile.name) || "Arjun 'Thunder' Sharma";
+            const studentName = (parsed && parsed.profile && parsed.profile.name) || "Enter Name";
             const nameEl = document.getElementById('menu-student-name');
             if (nameEl) nameEl.textContent = studentName;
 
@@ -1237,12 +1274,52 @@
               }
             }
 
-            if (parsed.progression) {
-              const xp = parsed.progression.xp || 380;
-              const xpTextEl = document.getElementById('menu-xp-text');
-              const xpBarEl = document.getElementById('menu-xp-bar');
-              if (xpTextEl) xpTextEl.textContent = `${xp} / 500 XP`;
-              if (xpBarEl) xpBarEl.style.width = `${Math.min(100, Math.round((xp / 500) * 100))}%`;
+            // 1. Level, XP text & XP progress bar (100% Dynamic)
+            const xp = (parsed && parsed.progression && parsed.progression.xp) || 0;
+            const lvlInfo = getMenuLevel(xp);
+            const levelNameEl = document.getElementById('menu-level-name');
+            const xpTextEl = document.getElementById('menu-xp-text');
+            const xpBarEl = document.getElementById('menu-xp-bar');
+            if (levelNameEl) levelNameEl.textContent = lvlInfo.title;
+            if (xpTextEl) xpTextEl.textContent = `${xp} / ${lvlInfo.nextXp} XP`;
+            if (xpBarEl) {
+              const span = Math.max(1, lvlInfo.nextXp - lvlInfo.prevXp);
+              const progressPct = Math.min(100, Math.max(5, Math.round(((xp - lvlInfo.prevXp) / span) * 100)));
+              xpBarEl.style.width = `${progressPct}%`;
+            }
+
+            // 2. Story Stage Badge (e.g. STG 01/11)
+            const stage = (parsed && parsed.progression && (parsed.progression.highestStageUnlocked || parsed.progression.currentStageId)) || 1;
+            const stageBadge = document.getElementById('menu-story-stage-badge');
+            if (stageBadge) {
+              stageBadge.textContent = `STG 0${Math.min(11, stage)}/11`;
+            }
+
+            // 3. Unlocked Pens Badge (e.g. 2/6 PENS)
+            const pens = (parsed && parsed.unlockedPens) || ['reynolds045', 'nataraj621'];
+            const pensBadge = document.getElementById('menu-pens-badge');
+            if (pensBadge) {
+              pensBadge.textContent = `${pens.length}/6 PENS`;
+            }
+
+            // 4. Badges / Cups Won (e.g. 0/16 CUPS)
+            const badges = (parsed && parsed.progression && parsed.progression.unlockedBadges) || [];
+            const trophiesBadge = document.getElementById('menu-trophies-badge');
+            if (trophiesBadge) {
+              trophiesBadge.textContent = `${badges.length}/16 CUPS`;
+            }
+
+            // 5. Table Duel Opponent & Player Pen Labels
+            const opp = CAMPAIGN_OPPONENTS[Math.max(0, Math.min(CAMPAIGN_OPPONENTS.length - 1, stage - 1))];
+            const oppPenEl = document.getElementById('menu-opp-pen-label');
+            const oppSubEl = document.getElementById('menu-opp-sub-label');
+            if (oppPenEl && opp) oppPenEl.textContent = opp.pen;
+            if (oppSubEl && opp) oppSubEl.textContent = `${opp.name} ●`;
+
+            const playerPenKey = (parsed && parsed.profile && parsed.profile.selectedPlayerPen) || 'reynolds045';
+            const playerPenEl = document.getElementById('menu-player-pen-label');
+            if (playerPenEl) {
+              playerPenEl.textContent = PEN_DISPLAY_NAMES[playerPenKey] || 'REYNOLDS 045';
             }
           }
         } catch(e) {}
