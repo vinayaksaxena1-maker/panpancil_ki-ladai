@@ -101,7 +101,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **44% (Steps 3.1-3.4 Done, Step 3.5 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit) ready & verified | Steps 3.5-3.9: Screen-by-Screen Verifiable Pipeline (Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **44% (Steps 3.1-3.4 Done, Step 3.5 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit) ready & verified | • Steps 3.5-3.9 screens pending (Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings).<br>• Steps 3.1-3.4 internal debt: Tailwind/Google Fonts local bundling, Compass Box & Settings placeholder alerts hookup, aur Match Outcome reward loop. |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -276,14 +276,24 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 - [x] **Step 3.1 (COMPLETED): Arcade Design Tokens & Foundations (`DESIGN.md` + Base CSS):**
   - **Foundation Ready:** `D:\FInal\DESIGN.md` (Design system documentation) aur `D:\FInal\css\base.css` (CSS Custom properties, 3D button depths, text strokes, container cards, spring keyframes) create karke `index.html` me link kar diye gaye hain taaki Stitch AI ko feed karke saari upcoming screens (3.2 se 3.9) ek hi consistent theme me generate karwayi ja sakein.
   - *Verification Receipt:* 90s Classroom + Juicy Arcade palette, `.btn-arcade-3d` tactile push classes, text stroke rules, aur slingshot force tokens 100% defined and offline ready.
+  - 🚨 **Pending Debt / Future Connectors (Step 3.1):**
+    - `Tailwind CDN Localisation`: `index.html` me abhi `https://cdn.tailwindcss.com` external script chal raha hai. Google Play Families 100% offline rule ke hisaab se use local CSS bundle me replace karna pending hai.
+    - `Offline Fonts Packaging`: Online Google Fonts (`Permanent Marker`, `Patrick Hand`, `Caveat`, `Nunito Sans`) ko `assets/fonts/` me WOFF2/TTF locally serve karna pending hai.
 
 - [x] **Step 3.2 (COMPLETED): Splash Screen & School ID Card (Collectible Onboarding):**
   - **Implementation:** Stitch AI se design fetch karke `index.html`, `css/splash.css`, aur local asset `assets/student_avatar.jpg` me wire kiya gaya. Authentic 90s torn notebook chit, Saraswati Vidyalaya pass, Roll #14, Class 7th-B, Khiladi ka Naam input, Reynolds 045 Fine primary stats, aur tactile 3D `[ENTER CLASSROOM ➔]` button integrated.
   - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Name input syncs directly with `StorageManager` (`localStorage.penfight_save_v2`), Enter button tap par smooth 0.4s exit transition ke sath arena reveal hota hai. Commit: `e229b64`.
+  - 🚨 **Pending Debt / Future Connectors (Step 3.2):**
+    - `Arsenal Pen Switching on Page 1`: Primary weapon `Reynolds 045 Fine - 0.5mm Tip` abhi static text hai; Step 3.5 (Compass Box) banne ke baad unlocked pens (jaise Nataraj 621) ko direct switch karne ka selection hook pending hai.
+    - `Mobile Camera Capture API`: Avatar photo upload abhi file picker use karta hai; native device camera se instant photo click karne ka Android intent hook Phase 5 me aayega.
 
 - [x] **Step 3.3 (COMPLETED): Main Menu Home Screen (The Classroom Arcade Hub):**
   - **Implementation:** Stitch AI se user ka banaya hua *Main Menu Home Screen (Pencil Sketch CTA)* fetch karke `index.html`, `css/menu.css`, aur local asset `assets/desk_duel_arena.jpg` me wire kiya gaya. Notebook Page 02 layout, attested student profile, level/XP progress bar, center wooden desk photo stage (Reynolds 045 vs Cello Gripper with neon trajectory arc), tactile `[⚡ TOSS + PLAY ➔]` pencil sketch CTA, aur 4 retro mode cards (Story Mode, Pass & Play, Compass Box, Trophy Rack) integrated.
   - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Splash screen se smoothly transition hokar Main Menu khulta hai, `⚡ TOSS + PLAY` ya `FIGHT` dabane par bot match start hota hai, `TOSS ⇄` dabane par 2-Player Pass & Play mode activate hota hai, aur HUD me `🏫 Menu` button se wapas Main Menu par aaya ja sakta hai. Commit: `cc2c6d3`.
+  - 🚨 **Pending Debt / Future Connectors (Step 3.3):**
+    - `Compass Box & Trophy Rack Placeholder Alerts`: Compass Box aur Trophy Rack mode cards par abhi placeholder alerts aate hain; inka actual screens (Step 3.5 & Step 3.9) se hook-up pending hai.
+    - `Table Duel 3D Preview Stage`: Center stage abhi static image (`desk_duel_arena.jpg`) hai; actual live Three.js viewport mini-render Step 3.7 ke sath integrate hona pending hai.
+    - `Settings Drawer Hook`: Top header gear button `⚙️` abhi alert dialog deta hai; Step 3.9 ke offline audio/SFX settings drawer se hook-up pending hai.
 
 - [x] **Step 3.4 (COMPLETED): Visual Campaign Map & Stage Details Chit (Class 7 ➔ Class 8):**
   - **Implementation:** Stitch AI Screen `4c5110bfc5ba48e499bfe56e02187162` se Notebook Page 03 layout fetch karke `index.html`, `css/campaign.css`, aur 11 unique opponent caricatures (`assets/opponents/stage_01.jpg` to `stage_11.jpg`) me wire kiya gaya.
@@ -297,6 +307,10 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
     - Floating Recess Bell Timer with live countdown (`03:45 mins left`) and 00:00 non-blocking period bell alert toast.
     - Dynamic Teacher's Stamp (`NEW ADMISSION` ➔ `PASSED STG 0X` ➔ `CHAMPION 1998`).
   - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Story Mode entry from Menu, Stage match launch (`FIGHT! ➔`), Hub return (`← HUB`), dynamic stars rendering, aur recess timer reset verified. Commits: `ec15e65` & `9046db1`.
+  - 🚨 **Pending Debt / Future Connectors (Step 3.4):**
+    - `Match Outcome Reward Credit`: Match jeetne ke baad reward (+₹300 Coins, Refills, Star) player wallet me credit hona Step 3.8 (Match Outcome Certificate) ke completion par depend karta hai.
+    - `Dynamic Star Overwrite on Replay`: Purane stage ko replay karke behtar score karne par save file me star upgrade Step 3.8 se sync hoga.
+    - `Locked Period Chit Modal`: Locked desks par click karne par specific unlock requirement popup card dikhana pending hai.
 
 - [ ] **Step 3.5: Tin Compass Box Screen (Collectible Pen Showcase):**
   - **Kya banega:** Steel geometry box visual with 6 collectible pen slots. 3D pen preview with toy finishes + exact physics stats (Weight in grams, Knockout Mass, Agility, Roll Drag) + chunky `[Equip Pen]` action.
