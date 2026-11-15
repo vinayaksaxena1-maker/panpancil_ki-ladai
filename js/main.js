@@ -18,10 +18,10 @@ const PEN_ANGULAR_DAMPING = 0.80;
 const PEN_RESTITUTION = 0.68; // ~70% Elasticity for crisp rigid plastic collision
 const PEN_FRICTION = 0.30;
 
-// Input & flick parameters
+// Input & flick parameters (Calibrated for 1.00m table runway)
 const DEAD_ZONE_PX = 12;
-const J_MIN = 0.0015;
-const J_MAX = 0.0275;
+const J_MIN = 0.0020;
+const J_MAX = 0.054;
 const GAMMA = 1.45;
 const MAX_PULL_VIEWPORT_RATIO = 0.34;
 
@@ -350,27 +350,80 @@ class GameEngine {
   }
 
   executeBotFlick() {
+    if (this.turn !== 'bot' || !this.opponentPen || this.opponentPen.isFallen) return;
+
     this.isSimulating = true;
     synth.playFlick();
 
     const pPos = this.playerPen.body.translation();
     const oPos = this.opponentPen.body.translation();
+    const oRot = this.opponentPen.body.rotation();
+    const oQuat = new THREE.Quaternion(oRot.x, oRot.y, oRot.z, oRot.w);
 
-    // Bot aims from its cap towards player pen with slight realistic human error
-    const dir = new THREE.Vector3(pPos.x - oPos.x, 0, pPos.z - oPos.z).normalize();
-    const errorAngle = (Math.random() - 0.5) * 0.16;
-    dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), errorAngle);
+    const halfW = DESK_WIDTH / 2;
+    const halfL = DESK_LENGTH / 2;
 
-    const dist = Math.hypot(pPos.x - oPos.x, pPos.z - oPos.z);
-    const powerFraction = Math.min(Math.max(dist / 0.85, 0.40), 0.90);
-    const botImpulse = J_MIN + Math.pow(powerFraction, GAMMA) * (J_MAX - J_MIN);
+    // 1. Tactical Target Selection: Push player towards nearest danger edge
+    const distToLeft = Math.abs(pPos.x - (-halfW));
+    const distToRight = Math.abs(halfW - pPos.x);
 
-    const impulse = new RAPIER.Vector3(dir.x * botImpulse, 0.0, dir.z * botImpulse);
-    const flickPt = new RAPIER.Vector3(oPos.x, oPos.y, oPos.z);
+    // Tactical cut aim to deflect player towards the edge
+    let aimOffsetX = 0;
+    if (distToLeft < distToRight && distToLeft < 0.24) {
+      aimOffsetX = -0.020; // Cut angle to push towards left drop
+    } else if (distToRight < 0.24) {
+      aimOffsetX = 0.020;  // Cut angle to push towards right drop
+    }
+
+    const targetPos = new THREE.Vector3(pPos.x + aimOffsetX, oPos.y, pPos.z);
+    const dir = new THREE.Vector3().subVectors(targetPos, new THREE.Vector3(oPos.x, oPos.y, oPos.z));
+    dir.y = 0;
+    const distanceToTarget = dir.length();
+    dir.normalize();
+
+    // 2. High-Precision Tactical Aim with sharp competitive error (tight ±4°)
+    const tacticalError = (Math.random() - 0.5) * 0.07;
+    dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), tacticalError);
+
+    // 3. Physics Kinematics Calculation (Friction Compensation + Punch Momentum)
+    // v_req = sqrt(2 * a * d) + punchSpeed
+    const effectiveDecel = (DESK_FRICTION * 9.81) + 0.45; // ~3.7 m/s²
+    const reachSpeed = Math.sqrt(2 * effectiveDecel * Math.max(distanceToTarget, 0.15));
+    // Dynamic punch speed so it hits hard and knocks player out
+    const punchSpeed = 0.95 + Math.random() * 0.50;
+    const targetSpeed = Math.min(reachSpeed + punchSpeed, 3.6);
+
+    const botMass = this.opponentPen.config.mass || 0.0155;
+    let botImpulseMagnitude = botMass * targetSpeed;
+
+    // 4. Self-Preservation: Throttling if player is right on the edge to avoid mutual fall
+    const distToPlayerEdge = Math.abs(halfL - targetPos.z);
+    if (distToPlayerEdge < 0.10 && distanceToTarget < 0.25) {
+      botImpulseMagnitude *= 0.85;
+    }
+
+    // Safe clamp for 1.00m table
+    botImpulseMagnitude = Math.min(Math.max(botImpulseMagnitude, 0.014), 0.052);
+
+    // 5. Spin Cut-Shot vs Direct Strike
+    // In 65% of turns, bot hits its cap or nib to generate rotational sweep torque
+    const useSpinShot = Math.random() < 0.65;
+    const penHalfLen = (this.opponentPen.config.length || 0.146) / 2;
+    const flickOffsetLocal = new THREE.Vector3(0, 0, 0);
+
+    if (useSpinShot) {
+      const hitEnd = Math.random() > 0.5 ? 0.72 : -0.72;
+      flickOffsetLocal.set(0, 0, penHalfLen * hitEnd);
+    }
+
+    const flickPtWorld = flickOffsetLocal.clone().applyQuaternion(oQuat).add(new THREE.Vector3(oPos.x, oPos.y, oPos.z));
+
+    const impulse = new RAPIER.Vector3(dir.x * botImpulseMagnitude, 0.0, dir.z * botImpulseMagnitude);
+    const flickPt = new RAPIER.Vector3(flickPtWorld.x, flickPtWorld.y, flickPtWorld.z);
 
     this.opponentPen.body.applyImpulseAtPoint(impulse, flickPt, true);
 
-    if (this.statusMsgEl) this.statusMsgEl.innerText = "Opponent ne flick kiya!";
+    if (this.statusMsgEl) this.statusMsgEl.innerText = "⚡ Opponent ka aggressive shot!";
   }
 
   checkPhysicsSettled() {
@@ -454,7 +507,8 @@ class GameEngine {
     }
 
     if (this.turn === 'bot') {
-      setTimeout(() => this.executeBotFlick(), 700);
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "🎯 Opponent target lock kar raha hai...";
+      setTimeout(() => this.executeBotFlick(), 850);
     }
   }
 
