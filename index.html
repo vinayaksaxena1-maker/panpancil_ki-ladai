@@ -1296,16 +1296,18 @@
             } catch(e) {}
           }
 
-          // Button feedback & smooth dismissal
+          // Button feedback & instant direct page turn
           enterBtn.style.transform = 'translateY(3px)';
+          
+          // Immediately bring up Main Menu directly behind Splash (z-index 500 under 1000)
+          window.showMainMenu();
+
           setTimeout(() => {
             splashOverlay.classList.add('splash-dismissed');
             setTimeout(() => {
               splashOverlay.style.display = 'none';
-              // Reveal Main Menu Home Screen!
-              window.showMainMenu();
-            }, 420);
-          }, 120);
+            }, 380);
+          }, 90);
         });
       }
     })();
