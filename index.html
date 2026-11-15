@@ -85,6 +85,40 @@
       border: 1px solid rgba(255,255,255,0.25);
       text-align: center;
     }
+    .diff-container {
+      display: flex;
+      background: rgba(18, 32, 26, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 20px;
+      padding: 3px;
+      pointer-events: auto;
+      gap: 3px;
+    }
+    .diff-btn {
+      background: transparent;
+      border: none;
+      color: #d8ceb8;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 6px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .diff-btn:hover {
+      color: #ffffff;
+    }
+    .diff-btn.active {
+      background: #3f8b61;
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    }
+    .diff-btn.active.hard {
+      background: #c85b4a;
+    }
+    .diff-btn.active.easy {
+      background: #4a75a0;
+    }
     .hud-footer {
       display: flex;
       flex-direction: column;
@@ -129,6 +163,11 @@
     <div class="hud-header">
       <div id="turn-badge" class="badge">Your Turn (Drag to Flick)</div>
       <div id="status-msg">Desk ready! Touch pen naturally and flick.</div>
+      <div class="diff-container">
+        <button class="diff-btn" data-diff="easy" onclick="window.gameEngine.setDifficulty('easy')">Easy</button>
+        <button class="diff-btn active" data-diff="normal" onclick="window.gameEngine.setDifficulty('normal')">Normal</button>
+        <button class="diff-btn" data-diff="hard" onclick="window.gameEngine.setDifficulty('hard')">Hard</button>
+      </div>
       <button class="btn-reset" onclick="window.gameEngine.resetRound()">🔄 Reset Round</button>
     </div>
 
@@ -140,6 +179,6 @@
     </div>
   </div>
 
-  <script type="module" src="./js/main.js?v=pbr_pens_v3"></script>
+  <script type="module" src="./js/main.js?v=bot_modes_v2"></script>
 </body>
 </html>
