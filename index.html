@@ -991,9 +991,9 @@
               <div class="flex items-center justify-between border-b border-[#dc2626]/40 pb-1 select-none">
                 <div class="text-[9px] font-bold text-[#dc2626] tracking-wider uppercase opacity-85" style="font-family: 'Patrick Hand', cursive;">★ CLASSMATE NOTEBOOK INDEX ★</div>
                 <div class="border-2 border-[#dc2626] rounded-xs px-2 py-0.5 bg-white/90 shadow-2xs flex items-center gap-2 text-[10px] text-[#dc2626] font-bold tracking-tight" style="font-family: 'Nunito Sans', sans-serif;">
-                  <div class="flex items-center gap-1"><span>PAGE NO:</span><span class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">03</span></div>
+                  <div class="flex items-center gap-1"><span>PAGE NO:</span><span id="notebook-page-no" class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">03</span></div>
                   <div class="w-[1px] h-3 bg-[#dc2626]/50"></div>
-                  <div class="flex items-center gap-1"><span>DATE:</span><span class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">15/08/98</span></div>
+                  <div class="flex items-center gap-1"><span>DATE:</span><span id="notebook-page-date" class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">15/08/98</span></div>
                 </div>
               </div>
 
@@ -1046,11 +1046,16 @@
                 </div>
                 <div class="flex items-center gap-1 text-right pr-1">
                   <span class="text-[9px] font-bold text-[#475569] uppercase" style="font-family: 'Patrick Hand', cursive;">Teacher's Stamp:</span>
-                  <span class="text-[#b91c1c] text-[10px] font-bold" style="font-family: Caveat, cursive;">PASSED 15/8</span>
+                  <span id="teacher-stamp-status" class="text-[#b91c1c] text-[10px] font-bold uppercase" style="font-family: Caveat, cursive;">PASSED 15/8</span>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Recess Bell Alert Toast (Shown when timer hits 00:00) -->
+        <div id="recess-bell-toast" class="hidden mb-1.5 px-3 py-1 bg-amber-100 border border-amber-400 rounded-lg text-amber-900 text-[11px] font-bold text-center shadow-xs select-none" style="font-family: 'Patrick Hand', cursive;">
+          🔔 RECESS PERIOD OVER! Peon Bhaiya ne agle period ki bell baja di! New Recess Timer started!
         </div>
 
         <!-- Floating Recess Bell Timer Pill -->
@@ -1528,10 +1533,16 @@
           const parsed = rawSave ? JSON.parse(rawSave) : null;
           const activeStage = (parsed && parsed.progression && (parsed.progression.highestStageUnlocked || parsed.progression.currentStageId)) || 1;
           const coins = (parsed && parsed.progression && parsed.progression.coins) || 1420;
+          const stageStarsMap = (parsed && parsed.progression && parsed.progression.stageStars) || {};
 
           const clearedDesks = Math.max(0, activeStage - 1);
           const pct = Math.min(100, Math.round((clearedDesks / 11) * 100));
-          const stars = clearedDesks * 3;
+
+          // Calculate actual total stars earned from cleared stages
+          let totalEarnedStars = 0;
+          for (let i = 1; i < activeStage; i++) {
+            totalEarnedStars += (stageStarsMap[i] !== undefined ? stageStarsMap[i] : 3);
+          }
 
           const clearedSummaryEl = document.getElementById('map-cleared-summary');
           const starsSummaryEl = document.getElementById('map-stars-summary');
@@ -1539,9 +1550,29 @@
           const canteenFundEl = document.getElementById('map-canteen-fund');
 
           if (clearedSummaryEl) clearedSummaryEl.textContent = `${clearedDesks}/11 Desks (${pct}%)`;
-          if (starsSummaryEl) starsSummaryEl.textContent = `${stars}/33 Stars ⭐`;
+          if (starsSummaryEl) starsSummaryEl.textContent = `${totalEarnedStars}/33 Stars ⭐`;
           if (progressBarEl) progressBarEl.style.width = `${Math.max(5, pct)}%`;
           if (canteenFundEl) canteenFundEl.textContent = `₹${coins.toLocaleString('en-IN')}`;
+
+          // Dynamic Notebook Index Page Number & Authentic 90s Academic Term Date
+          const pageNoEl = document.getElementById('notebook-page-no');
+          const pageDateEl = document.getElementById('notebook-page-date');
+          const stampStatusEl = document.getElementById('teacher-stamp-status');
+
+          if (pageNoEl) pageNoEl.textContent = String(Math.min(11, activeStage)).padStart(2, '0');
+          const termMonth = activeStage <= 3 ? "08" : activeStage <= 6 ? "10" : activeStage <= 9 ? "12" : "02";
+          const termYear = activeStage <= 9 ? "98" : "99";
+          if (pageDateEl) pageDateEl.textContent = `15/${termMonth}/${termYear}`;
+
+          if (stampStatusEl) {
+            if (activeStage === 1) {
+              stampStatusEl.textContent = "NEW ADMISSION";
+            } else if (activeStage <= 11) {
+              stampStatusEl.textContent = `PASSED (STG 0${activeStage - 1})`;
+            } else {
+              stampStatusEl.textContent = "CHAMPION 1998";
+            }
+          }
 
           const FULL_STAGES = [
             {
@@ -1720,6 +1751,15 @@
           for (let i = 1; i < activeStage; i++) {
             const stg = FULL_STAGES[i - 1];
             if (!stg) continue;
+            const earnedStars = stageStarsMap[stg.id] !== undefined ? stageStarsMap[stg.id] : 3;
+            let starIcons = '';
+            for (let s = 1; s <= 3; s++) {
+              if (s <= earnedStars) {
+                starIcons += `<span class="material-symbols-outlined text-[13px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>`;
+              } else {
+                starIcons += `<span class="material-symbols-outlined text-[13px] text-slate-300" style="font-variation-settings: 'FILL' 0;">star</span>`;
+              }
+            }
             html += `
               <div class="bg-white/95 rounded-lg p-2 shadow-xs flex items-center justify-between" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 6px 4px 7px 5px;">
                 <div class="flex items-center gap-2">
@@ -1737,9 +1777,7 @@
                 </div>
                 <div class="flex flex-col items-end">
                   <div class="flex text-amber-500 text-[10px]">
-                    <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
-                    <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    ${starIcons}
                   </div>
                   <button type="button" class="text-[#00288e] text-[11px] font-bold underline cursor-pointer active:scale-95" onclick="window.launchStageMatch(${stg.id})" style="font-family: Caveat, cursive;">
                     Replay Recess?
@@ -1783,7 +1821,7 @@
                 <div class="grid grid-cols-12 gap-2 items-center bg-white/80 rounded-lg p-2 border border-amber-300 shadow-inner">
                   <div class="col-span-4 flex flex-col items-center">
                     <div class="w-14 h-16 bg-surface-container-high rounded-md overflow-hidden relative shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;">
-                      <img class="w-full h-full object-cover" alt="Caricature of ${currentStage.name}" src="./assets/opponent_monitor.jpg">
+                      <img class="w-full h-full object-cover" alt="Caricature of ${currentStage.name}" src="./assets/opponents/stage_${String(currentStage.id).padStart(2, '0')}.jpg" onerror="this.onerror=null; this.src='./assets/opponent_monitor.jpg';">
                     </div>
                     <span class="text-[11px] font-bold text-secondary mt-0.5" style="font-family: Caveat, cursive;">"Desk pe milo!"</span>
                   </div>
@@ -1923,6 +1961,17 @@
                   const mins = Math.floor(secondsLeft / 60);
                   const secs = secondsLeft % 60;
                   timerElem.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')} mins left`;
+                } else {
+                  // Timer reached 00:00 - Nostalgic period bell notification + soft reset
+                  secondsLeft = 240;
+                  timerElem.textContent = "04:00 mins left";
+                  const bellToast = document.getElementById('recess-bell-toast');
+                  if (bellToast) {
+                    bellToast.classList.remove('hidden');
+                    setTimeout(() => {
+                      bellToast.classList.add('hidden');
+                    }, 4000);
+                  }
                 }
               }, 1000);
             }
