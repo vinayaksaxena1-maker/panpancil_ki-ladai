@@ -84,7 +84,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🟢 **100% Complete** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | None (Ready for User Gate 1 Approval) |
 | **Phase 2** | Rules, Match Loop & Bot AI | ⚪ **0% (Next Active Phase)** | Physics sandbox ready | Step 2.1 Match Loop & Turns (`rules.js`), Step 2.2 Mathematical Bot AI (`bot.js`), Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`progression.js`), Step 2.5 LocalStorage Persistence (`storage.js`) |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Step 3.1 DESIGN.md, Step 3.2 Batch A (Splash/Menu), Step 3.3 Batch B (Profile/Compass Box), Step 3.4 Batch C (HUD/Scoreboard/Setup), Step 3.5 Batch D (Cabinet/Settings) |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Flutter Android APK Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Flutter webview container, asset bundling, Android back button, release APK build |
 
@@ -238,27 +238,51 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 
 ### 🎨 Phase 3: Stitch AI 2D UI & Nostalgia Visual System
 *(Current Status: ⚪ 0% — Execution starts after Phase 2 Gate Approval)*
-*Goal: Desi Indian School Nostalgia UI layers banwana using tumhari existing images, aur unhe Phase 2 ke live engine se wire karna.*
+*Goal: Har screen ko ek-ek karke banana aur turant 100% test & check (verifiable receipt) karna, jisse UI me koi bhi visual flaw na rahe.*
 
-- [ ] **Step 3.1: Author `DESIGN.md`:**
-  - Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching nostalgic 90s school themes.
-- [ ] **Step 3.2: Batch A (Core Flow Screens):**
-  - Splash screen + First Launch Minimal Onboarding (Nostalgic School ID Card for Name Entry, zero multi-step forms).
-  - Main Menu Home Screen (with hero desk duel illustration, Mode selection: Story / Pass & Play / Practice, Profile entry point).
-- [ ] **Step 3.3: Batch B (Identity, Campaign & Compass Box):**
-  - Player Profile report card & 11-Level Merit Ladder visual journey ($0 \rightarrow 3250$ XP).
-  - **Visual Campaign Map (Class 7 ➔ Class 8 Path):** Ruled notebook page layout with hand-drawn pencil path (`Class 7-A ➔ 7-B ➔ 7-C ➔ Class 8-A ➔ 8-B ➔ School Champion`), defeated sections get teacher's red ink tick marks (✔️), locked sections have rubber stamp locks ("Period Ongoing").
-  - **Stage Details Chit Modal:** Map par kisi stage par tap karne par classroom note/chit khulegi (Opponent Classmate info, difficulty, pen reward, aur `[Battle ⚔️ / Replay 🔄]` buttons).
-  - **Pen Collection Tin Compass Box Screen:** 6 pen slots with exact Phase 1 physics stats (Weight, Drag, Mass bars, and Equip action).
-- [ ] **Step 3.4: Batch C (HUD, Match Setup & Score Overlays):**
-  - Transparent in-game HUD (Top Scoreboard connected to Phase 2 state machine, turn badge, power meter).
-  - Single Player vs PC Match Setup (Classmate card, Easy/Normal/Hard selector).
-  - **Local 2-Player Pass & Play Match Setup Card:** P1 vs P2 dual pen selection on 1 screen.
-  - Pause menu + Match Win/Loss Result Certificate (with XP gain progress bar, Next Stage, and Rematch buttons).
-- [ ] **Step 3.5: Batch D (Cabinet & Settings):**
-  - 16-Badge Trophy Cabinet shelf (monochrome locked vs enamel pin earned states).
-  - Offline Settings & Audio Bridge (SFX volume toggle, Classroom chatter ambiance toggle, Data reset button). *(Purged 7 Ranking Tiers duplicate screen)*.
-- 🎯 **APPROVAL GATE 3:** All screens visually inspected and wired to Phase 2 engine. "Kya theme 90s classroom jaisi hai aur HUD transparent Three.js canvas ke sath seamlessly match kar raha hai?"
+- [ ] **Step 3.1: Design Tokens & Foundations (`DESIGN.md` + Base CSS):**
+  - **Kya banega:** 90s Classroom color palette (Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, Ink Blue `#1A365D`, Margin Red `#C53030`), retro school typography, tactile buttons, aur paper grain texture.
+  - *Verification Receipt:* 360x800 mobile screen par font readable ho, tactile click bounce smooth ho, aur color contrast WCAG pass ho.
+
+- [ ] **Step 3.2: Splash Screen & School ID Card (Onboarding):**
+  - **Kya banega:** First launch retro school badge splash ➔ Nostalgic Student ID Card (Enter Student Name, Class 7-A, Save & Continue). Zero multi-step forms.
+  - *Verification Receipt:* Name input karne par mobile soft keyboard layout na tode, aur player profile name `localStorage` me save ho.
+
+- [ ] **Step 3.3: Main Menu Home Screen (The Classroom Hub):**
+  - **Kya banega:** Wooden desk duel hero illustration, top profile bar (Avatar, Name, Level 1 Backbencher, XP bar), aur 5 thumb-friendly touch cards: `[Story Campaign 🏫]`, `[Pass & Play (2P) 👥]`, `[Compass Box 🧰]`, `[Trophy Cabinet 🏆]`, `[Settings ⚙️]`.
+  - *Verification Receipt:* Har card minimum 48px touch target ho, aur tap karne par target screen shell load ho.
+
+- [ ] **Step 3.4: Visual Campaign Map & Stage Details Chit (Class 7 ➔ Class 8):**
+  - **Kya banega:** Ruled notebook page layout with hand-drawn pencil path (11 stages). Defeated stages par teacher ka **Red Ink Tick (✔️)**, locked stages par **"Period Ongoing"** stamp lock. Kisi stage par tap karne par classroom chit modal खुलेगी (Opponent Classmate info, difficulty, pen reward, aur `[Battle ⚔️ / Replay 🔄]` buttons).
+  - *Verification Receipt:* Beaten stages par tap karne se Replay option mile, locked stages par lock stamp alert aaye, aur path responsive scroll ho.
+
+- [ ] **Step 3.5: Compass Box Screen (6-Pen Tin Geometry Box):**
+  - **Kya banega:** Steel geometry box visual with 6 pen slots. Phase 1 ke exact physics stats (Weight in grams, Rolling Drag, Knockout Mass, Agility) display honge + `[Equip Pen]` action.
+  - *Verification Receipt:* 6 pens ke exact stats (12g, 15g, 13.3g etc.) load hon aur equip button dabane par active pen update ho.
+
+- [ ] **Step 3.6: Match Setup Screen (Single Player & Pass-and-Play Cards):**
+  - **Kya banega:**
+    - Single Player: Classmate profile card, `[Easy / Normal / Hard]` difficulty selector, aur `[Start Duel ⚔️]`.
+    - Pass & Play: 1 hi phone par Player 1 vs Player 2 dual pen selector card aur `[Start Pass & Play ⚔️]`.
+  - *Verification Receipt:* Difficulty switch karne par active bot difficulty change ho, aur Pass & Play me dono players apni-apni pen choose kar sakein.
+
+- [ ] **Step 3.7: In-Game Transparent HUD (3D Desk Overlays):**
+  - **Kya banega:** 3D Three.js canvas ke upar transparent scoreboard (P1 score vs Opponent score: 0-3, round dots), active turn badge ("Your Turn" / "Opponent Turn"), dynamic drag power bar, aur subtle pause button.
+  - *Verification Receipt:* 3D canvas HUD ke aar-paar 100% visible rahe, touch/drag gesture HUD se obstruct na ho, aur round jeetne par score live update ho.
+
+- [ ] **Step 3.8: Match Outcome Certificate & Pause Drawer:**
+  - **Kya banega:**
+    - Pause modal: Nostalgic ruled chit (Resume, Restart, Quit to Menu).
+    - Match Result Certificate: School report card popup with round breakdown, XP gained progress bar, `[Next Classmate ➔]` aur `[Rematch 🔄]` buttons.
+  - *Verification Receipt:* 3 rounds jeetne/haarne par certificate trigger ho, aur Rematch/Next buttons se match sahi restart ho.
+
+- [ ] **Step 3.9: Trophy Cabinet & Offline Settings (with Audio Bridge):**
+  - **Kya banega:**
+    - 16-Badge Trophy Shelf: Unlocked badges shiny enamel pins me, locked badges pencil sketch outline me.
+    - Offline Settings: SFX Volume toggle, Classroom Ambiance chatter toggle, Reset Progress button. *(Purged 7 Ranking Tiers duplicate screen)*.
+  - *Verification Receipt:* Badges ka locked/unlocked state live career data se match kare, aur settings toggles state persist karein.
+
+- 🎯 **APPROVAL GATE 3 (Complete End-to-End Walkthrough):** Poore 9 steps banne ke baad complete round-trip flow test: `Splash ➔ ID Card ➔ Menu ➔ Compass Box ➔ Match Setup ➔ 3D Duel with HUD ➔ Win Certificate ➔ Back to Menu`. Zero visual glitches at 60 FPS.
 
 ---
 
