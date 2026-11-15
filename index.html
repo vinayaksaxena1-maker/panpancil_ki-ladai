@@ -6,6 +6,7 @@
   <title>Pen Fight: Desk Wars — Phase 1 Prototype</title>
   <link rel="stylesheet" href="./css/base.css?v=p3_s1">
   <link rel="stylesheet" href="./css/splash.css?v=p3_s2">
+  <link rel="stylesheet" href="./css/menu.css?v=p3_s3">
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -292,6 +293,7 @@
   <div id="hud-layer">
     <div class="hud-header">
       <div class="hud-top-bar">
+        <button class="btn-reset" onclick="window.showMainMenu()" style="background: #1e40af; border-color: #60a5fa; color: #fff;">🏫 Menu</button>
         <div id="turn-badge" class="badge">Your Turn</div>
         <div id="status-msg">Phase 1 Sandbox: Flick to knock opponent off</div>
         <button class="btn-reset" onclick="window.gameEngine.resetSandbox()">🔄 Reset</button>
@@ -550,12 +552,350 @@
     </main>
   </div>
 
+  <!-- Phase 3 Step 3.3: Main Menu Home Screen (Pencil Sketch CTA) Overlay -->
+  <div id="main-menu-overlay" style="display: none;">
+    <main class="w-[390px] h-[844px] max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
+      <!-- Background Grid & Doodles -->
+      <div class="absolute inset-0 pointer-events-none opacity-40 bg-[linear-gradient(to_right,#b8c4ff_1px,transparent_1px),linear-gradient(to_bottom,#b8c4ff_1px,transparent_1px)] bg-[size:16px_16px]"></div>
+      <div class="absolute top-2 right-4 pointer-events-none opacity-20 text-secondary z-0">
+        <svg fill="none" height="52" stroke="currentColor" stroke-width="1.5" viewBox="0 0 100 100" width="52">
+          <circle cx="50" cy="50" r="42" stroke-dasharray="4 3"></circle>
+          <path d="M50 8 V92 M8 50 H92 M22 22 L78 78"></path>
+        </svg>
+      </div>
+
+      <div class="flex flex-col w-full relative px-2.5 pt-2 pb-2 select-none flex-1 overflow-y-auto">
+        <!-- Top Period & Recess Header pill -->
+        <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
+          <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
+            <span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+            <span class="font-label-md text-[11px] tracking-wider uppercase font-extrabold">RECESS BREAK • BENCH #4</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping ml-0.5"></span>
+          </div>
+          <button aria-label="School Rules & Settings" class="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all transform active:scale-90 shadow-sm cursor-pointer" id="settingsBtn" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" onclick="window.toggleSettingsAlert()">
+            <span class="material-symbols-outlined text-[16px]">settings</span>
+          </button>
+        </header>
+
+        <!-- Torn Notebook Page Shell matching Screen 18 -->
+        <div class="relative z-10 select-none filter drop-shadow-[0_8px_16px_rgba(40,30,15,0.18)] mb-2">
+          <div class="relative overflow-hidden p-2.5 pl-6 border bg-surface-container-lowest border-outline-variant/30" style="clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 10px 100%, 7px 97.5%, 11px 95%, 6px 92.5%, 9px 90%, 5px 87.5%, 11px 85%, 7px 82.5%, 10px 80%, 6px 77.5%, 12px 75%, 7px 72.5%, 11px 70%, 5px 67.5%, 10px 65%, 6px 62.5%, 12px 60%, 7px 57.5%, 10px 55%, 5px 52.5%, 11px 50%, 6px 47.5%, 12px 45%, 7px 42.5%, 10px 40%, 6px 37.5%, 11px 35%, 5px 32.5%, 10px 30%, 7px 27.5%, 12px 25%, 6px 22.5%, 10px 20%, 5px 17.5%, 11px 15%, 7px 12.5%, 10px 10%, 6px 7.5%, 11px 5%, 7px 2.5%, 10px 0%); background-color: rgb(255, 255, 255); border-top-right-radius: 0px; border-bottom-left-radius: 4px; box-shadow: rgb(30, 41, 59) 0px 0px 0px 1.8px inset, rgba(30, 41, 59, 0.35) 0px 0px 0px 3px inset, rgb(30, 41, 59) 0px 3px 0px 0px;">
+            <!-- Spiral Torn Gradient Edge & Perforations -->
+            <div class="absolute top-0 bottom-0 left-0 w-4 pointer-events-none z-15" style="background: linear-gradient(to right, rgba(235, 230, 218, 0.95) 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%); filter: drop-shadow(rgba(120, 100, 80, 0.25) 1.5px 0px 1px);"></div>
+            <div class="absolute top-0 bottom-0 left-0 w-[2px] pointer-events-none z-20 opacity-80" style="background: repeating-linear-gradient(to bottom, #ffffff 0px, #ffffff 3px, #e2dac9 4px, #ffffff 6px, #f5f0e6 9px);"></div>
+            <!-- Ruled Horizontal Lines -->
+            <div class="absolute inset-0 pointer-events-none" style="background-image: repeating-linear-gradient(transparent 0px, transparent 23px, rgba(96, 165, 250, 0.22) 24px, rgba(96, 165, 250, 0.22) 25px); background-size: 100% 25px;"></div>
+            <!-- Double Red Margin Lines -->
+            <div class="absolute top-0 bottom-0 left-7 w-[1.5px] bg-[#dc2626] opacity-90 pointer-events-none z-10"></div>
+            <div class="absolute top-0 bottom-0 left-[33px] w-[1px] bg-[#b91c1c] opacity-35 pointer-events-none"></div>
+
+            <!-- Inner Content Body -->
+            <div class="relative z-10 pl-5 flex flex-col gap-2.5">
+              <!-- 1. Classmate Notebook Index Strip -->
+              <div class="flex items-center justify-between border-b border-[#dc2626]/40 pb-1 select-none">
+                <div class="text-[9px] font-bold text-[#dc2626] tracking-wider uppercase opacity-85" style="font-family: 'Patrick Hand', cursive;">★ CLASSMATE NOTEBOOK INDEX ★</div>
+                <div class="border-2 border-[#dc2626] rounded-xs px-2 py-0.5 bg-white/90 shadow-2xs flex items-center gap-2 text-[10px] text-[#dc2626] font-bold tracking-tight" style="font-family: 'Nunito Sans', sans-serif;">
+                  <div class="flex items-center gap-1">
+                    <span>PAGE NO:</span>
+                    <span class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">02</span>
+                  </div>
+                  <div class="w-[1px] h-3 bg-[#dc2626]/50"></div>
+                  <div class="flex items-center gap-1">
+                    <span>DATE:</span>
+                    <span class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">14/08/98</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. School Title & Roll / Sec -->
+              <div class="flex items-start justify-between border-b border-[#c4c5d5]/40 pb-1.5">
+                <div>
+                  <span class="block tracking-wider uppercase font-bold text-[#b91c1c] text-[11px]" style="font-family: Kalam, cursive; letter-spacing: 0.08em; text-shadow: rgba(185, 28, 28, 0.2) 0.5px 0.5px 0px;">★ SARASWATI VIDYALAYA ★</span>
+                  <h2 class="leading-none tracking-wide font-extrabold text-[#00288e] text-[16px] uppercase" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(0, 40, 142, 0.45) 0.5px 0.5px 1px, rgba(30, 41, 59, 0.25) 1px 1px 0px; letter-spacing: 0.05em; transform: rotate(-0.5deg); display: inline-block; -webkit-text-stroke: 0.2px rgba(0, 20, 80, 0.3);">STUDENT BATTLE PASS</h2>
+                </div>
+                <div class="text-right pr-1 flex flex-col justify-center">
+                  <div class="text-[10px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">ROLL NO: <span class="font-bold text-[#0038a8] text-[15px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">#14</span></div>
+                  <div class="text-[10px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">CLASS: <span class="font-bold text-[#0038a8] text-[14px] rotate-1 inline-block" style="font-family: Caveat, cursive;">7th - B</span></div>
+                </div>
+              </div>
+
+              <!-- 3. Student Avatar + Profile Info + Wallet -->
+              <div class="flex gap-2.5 items-center">
+                <div class="relative shrink-0">
+                  <div class="w-14 h-16 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm border border-outline-variant/30" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;">
+                    <img class="w-full h-full object-cover" alt="Student avatar" src="./assets/student_avatar.jpg">
+                    <div class="absolute bottom-0 inset-x-0 bg-surface-container/90 py-0.5 text-center">
+                      <span class="text-[8px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
+                    </div>
+                  </div>
+                  <div class="absolute -bottom-1 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[7px] font-bold border border-outline-variant/30" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED</div>
+                </div>
+
+                <div class="flex-1 min-w-0 flex flex-col gap-1">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold uppercase tracking-wider text-[#b91c1c] text-[10px]" style="font-family: 'Patrick Hand', cursive;">✎ KHILADI KA NAAM:</span>
+                    <span class="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed text-[9px] font-bold border border-outline-variant/20" style="border: 1.2px solid rgb(30, 41, 59); border-radius: 4px;">NEHRU RED</span>
+                  </div>
+                  <div id="menu-student-name" class="text-[#0038a8] font-bold text-[19px] leading-tight truncate" style="font-family: Caveat, cursive; transform: rotate(-0.5deg); text-shadow: rgba(0, 56, 168, 0.4) 0.5px 0.5px 1px, rgba(30, 41, 59, 0.3) 0.2px 0px 0.5px; letter-spacing: 0.02em;">
+                    Arjun 'Thunder' Sharma
+                  </div>
+                  <div class="flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[13px] text-primary">school</span>
+                      <span id="menu-level-name" class="font-bold text-[10px] text-[#475569]" style="font-family: 'Patrick Hand', cursive;">Lvl 2: Backbencher Elite</span>
+                    </div>
+                    <span id="menu-xp-text" class="text-[10px] font-bold text-[#0038a8]" style="font-family: Caveat, cursive;">380 / 500 XP</span>
+                  </div>
+                  <div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                    <div id="menu-xp-bar" class="h-full bg-primary rounded-full" style="width: 76%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Desk Duel Arena Box: Hand-sketched notebook border with wooden arena inside -->
+              <div class="rounded-xl p-2.5 relative overflow-hidden text-white select-none transition-all" style="background: rgb(255, 255, 255); border: 2.5px solid rgb(35, 18, 9); border-radius: 12px; box-shadow: rgba(45, 25, 12, 0.15) 0px 4px 12px;">
+                <!-- Authentic Carved Desk Graffiti -->
+                <div class="absolute top-1.5 right-24 pointer-events-none select-none opacity-40 font-handwriting text-[10px] transform -rotate-3 text-[#fde68a]" style="font-family: Caveat, cursive; text-shadow: rgb(26, 11, 4) 1px 1px 0px, rgba(255, 255, 255, 0.2) -0.5px -0.5px 0px;">
+                  Nitin + Arjun ★ '98
+                </div>
+
+                <!-- Top Arena Bar: Stitched Plaque & Hazard Pill -->
+                <div class="flex items-center justify-between mb-2 z-10 relative">
+                  <div class="px-2.5 py-0.5 rounded shadow-md flex items-center gap-1.5" style="background: linear-gradient(180deg, #d97706 0%, #b45309 60%, #92400e 100%); border: 1.5px solid #78350f; box-shadow: 0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.35);">
+                    <span class="text-[8px] font-black uppercase tracking-wider text-amber-100" style="font-family: 'Patrick Hand', cursive; text-shadow: rgba(0, 0, 0, 0.8) 0px 1px 2px;">TABLE DUEL ARENA</span>
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-200 border border-amber-900 shadow-inner"></span>
+                  </div>
+                  <div class="flex items-center gap-1 text-[9px] text-amber-200 font-bold px-2 py-0.5 rounded-full border border-amber-400/40 shadow-sm" style="background: linear-gradient(180deg, rgba(20,10,5,0.85) 0%, rgba(40,20,10,0.85) 100%); box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);">
+                    <span class="material-symbols-outlined text-[12px] text-amber-400 drop-shadow-[0_0_4px_rgba(251,191,36,0.8)]">warning</span>
+                    <span class="tracking-wide">DESK DROP OUT</span>
+                  </div>
+                </div>
+
+                <!-- 3D Arena Stage Pitch with Perspective & Trajectory -->
+                <div class="relative h-28 w-full rounded-lg flex items-center justify-between px-3 overflow-hidden mb-2 border border-black/70 shadow-inner group">
+                  <img alt="Authentic school wooden desk with two pens ready for pen combat" class="absolute inset-0 w-full h-full object-cover select-none pointer-events-none transform scale-105 group-hover:scale-110 transition-transform duration-500" src="./assets/desk_duel_arena.jpg">
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/40 pointer-events-none"></div>
+                  
+                  <svg class="absolute inset-0 w-full h-full pointer-events-none z-10" fill="none" viewBox="0 0 320 112">
+                    <defs>
+                      <linearGradient id="realGlowPath" x1="0%" x2="100%" y1="100%" y2="50%">
+                        <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.95"></stop>
+                        <stop offset="50%" stop-color="#fde047" stop-opacity="1"></stop>
+                        <stop offset="100%" stop-color="#ef4444" stop-opacity="0.95"></stop>
+                      </linearGradient>
+                      <filter height="140%" id="realNeonGlow" width="140%" x="-20%" y="-20%">
+                        <feGaussianBlur result="blur" stdDeviation="2"></feGaussianBlur>
+                        <feMerge>
+                          <feMergeNode in="blur"></feMergeNode>
+                          <feMergeNode in="SourceGraphic"></feMergeNode>
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    <path d="M 60 82 Q 160 22 260 62" filter="url(#realNeonGlow)" stroke="url(#realGlowPath)" stroke-dasharray="4,4" stroke-width="2.5"></path>
+                    <circle cx="260" cy="62" opacity="0.9" r="9" stroke="#f87171" stroke-dasharray="2 2" stroke-width="1.4"></circle>
+                    <circle cx="260" cy="62" fill="#ef4444" filter="url(#realNeonGlow)" r="4"></circle>
+                    <circle cx="60" cy="82" fill="#60a5fa" opacity="0.85" r="4.5"></circle>
+                  </svg>
+
+                  <div class="flex flex-col items-center z-15 select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    <span class="text-[8px] text-white font-black px-2 py-0.5 rounded border border-blue-400/60 tracking-wider shadow-md uppercase" style="background: linear-gradient(rgba(30, 58, 138, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%); font-family: 'Patrick Hand', cursive; backdrop-filter: blur(2px);">REYNOLDS 045</span>
+                    <span class="text-[7px] text-blue-200 font-bold mt-0.5 tracking-tight" style="font-family: 'Patrick Hand', cursive;">● READY TO FLICK</span>
+                  </div>
+
+                  <div class="flex flex-col items-center justify-center z-15">
+                    <div class="w-9 h-9 rounded-full flex items-center justify-center font-black text-[13px] relative shadow-2xl" style="background: radial-gradient(circle at 35% 30%, rgb(239, 68, 68) 0%, rgb(153, 27, 27) 55%, rgb(69, 10, 10) 100%); border: 2.2px solid rgb(253, 224, 71); box-shadow: rgba(0, 0, 0, 0.85) 0px 4px 10px, rgba(255, 255, 255, 0.45) 0px 2px 3px inset, rgba(0, 0, 0, 0.7) 0px -2px 3px inset; text-shadow: rgba(0, 0, 0, 0.9) 0px 1.5px 2px; color: rgb(255, 255, 255);">VS</div>
+                    <span class="text-[8px] font-bold mt-1 px-1.5 py-0.2 rounded-full border border-amber-400/40 shadow-sm" style="background: rgba(10, 5, 2, 0.85); color: rgb(253, 224, 71); font-family: 'Patrick Hand', cursive;">RECESS FINAL</span>
+                  </div>
+
+                  <div class="flex flex-col items-center z-15 select-none drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
+                    <span class="text-[8px] text-white font-black px-2 py-0.5 rounded border border-red-400/60 tracking-wider shadow-md uppercase" style="background: linear-gradient(rgba(127, 29, 29, 0.92) 0%, rgba(15, 23, 42, 0.95) 100%); font-family: 'Patrick Hand', cursive; backdrop-filter: blur(2px);">CELLO GRIPPER</span>
+                    <span class="text-[7px] text-rose-200 font-bold mt-0.5 tracking-tight" style="font-family: 'Patrick Hand', cursive;">CHALLENGER ●</span>
+                  </div>
+                </div>
+
+                <!-- Ultra-Tactile 3D Arcade 'TOSS & PLAY' Button -->
+                <button class="w-full py-2.5 px-3 rounded-lg font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all cursor-pointer relative overflow-hidden active:translate-y-1 select-none text-[#111827]" id="quickBattleBtn" style="background-color: rgb(252, 251, 247); background-image: repeating-linear-gradient(135deg, rgba(30, 41, 59, 0.05) 0px, rgba(30, 41, 59, 0.05) 1.5px, transparent 1.5px, transparent 6px); border: 2.5px solid rgb(30, 41, 59); box-shadow: rgb(30, 41, 59) 3px 3px 0px; font-family: 'Permanent Marker', cursive; font-size: 18px;" onclick="window.startQuickDuel()">
+                  <span class="relative z-10 flex items-center justify-center gap-2 drop-shadow-[0_1px_0px_rgba(255,255,255,0.8)]" style="text-shadow: rgba(0, 0, 0, 0.45) 0.5px 0.5px 1px, rgba(50, 50, 50, 0.25) 1.2px 1.2px 0px; letter-spacing: 0.06em; -webkit-text-stroke: 0.25px rgba(17, 24, 39, 0.4);">
+                    <span>⚡ TOSS & PLAY</span>
+                    <span class="text-[18px]">➔</span>
+                  </span>
+                </button>
+                <div class="text-center text-[9px] text-[#452a1c] mt-1 uppercase font-bold tracking-widest opacity-90" style="font-family: 'Patrick Hand', cursive;">
+                  1-Finger Flick • Recess Desk Duel
+                </div>
+              </div>
+
+              <!-- 5. 4 Retro Hand-drawn Cards (2x2 Grid) -->
+              <div class="grid grid-cols-2 gap-2 mb-0.5">
+                <!-- Story Mode -->
+                <div class="bg-white/95 p-2 rounded-lg shadow-xs flex flex-col justify-between cursor-pointer active:scale-98 transition-transform group" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 8px 4px 7px 5px;" onclick="window.startStoryMode()">
+                  <div class="flex items-start justify-between">
+                    <div class="w-6 h-6 rounded bg-blue-100 text-primary flex items-center justify-center border border-blue-300/60">
+                      <span class="material-symbols-outlined text-[15px]">school</span>
+                    </div>
+                    <span class="bg-primary-fixed text-primary font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive; text-shadow: 0.3px 0.3px 0.5px rgba(0, 40, 142, 0.3);">STG 03/11</span>
+                  </div>
+                  <div class="mt-1">
+                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Story Mode</h4>
+                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;">Defeat 11 rivals bench-by-bench!</p>
+                  </div>
+                  <button class="mt-1.5 w-full py-1 rounded text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-0.5 active:translate-y-1 transition-transform cursor-pointer text-[#00288e]" style="font-family: 'Permanent Marker', cursive; background-color: rgba(255, 255, 255, 0.5); background-image: repeating-linear-gradient(135deg, rgba(0, 40, 142, 0.08) 0px, rgba(0, 40, 142, 0.08) 1.5px, transparent 1.5px, transparent 5px); border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(30, 41, 59) 1.5px 1.5px 0px;">
+                    <span class="flex items-center gap-1">
+                      <span>FIGHT</span>
+                      <span class="text-[12px]">➔</span>
+                    </span>
+                  </button>
+                </div>
+
+                <!-- Pass & Play -->
+                <div class="bg-white/95 p-2 rounded-lg shadow-xs flex flex-col justify-between cursor-pointer active:scale-98 transition-transform group" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 5px 8px 4px 7px;" onclick="window.startPassAndPlay()">
+                  <div class="flex items-start justify-between">
+                    <div class="w-6 h-6 rounded bg-amber-100 text-amber-800 flex items-center justify-center border border-amber-300/60">
+                      <span class="material-symbols-outlined text-[15px]">groups</span>
+                    </div>
+                    <span class="bg-secondary-fixed text-on-secondary-fixed font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive; text-shadow: 0.3px 0.3px 0.5px rgba(50, 19, 2, 0.3);">1V1 LOCAL</span>
+                  </div>
+                  <div class="mt-1">
+                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Pass & Play</h4>
+                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;">Turn-based 2-player flick on 1 phone!</p>
+                  </div>
+                  <button class="mt-1.5 w-full py-1 rounded text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-0.5 active:translate-y-1 transition-transform cursor-pointer text-secondary" style="font-family: 'Permanent Marker', cursive; background-color: rgba(255, 255, 255, 0.5); background-image: repeating-linear-gradient(135deg, rgba(80, 40, 20, 0.08) 0px, rgba(80, 40, 20, 0.08) 1.5px, transparent 1.5px, transparent 5px); border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(30, 41, 59) 1.5px 1.5px 0px;">
+                    <span class="flex items-center gap-1">
+                      <span>TOSS</span>
+                      <span class="text-[12px]">⇄</span>
+                    </span>
+                  </button>
+                </div>
+
+                <!-- Compass Box -->
+                <div class="bg-white/95 p-2 rounded-lg shadow-xs flex flex-col justify-between cursor-pointer active:scale-98 transition-transform group" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 7px 5px 8px 4px;" onclick="window.openFeatureNotice('Compass Box (Step 3.5 Arsenal)')">
+                  <div class="flex items-start justify-between">
+                    <div class="w-6 h-6 rounded bg-teal-100 text-teal-800 flex items-center justify-center border border-teal-300/60">
+                      <span class="material-symbols-outlined text-[15px]">hardware</span>
+                    </div>
+                    <span class="bg-surface-container-high text-on-surface-variant font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive;">4/6 PENS</span>
+                  </div>
+                  <div class="mt-1">
+                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Compass Box</h4>
+                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;">Camlin box, refills & grip tape.</p>
+                  </div>
+                  <button class="mt-1.5 w-full py-1 rounded text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 active:translate-y-1 transition-transform cursor-pointer text-teal-800" style="font-family: 'Permanent Marker', cursive; background-color: rgba(255, 255, 255, 0.5); background-image: repeating-linear-gradient(135deg, rgba(17, 94, 89, 0.08) 0px, rgba(17, 94, 89, 0.08) 1.5px, transparent 1.5px, transparent 5px); border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(30, 41, 59) 1.5px 1.5px 0px;">
+                    <span class="flex items-center gap-1">
+                      <span>OPEN</span>
+                      <span>🧰</span>
+                    </span>
+                  </button>
+                </div>
+
+                <!-- Trophy Rack -->
+                <div class="bg-white/95 p-2 rounded-lg shadow-xs flex flex-col justify-between cursor-pointer active:scale-98 transition-transform group" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 4px 7px 5px 8px;" onclick="window.openFeatureNotice('Trophy Rack (Step 3.9 Achievements)')">
+                  <div class="flex items-start justify-between">
+                    <div class="w-6 h-6 rounded bg-rose-100 text-tertiary flex items-center justify-center border border-rose-300/60">
+                      <span class="material-symbols-outlined text-[15px]">emoji_events</span>
+                    </div>
+                    <span class="bg-tertiary-fixed text-on-tertiary-fixed font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive;">9/16 CUPS</span>
+                  </div>
+                  <div class="mt-1">
+                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Trophy Rack</h4>
+                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;">Bench King Cup & 16 retro honors.</p>
+                  </div>
+                  <button class="mt-1.5 w-full py-1 rounded text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 active:translate-y-1 transition-transform cursor-pointer text-tertiary" style="font-family: 'Permanent Marker', cursive; background-color: rgba(255, 255, 255, 0.5); background-image: repeating-linear-gradient(135deg, rgba(185, 28, 28, 0.08) 0px, rgba(185, 28, 28, 0.08) 1.5px, transparent 1.5px, transparent 5px); border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(30, 41, 59) 1.5px 1.5px 0px;">
+                    <span class="flex items-center gap-1">
+                      <span>VIEW</span>
+                      <span>🎖️</span>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Handwritten Golden Rule Footer matching Screen 18 -->
+        <div class="relative z-10 text-center mt-auto pb-1">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container rounded-full text-secondary font-label-md shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
+            <span class="material-symbols-outlined text-xs text-secondary">edit</span>
+            <span class="text-[#0038a8] text-[13px] font-bold tracking-wide -rotate-1 inline-block" style="font-family: Caveat, cursive; letter-spacing: 0.015em;">Rule #1: Desk se neeche gira pen out maana jayega! No elbow pushing!</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
   <script>
-    // Step 3.2: Splash Screen Lifecycle & Player Profile Sync
-    (function initSplashScreen() {
+    // Step 3.2 & Step 3.3: Splash Screen & Main Menu Hub Lifecycle
+    (function initUIOrchestrator() {
       const splashOverlay = document.getElementById('splash-screen-overlay');
+      const menuOverlay = document.getElementById('main-menu-overlay');
       const enterBtn = document.getElementById('enter-classroom-btn');
       const nameInput = document.getElementById('student-name-input');
+
+      // Global navigation helpers
+      window.showMainMenu = function() {
+        if (!menuOverlay) return;
+        menuOverlay.style.display = 'flex';
+        requestAnimationFrame(() => {
+          menuOverlay.classList.remove('menu-dismissed');
+        });
+        syncMenuProfile();
+      };
+
+      window.hideMainMenu = function() {
+        if (!menuOverlay) return;
+        menuOverlay.classList.add('menu-dismissed');
+        setTimeout(() => {
+          menuOverlay.style.display = 'none';
+        }, 380);
+      };
+
+      window.startQuickDuel = function() {
+        if (window.gameEngine) {
+          window.gameEngine.setGameMode('bot');
+        }
+        window.hideMainMenu();
+      };
+
+      window.startStoryMode = function() {
+        if (window.gameEngine) {
+          window.gameEngine.setGameMode('bot');
+        }
+        window.hideMainMenu();
+      };
+
+      window.startPassAndPlay = function() {
+        if (window.gameEngine) {
+          window.gameEngine.setGameMode('pass_and_play');
+        }
+        window.hideMainMenu();
+      };
+
+      window.openFeatureNotice = function(featureName) {
+        alert(`🔔 ${featureName}\nMaster Development Plan ke agle steps me unlock hoga!`);
+      };
+
+      window.toggleSettingsAlert = function() {
+        alert("⚙️ CLASSROOM SETTINGS\n• Sound & SFX: ON (Active)\n• Match Format: Best of 5 (Target 3)\n• Physics: Rapier 120Hz Desk (Locked)");
+      };
+
+      function syncMenuProfile() {
+        try {
+          const rawSave = localStorage.getItem('penfight_save_v2');
+          if (rawSave) {
+            const parsed = JSON.parse(rawSave);
+            const studentName = (parsed && parsed.profile && parsed.profile.name) || "Arjun 'Thunder' Sharma";
+            const nameEl = document.getElementById('menu-student-name');
+            if (nameEl) nameEl.textContent = studentName;
+
+            if (parsed.progression) {
+              const xp = parsed.progression.xp || 380;
+              const xpTextEl = document.getElementById('menu-xp-text');
+              const xpBarEl = document.getElementById('menu-xp-bar');
+              if (xpTextEl) xpTextEl.textContent = `${xp} / 500 XP`;
+              if (xpBarEl) xpBarEl.style.width = `${Math.min(100, Math.round((xp / 500) * 100))}%`;
+            }
+          }
+        } catch(e) {}
+      }
 
       // Hydrate existing saved student name from LocalStorage if available
       try {
@@ -596,6 +936,8 @@
             splashOverlay.classList.add('splash-dismissed');
             setTimeout(() => {
               splashOverlay.style.display = 'none';
+              // Reveal Main Menu Home Screen!
+              window.showMainMenu();
             }, 420);
           }, 120);
         });
@@ -603,6 +945,6 @@
     })();
   </script>
 
-  <script type="module" src="./js/main.js?v=phase3_step2_splash"></script>
+  <script type="module" src="./js/main.js?v=phase3_step3_menu"></script>
 </body>
 </html>
