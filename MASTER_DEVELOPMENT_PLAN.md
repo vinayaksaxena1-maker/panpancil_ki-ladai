@@ -252,6 +252,14 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 *(Current Status: ⚪ 0% — Execution starts after Phase 2 Gate Approval)*
 *Goal: Har screen ko ek-ek karke banana aur turant 100% test & check (verifiable receipt) karna, jisse UI me koi bhi visual flaw na rahe.*
 
+> [!IMPORTANT]
+> **Human-in-the-Loop Stitch Workflow Protocol (User-AI Collaborative Pipeline):**
+> Phase 3 ke har step (Step 3.1 se 3.9) me following 4-step collaborative process lagu hoga:
+> 1. **Prompt Delivery by AI:** AI pehle us specific screen ke liye production-ready, design-token mapped **Stitch AI Master Prompt** generate karke user ko chat me dega.
+> 2. **Design Generation by User:** User us prompt ko Stitch AI platform me enter karke desired 90s nostalgia layout aur visual assets generate/select karega.
+> 3. **UI Integration by AI:** User ke code/assets share karne aur approval dene ke baad hi AI use game ke UI layer me wire karega.
+> 4. **Step-by-Step Mobile Verification:** Har screen ko 360x800 portrait viewport par test karke user se explicit approval lene ke baad hi agli screen ka prompt diya jayega.
+
 - [ ] **Step 3.1: Design Tokens & Foundations (`DESIGN.md` + Base CSS):**
   - **Kya banega:** 90s Classroom color palette (Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, Ink Blue `#1A365D`, Margin Red `#C53030`), retro school typography, tactile buttons, aur paper grain texture.
   - *Verification Receipt:* 360x800 mobile screen par font readable ho, tactile click bounce smooth ho, aur color contrast WCAG pass ho.
