@@ -83,9 +83,9 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🟢 **100% Complete** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | None (Ready for User Gate 1 Approval) |
-| **Phase 2** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Reset for Pure Sequencing)** | Reset to zero | Splash, Admission Form, Main Menu Hero screen, 11-Level Merit Ladder UI, Compass Box Pen Selector UI, 16-Badge Trophy Cabinet, Profile Report Card |
-| **Phase 3** | Audio Synthesizer & SFX | ⚪ **0% (Reset to Zero)** | Reset to zero (Assets preserved in `assets/audio/`, execution halted until Gate 2 approval) | Step 3.1 synth, Step 3.2 SFX slotting, UI clicks, victory bell, level-up sound, chatter loop |
-| **Phase 4** | Rules, Bot AI & Progression | ⚪ **0% (Reset to Zero)** | Reset to zero (Logic quarantined until Gate 3 approval) | Full 16 Badges ledger, 7 Ranking Tiers, 11 Levels progression, Dynamic pen swapping, Tournament rules |
+| **Phase 2** | Rules, Match Loop & Bot AI | ⚪ **0% (Next Active Phase)** | Physics sandbox ready | Step 2.1 Match Loop (Best of 5), Step 2.2 Mathematical Bot AI (Easy/Norm/Hard), Step 2.3 Local 2-Player Pass & Play, Step 2.4 Progression & XP Engine |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Step 3.1 DESIGN.md, Step 3.2 Batch A (Splash/Menu), Step 3.3 Batch B (Profile/Compass Box), Step 3.4 Batch C (HUD/Scoreboard/Setup), Step 3.5 Batch D (Cabinet/Settings) |
+| **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Flutter Android APK Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Flutter webview container, asset bundling, Android back button, release APK build |
 
 ---
@@ -96,12 +96,12 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 flowchart TD
     G0[Gate 0: Architecture Setup] --> P1[Phase 1: 3D Physics & Flick Engine]
     P1 --> G1{Approval Gate 1: Core Fun & Physics}
-    G1 -- Approved --> P2[Phase 2: Stitch AI 2D Design System & Screens]
-    P2 --> G2{Approval Gate 2: UI Visuals & Layouts}
-    G2 -- Approved --> P3[Phase 3: Web Audio Synth & Sound FX]
-    P3 --> G3{Approval Gate 3: Audio & SFX}
-    G3 -- Approved --> P4[Phase 4: Game Loop, Bot AI & Progression Engine]
-    P4 --> G4{Approval Gate 4: Match Rules & Save}
+    G1 -- Approved --> P2[Phase 2: Rules, Match Loop & Bot AI]
+    P2 --> G2{Approval Gate 2: Match Playability & AI}
+    G2 -- Approved --> P3[Phase 3: Stitch AI 2D Design System & Screens]
+    P3 --> G3{Approval Gate 3: UI Visuals & HUD}
+    G3 -- Approved --> P4[Phase 4: Web Audio Synth & Sound FX]
+    P4 --> G4{Approval Gate 4: Sound Feedback}
     G4 -- Approved --> P5[Phase 5: Flutter Android APK Packaging & QA]
     P5 --> G5[Final Acceptance]
 ```
@@ -133,20 +133,20 @@ Architecture me Three.js + Rapier WASM ko Flutter Android container (`webview_fl
 Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase me aane the aur AI ne kahan confusion kiya:
 
 ### 1. 🎚️ Easy / Normal / Hard (Difficulty Toggle)
-* **Visual UI (Kahan dikhega):** **Phase 2 (Step 2.2 / 2.4 — Match Setup Screen)**
-  * Stitch AI jab match setup screen banayega, wahan player friendly classmate card ke sath **Easy / Normal / Hard** chunega.
-* **AI Logic & Algorithm (Code me kahan chalega):** **Phase 4 (Step 4.2 — Mathematical PCOpponentController)**
+* **AI Logic & Kinematics (Engine me kahan chalega):** **Phase 2 (Step 2.2 — Mathematical PCOpponentController)**
   * *Easy:* High aim error spread ($\pm 16^\circ$), weak punch speed.
   * *Normal:* Realistic human error spread ($\pm 6.5^\circ$), balanced approach.
   * *Hard:* Sharp aim ($\pm 3^\circ$), high speed, aur 60% spin cut-shots.
-* **Phase 1 Resolution & Clean-up (Sahi Kiya Gaya):** Phase 1 ke sandbox se Easy/Norm/Hard buttons aur out-of-order difficulty logic ko 100% hata diya gaya hai. Phase 1 ab sirf pure 3D physics verification ke liye hai. Yeh feature apne nirdharit Phase 2 (UI Setup) aur Phase 4 (Bot Kinematics) me hi implement hoga.
+* **Visual UI (Kahan dikhega):** **Phase 3 (Step 3.4 — Match Setup Screen)**
+  * Stitch AI jab match setup screen banayega, wahan player friendly classmate card ke sath **Easy / Normal / Hard** chunega.
+* **Phase 1 Resolution & Clean-up (Sahi Kiya Gaya):** Phase 1 ke sandbox se Easy/Norm/Hard buttons aur out-of-order difficulty logic ko 100% hata diya gaya hai. Phase 1 ab sirf pure 3D physics verification ke liye hai. Yeh feature apne nirdharit Phase 2 (Bot Kinematics) aur Phase 3 (UI Setup) me implement hoga.
 
 ### 2. 📋 Score Card (Scoreboard & Match Result)
-* **Visual 2D HUD & Result Modal (Kahan dikhega):** **Phase 2 (Step 2.4 — HUD & Gameplay Overlays)**
-  * Transparent top scoreboard (P1 avatar vs Opponent avatar, round indicators, selected pen names) aur Match Win/Loss certificate modal Stitch AI banayega.
-* **Match Rules & Score Counting (Code me kahan chalega):** **Phase 4 (Step 4.1 — Match Loop State Machine)**
+* **Match Rules & Score Counting (State Machine):** **Phase 2 (Step 2.1 — Match Loop State Machine)**
   * Best of 5 format (first to 3 wins), double fall = re-flick, round won logic, aur result save.
-* **Phase 1 Resolution & Clean-up (Sahi Kiya Gaya):** 3D blackboard aur HUD se Best-of-5 scoring, player/opponent KO counters, aur result modals ko 100% decouple aur remove kar diya gaya hai. Blackboard par ab sirf pure physics duel chalk info aati hai. Scoreboard ka poora visual card Phase 2 (Step 2.4) aur round-counting logic Phase 4 (Step 4.1) me banegi.
+* **Visual 2D HUD & Result Modal (Kahan dikhega):** **Phase 3 (Step 3.4 — HUD & Gameplay Overlays)**
+  * Transparent top scoreboard (P1 avatar vs Opponent avatar, round indicators, selected pen names) aur Match Win/Loss certificate modal Stitch AI banayega.
+* **Phase 1 Resolution & Clean-up (Sahi Kiya Gaya):** 3D blackboard aur HUD se Best-of-5 scoring, player/opponent KO counters, aur result modals ko 100% decouple aur remove kar diya gaya hai. Blackboard par ab sirf pure physics duel chalk info aati hai. Scoreboard ka poora visual card Phase 3 (Step 3.4) aur round-counting logic Phase 2 (Step 2.1) me banegi.
 
 ---
 
@@ -178,50 +178,61 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 
 ---
 
-### 🎨 Phase 2: Stitch AI 2D UI & Nostalgia Visual System
-*(Current Status: ⚪ 0% — Ready to start after Gate 1 Approval)*
-*Goal: Desi Indian School Nostalgia UI layers banwana using tumhari existing images.*
+### 🧠 Phase 2: Rules, Match Loop & Bot AI
+*(Current Status: ⚪ 0% — Next Active Phase after Gate 1 Approval)*
+*Goal: Turn system, Best-of-5 rounds, mathematical Bot AI, 2-player Pass & Play, aur 11-level XP progression.*
 
-- [ ] **Step 2.1:** Author `DESIGN.md` (Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching nostalgic 90s school themes).
-- [ ] **Step 2.2:** Batch A (Core Flow Screens):
+- [ ] **Step 2.1:** Match Loop State Machine:
+  - Turn order flow (Player turn ➔ Opponent turn ➔ Resolution).
+  - Best-of-5 format (first to 3 round wins).
+  - Double fall = re-flick, round winner score increment, match completion trigger.
+- [ ] **Step 2.2:** Mathematical `PCOpponentController`:
+  - Raycasting target vector $\vec{D}_{\text{target}}$ from Bot pen to Player pen.
+  - 3 Difficulty Tiers:
+    - *Easy:* High angular spread ($\pm 16^\circ$), weak force, low tactical awareness.
+    - *Normal:* Human-like spread ($\pm 6.5^\circ$), balanced force calculation.
+    - *Hard:* Razor aim ($\pm 3^\circ$), edge cut-shots, aggressive torque spin.
+- [ ] **Step 2.3:** Local 2-Player "Pass & Play" Engine:
+  - Ek hi phone par 2 dost khel sakein bina internet ke.
+  - Player 1 (Bottom desk) aur Player 2 (Top desk) alternate turns with 180° flick interaction.
+- [ ] **Step 2.4:** Local Persistence & Progression Engine (`localStorage`):
+  - 11-Level XP ladder ($0 \rightarrow 3250$ XP) with match win/loss XP awards.
+  - 16 Badges ledger with automatic unlock triggers.
+  - Dynamic pen unlock system based on XP level.
+- 🎯 **APPROVAL GATE 2:** Sandbox me Bot ke khilaf poora Best-of-5 match khel kar test karna. "Kya Bot realistic shots le raha hai aur round score/winner properly determine ho raha hai?"
+
+---
+
+### 🎨 Phase 3: Stitch AI 2D UI & Nostalgia Visual System
+*(Current Status: ⚪ 0% — Execution starts after Phase 2 Gate Approval)*
+*Goal: Desi Indian School Nostalgia UI layers banwana using tumhari existing images, aur unhe Phase 2 ke live engine se wire karna.*
+
+- [ ] **Step 3.1:** Author `DESIGN.md` (Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching nostalgic 90s school themes).
+- [ ] **Step 3.2:** Batch A (Core Flow Screens):
   - Splash screen + First Launch onboarding / Admission Form.
-  - Main Menu Home Screen (with hero desk duel illustration).
-- [ ] **Step 2.3:** Batch B (Identity, Collection & Levels):
-  - Player Profile report card & 11-Level Merit Ladder visual journey.
+  - Main Menu Home Screen (with hero desk duel illustration, Mode selection: Story / Pass & Play / Practice).
+- [ ] **Step 3.3:** Batch B (Identity, Collection & Levels):
+  - Player Profile report card & 11-Level Merit Ladder visual journey ($0 \rightarrow 3250$ XP).
   - Pen Collection Tin Compass Box Screen (6 pen slots, stat bars, equip action).
-- [ ] **Step 2.4:** Batch C (HUD, Match Setup & Score Overlays):
-  - Transparent in-game HUD (Top Scoreboard, turn badge, power meter).
+- [ ] **Step 3.4:** Batch C (HUD, Match Setup & Score Overlays):
+  - Transparent in-game HUD (Top Scoreboard connected to Phase 2 state machine, turn badge, power meter).
   - Play vs PC Match Setup (Classmate card, Easy/Normal/Hard selector).
   - Pause menu + Match Win/Loss result certificate.
-- [ ] **Step 2.5:** Batch D (Cabinet & Settings):
+- [ ] **Step 3.5:** Batch D (Cabinet & Settings):
   - 16-Badge Trophy Cabinet shelf (monochrome locked vs enamel pin earned states).
   - 7 Ranking tiers details + Offline Settings.
-- 🎯 **APPROVAL GATE 2:** All 11 screens visually inspected. "Kya theme 90s classroom jaisi hai aur HUD transparent Three.js canvas ke sath match kar raha hai?"
+- 🎯 **APPROVAL GATE 3:** All 11 screens visually inspected. "Kya theme 90s classroom jaisi hai aur HUD transparent Three.js canvas ke sath match kar raha hai?"
 
 ---
 
-### 🔊 Phase 3: Audio Synthesis & Sound Effects
-*(Current Status: ⚪ Reset to 0% — Execution halted until Phase 1 & 2 pass Approval Gates)*
-*Goal: Zero-latency tactile feedback without broken remote URLs.*
+### 🔊 Phase 4: Audio Synthesis & Sound Effects
+*(Current Status: ⚪ Reset to 0% — Execution starts after Phase 3 Gate Approval)*
+*Goal: Zero-latency tactile feedback without broken remote URLs, connecting sound triggers to live Phase 2 match events.*
 
-- [ ] **Step 3.1:** 20-line standalone Web Audio API synthesizer for instant mechanical audio (`synth_flick`, `synth_clack`, `synth_thud`).
-- [ ] **Step 3.2:** Local assets slotting for the 10 core sounds (`assets/audio/`: flick, impact, slide, fall, UI click, round win, round loss, victory bell, level up, badge unlock).
-- [ ] **Step 3.3:** Sound manager with audio toggles, ambient classroom chatter loop, & fallback.
-- 🎯 **APPROVAL GATE 3:** Sound triggers verified during flick, collision, and button clicks.
-
----
-
-### 🧠 Phase 4: Game Rules, PC Opponent & Local Persistence
-*(Current Status: ⚪ Reset to 0% — Execution halted until Phase 3 passes Approval Gate)*
-*Goal: Rule-based classmate AI, match flow, 11-level progression, and 16 badges.*
-
-- [ ] **Step 4.1:** Match Loop State Machine (Best of 5 rounds, first to 3 wins, double fall re-flick, round winner score increment).
-- [ ] **Step 4.2:** Mathematical `PCOpponentController` (Easy spread, Normal human aim, Hard tactical aggression & spin shots).
-- [ ] **Step 4.3:** Local Persistence Engine (`localStorage` / IndexedDB):
-  - 11-Level progression & XP calculation.
-  - 16 Badges unlock conditions ledger.
-  - 7 Ranking tiers calculation & dynamic pen swapping on desk.
-- 🎯 **APPROVAL GATE 4:** Full 3-round match played against PC. Results screen properly updates XP and badges without duplicates.
+- [ ] **Step 4.1:** 20-line standalone Web Audio API synthesizer for instant mechanical audio (`synth_flick`, `synth_clack`, `synth_thud`).
+- [ ] **Step 4.2:** Local assets slotting for the 10 core sounds (`assets/audio/`: flick, impact, slide, fall, UI click, round win, round loss, victory bell, level up, badge unlock).
+- [ ] **Step 4.3:** Sound manager with audio toggles, ambient classroom chatter loop, & fallback.
+- 🎯 **APPROVAL GATE 4:** Sound triggers verified during flick, collision, button clicks, round win, and match victory.
 
 ---
 
