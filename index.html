@@ -5,6 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
   <title>Pen Fight: Desk Wars — Phase 1 Prototype</title>
   <link rel="stylesheet" href="./css/base.css?v=p3_s1">
+  <link rel="stylesheet" href="./css/splash.css?v=p3_s2">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed": "#410002",
+            "on-surface": "#1d1c14",
+            "on-primary-fixed": "#001453",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#323128",
+            "surface-dim": "#dedacd",
+            "surface-bright": "#fef9ec",
+            "on-tertiary-fixed-variant": "#93000b",
+            "on-secondary-fixed-variant": "#663c26",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f5f0e4",
+            "error": "#ba1a1a",
+            "on-primary-container": "#a8b8ff",
+            "tertiary-fixed": "#ffdad6",
+            "primary-fixed": "#dde1ff",
+            "tertiary-fixed-dim": "#ffb4ab",
+            "surface": "#fef9ec",
+            "on-tertiary-container": "#ffa399",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "primary-container": "#1e40af",
+            "on-secondary-fixed": "#321302",
+            "on-secondary-container": "#7a4d36",
+            "primary-fixed-dim": "#b8c4ff",
+            "surface-container-low": "#f8f3e6",
+            "surface-tint": "#3755c3",
+            "inverse-primary": "#b8c4ff",
+            "outline-variant": "#c4c5d5",
+            "on-primary-fixed-variant": "#173bab",
+            "background": "#fef9ec",
+            "surface-container": "#f2eee1",
+            "on-secondary": "#ffffff",
+            "secondary-container": "#fec2a3",
+            "surface-variant": "#e7e2d6",
+            "outline": "#757684",
+            "on-tertiary": "#ffffff",
+            "on-background": "#1d1c14",
+            "tertiary": "#700006",
+            "tertiary-container": "#9b000d",
+            "secondary-fixed": "#ffdbcb",
+            "primary": "#00288e",
+            "secondary-fixed-dim": "#f5b99c",
+            "on-surface-variant": "#444653",
+            "error-container": "#ffdad6",
+            "surface-container-high": "#ede8db",
+            "secondary": "#81533b",
+            "surface-container-highest": "#e7e2d6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "margin-lg": "1.5rem",
+            "space-lg": "1.5rem",
+            "gutter": "1rem",
+            "space-xl": "2rem",
+            "gutter-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Nunito Sans"],
+            "headline-lg": ["Nunito Sans"],
+            "body-lg": ["Nunito Sans"],
+            "body-sm": ["Nunito Sans"],
+            "display-lg": ["Nunito Sans"],
+            "body-md": ["Nunito Sans"],
+            "label-sm": ["Nunito Sans"],
+            "headline-md": ["Nunito Sans"],
+            "label-md": ["Nunito Sans"],
+            "label-lg": ["Nunito Sans"],
+            "display-lg-mobile": ["Nunito Sans"]
+          }
+        }
+      }
+    };
+  </script>
   <style>
     * {
       box-sizing: border-box;
@@ -249,6 +339,270 @@
     </div>
   </div>
 
-  <script type="module" src="./js/main.js?v=phase2_step5_storage"></script>
+  <!-- Phase 3 Step 3.2: Splash Screen & Student ID Card Overlay (Stitch Design) -->
+  <div id="splash-screen-overlay">
+    <main class="flex-1 flex flex-col relative w-full bg-surface-container-low pt-safe pb-safe min-h-screen" style="background-color: rgb(252, 250, 244);">
+      <div class="absolute inset-0 pointer-events-none opacity-40 bg-[linear-gradient(to_right,#b8c4ff_1px,transparent_1px),linear-gradient(to_bottom,#b8c4ff_1px,transparent_1px)] bg-[size:16px_16px]"></div>
+      
+      <!-- Hand-drawn notebook triangle doodles in outer background -->
+      <div class="absolute top-24 -left-1 pointer-events-none opacity-35 text-secondary select-none z-0">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" class="transform -rotate-12">
+          <polygon points="28,6 50,46 6,46" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 1" opacity="0.8"></polygon>
+          <polygon points="28,14 42,42 14,42" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"></polygon>
+          <line x1="28" y1="6" x2="28" y2="46" stroke="currentColor" stroke-width="0.8" stroke-dasharray="3 3" opacity="0.4"></line>
+        </svg>
+      </div>
+      <div class="absolute bottom-28 -right-2 pointer-events-none opacity-35 text-primary select-none z-0">
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" class="transform rotate-12">
+          <polygon points="10,8 42,20 18,42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></polygon>
+          <circle cx="22" cy="22" r="5" stroke="currentColor" stroke-width="1" stroke-dasharray="2 2" opacity="0.6"></circle>
+        </svg>
+      </div>
+
+      <div class="flex flex-col w-full relative px-margin pb-space-lg select-none flex-1 max-w-[420px] mx-auto">
+        <!-- Ambient Compass Scratches & Desk Geometry Accents -->
+        <div class="absolute top-2 right-4 pointer-events-none opacity-20 text-secondary">
+          <svg fill="none" height="64" stroke="currentColor" stroke-width="1.5" viewBox="0 0 100 100" width="64">
+            <circle cx="50" cy="50" r="42" stroke-dasharray="4 3"></circle>
+            <path d="M50 8 V92 M8 50 H92 M22 22 L78 78"></path>
+          </svg>
+        </div>
+
+        <!-- Top Status Indicator: Period & Desk info -->
+        <header class="relative z-10 flex flex-col items-center mt-space-xs mb-space-sm pt-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
+            <span class="material-symbols-outlined text-base text-secondary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+            <span class="font-label-md text-label-md tracking-wider uppercase font-extrabold text-[12px]">PERIOD: RECESS • BENCH #4</span>
+          </div>
+        </header>
+
+        <!-- App Title & Comic Doodle Typography -->
+        <div class="relative z-10 flex flex-col items-center text-center mb-space-md">
+          <div class="relative inline-flex flex-col items-center select-none py-1">
+            <div class="flex flex-col items-center justify-center">
+              <h1 class="text-[34px] font-extrabold tracking-wider text-[#00288e] uppercase leading-none select-none" style="font-family: 'Permanent Marker', cursive; text-shadow: 2px 2px 0px rgba(184, 196, 255, 0.6);">PEN FIGHT</h1>
+              <div class="mt-1 mb-1.5 px-3 py-0.5 rounded bg-surface-container-high border border-outline-variant/40 shadow-xs flex items-center justify-center">
+                <span class="text-[13px] font-extrabold tracking-[0.22em] text-secondary uppercase leading-none" style="font-family: 'Nunito Sans', sans-serif;">DESK WARS</span>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-3 py-0.5 bg-white/90 border border-outline-variant/30 rounded-full shadow-xs text-on-surface">
+                <span class="font-bold text-[11px] text-[#1e293b] tracking-wide uppercase" style="font-family: 'Patrick Hand', cursive;">Classroom Championship</span>
+                <span class="text-[#64748b] font-extrabold text-[10px] opacity-70">•</span>
+                <span class="font-bold text-[11px] text-[#334155] tracking-wider uppercase" style="font-family: 'Patrick Hand', cursive;">1998 Edition</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Student ID Card Centerpiece (Ruled Graph Paper + Blueprint Card) -->
+        <div class="relative z-10 mb-space-md select-none filter drop-shadow-[0_8px_16px_rgba(40,30,15,0.15)]">
+          <div class="relative overflow-hidden p-3.5 pl-6 border bg-surface-container-lowest border-outline-variant/30" style="clip-path: polygon(10px 0%, 100% 0%, 100% calc(100% - 42px), calc(100% - 42px) 100%, 10px 100%, 7px 97.5%, 11px 95%, 6px 92.5%, 9px 90%, 5px 87.5%, 11px 85%, 7px 82.5%, 10px 80%, 6px 77.5%, 12px 75%, 7px 72.5%, 11px 70%, 5px 67.5%, 10px 65%, 6px 62.5%, 12px 60%, 7px 57.5%, 10px 55%, 5px 52.5%, 11px 50%, 6px 47.5%, 12px 45%, 7px 42.5%, 10px 40%, 6px 37.5%, 11px 35%, 5px 32.5%, 10px 30%, 7px 27.5%, 12px 25%, 6px 22.5%, 10px 20%, 5px 17.5%, 11px 15%, 7px 12.5%, 10px 10%, 6px 7.5%, 11px 5%, 7px 2.5%, 10px 0%); background-color: rgb(255, 255, 255); border-top-right-radius: 0px; border-bottom-left-radius: 4px; box-shadow: rgb(30, 41, 59) 0px 0px 0px 1.5px inset, rgba(30, 41, 59, 0.35) 0px 0px 0px 3px inset, rgb(30, 41, 59) 0px 3px 0px 0px;">
+            <div class="absolute top-0 bottom-0 left-0 w-4 pointer-events-none z-15" style="background: linear-gradient(to right, rgba(235, 230, 218, 0.95) 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%); filter: drop-shadow(rgba(120, 100, 80, 0.25) 1.5px 0px 1px);"></div>
+            <div class="absolute top-0 bottom-0 left-0 w-[2px] pointer-events-none z-20 opacity-80" style="background: repeating-linear-gradient(to bottom, #ffffff 0px, #ffffff 3px, #e2dac9 4px, #ffffff 6px, #f5f0e6 9px);"></div>
+            <div class="absolute inset-0 pointer-events-none" style="background-image: repeating-linear-gradient(transparent 0px, transparent 25px, rgba(96, 165, 250, 0.22) 26px, rgba(96, 165, 250, 0.22) 27px); background-size: 100% 27px;"></div>
+            <div class="absolute top-0 bottom-0 left-8 w-[1.5px] bg-[#dc2626] opacity-90 pointer-events-none z-10"></div>
+            <div class="absolute top-0 bottom-0 left-[35px] w-[1px] bg-[#b91c1c] opacity-35 pointer-events-none"></div>
+            
+            <!-- Fold Corner -->
+            <div class="absolute bottom-0 right-0 w-[42px] h-[42px] pointer-events-none z-20 select-none">
+              <div class="absolute inset-0" style="clip-path: polygon(0 100%, 100% 0, 0 0); background: linear-gradient(135deg, #ede8db 0%, #e7e2d6 45%, #dedacd 75%, #c4c5d5 100%); filter: drop-shadow(-3px -3px 4px rgba(45, 30, 15, 0.28));"></div>
+              <div class="absolute inset-0 pointer-events-none" style="clip-path: polygon(0 100%, 100% 0, 0 0); background-image: repeating-linear-gradient(transparent 0px, transparent 8px, rgba(147, 197, 253, 0.35) 9px, rgba(147, 197, 253, 0.35) 10px); transform: rotate(90deg); opacity: 0.7;"></div>
+              <div class="absolute inset-0 pointer-events-none" style="background: linear-gradient(135deg, transparent 48%, rgba(60, 40, 20, 0.28) 50%, rgba(255, 255, 255, 0.8) 52%, transparent 54%);"></div>
+            </div>
+
+            <div class="relative z-10 pl-6 flex flex-col gap-2.5">
+              <!-- Notebook Index Header -->
+              <div class="flex items-center justify-between border-b border-[#dc2626]/40 pb-1 mb-0.5 select-none">
+                <div class="text-[9px] font-bold text-[#dc2626] tracking-wider uppercase opacity-80" style="font-family: 'Patrick Hand', cursive;">★ CLASSMATE NOTEBOOK INDEX ★</div>
+                <div class="border-2 border-[#dc2626] rounded-xs px-2 py-0.5 bg-white/90 shadow-2xs flex items-center gap-2 text-[10px] text-[#dc2626] font-bold tracking-tight" style="font-family: 'Nunito Sans', sans-serif;">
+                  <div class="flex items-center gap-1">
+                    <span>PAGE:</span>
+                    <span class="text-[#0038a8] font-bold text-[13px]" style="font-family: Caveat, cursive;">01</span>
+                  </div>
+                  <div class="w-[1px] h-3 bg-[#dc2626]/50"></div>
+                  <div class="flex items-center gap-1">
+                    <span>DATE:</span>
+                    <span class="text-[#0038a8] font-bold text-[13px]" style="font-family: Caveat, cursive;">14/08/98</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- School Header & Title -->
+              <div class="flex items-start justify-between border-b border-[#c4c5d5]/40 pb-1.5">
+                <div>
+                  <span class="block tracking-wider uppercase font-bold text-[#b91c1c] text-[12px]" style="font-family: Kalam, cursive; letter-spacing: 0.08em; text-shadow: rgba(185, 28, 28, 0.2) 0.5px 0.5px 0px;">★ SARASWATI VIDYALAYA ★</span>
+                  <h2 class="leading-none tracking-wide font-extrabold text-[#00288e] text-[18px] uppercase" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(0, 40, 142, 0.15) 1px 1px 0px; transform: rotate(-0.5deg); display: inline-block;">STUDENT BATTLE PASS</h2>
+                </div>
+                <div class="text-right pr-1 flex flex-col justify-center">
+                  <div class="text-[11px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">ROLL: <span class="font-bold text-[#0038a8] text-[16px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">#14</span></div>
+                  <div class="text-[11px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">CLASS: <span class="font-bold text-[#0038a8] text-[15px] rotate-1 inline-block" style="font-family: Caveat, cursive;">7th - B</span></div>
+                </div>
+              </div>
+
+              <!-- Student Profile Row: Caricature Photo + Name Input -->
+              <div class="flex gap-2.5 items-center">
+                <div class="relative shrink-0">
+                  <div class="w-16 h-20 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px, rgba(15, 23, 42, 0.25) 0px 0px 0px 1px inset; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;">
+                    <img class="w-full h-full object-cover" alt="Student avatar" src="./assets/student_avatar.jpg">
+                    <div class="absolute bottom-0 inset-x-0 bg-surface-container/90 py-0.5 text-center">
+                      <span class="text-[9px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
+                    </div>
+                  </div>
+                  <div class="absolute -bottom-1.5 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[8px] font-bold" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED</div>
+                </div>
+
+                <div class="flex-1 min-w-0 flex flex-col gap-1">
+                  <label class="block uppercase font-bold tracking-wider text-[#b91c1c] text-[11px]" for="student-name-input" style="font-family: 'Patrick Hand', cursive; letter-spacing: 0.05em;">✎ KHILADI KA NAAM (NAME):</label>
+                  <div class="bg-white/85 backdrop-blur-xs rounded-lg p-1.5 shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgba(30, 41, 59, 0.45) 2px 2px 0px, rgba(30, 41, 59, 0.15) 0px 0px 0px 1px inset; border-radius: 12px 6px 14px 5px / 6px 13px 5px 12px;">
+                    <input aria-label="Student battle name" class="w-full bg-transparent text-[#0038a8] font-bold focus:outline-hidden p-0 m-0 leading-tight text-[20px] tracking-wide" id="student-name-input" style="font-family: 'Caveat', cursive; transform: rotate(-0.8deg);" type="text" value="Arjun 'Thunder' Sharma">
+                    <div class="text-[#64748b] text-xs mt-0.5 flex items-center gap-1">
+                      <span class="material-symbols-outlined text-[13px] text-primary">edit</span>
+                      <span class="font-medium text-[11px]" style="font-family: 'Patrick Hand', cursive;">Tap to sign / edit name</span>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-1.5 items-center mt-0.5">
+                    <div class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed shadow-xs text-[10px] flex items-center gap-1" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 2px;">
+                      <span class="font-bold text-[#b91c1c] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">HOUSE:</span>
+                      <span class="font-bold text-[#0038a8] text-[13px]" style="font-family: Caveat, cursive;">Nehru Red</span>
+                    </div>
+                    <div class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed shadow-xs text-[10px] flex items-center gap-1" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 3px 6px 2px 5px;">
+                      <span class="font-bold text-[#00288e] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">RANK:</span>
+                      <span class="font-bold text-[#0038a8] text-[13px]" style="font-family: Caveat, cursive;">#02 Front Row</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Weapon Blueprint & Stats Box -->
+              <div class="bg-white/80 rounded-lg p-2.5 shadow-xs" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 2px 2.5px 0px, rgba(30, 41, 59, 0.2) 0px 0px 0px 1px inset; border-radius: 14px 6px 12px 8px / 7px 14px 6px 12px;">
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-primary text-base">ink_pen</span>
+                    <span class="font-bold text-[#475569] uppercase tracking-wider text-[11px]" style="font-family: 'Patrick Hand', cursive;">PRIMARY WEAPON:</span>
+                    <span class="font-bold text-[#0038a8] text-[16px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">Reynolds 045 Fine</span>
+                  </div>
+                  <span class="bg-primary text-on-primary font-bold px-2 py-0.5 rounded-full text-[11px] shadow-xs tracking-wide" style="font-family: 'Patrick Hand', cursive;">0.5mm Tip</span>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-2 mb-1.5">
+                  <div class="rounded-md p-1.5 shadow-xs bg-surface-container-lowest" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgba(30, 41, 59, 0.3) 1.5px 1.5px 0px; border-radius: 6px 3px 7px 4px;">
+                    <div class="flex justify-between items-center mb-0.5 text-xs">
+                      <span class="text-[#475569] font-bold text-[10px] uppercase tracking-wider" style="font-family: 'Patrick Hand', cursive;">Speed / Velocity</span>
+                      <span class="text-[#0038a8] font-bold text-[15px]" style="font-family: Caveat, cursive;">+30 km/h</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                      <div class="h-full bg-primary rounded-full" style="width: 72%;"></div>
+                    </div>
+                  </div>
+                  <div class="rounded-md p-1.5 shadow-xs bg-surface-container-lowest" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgba(30, 41, 59, 0.3) 1.5px 1.5px 0px; border-radius: 4px 7px 3px 6px;">
+                    <div class="flex justify-between items-center mb-0.5 text-xs">
+                      <span class="text-[#475569] font-bold text-[10px] uppercase tracking-wider" style="font-family: 'Patrick Hand', cursive;">Table Grip</span>
+                      <span class="text-secondary font-bold text-[15px]" style="font-family: Caveat, cursive;">82%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
+                      <div class="h-full bg-secondary rounded-full" style="width: 82%;"></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-1.5 pt-0.5 text-xs">
+                  <span class="font-bold text-[#475569] uppercase text-[10px] tracking-wider" style="font-family: 'Patrick Hand', cursive;">LOCKED:</span>
+                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-variant/90 text-on-surface-variant font-medium shadow-xs text-[11px]" style="font-family: 'Patrick Hand', cursive; border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 4px;">Trimax Gold 🔒</span>
+                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-variant/90 text-on-surface-variant font-medium shadow-xs text-[11px]" style="font-family: 'Patrick Hand', cursive; border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 4px 6px 3px 5px;">Gripper 🔒</span>
+                </div>
+              </div>
+
+              <!-- Footer Signature -->
+              <div class="pt-1 border-t border-[#dc2626]/30 flex items-center justify-between select-none text-[10px]">
+                <div class="flex items-center gap-1 text-[#64748b] font-medium tracking-wide" style="font-family: 'Patrick Hand', cursive;">
+                  <span>SARASWATI VIDYALAYA</span>
+                  <span class="text-[8px]">•</span>
+                  <span>BENCH #4 OFFICIAL</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-right relative pr-1">
+                  <span class="text-[10px] font-bold text-[#475569] uppercase" style="font-family: 'Patrick Hand', cursive;">Teacher's Sign:</span>
+                  <span class="text-[#b91c1c] text-[10px] font-bold" style="font-family: Caveat, cursive;">14/8/98 ✔️</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Primary Interactive 3D CTA Button -->
+        <div class="relative z-10 w-full mb-space-sm">
+          <button class="relative w-full h-14 bg-white/95 text-[#1e293b] rounded-lg shadow-sm active:translate-y-0.5 transition-transform flex items-center justify-center gap-2 cursor-pointer overflow-hidden border-2 border-[#1e293b] select-none" id="enter-classroom-btn" style="border: 2.5px solid rgb(15, 23, 42); box-shadow: rgb(15, 23, 42) 3.5px 4.5px 0px, rgba(15, 23, 42, 0.45) 0px 0px 0px 1.5px inset; transform: rotate(-0.4deg); border-radius: 255px 15px 225px / 15px 225px 15px 255px;" type="button">
+            <div class="absolute inset-0 pointer-events-none opacity-15" style="background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 1px, transparent 0, transparent 8px);"></div>
+            <div class="absolute inset-x-1 inset-y-0.5 pointer-events-none border border-[#334155]/40 rounded-lg" style="border: 1.5px dashed rgb(15, 23, 42); border-radius: 240px 12px 215px 14px / 14px 215px 12px 240px;"></div>
+            <span class="relative z-10 font-bold uppercase tracking-wide inline-flex items-center gap-2" style="font-family: 'Patrick Hand', cursive; font-size: 22px; color: #0f172a; text-shadow: 0.5px 0.5px 0px rgba(15, 23, 42, 0.35);">
+              <span>ENTER CLASSROOM</span>
+              <span class="text-[22px] font-bold inline-block transform translate-y-0.5" style="font-family: 'Caveat', cursive;">➔</span>
+            </span>
+          </button>
+        </div>
+
+        <!-- Classroom Golden Rule / Nostalgic Footer Note -->
+        <div class="relative z-10 text-center pb-2">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container rounded-full text-secondary font-label-md text-label-md font-bold shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
+            <span class="material-symbols-outlined text-sm">edit</span>
+            <span class="text-[#0038a8] text-base font-bold tracking-wide -rotate-1 inline-block" style="font-family: Caveat, cursive; text-shadow: rgba(0, 56, 168, 0.2) 0.2px 0.2px 0px;">Rule #1: Desk se neeche gira pen out maana jayega!</span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Step 3.2: Splash Screen Lifecycle & Player Profile Sync
+    (function initSplashScreen() {
+      const splashOverlay = document.getElementById('splash-screen-overlay');
+      const enterBtn = document.getElementById('enter-classroom-btn');
+      const nameInput = document.getElementById('student-name-input');
+
+      // Hydrate existing saved student name from LocalStorage if available
+      try {
+        const rawSave = localStorage.getItem('penfight_save_v2');
+        if (rawSave) {
+          const parsed = JSON.parse(rawSave);
+          if (parsed && parsed.profile && parsed.profile.name) {
+            nameInput.value = parsed.profile.name;
+          }
+        }
+      } catch (e) {}
+
+      if (nameInput) {
+        nameInput.addEventListener('focus', function() {
+          this.select();
+        });
+      }
+
+      if (enterBtn && splashOverlay) {
+        enterBtn.addEventListener('click', function() {
+          const chosenName = (nameInput && nameInput.value.trim()) || "Arjun 'Thunder' Sharma";
+          
+          // Persist to game storage
+          if (window.gameEngine && window.gameEngine.storage) {
+            window.gameEngine.storage.save({ profile: { name: chosenName } });
+          } else {
+            try {
+              const prev = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}');
+              prev.profile = prev.profile || {};
+              prev.profile.name = chosenName;
+              localStorage.setItem('penfight_save_v2', JSON.stringify(prev));
+            } catch(e) {}
+          }
+
+          // Button feedback & smooth dismissal
+          enterBtn.style.transform = 'translateY(3px)';
+          setTimeout(() => {
+            splashOverlay.classList.add('splash-dismissed');
+            setTimeout(() => {
+              splashOverlay.style.display = 'none';
+            }, 420);
+          }, 120);
+        });
+      }
+    })();
+  </script>
+
+  <script type="module" src="./js/main.js?v=phase3_step2_splash"></script>
 </body>
 </html>
