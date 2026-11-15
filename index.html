@@ -443,13 +443,14 @@
               <!-- Student Profile Row: Caricature Photo + Name Input -->
               <div class="flex gap-2.5 items-center">
                 <div class="relative shrink-0">
-                  <div class="w-16 h-20 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px, rgba(15, 23, 42, 0.25) 0px 0px 0px 1px inset; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;">
-                    <img class="w-full h-full object-cover" alt="Student avatar" src="./assets/student_avatar.jpg">
-                    <div class="absolute bottom-0 inset-x-0 bg-surface-container/90 py-0.5 text-center">
-                      <span class="text-[9px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
+                  <div id="student-avatar-frame" class="w-16 h-20 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm cursor-pointer active:scale-95 transition-transform" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px, rgba(15, 23, 42, 0.25) 0px 0px 0px 1px inset; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;" title="Tap to switch Boy / Girl Avatar">
+                    <img id="student-avatar-img" class="w-full h-full object-cover transition-opacity duration-200" alt="Student avatar" src="./assets/student_avatar.jpg">
+                    <div class="absolute bottom-0 inset-x-0 bg-surface-container/90 py-0.5 text-center flex items-center justify-center gap-0.5">
+                      <span id="student-avatar-label" class="text-[9px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
+                      <span class="text-[8px] font-bold text-primary">⇄</span>
                     </div>
                   </div>
-                  <div class="absolute -bottom-1.5 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[8px] font-bold" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED</div>
+                  <div class="absolute -bottom-1.5 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[8px] font-bold select-none pointer-events-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED</div>
                 </div>
 
                 <div class="flex-1 min-w-0 flex flex-col gap-1">
@@ -462,13 +463,14 @@
                     </div>
                   </div>
                   <div class="flex flex-wrap gap-1.5 items-center mt-0.5">
-                    <div class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed shadow-xs text-[10px] flex items-center gap-1" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 2px;">
-                      <span class="font-bold text-[#b91c1c] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">HOUSE:</span>
-                      <span class="font-bold text-[#0038a8] text-[13px]" style="font-family: Caveat, cursive;">Nehru Red</span>
+                    <div id="student-house-chip" class="interactive-chip px-2 py-0.5 rounded shadow-xs text-[10px] flex items-center gap-1 select-none" style="border: 1.5px solid #ef4444; background-color: #fee2e2; box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 2px;" title="Tap to switch House">
+                      <span id="student-house-label" class="font-bold text-[#b91c1c] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">HOUSE:</span>
+                      <span id="student-house-val" class="font-bold text-[#b91c1c] text-[13px]" style="font-family: Caveat, cursive;">Nehru Red</span>
+                      <span class="text-[9px] text-[#b91c1c] opacity-70">✎</span>
                     </div>
-                    <div class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed shadow-xs text-[10px] flex items-center gap-1" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 3px 6px 2px 5px;">
+                    <div id="student-rank-badge" class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed shadow-xs text-[10px] flex items-center gap-1 select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 3px 6px 2px 5px;">
                       <span class="font-bold text-[#00288e] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">RANK:</span>
-                      <span class="font-bold text-[#0038a8] text-[13px]" style="font-family: Caveat, cursive;">#02 Front Row</span>
+                      <span id="student-rank-text" class="font-bold text-[#0038a8] text-[13px]" style="font-family: Caveat, cursive;">#02 Front Bencher</span>
                     </div>
                   </div>
                 </div>
@@ -506,10 +508,18 @@
                   </div>
                 </div>
 
-                <div class="flex items-center gap-1.5 pt-0.5 text-xs">
+                <div class="relative flex items-center gap-1.5 pt-0.5 text-xs">
                   <span class="font-bold text-[#475569] uppercase text-[10px] tracking-wider" style="font-family: 'Patrick Hand', cursive;">LOCKED:</span>
-                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-variant/90 text-on-surface-variant font-medium shadow-xs text-[11px]" style="font-family: 'Patrick Hand', cursive; border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 4px;">Trimax Gold 🔒</span>
-                  <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-variant/90 text-on-surface-variant font-medium shadow-xs text-[11px]" style="font-family: 'Patrick Hand', cursive; border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 4px 6px 3px 5px;">Gripper 🔒</span>
+                  
+                  <div class="relative inline-block">
+                    <span id="chip-trimax-lock" class="interactive-chip inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-variant/90 text-on-surface-variant font-medium shadow-xs text-[11px]" style="font-family: 'Patrick Hand', cursive; border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 4px;">Trimax Gold 🔒</span>
+                    <div id="tooltip-trimax" class="pencil-tooltip-box">🔒 Beat Stage 3 (Monitor) to Unlock!</div>
+                  </div>
+
+                  <div class="relative inline-block">
+                    <span id="chip-gripper-lock" class="interactive-chip inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-variant/90 text-on-surface-variant font-medium shadow-xs text-[11px]" style="font-family: 'Patrick Hand', cursive; border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 4px 6px 3px 5px;">Gripper 🔒</span>
+                    <div id="tooltip-gripper" class="pencil-tooltip-box">🔒 Reach Stage 5 (Class 7-C) to Unlock!</div>
+                  </div>
                 </div>
               </div>
 
@@ -623,9 +633,9 @@
               <div class="flex gap-2.5 items-center">
                 <div class="relative shrink-0">
                   <div class="w-14 h-16 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm border border-outline-variant/30" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;">
-                    <img class="w-full h-full object-cover" alt="Student avatar" src="./assets/student_avatar.jpg">
+                    <img id="menu-student-avatar" class="w-full h-full object-cover" alt="Student avatar" src="./assets/student_avatar.jpg">
                     <div class="absolute bottom-0 inset-x-0 bg-surface-container/90 py-0.5 text-center">
-                      <span class="text-[8px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
+                      <span id="menu-avatar-label" class="text-[8px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
                     </div>
                   </div>
                   <div class="absolute -bottom-1 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[7px] font-bold border border-outline-variant/30" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED</div>
@@ -634,7 +644,7 @@
                 <div class="flex-1 min-w-0 flex flex-col gap-1">
                   <div class="flex items-center justify-between">
                     <span class="font-bold uppercase tracking-wider text-[#b91c1c] text-[10px]" style="font-family: 'Patrick Hand', cursive;">✎ KHILADI KA NAAM:</span>
-                    <span class="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed text-[9px] font-bold border border-outline-variant/20" style="border: 1.2px solid rgb(30, 41, 59); border-radius: 4px;">NEHRU RED</span>
+                    <span id="menu-house-badge" class="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed text-[9px] font-bold border border-outline-variant/20 uppercase" style="border: 1.2px solid rgb(30, 41, 59); border-radius: 4px;">NEHRU RED</span>
                   </div>
                   <div id="menu-student-name" class="text-[#0038a8] font-bold text-[19px] leading-tight truncate" style="font-family: Caveat, cursive; transform: rotate(-0.5deg); text-shadow: rgba(0, 56, 168, 0.4) 0.5px 0.5px 1px, rgba(30, 41, 59, 0.3) 0.2px 0px 0.5px; letter-spacing: 0.02em;">
                     Arjun 'Thunder' Sharma
@@ -877,6 +887,145 @@
         alert("⚙️ CLASSROOM SETTINGS\n• Sound & SFX: ON (Active)\n• Match Format: Best of 5 (Target 3)\n• Physics: Rapier 120Hz Desk (Locked)");
       };
 
+      // Step 3.2 Page 1 Interactive Enhancements (House, Tooltip, Avatar, Rank)
+      const HOUSES = [
+        { name: "Nehru Red", labelColor: "#b91c1c", valColor: "#b91c1c", bg: "#fee2e2", border: "#ef4444" },
+        { name: "Gandhi Green", labelColor: "#15803d", valColor: "#15803d", bg: "#dcfce7", border: "#22c55e" },
+        { name: "Tagore Blue", labelColor: "#1d4ed8", valColor: "#1d4ed8", bg: "#dbeafe", border: "#3b82f6" },
+        { name: "Shastri Yellow", labelColor: "#a16207", valColor: "#a16207", bg: "#fef9c3", border: "#eab308" }
+      ];
+      let currentHouseIndex = 0;
+      let currentAvatar = "boy";
+
+      const houseChip = document.getElementById('student-house-chip');
+      const houseLabel = document.getElementById('student-house-label');
+      const houseVal = document.getElementById('student-house-val');
+      const avatarFrame = document.getElementById('student-avatar-frame');
+      const avatarImg = document.getElementById('student-avatar-img');
+      const avatarLabel = document.getElementById('student-avatar-label');
+      const rankText = document.getElementById('student-rank-text');
+
+      const chipTrimax = document.getElementById('chip-trimax-lock');
+      const tooltipTrimax = document.getElementById('tooltip-trimax');
+      const chipGripper = document.getElementById('chip-gripper-lock');
+      const tooltipGripper = document.getElementById('tooltip-gripper');
+
+      function calculateRank(xp = 0) {
+        if (xp < 100) return "#01 Naya Admission";
+        if (xp < 250) return "#02 Front Bencher";
+        if (xp < 450) return "#03 Notebook Scribbler";
+        if (xp < 700) return "#04 Middle Row Rival";
+        if (xp < 1050) return "#05 Lunch Break Champ";
+        if (xp < 1500) return "#06 Section 7-A Topper";
+        if (xp < 2050) return "#07 Last Bench Specialist";
+        if (xp < 2700) return "#08 Senior Challenger";
+        if (xp < 3450) return "#09 Trimax Veteran";
+        if (xp < 4300) return "#10 Corridor Master";
+        return "#11 School Legend";
+      }
+
+      function applyHouse(houseName) {
+        const foundIdx = HOUSES.findIndex(h => h.name === houseName);
+        if (foundIdx !== -1) currentHouseIndex = foundIdx;
+        const h = HOUSES[currentHouseIndex];
+        if (houseChip && houseLabel && houseVal) {
+          houseChip.style.backgroundColor = h.bg;
+          houseChip.style.borderColor = h.border;
+          houseLabel.style.color = h.labelColor;
+          houseVal.style.color = h.valColor;
+          houseVal.textContent = h.name;
+        }
+      }
+
+      function applyAvatar(avatarType) {
+        currentAvatar = avatarType === 'girl' ? 'girl' : 'boy';
+        if (avatarImg && avatarLabel) {
+          if (currentAvatar === 'girl') {
+            avatarImg.src = './assets/student_avatar_girl.jpg';
+            avatarLabel.textContent = 'KHILADI ♀';
+          } else {
+            avatarImg.src = './assets/student_avatar.jpg';
+            avatarLabel.textContent = 'KHILADI ♂';
+          }
+        }
+      }
+
+      // 1. House Selector Click
+      if (houseChip) {
+        houseChip.addEventListener('click', function() {
+          currentHouseIndex = (currentHouseIndex + 1) % HOUSES.length;
+          const h = HOUSES[currentHouseIndex];
+          applyHouse(h.name);
+          saveProfilePartial({ house: h.name });
+        });
+      }
+
+      // 2. Avatar Toggle Click
+      if (avatarFrame) {
+        avatarFrame.addEventListener('click', function() {
+          const nextAvatar = currentAvatar === 'boy' ? 'girl' : 'boy';
+          // Name adaptation if using default preset
+          if (nameInput) {
+            const currentName = nameInput.value.trim();
+            if (nextAvatar === 'girl' && currentName === "Arjun 'Thunder' Sharma") {
+              nameInput.value = "Ananya 'Spark' Verma";
+            } else if (nextAvatar === 'boy' && currentName === "Ananya 'Spark' Verma") {
+              nameInput.value = "Arjun 'Thunder' Sharma";
+            }
+          }
+          applyAvatar(nextAvatar);
+          saveProfilePartial({ avatar: nextAvatar, name: nameInput ? nameInput.value.trim() : undefined });
+        });
+      }
+
+      // 3. Locked Arsenal Tooltip Popups
+      let trimaxTimer = null;
+      let gripperTimer = null;
+
+      if (chipTrimax && tooltipTrimax) {
+        chipTrimax.addEventListener('click', function(e) {
+          e.stopPropagation();
+          clearTimeout(trimaxTimer);
+          tooltipTrimax.classList.toggle('tooltip-visible');
+          if (tooltipTrimax.classList.contains('tooltip-visible')) {
+            trimaxTimer = setTimeout(() => {
+              tooltipTrimax.classList.remove('tooltip-visible');
+            }, 2400);
+          }
+        });
+      }
+
+      if (chipGripper && tooltipGripper) {
+        chipGripper.addEventListener('click', function(e) {
+          e.stopPropagation();
+          clearTimeout(gripperTimer);
+          tooltipGripper.classList.toggle('tooltip-visible');
+          if (tooltipGripper.classList.contains('tooltip-visible')) {
+            gripperTimer = setTimeout(() => {
+              tooltipGripper.classList.remove('tooltip-visible');
+            }, 2400);
+          }
+        });
+      }
+
+      // Close tooltips on outside tap
+      document.addEventListener('click', function() {
+        if (tooltipTrimax) tooltipTrimax.classList.remove('tooltip-visible');
+        if (tooltipGripper) tooltipGripper.classList.remove('tooltip-visible');
+      });
+
+      function saveProfilePartial(partial) {
+        try {
+          const raw = localStorage.getItem('penfight_save_v2') || '{}';
+          const data = JSON.parse(raw);
+          data.profile = Object.assign(data.profile || {}, partial);
+          localStorage.setItem('penfight_save_v2', JSON.stringify(data));
+          if (window.gameEngine && window.gameEngine.storage) {
+            window.gameEngine.storage.save({ profile: partial });
+          }
+        } catch(e) {}
+      }
+
       function syncMenuProfile() {
         try {
           const rawSave = localStorage.getItem('penfight_save_v2');
@@ -885,6 +1034,31 @@
             const studentName = (parsed && parsed.profile && parsed.profile.name) || "Arjun 'Thunder' Sharma";
             const nameEl = document.getElementById('menu-student-name');
             if (nameEl) nameEl.textContent = studentName;
+
+            const houseName = (parsed && parsed.profile && parsed.profile.house) || "Nehru Red";
+            const houseBadge = document.getElementById('menu-house-badge');
+            if (houseBadge) {
+              houseBadge.textContent = houseName.toUpperCase();
+              const houseMatch = HOUSES.find(h => h.name.toLowerCase() === houseName.toLowerCase());
+              if (houseMatch) {
+                houseBadge.style.backgroundColor = houseMatch.bg;
+                houseBadge.style.borderColor = houseMatch.border;
+                houseBadge.style.color = houseMatch.labelColor;
+              }
+            }
+
+            const avatarType = (parsed && parsed.profile && parsed.profile.avatar) || "boy";
+            const menuAvatarImg = document.getElementById('menu-student-avatar');
+            const menuAvatarLabel = document.getElementById('menu-avatar-label');
+            if (menuAvatarImg && menuAvatarLabel) {
+              if (avatarType === 'girl') {
+                menuAvatarImg.src = './assets/student_avatar_girl.jpg';
+                menuAvatarLabel.textContent = 'KHILADI ♀';
+              } else {
+                menuAvatarImg.src = './assets/student_avatar.jpg';
+                menuAvatarLabel.textContent = 'KHILADI ♂';
+              }
+            }
 
             if (parsed.progression) {
               const xp = parsed.progression.xp || 380;
@@ -897,14 +1071,20 @@
         } catch(e) {}
       }
 
-      // Hydrate existing saved student name from LocalStorage if available
+      // Hydrate existing saved student data from LocalStorage
       try {
         const rawSave = localStorage.getItem('penfight_save_v2');
         if (rawSave) {
           const parsed = JSON.parse(rawSave);
-          if (parsed && parsed.profile && parsed.profile.name) {
-            nameInput.value = parsed.profile.name;
+          if (parsed && parsed.profile) {
+            if (parsed.profile.name && nameInput) nameInput.value = parsed.profile.name;
+            if (parsed.profile.house) applyHouse(parsed.profile.house);
+            if (parsed.profile.avatar) applyAvatar(parsed.profile.avatar);
           }
+          const xp = (parsed && parsed.progression && parsed.progression.xp) || 0;
+          if (rankText) rankText.textContent = calculateRank(xp);
+        } else {
+          if (rankText) rankText.textContent = calculateRank(0);
         }
       } catch (e) {}
 
@@ -919,13 +1099,17 @@
           const chosenName = (nameInput && nameInput.value.trim()) || "Arjun 'Thunder' Sharma";
           
           // Persist to game storage
+          const profileData = { 
+            name: chosenName,
+            house: HOUSES[currentHouseIndex].name,
+            avatar: currentAvatar
+          };
           if (window.gameEngine && window.gameEngine.storage) {
-            window.gameEngine.storage.save({ profile: { name: chosenName } });
+            window.gameEngine.storage.save({ profile: profileData });
           } else {
             try {
               const prev = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}');
-              prev.profile = prev.profile || {};
-              prev.profile.name = chosenName;
+              prev.profile = Object.assign(prev.profile || {}, profileData);
               localStorage.setItem('penfight_save_v2', JSON.stringify(prev));
             } catch(e) {}
           }
