@@ -240,22 +240,25 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 *(Current Status: ⚪ 0% — Execution starts after Phase 2 Gate Approval)*
 *Goal: Desi Indian School Nostalgia UI layers banwana using tumhari existing images, aur unhe Phase 2 ke live engine se wire karna.*
 
-- [ ] **Step 3.1:** Author `DESIGN.md` (Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching nostalgic 90s school themes).
-- [ ] **Step 3.2:** Batch A (Core Flow Screens):
-  - Splash screen + First Launch onboarding / Admission Form.
-  - Main Menu Home Screen (with hero desk duel illustration, Mode selection: Story / Pass & Play / Practice).
-- [ ] **Step 3.3:** Batch B (Identity, Collection & Levels):
+- [ ] **Step 3.1: Author `DESIGN.md`:**
+  - Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching nostalgic 90s school themes.
+- [ ] **Step 3.2: Batch A (Core Flow Screens):**
+  - Splash screen + First Launch Minimal Onboarding (Nostalgic School ID Card for Name Entry, zero multi-step forms).
+  - Main Menu Home Screen (with hero desk duel illustration, Mode selection: Story / Pass & Play / Practice, Profile entry point).
+- [ ] **Step 3.3: Batch B (Identity, Campaign & Compass Box):**
   - Player Profile report card & 11-Level Merit Ladder visual journey ($0 \rightarrow 3250$ XP).
-  - **Visual Campaign Map (Class 7 ➔ Class 8 Path):** Ruled notebook page layout with hand-drawn pencil path (`Class 7-A ➔ 7-B ➔ 7-C ➔ Class 8-A ➔ 8-B ➔ School Champion`), defeated sections get teacher's red ink tick marks (✔️), locked sections have nostalgic rubber stamp locks ("Period Ongoing").
-  - Pen Collection Tin Compass Box Screen (6 pen slots, stat bars, equip action).
-- [ ] **Step 3.4:** Batch C (HUD, Match Setup & Score Overlays):
+  - **Visual Campaign Map (Class 7 ➔ Class 8 Path):** Ruled notebook page layout with hand-drawn pencil path (`Class 7-A ➔ 7-B ➔ 7-C ➔ Class 8-A ➔ 8-B ➔ School Champion`), defeated sections get teacher's red ink tick marks (✔️), locked sections have rubber stamp locks ("Period Ongoing").
+  - **Stage Details Chit Modal:** Map par kisi stage par tap karne par classroom note/chit khulegi (Opponent Classmate info, difficulty, pen reward, aur `[Battle ⚔️ / Replay 🔄]` buttons).
+  - **Pen Collection Tin Compass Box Screen:** 6 pen slots with exact Phase 1 physics stats (Weight, Drag, Mass bars, and Equip action).
+- [ ] **Step 3.4: Batch C (HUD, Match Setup & Score Overlays):**
   - Transparent in-game HUD (Top Scoreboard connected to Phase 2 state machine, turn badge, power meter).
-  - Play vs PC Match Setup (Classmate card, Easy/Normal/Hard selector).
-  - Pause menu + Match Win/Loss result certificate.
-- [ ] **Step 3.5:** Batch D (Cabinet & Settings):
+  - Single Player vs PC Match Setup (Classmate card, Easy/Normal/Hard selector).
+  - **Local 2-Player Pass & Play Match Setup Card:** P1 vs P2 dual pen selection on 1 screen.
+  - Pause menu + Match Win/Loss Result Certificate (with XP gain progress bar, Next Stage, and Rematch buttons).
+- [ ] **Step 3.5: Batch D (Cabinet & Settings):**
   - 16-Badge Trophy Cabinet shelf (monochrome locked vs enamel pin earned states).
-  - 7 Ranking tiers details + Offline Settings.
-- 🎯 **APPROVAL GATE 3:** All 11 screens visually inspected. "Kya theme 90s classroom jaisi hai aur HUD transparent Three.js canvas ke sath match kar raha hai?"
+  - Offline Settings & Audio Bridge (SFX volume toggle, Classroom chatter ambiance toggle, Data reset button). *(Purged 7 Ranking Tiers duplicate screen)*.
+- 🎯 **APPROVAL GATE 3:** All screens visually inspected and wired to Phase 2 engine. "Kya theme 90s classroom jaisi hai aur HUD transparent Three.js canvas ke sath seamlessly match kar raha hai?"
 
 ---
 
