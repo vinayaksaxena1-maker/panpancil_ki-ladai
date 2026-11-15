@@ -250,61 +250,72 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 
 ---
 
-### 🎨 Phase 3: Stitch AI 2D UI & Nostalgia Visual System
+### 🎨 Phase 3: Stitch AI 2D UI & Arcade "Juicy" Nostalgia System
 *(Current Status: 🟡 Ready to Start — Step 3.1 Next)*
-*Goal: Har screen ko ek-ek karke banana aur turant 100% test & check (verifiable receipt) karna, jisse UI me koi bhi visual flaw na rahe.*
+*Goal: 90s Indian Classroom Nostalgia ko high-energy, tactile, juicy arcade aesthetics (Chunky 3D Buttons, 2.5px Text Outlines, Color-Shifting Slingshot, Spring Banners, Collectible Pen Finishes) ke sath Stitch AI se generate aur implement karna.*
 
 > [!IMPORTANT]
+> **The Hybrid Fusion Architectural Invariant (School Nostalgia + Arcade Juice):**
+> 1. **Core Theme & Soul (Unchanged):** 100% Authentic Indian School Pen Fight (Class 7-A, Reynolds 045, Trimax, Nataraj 621, Butterflow, Pilot V5, Apsara, Steel Geometry Box, Ruled Chits, Blackboard, Teacher Red Ink Ticks).
+> 2. **Arcade Juice & Tactile Touch Feel:**
+>    - **Arcade Typography:** Bold `Fredoka Heavy` / `Titan One` with solid 2.5px dark stroke (`-webkit-text-stroke: 2.5px #111`) aur deep drop-shadow for 100% legibility over 3D wooden desk.
+>    - **Tactile 3D Push Buttons:** Chunky 3px dark border, solid 6px base depth (`box-shadow: 0 6px 0 #b45309`), rounded 16px corners, instant 4px downward press on touch (`transform: translateY(4px); box-shadow: 0 2px 0 #b45309;`) with zero tap delay (`touch-action: manipulation;`).
+>    - **Floating Spring Banners:** Elastic spring entrance (`cubic-bezier(0.175, 0.885, 0.32, 1.275)` scale bounce: 0.4 ➔ 1.15 ➔ 1.0) for *"YOUR TURN!"*, *"ROUND WON!"*, *"OUT OF DESK!"*, *"KNOCKOUT!"*.
+>    - **Color-Shifting Slingshot Trajectory Arc:** Dynamic drag power feedback: 0-40% Neon Green (`#22c55e`), 41-75% Amber Gold (`#f59e0b`), 76-100% Explosive Crimson (`#ef4444`) with subtle pulse.
+>    - **Collectible Toy Pen Finishes:** 3D pen visual finishes upgraded to high-contrast collectible toy aesthetic (Trimax translucent blue glowing chamber & chrome clips, 045 milky white body & punchy blue cap, Butterflow glossy two-tone, Pilot V5 charcoal & gold foil rings, Nataraj red-black stripes, Apsara matte black & green eraser). *Strict Rule 9 Invariant: Physics colliders, mass, and damping remain 100% FROZEN; only visual Three.js PBR materials are enhanced.*
+> 3. **Performance & Offline Mandate:** 100% GPU-composited animations (`transform: translate3d()` & `opacity`), zero layout jank, 100% self-contained local fonts & assets (zero external CDN).
+
+> [!NOTE]
 > **Human-in-the-Loop Stitch Workflow Protocol (User-AI Collaborative Pipeline):**
 > Phase 3 ke har step (Step 3.1 se 3.9) me following 4-step collaborative process lagu hoga:
 > 1. **Prompt Delivery by AI:** AI pehle us specific screen ke liye production-ready, design-token mapped **Stitch AI Master Prompt** generate karke user ko chat me dega.
-> 2. **Design Generation by User:** User us prompt ko Stitch AI platform me enter karke desired 90s nostalgia layout aur visual assets generate/select karega.
+> 2. **Design Generation by User:** User us prompt ko Stitch AI platform me enter karke desired juicy arcade nostalgia layout aur visual assets generate/select karega.
 > 3. **UI Integration by AI:** User ke code/assets share karne aur approval dene ke baad hi AI use game ke UI layer me wire karega.
 > 4. **Step-by-Step Mobile Verification:** Har screen ko 360x800 portrait viewport par test karke user se explicit approval lene ke baad hi agli screen ka prompt diya jayega.
 
-- [ ] **Step 3.1: Design Tokens & Foundations (`DESIGN.md` + Base CSS):**
-  - **Kya banega:** 90s Classroom color palette (Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, Ink Blue `#1A365D`, Margin Red `#C53030`), retro school typography, tactile buttons, aur paper grain texture.
-  - *Verification Receipt:* 360x800 mobile screen par font readable ho, tactile click bounce smooth ho, aur color contrast WCAG pass ho.
+- [ ] **Step 3.1: Arcade Design Tokens & Foundations (`DESIGN.md` + Base CSS):**
+  - **Kya banega:** 90s Classroom + Arcade Juicy color palette (Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Ink Blue `#1A365D`, Crimson Red `#EF4444`, Amber Gold `#F59E0B`, Neon Green `#22C55E`), Chunky 3D button classes (`.btn-arcade-3d`), 2.5px text-stroke utility, paper grain overlay, aur spring bounce keyframes.
+  - *Verification Receipt:* 360x800 mobile screen par tactile button press 4px bounce kare, text readability 100% ho, aur color contrast WCAG pass ho.
 
-- [ ] **Step 3.2: Splash Screen & School ID Card (Onboarding):**
-  - **Kya banega:** First launch retro school badge splash ➔ Nostalgic Student ID Card (Enter Student Name, Class 7-A, Save & Continue). Zero multi-step forms.
+- [ ] **Step 3.2: Splash Screen & School ID Card (Collectible Onboarding):**
+  - **Kya banega:** First launch retro school badge splash with bouncy sound hint ➔ High-contrast Collectible Student ID Card (Enter Student Name, Section 7-A Badge, Chunky 3D `[Enter Classroom ➔]` button). Zero multi-step forms.
   - *Verification Receipt:* Name input karne par mobile soft keyboard layout na tode, aur player profile name `localStorage` me save ho.
 
-- [ ] **Step 3.3: Main Menu Home Screen (The Classroom Hub):**
-  - **Kya banega:** Wooden desk duel hero illustration, top profile bar (Avatar, Name, Level 1 Backbencher, XP bar), aur 5 thumb-friendly touch cards: `[Story Campaign 🏫]`, `[Pass & Play (2P) 👥]`, `[Compass Box 🧰]`, `[Trophy Cabinet 🏆]`, `[Settings ⚙️]`.
-  - *Verification Receipt:* Har card minimum 48px touch target ho, aur tap karne par target screen shell load ho.
+- [ ] **Step 3.3: Main Menu Home Screen (The Classroom Arcade Hub):**
+  - **Kya banega:** Desk duel hero visual, top profile header (Avatar badge, Student Name, Level & XP bar), aur 5 thumb-friendly tactile cards with 3D drop depth: `[Story Campaign 🏫]`, `[Pass & Play (2P) 👥]`, `[Compass Box 🧰]`, `[Trophy Cabinet 🏆]`, `[Settings ⚙️]`.
+  - *Verification Receipt:* Har card minimum 48px touch target ho, tactile active press state smooth ho, aur tap karne par target screen shell load ho.
 
 - [ ] **Step 3.4: Visual Campaign Map & Stage Details Chit (Class 7 ➔ Class 8):**
-  - **Kya banega:** Ruled notebook page layout with hand-drawn pencil path (11 stages). Defeated stages par teacher ka **Red Ink Tick (✔️)**, locked stages par **"Period Ongoing"** stamp lock. Kisi stage par tap karne par classroom chit modal खुलेगी (Opponent Classmate info, difficulty, pen reward, aur `[Battle ⚔️ / Replay 🔄]` buttons).
-  - *Verification Receipt:* Beaten stages par tap karne se Replay option mile, locked stages par lock stamp alert aaye, aur path responsive scroll ho.
+  - **Kya banega:** Ruled notebook page layout with hand-drawn pencil path (11 stages). Defeated stages par teacher ka **Red Ink Stamp (✔️)**, locked stages par **"Period Ongoing"** stamp lock. Stage tap par classroom chit modal (Opponent Classmate avatar, difficulty, pen reward, aur chunky `[Battle ⚔️ / Replay 🔄]` buttons).
+  - *Verification Receipt:* Beaten stages par tap karne se Replay option mile, locked stages par lock alert aaye, aur path responsive scroll ho.
 
-- [ ] **Step 3.5: Compass Box Screen (6-Pen Tin Geometry Box):**
-  - **Kya banega:** Steel geometry box visual with 6 pen slots. Phase 1 ke exact physics stats (Weight in grams, Rolling Drag, Knockout Mass, Agility) display honge + `[Equip Pen]` action.
+- [ ] **Step 3.5: Tin Compass Box Screen (Collectible Pen Showcase):**
+  - **Kya banega:** Steel geometry box visual with 6 collectible pen slots. 3D pen preview with toy finishes + exact physics stats (Weight in grams, Knockout Mass, Agility, Roll Drag) + chunky `[Equip Pen]` action.
   - *Verification Receipt:* 6 pens ke exact stats (12g, 15g, 13.3g etc.) load hon aur equip button dabane par active pen update ho.
 
 - [ ] **Step 3.6: Match Setup Screen (Single Player & Pass-and-Play Cards):**
   - **Kya banega:**
-    - Single Player: Classmate profile card, `[Easy / Normal / Hard]` difficulty selector, aur `[Start Duel ⚔️]`.
-    - Pass & Play: 1 hi phone par Player 1 vs Player 2 dual pen selector card aur `[Start Pass & Play ⚔️]`.
+    - Single Player: Classmate profile card, `[Easy / Normal / Hard]` tactile difficulty pills, aur `[Start Duel ⚔️]`.
+    - Pass & Play: 1 hi phone par Player 1 vs Player 2 dual pen selector cards aur `[Start Pass & Play ⚔️]`.
   - *Verification Receipt:* Difficulty switch karne par active bot difficulty change ho, aur Pass & Play me dono players apni-apni pen choose kar sakein.
 
-- [ ] **Step 3.7: In-Game Transparent HUD (3D Desk Overlays):**
-  - **Kya banega:** 3D Three.js canvas ke upar transparent scoreboard (P1 score vs Opponent score: 0-3, round dots), active turn badge ("Your Turn" / "Opponent Turn"), dynamic drag power bar, aur subtle pause button.
-  - *Verification Receipt:* 3D canvas HUD ke aar-paar 100% visible rahe, touch/drag gesture HUD se obstruct na ho, aur round jeetne par score live update ho.
+- [ ] **Step 3.7: In-Game Transparent HUD & Color-Shifting Slingshot:**
+  - **Kya banega:** 3D Three.js canvas ke upar transparent arcade scoreboard (P1 score vs Opponent score: 0-3 with chunky round indicators), active turn badge, color-shifting slingshot arc (Green ➔ Amber ➔ Red trajectory dots), and elastic spring banners (*"YOUR TURN!"*, *"KNOCKOUT!"*).
+  - *Verification Receipt:* 3D canvas HUD ke aar-paar 100% visible rahe, touch/drag gesture HUD se obstruct na ho, trajectory color force ke hisab se shift ho, aur round jeetne par spring banner bounce ho.
 
 - [ ] **Step 3.8: Match Outcome Certificate & Pause Drawer:**
   - **Kya banega:**
-    - Pause modal: Nostalgic ruled chit (Resume, Restart, Quit to Menu).
-    - Match Result Certificate: School report card popup with round breakdown, XP gained progress bar, `[Next Classmate ➔]` aur `[Rematch 🔄]` buttons.
+    - Pause modal: Nostalgic ruled chit with tactile 3D buttons (Resume, Restart, Quit to Menu).
+    - Match Result Certificate: School report card popup with round breakdown, XP gained progress bar with count-up animation, chunky `[Next Classmate ➔]` aur `[Rematch 🔄]` buttons.
   - *Verification Receipt:* 3 rounds jeetne/haarne par certificate trigger ho, aur Rematch/Next buttons se match sahi restart ho.
 
 - [ ] **Step 3.9: Trophy Cabinet & Offline Settings (with Audio Bridge):**
   - **Kya banega:**
-    - 16-Badge Trophy Shelf: Unlocked badges shiny enamel pins me, locked badges pencil sketch outline me.
-    - Offline Settings: SFX Volume toggle, Classroom Ambiance chatter toggle, Reset Progress button. *(Purged 7 Ranking Tiers duplicate screen)*.
+    - 16-Badge Trophy Shelf: Unlocked badges shiny metallic enamel pins me, locked badges pencil sketch outline me.
+    - Offline Settings: SFX Volume toggle, Classroom Ambiance chatter toggle, Reset Progress button.
   - *Verification Receipt:* Badges ka locked/unlocked state live career data se match kare, aur settings toggles state persist karein.
 
-- 🎯 **APPROVAL GATE 3 (Complete End-to-End Walkthrough):** Poore 9 steps banne ke baad complete round-trip flow test: `Splash ➔ ID Card ➔ Menu ➔ Compass Box ➔ Match Setup ➔ 3D Duel with HUD ➔ Win Certificate ➔ Back to Menu`. Zero visual glitches at 60 FPS.
+- 🎯 **APPROVAL GATE 3 (Complete End-to-End Walkthrough):** Poore 9 steps banne ke baad complete round-trip flow test: `Splash ➔ ID Card ➔ Menu ➔ Compass Box ➔ Match Setup ➔ 3D Duel with Juicy HUD ➔ Win Certificate ➔ Back to Menu`. Zero visual glitches at 60 FPS.
 
 ---
 
