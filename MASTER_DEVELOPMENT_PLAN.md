@@ -18,8 +18,9 @@
 3. **Rule 3 (100% Standalone Repository Sovereignty):**
    - Game ka 100% saara data, assets, code, audio, textures, physics aur documentation isi project folder (`D:\FInal`) me local rahega.
    - Root codebase me koi external import ya direct path dependency nahi hogi, taaki GitHub par push karne par yeh repository bina kisi external directory ke 100% complete aur playable rahe.
-4. **Gate-by-Gate Execution (Approval Gates):**
-   - Agla phase tab tak shuru **NAHI** hoga jab tak pichla phase chalakar (browser/terminal/device me) test pass na ho jaye aur user explicitly **"APPROVED / NEXT"** na bole.
+4. **Rule 4 (Step-by-Step Approval & Gate Execution):**
+   - **Step-by-Step Approval:** Har ek single step complete hone ke baad AI document me us step ko `[x] COMPLETED` mark karega, live proof/receipt chat me batayega, aur User se explicitly approval mangega: *"Step X complete ho gaya hai. Kya agle step ke liye APPROVED hai?"* User ke explicitly bole bina agla step shuru **NAHI** hoga.
+   - **Phase Gate Approval:** Poora Phase khatam hone par Approval Gate ka comprehensive test pass hoga aur User se final Phase Approval lena mandatory hoga.
 5. **Zero Unsolicited Deviation:**
    - AI apne man se koi library, formula, pen count, ya UI structure change/skip nahi karega.
 6. **No 44-Pen / External Bloat (Strict 6 Pens & 11 Levels):**
@@ -112,18 +113,18 @@ flowchart TD
 > - **Three.js Code (Hamara Engine):** 6 Pens ki actual **3D Parametric Meshes** (Hexagonal body for Nataraj/Apsara, Cylindrical plastic for Trimax/045/Butterflow, Cone nib, metal clip, cap geometry) aur unke exact physics colliders hum Three.js + Rapier me procedural code se generate karenge (zero external 3D file bloat, 100% offline).
 > - **Stitch AI (2D UI Cards):** Stitch in pens ke 2D presentation cards banayega (Pen selection menu, stat bars: Weight, Accuracy, Friction, Description, aur Pencil Box layout).
 
-- **Step 1.1:** Setup self-contained local web container (`index.html`, Three.js r160, `@dimforge/rapier3d-compat` WASM).
-- **Step 1.2:** Procedural Classroom Desk (`0.70m x 1.00m x 0.030m`) with wood finish and boundary colliders.
-- **Step 1.3:** 3D Pen Geometries for Player & Opponent:
+- [x] **Step 1.1 (COMPLETED):** Setup self-contained local web container (`index.html`, Three.js r160, `@dimforge/rapier3d-compat` WASM).
+- [x] **Step 1.2 (COMPLETED):** Procedural Classroom Desk (`0.70m x 1.00m x 0.030m`) with wood finish and boundary colliders.
+- [x] **Step 1.3 (COMPLETED):** 3D Pen Geometries for Player & Opponent:
   - Custom weight distribution: Cap/Tip Center of Mass (COM) offset.
   - Rapier RigidBody setup (Cylinder + Cone nib).
-- **Step 1.4:** Flick Drag Mechanics:
+- [x] **Step 1.4 (COMPLETED):** Flick Drag Mechanics:
   - Backwards touch/drag gesture vector $\vec{D}$.
   - Force clamping + Off-center torque impulse $\vec{\tau} = \vec{r}_{\text{offset}} \times \vec{F}$.
-- **Step 1.5:** Desk Edge Teetering & Out-of-Bounds Detection:
+- [x] **Step 1.5 (COMPLETED):** Desk Edge Teetering & Out-of-Bounds Detection:
   - Velocity rest threshold check ($\|\vec{v}\| < 0.015$, $\|\vec{\omega}\| < 0.08$).
   - Pen drops below $desk.y - 0.02m$ ➔ Fall detection and settlement timer.
-- **Step 1.6 (Pure Sequencing Quarantine & Reset to Zero):**
+- [ ] **Step 1.6 (PENDING - CURRENT ACTION):** Pure Sequencing Quarantine & Reset to Zero:
   - Premature Phase 3 (audio hooks) aur Phase 4 (match loops, fake XP modals) ko Phase 1 ke core physics engine se cleanly decouple karna taaki Phase 3 aur Phase 4 wapas zero baseline par set ho sakein.
   - Phase 1 ko ek pure, high-precision 3D physical sandbox banana jisme sirf 2 pens, student desk, tactile flick feel, pen-to-pen collisions, aur edge teetering test ho sakein.
 - 🎯 **APPROVAL GATE 1:** User runs and tests flicking on browser/mobile. "Kya pen ka slide, takkar aur kone par latakna real school pen-fight jaisa laga? Zero UI/audio bloat."
