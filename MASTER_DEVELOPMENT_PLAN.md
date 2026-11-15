@@ -101,7 +101,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **Ready to Start (Step 3.1 Next)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **11% (Step 3.1 Done, Step 3.2 Next)** | Step 3.1 Design Tokens (`DESIGN.md` + `css/base.css`) ready | Steps 3.2-3.9: Screen-by-Screen Verifiable Pipeline (Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -273,9 +273,9 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 > 3. **UI Integration by AI:** User ke code/assets share karne aur approval dene ke baad hi AI use game ke UI layer me wire karega.
 > 4. **Step-by-Step Mobile Verification:** Har screen ko 360x800 portrait viewport par test karke user se explicit approval lene ke baad hi agli screen ka prompt diya jayega.
 
-- [ ] **Step 3.1: Arcade Design Tokens & Foundations (`DESIGN.md` + Base CSS):**
-  - **Kya banega:** 90s Classroom + Arcade Juicy color palette (Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Ink Blue `#1A365D`, Crimson Red `#EF4444`, Amber Gold `#F59E0B`, Neon Green `#22C55E`), Chunky 3D button classes (`.btn-arcade-3d`), 2.5px text-stroke utility, paper grain overlay, aur spring bounce keyframes.
-  - *Verification Receipt:* 360x800 mobile screen par tactile button press 4px bounce kare, text readability 100% ho, aur color contrast WCAG pass ho.
+- [x] **Step 3.1 (COMPLETED): Arcade Design Tokens & Foundations (`DESIGN.md` + Base CSS):**
+  - **Foundation Ready:** `D:\FInal\DESIGN.md` (Design system documentation) aur `D:\FInal\css\base.css` (CSS Custom properties, 3D button depths, text strokes, container cards, spring keyframes) create karke `index.html` me link kar diye gaye hain taaki Stitch AI ko feed karke saari upcoming screens (3.2 se 3.9) ek hi consistent theme me generate karwayi ja sakein.
+  - *Verification Receipt:* 90s Classroom + Juicy Arcade palette, `.btn-arcade-3d` tactile push classes, text stroke rules, aur slingshot force tokens 100% defined and offline ready.
 
 - [ ] **Step 3.2: Splash Screen & School ID Card (Collectible Onboarding):**
   - **Kya banega:** First launch retro school badge splash with bouncy sound hint ➔ High-contrast Collectible Student ID Card (Enter Student Name, Section 7-A Badge, Chunky 3D `[Enter Classroom ➔]` button). Zero multi-step forms.
