@@ -139,62 +139,47 @@ export function renderBlackboardChalk(p1Score = 0, botScore = 0, announcement = 
     bbCtx.fill();
   }
 
-  // Chalk Heading: "STD 9 - A" & Date
+  // Chalk Heading & Period info
   bbCtx.fillStyle = 'rgba(245, 248, 245, 0.92)';
-  bbCtx.font = 'bold 34px monospace';
-  bbCtx.fillText('STD 9 - A', 50, 75);
-  bbCtx.font = '26px monospace';
-  bbCtx.fillText('Sub: Maths', 50, 115);
-  bbCtx.fillText('Date: 15 / 11', 780, 75);
+  bbCtx.font = 'bold 32px monospace';
+  bbCtx.fillText('CLASSROOM DUEL', 50, 75);
+  bbCtx.font = '24px monospace';
+  bbCtx.fillText('Period: Free Time', 50, 115);
+  bbCtx.fillText('Standard: 9th Class', 720, 75);
 
   // Thought for the day
-  bbCtx.font = 'italic 24px serif';
+  bbCtx.font = 'italic 22px serif';
   bbCtx.fillStyle = 'rgba(245, 248, 245, 0.85)';
   bbCtx.fillText('Thought for the day: "Practice makes a man perfect"', 230, 130);
 
-  // Center: "PEN FIGHT" Match Score Box
+  // Center: "PEN FIGHT 3D" Sandbox Info Box
   bbCtx.strokeStyle = 'rgba(245, 248, 245, 0.65)';
   bbCtx.lineWidth = 3;
-  bbCtx.strokeRect(320, 155, 384, 210);
+  bbCtx.strokeRect(300, 155, 424, 215);
 
-  bbCtx.font = 'bold 40px monospace';
+  bbCtx.font = 'bold 36px monospace';
   bbCtx.fillStyle = 'rgba(245, 248, 245, 0.95)';
-  bbCtx.fillText('PEN FIGHT', 400, 210);
+  bbCtx.fillText('PEN FIGHT 3D', 400, 205);
 
-  // Best of 5 Win Indicator Boxes [■] [■] [ ]
-  const drawWinBoxes = (startX, y, wins) => {
-    for (let k = 0; k < 3; k++) {
-      const bx = startX + k * 30;
-      bbCtx.strokeStyle = 'rgba(245, 248, 245, 0.85)';
-      bbCtx.lineWidth = 2;
-      bbCtx.strokeRect(bx, y - 22, 22, 22);
-      if (k < wins) {
-        bbCtx.fillStyle = '#f2c75c'; // Golden chalk fill
-        bbCtx.fillRect(bx + 3, y - 19, 16, 16);
-      }
-    }
-  };
+  bbCtx.font = '20px monospace';
+  bbCtx.fillStyle = '#f2c75c';
+  bbCtx.fillText('PHASE 1: 3D PHYSICS SANDBOX', 345, 240);
 
-  // P1 Score Line
-  bbCtx.font = 'bold 34px monospace';
+  // Knockout Counter
+  bbCtx.font = 'bold 28px monospace';
   bbCtx.fillStyle = 'rgba(245, 248, 245, 0.95)';
-  bbCtx.fillText(`P1   ${p1Score}`, 355, 275);
-  drawWinBoxes(520, 275, p1Score);
-
-  // BOT Score Line
-  bbCtx.fillStyle = 'rgba(245, 248, 245, 0.95)';
-  bbCtx.fillText(`BOT  ${botScore}`, 355, 335);
-  drawWinBoxes(520, 335, botScore);
+  bbCtx.fillText(`PLAYER KOs : ${p1Score}`, 350, 290);
+  bbCtx.fillText(`OPPONENT KOs: ${botScore}`, 350, 335);
 
   // Announcement / Mode Footer
-  bbCtx.font = 'bold 26px monospace';
+  bbCtx.font = 'bold 24px monospace';
   if (announcement) {
     bbCtx.fillStyle = '#f2c75c'; // Bright yellow chalk announcement
-    bbCtx.fillText(announcement, 330, 420);
+    bbCtx.fillText(announcement, 330, 425);
   } else {
-    bbCtx.fillStyle = 'rgba(245, 248, 245, 0.65)';
-    bbCtx.font = '22px monospace';
-    bbCtx.fillText('BEST OF 5  (FIRST TO 3 WINS)', 335, 415);
+    bbCtx.fillStyle = 'rgba(245, 248, 245, 0.70)';
+    bbCtx.font = '20px monospace';
+    bbCtx.fillText('TACTILE SLIDE & COLLISION TEST', 335, 425);
   }
 
   if (bbTexture) {

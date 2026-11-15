@@ -55,14 +55,10 @@ class GameEngine {
     this.stableStartTime = 0;
     this.difficulty = 'normal'; // Default: Normal Mode (Balanced Competition)
 
-    // Best of 5 Match Management & Career
-    this.matchManager = {
-      p1Score: 0,
-      botScore: 0,
-      targetWins: 3,
-      isMatchOver: false,
-      roundHistory: []
-    };
+    // Phase 1 Pure Physics Sandbox State
+    this.playerPenConfigKey = 'reynolds045';
+    this.opponentPenConfigKey = 'trimax';
+    this.knockouts = { player: 0, opponent: 0 };
     this.collisionSoundCooldown = false;
 
     // 3D Raycasting
@@ -163,6 +159,11 @@ class GameEngine {
 
     // 8. Event Listeners & Natural Touch Controls
     window.addEventListener('resize', () => this.onWindowResize());
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'KeyR') {
+        this.resetRound();
+      }
+    });
     this.setupNaturalTouchControls();
 
     // Start 120 Hz render loop
@@ -585,131 +586,84 @@ class GameEngine {
   }
 
   resolveTurnOutcome() {
-    if (this.matchManager.isMatchOver) return;
-
     if (this.playerPen.isFallen && this.opponentPen.isFallen) {
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "⚖️ Dono pens gir gayin! Draw / Re-flick!";
-      updateBlackboardDisplay(this.matchManager.p1Score, this.matchManager.botScore, "ROUND DRAW! RE-FLICK");
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "⚖️ Dono pens table se bahar! Re-flick!";
+      updateBlackboardDisplay(this.knockouts.player, this.knockouts.opponent, "ROUND DRAW! RE-FLICK");
       setTimeout(() => {
-        updateBlackboardDisplay(this.matchManager.p1Score, this.matchManager.botScore, null);
+        updateBlackboardDisplay(this.knockouts.player, this.knockouts.opponent, null);
         this.resetRound();
-      }, 1600);
+      }, 1500);
       return;
     }
 
     if (this.opponentPen.isFallen) {
-      this.matchManager.p1Score++;
-      this.matchManager.roundHistory.push('p1');
-      updateBlackboardDisplay(this.matchManager.p1Score, this.matchManager.botScore);
-
-      if (this.matchManager.p1Score >= this.matchManager.targetWins) {
-        this.handleMatchComplete(true);
-        return;
-      }
-
+      this.knockouts.player++;
+      updateBlackboardDisplay(this.knockouts.player, this.knockouts.opponent, "OPPONENT KNOCKED OUT!");
       if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = `🏆 Round Player jeeta! [P1 ${this.matchManager.p1Score} - ${this.matchManager.botScore} BOT]`;
+        this.statusMsgEl.innerText = `🎉 Opponent pen out of table! [Player ${this.knockouts.player} - ${this.knockouts.opponent} Opponent]`;
       }
-      setTimeout(() => this.resetRound(), 1800);
+      setTimeout(() => this.resetRound(), 1600);
       return;
     }
 
     if (this.playerPen.isFallen) {
-      this.matchManager.botScore++;
-      this.matchManager.roundHistory.push('bot');
-      updateBlackboardDisplay(this.matchManager.p1Score, this.matchManager.botScore);
-
-      if (this.matchManager.botScore >= this.matchManager.targetWins) {
-        this.handleMatchComplete(false);
-        return;
-      }
-
+      this.knockouts.opponent++;
+      updateBlackboardDisplay(this.knockouts.player, this.knockouts.opponent, "PLAYER KNOCKED OUT!");
       if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = `❌ Opponent round jeet gaya! [P1 ${this.matchManager.p1Score} - ${this.matchManager.botScore} BOT]`;
+        this.statusMsgEl.innerText = `💥 Player pen out of table! [Player ${this.knockouts.player} - ${this.knockouts.opponent} Opponent]`;
       }
-      setTimeout(() => this.resetRound(), 1800);
+      setTimeout(() => this.resetRound(), 1600);
       return;
     }
 
-    // Switch Turn
+    // Switch Turn (Player <-> Opponent)
     this.turn = (this.turn === 'player') ? 'bot' : 'player';
     if (this.turnBadgeEl) {
-      this.turnBadgeEl.innerText = this.turn === 'player' ? "Your Turn (Drag to Flick)" : "Classmate's Turn...";
+      this.turnBadgeEl.innerText = this.turn === 'player' ? "Your Turn (Drag to Flick)" : "Opponent Aiming...";
       this.turnBadgeEl.style.background = this.turn === 'player' ? "#3f8b61" : "#c85b4a";
     }
     if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = this.turn === 'player' ? "Apni bari: pen par touch karke drag karo!" : "Opponent ki bari...";
+      this.statusMsgEl.innerText = this.turn === 'player' ? "Apni bari: pen par touch karke drag karo!" : "Opponent shot le raha hai...";
     }
 
     if (this.turn === 'bot') {
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "🎯 Opponent target lock kar raha hai...";
-      setTimeout(() => this.executeBotFlick(), 850);
+      setTimeout(() => this.executeBotFlick(), 750);
     }
   }
 
-  handleMatchComplete(isPlayerWin) {
-    this.matchManager.isMatchOver = true;
-    const p1 = this.matchManager.p1Score;
-    const bot = this.matchManager.botScore;
+  changePen(side, penKey) {
+    const config = PEN_CONFIGS[penKey];
+    if (!config) return;
 
-    const result = career.recordMatch(p1, bot, this.difficulty, this.matchManager.roundHistory);
-
-    if (isPlayerWin) {
-      synth.playClack();
-      updateBlackboardDisplay(p1, bot, "🏆 P1 IS THE CHAMPION!");
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "🎉 BADHAI HO! MATCH JEET GAYE!";
-    } else {
-      updateBlackboardDisplay(p1, bot, "BOT WON THE MATCH!");
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "Match Over! Bot ne match jeet liya!";
-    }
-
-    setTimeout(() => {
-      this.showMatchModal(isPlayerWin, p1, bot, result);
-    }, 1200);
-  }
-
-  showMatchModal(isPlayerWin, p1, bot, result) {
-    const modal = document.getElementById('match-modal');
-    if (!modal) return;
-
-    const titleEl = document.getElementById('modal-title');
-    const scoreEl = document.getElementById('modal-score');
-    const xpEl = document.getElementById('modal-xp');
-    const rankEl = document.getElementById('modal-rank');
-    const trophyEl = document.getElementById('modal-trophies');
-
-    if (titleEl) {
-      titleEl.innerText = isPlayerWin ? "🏆 MATCH JEET GAYE! CHAMPION!" : "💔 MATCH OVER! HAAR GAYE!";
-      titleEl.style.color = isPlayerWin ? "#f2c75c" : "#e07a5f";
-    }
-    if (scoreEl) scoreEl.innerText = `Final Score: P1 [ ${p1} ] - [ ${bot} ] BOT`;
-    if (xpEl) xpEl.innerText = `Earned: +${result.earnedXp} XP (Total: ${result.currentXp} XP)`;
-    if (rankEl) rankEl.innerText = `Rank: ${result.title} | Won: ${career.data.matchesWon}/${career.data.matchesPlayed}`;
-
-    if (trophyEl) {
-      if (result.newTrophies && result.newTrophies.length > 0) {
-        trophyEl.innerHTML = `<div class="trophy-badge">🎖️ New Trophy Unlocked: <b>${result.newTrophies.map(t => t.title).join(', ')}</b></div>`;
-      } else {
-        trophyEl.innerHTML = '';
+    if (side === 'player') {
+      this.playerPenConfigKey = penKey;
+      if (this.playerPen) {
+        this.scene.remove(this.playerPen.mesh);
+        this.world.removeRigidBody(this.playerPen.body);
       }
+      this.playerPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, 0.35), Math.PI / 2);
+    } else {
+      this.opponentPenConfigKey = penKey;
+      if (this.opponentPen) {
+        this.scene.remove(this.opponentPen.mesh);
+        this.world.removeRigidBody(this.opponentPen.body);
+      }
+      this.opponentPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, -0.35), Math.PI / 2);
     }
-
-    modal.style.display = 'flex';
-  }
-
-  resetMatch() {
-    this.matchManager.p1Score = 0;
-    this.matchManager.botScore = 0;
-    this.matchManager.isMatchOver = false;
-    this.matchManager.roundHistory = [];
-
-    updateBlackboardDisplay(0, 0, null);
-
-    const modal = document.getElementById('match-modal');
-    if (modal) modal.style.display = 'none';
 
     this.resetRound();
-    if (this.statusMsgEl) this.statusMsgEl.innerText = "Naya Match shuru! Best of 5 (First to 3 wins)";
+    if (this.statusMsgEl) {
+      this.statusMsgEl.innerText = `${side === 'player' ? 'Player' : 'Opponent'} pen: ${config.name} (${config.type}, ${(config.mass * 1000).toFixed(1)}g)`;
+    }
+  }
+
+  resetSandbox() {
+    this.knockouts.player = 0;
+    this.knockouts.opponent = 0;
+    updateBlackboardDisplay(0, 0, "SANDBOX RESET");
+    setTimeout(() => updateBlackboardDisplay(0, 0, null), 1200);
+    this.resetRound();
+    if (this.statusMsgEl) this.statusMsgEl.innerText = "🔄 Sandbox Reset: Ready to test flick & collision physics!";
   }
 
   resetRound() {
@@ -719,29 +673,37 @@ class GameEngine {
     this.playerPen.isFallen = false;
     this.opponentPen.isFallen = false;
 
-    // Reset pens flat horizontally across desk length (~70cm runway)
+    const pConfig = PEN_CONFIGS[this.playerPenConfigKey || 'reynolds045'];
+    const oConfig = PEN_CONFIGS[this.opponentPenConfigKey || 'trimax'];
+
+    // Reset Player Pen
     const qPlayer = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.reynolds045.radius, 0.35), true);
+    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, pConfig.radius, 0.35), true);
     this.playerPen.body.setRotation({ x: qPlayer.x, y: qPlayer.y, z: qPlayer.z, w: qPlayer.w }, true);
     this.playerPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.playerPen.prevPos.set(0, PEN_CONFIGS.reynolds045.radius, 0.35);
+    this.playerPen.prevPos.set(0, pConfig.radius, 0.35);
     this.playerPen.currPos.copy(this.playerPen.prevPos);
     this.playerPen.prevQuat.copy(qPlayer);
     this.playerPen.currQuat.copy(qPlayer);
 
+    // Reset Opponent Pen
     const qBot = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.trimax.radius, -0.35), true);
+    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, oConfig.radius, -0.35), true);
     this.opponentPen.body.setRotation({ x: qBot.x, y: qBot.y, z: qBot.z, w: qBot.w }, true);
     this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.opponentPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.opponentPen.prevPos.set(0, PEN_CONFIGS.trimax.radius, -0.35);
+    this.opponentPen.prevPos.set(0, oConfig.radius, -0.35);
     this.opponentPen.currPos.copy(this.opponentPen.prevPos);
     this.opponentPen.prevQuat.copy(qBot);
     this.opponentPen.currQuat.copy(qBot);
 
     this.turn = 'player';
     if (this.turnBadgeEl) {
+      this.turnBadgeEl.innerText = "Your Turn (Drag to Flick)";
+      this.turnBadgeEl.style.background = "#3f8b61";
+    }
+  }
       this.turnBadgeEl.innerText = "Your Turn (Drag to Flick)";
       this.turnBadgeEl.style.background = "#3f8b61";
     }

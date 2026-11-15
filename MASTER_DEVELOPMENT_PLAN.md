@@ -77,7 +77,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Phase 1** | Core 3D Desk & Physics Engine | 🟢 **90% Complete** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement fix | Step 1.6: Out-of-order logic decoupling + desk carvings/scratch details |
+| **Phase 1** | Core 3D Desk & Physics Engine | 🟢 **100% Complete** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | None (Ready for User Gate 1 Approval) |
 | **Phase 2** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Reset for Pure Sequencing)** | Reset to zero | Splash, Admission Form, Main Menu Hero screen, 11-Level Merit Ladder UI, Compass Box Pen Selector UI, 16-Badge Trophy Cabinet, Profile Report Card |
 | **Phase 3** | Audio Synthesizer & SFX | ⚪ **0% (Reset to Zero)** | Reset to zero (Assets preserved in `assets/audio/`, execution halted until Gate 2 approval) | Step 3.1 synth, Step 3.2 SFX slotting, UI clicks, victory bell, level-up sound, chatter loop |
 | **Phase 4** | Rules, Bot AI & Progression | ⚪ **0% (Reset to Zero)** | Reset to zero (Logic quarantined until Gate 3 approval) | Full 16 Badges ledger, 7 Ranking Tiers, 11 Levels progression, Dynamic pen swapping, Tournament rules |
@@ -124,10 +124,10 @@ flowchart TD
 - [x] **Step 1.5 (COMPLETED):** Desk Edge Teetering & Out-of-Bounds Detection:
   - Velocity rest threshold check ($\|\vec{v}\| < 0.015$, $\|\vec{\omega}\| < 0.08$).
   - Pen drops below $desk.y - 0.02m$ ➔ Fall detection and settlement timer.
-- [ ] **Step 1.6 (PENDING - CURRENT ACTION):** Pure Sequencing Quarantine & Reset to Zero:
-  - Premature Phase 3 (audio hooks) aur Phase 4 (match loops, fake XP modals) ko Phase 1 ke core physics engine se cleanly decouple karna taaki Phase 3 aur Phase 4 wapas zero baseline par set ho sakein.
-  - Phase 1 ko ek pure, high-precision 3D physical sandbox banana jisme sirf 2 pens, student desk, tactile flick feel, pen-to-pen collisions, aur edge teetering test ho sakein.
-- 🎯 **APPROVAL GATE 1:** User runs and tests flicking on browser/mobile. "Kya pen ka slide, takkar aur kone par latakna real school pen-fight jaisa laga? Zero UI/audio bloat."
+- [x] **Step 1.6 (COMPLETED):** Pure Sequencing Quarantine & Reset to Zero:
+  - Premature Phase 3 (audio hooks) aur Phase 4 (match loops, fake XP modals) ko Phase 1 ke core physics engine se cleanly decouple kar diya gaya.
+  - Live 6-Pen sandbox selector HUD me integrate kiya gaya jisse user sabhi 6 pens (Reynolds 045, Trimax, Butterflow, Pilot V5, Nataraj 621, Apsara Platinum) ki physical bounciness aur roll resistance live test kar sake. Keyboard 'R' shortcut se instant reset enabled.
+- 🎯 **APPROVAL GATE 1 (CURRENT VERIFICATION):** User runs and tests flicking on browser/mobile. "Kya pen ka slide, takkar aur kone par latakna real school pen-fight jaisa laga? Zero UI/audio bloat."
 
 ---
 
