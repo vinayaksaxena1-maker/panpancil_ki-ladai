@@ -102,6 +102,9 @@ export class MatchRules {
       return result;
     }
 
+    const p1Label = this.mode === 'pass_and_play' ? 'Player 1' : 'Player';
+    const p2Label = this.mode === 'pass_and_play' ? 'Player 2' : 'Opponent';
+
     // Case 2: Opponent Knocked Out (Player wins round)
     if (opponentFallen && !playerFallen) {
       this.score.player++;
@@ -118,8 +121,8 @@ export class MatchRules {
         type: isMatchWin ? 'MATCH_WIN_PLAYER' : 'ROUND_WIN_PLAYER',
         winner: 'player',
         message: isMatchWin 
-          ? `🏆 MATCH JEET GAYE! Player Wins ${this.score.player} - ${this.score.opponent}!` 
-          : `🎉 Round ${this.currentRound} Player ne jeeta! [${this.score.player} - ${this.score.opponent}]`,
+          ? `🏆 MATCH JEET GAYE! ${p1Label} Wins ${this.score.player} - ${this.score.opponent}!` 
+          : `🎉 Round ${this.currentRound} ${p1Label} ne jeeta! [${this.score.player} - ${this.score.opponent}]`,
         score: { ...this.score },
         currentRound: this.currentRound,
         reFlick: false,
@@ -153,8 +156,8 @@ export class MatchRules {
         type: isMatchWin ? 'MATCH_WIN_OPPONENT' : 'ROUND_WIN_OPPONENT',
         winner: 'opponent',
         message: isMatchWin 
-          ? `💀 MATCH KHATAM! Opponent Wins ${this.score.opponent} - ${this.score.player}!` 
-          : `💥 Round ${this.currentRound} Opponent ne jeeta! [Player ${this.score.player} - ${this.score.opponent} Bot]`,
+          ? `💀 MATCH KHATAM! ${p2Label} Wins ${this.score.opponent} - ${this.score.player}!` 
+          : `💥 Round ${this.currentRound} ${p2Label} ne jeeta! [${p1Label} ${this.score.player} - ${this.score.opponent} ${p2Label}]`,
         score: { ...this.score },
         currentRound: this.currentRound,
         reFlick: false,
@@ -177,12 +180,11 @@ export class MatchRules {
     const nextState = (this.activeTurn === 'player') ? MatchState.P1_AIMING : MatchState.OPPONENT_AIMING;
     this.setState(nextState);
 
+    const activeLabel = this.activeTurn === 'player' ? p1Label : p2Label;
     const result = {
       type: 'TURN_PASS',
       winner: null,
-      message: this.activeTurn === 'player' 
-        ? `Round ${this.currentRound} [${this.score.player} - ${this.score.opponent}] - Player ki bari!` 
-        : `Round ${this.currentRound} [${this.score.player} - ${this.score.opponent}] - Opponent ki bari!`,
+      message: `Round ${this.currentRound} [${this.score.player} - ${this.score.opponent}] - ${activeLabel} ki bari!`,
       score: { ...this.score },
       currentRound: this.currentRound,
       nextTurn: this.activeTurn,

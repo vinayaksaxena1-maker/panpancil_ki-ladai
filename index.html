@@ -207,8 +207,14 @@
       </div>
       
       <div class="hud-pen-bar">
+        <!-- Game Mode Selector: VS Bot vs Pass & Play (2P) -->
+        <select id="mode-select" class="pen-select" onchange="window.gameEngine.setGameMode(this.value)" title="Game Mode">
+          <option value="bot" selected>Mode: 🤖 Bot</option>
+          <option value="pass_and_play">Mode: 👥 2-Player</option>
+        </select>
+
         <!-- Pen Model Selectors for All 6 Authorized Pens -->
-        <select class="pen-select" onchange="window.gameEngine.changePen('player', this.value)" title="Player Pen">
+        <select class="pen-select" onchange="window.gameEngine.changePen('player', this.value)" title="Player 1 Pen">
           <option value="reynolds045" selected>P1: 045 (12g)</option>
           <option value="trimax">P1: Trimax (15g)</option>
           <option value="butterflow">P1: Butterflow</option>
@@ -217,19 +223,19 @@
           <option value="apsaraPlatinum">P1: Apsara</option>
         </select>
 
-        <select class="pen-select" onchange="window.gameEngine.changePen('opponent', this.value)" title="Opponent Pen">
-          <option value="trimax" selected>Bot: Trimax (15g)</option>
-          <option value="reynolds045">Bot: 045 (12g)</option>
-          <option value="butterflow">Bot: Butterflow</option>
-          <option value="pilotV5">Bot: Pilot V5</option>
-          <option value="nataraj621">Bot: Nataraj 621</option>
-          <option value="apsaraPlatinum">Bot: Apsara</option>
+        <select id="p2-pen-select" class="pen-select" onchange="window.gameEngine.changePen('opponent', this.value)" title="Opponent Pen">
+          <option value="trimax" selected>P2: Trimax (15g)</option>
+          <option value="reynolds045">P2: 045 (12g)</option>
+          <option value="butterflow">P2: Butterflow</option>
+          <option value="pilotV5">P2: Pilot V5</option>
+          <option value="nataraj621">P2: Nataraj 621</option>
+          <option value="apsaraPlatinum">P2: Apsara</option>
         </select>
 
         <select id="diff-select" class="pen-select" onchange="window.gameEngine.setDifficulty(this.value)" title="Bot AI Difficulty">
-          <option value="easy">AI: Easy (Aasan)</option>
-          <option value="normal" selected>AI: Normal (Balanced)</option>
-          <option value="hard">AI: Hard (Champion)</option>
+          <option value="easy">AI: Easy</option>
+          <option value="normal" selected>AI: Normal</option>
+          <option value="hard">AI: Hard</option>
         </select>
       </div>
     </div>
@@ -238,10 +244,10 @@
       <div class="power-container">
         <div id="power-fill"></div>
       </div>
-      <div class="hint-text">👆 Drag pen backwards & release to flick | Tap 🔄 Reset to reset</div>
+      <div class="hint-text">👆 Drag active pen backwards & release to flick | Tap 🔄 Reset to reset</div>
     </div>
   </div>
 
-  <script type="module" src="./js/main.js?v=phase2_step2_bot"></script>
+  <script type="module" src="./js/main.js?v=phase2_step3_2p"></script>
 </body>
 </html>

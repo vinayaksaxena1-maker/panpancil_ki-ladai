@@ -95,7 +95,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
-| **Phase 2** | Rules, Match Loop & Bot AI | 🟡 **40% (In Progress)** | Step 2.1 Match Loop & Turns (`js/rules.js`), Step 2.2 Bot AI (`js/bot.js`) complete & verified | Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`progression.js`), Step 2.5 LocalStorage Persistence (`storage.js`) |
+| **Phase 2** | Rules, Match Loop & Bot AI | 🟡 **60% (In Progress)** | Step 2.1 Match Loop & Turns (`js/rules.js`), Step 2.2 Bot AI (`js/bot.js`), Step 2.3 Pass & Play 2P Mode complete & verified | Step 2.4 Progression & Badges (`progression.js`), Step 2.5 LocalStorage Persistence (`storage.js`) |
 | **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
@@ -220,12 +220,12 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - **Dynamic Tester Toggle:** Sandbox HUD me Easy/Normal/Hard selector (`#diff-select`).
   - *Verification Receipt:* Puppeteer automated tests passed (7/7 tests pass). AI presets, difficulty switching, impulse bounds, aur UI sync 100% verified.
 
-- [ ] **Step 2.3: Local 2-Player "Pass & Play" Engine:**
-  - **1-Phone Dual Duel:** Ek hi phone par bina internet do dost aamne-saamne baithkar khel sakein.
-  - **Dual Input Handling:** Player 1 (Bottom/South side) flick; Player 2 (Top/North side) 180° inverted flick.
-  - **Strict Input Lock:** Jis player ki baari hai, sirf usi ki pen touch/drag accept karegi; doosre player ki pen lock rahegi.
-  - **Mode Selector:** Sandbox me "VS Bot" ↔ "Pass & Play (2P)" toggle.
-  - *Verification Receipt:* Dono insaan ek hi screen par alternate turns le sakein bina controls fumble hue.
+- [x] **Step 2.3 (COMPLETED): Local 2-Player "Pass & Play" Engine:**
+  - **1-Phone Dual Duel:** Ek hi phone par bina internet do dost aamne-saamne baithkar duel khel sakein.
+  - **Dual Input Handling:** Player 1 (Bottom/South side) flick; Player 2 (Top/North side) 180° inverted flick. Unified `executeFlick(side, dirX, dirZ, dragPx)`.
+  - **Strict Input Lock:** Jis player ki baari hai, sirf usi ki pen touch/drag accept karegi; doosre player ki pen lock rahegi (`isInteractionAllowed(side)`).
+  - **Mode Selector:** Sandbox me "VS Bot" ↔ "Pass & Play (2P)" live dropdown selector (`#mode-select`).
+  - *Verification Receipt:* Puppeteer automated tests passed (7/7 tests pass). 2P mode toggle, dynamic `#diff-select` visibility, strict input locks per player, turn badges, aur mobile UI layout verified via screenshot receipt.
 
 - [ ] **Step 2.4: 11-Level Progression & 16 Badges Ledger (`js/progression.js`):**
   - **XP Calculation:** Match Win = `+50 XP`, Clean Sweep 3-0 = `+75 XP`, Match Loss = `+15 XP`.

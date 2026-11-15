@@ -217,6 +217,34 @@ class GameEngine {
     }
   }
 
+  setGameMode(mode) {
+    if (!['bot', 'pass_and_play'].includes(mode)) return;
+    this.rules.startMatch(mode);
+    const modeSelect = document.getElementById('mode-select');
+    if (modeSelect && modeSelect.value !== mode) modeSelect.value = mode;
+
+    const diffSelect = document.getElementById('diff-select');
+    if (diffSelect) {
+      diffSelect.style.display = mode === 'pass_and_play' ? 'none' : '';
+    }
+
+    const p2Select = document.getElementById('p2-pen-select');
+    if (p2Select) {
+      p2Select.title = mode === 'pass_and_play' ? 'Player 2 Pen' : 'Bot Pen';
+    }
+
+    if (this.statusMsgEl) {
+      this.statusMsgEl.innerText = mode === 'pass_and_play'
+        ? "👥 Pass & Play Mode: Player 1 (South) vs Player 2 (North)"
+        : "🤖 VS Bot Mode: Player vs AI";
+    }
+
+    updateBlackboardDisplay(mode === 'pass_and_play' ? "PASS & PLAY (2P)" : "VS BOT DUEL");
+    setTimeout(() => updateBlackboardDisplay(null), 1500);
+
+    this.resetRound();
+  }
+
   spawnPen(config, pos, rotY) {
     const mesh = createPenMesh(config);
     this.scene.add(mesh);
@@ -267,15 +295,22 @@ class GameEngine {
     };
 
     const onPointerDown = (e) => {
-      if (this.isSimulating || !this.rules.isInteractionAllowed('player')) return;
+      if (this.isSimulating) return;
+
+      // Strict Turn & Input Lock: Determine active side ('player' or 'opponent')
+      const activeSide = this.rules.activeTurn;
+      if (!this.rules.isInteractionAllowed(activeSide)) return;
 
       const hit = getIntersectionPoint(e);
       if (!hit) return;
 
-      const pPos = this.playerPen.body.translation();
-      const pRot = this.playerPen.body.rotation();
+      const activePen = activeSide === 'player' ? this.playerPen : this.opponentPen;
+      if (!activePen || !activePen.body || activePen.isFallen) return;
+
+      const pPos = activePen.body.translation();
+      const pRot = activePen.body.rotation();
       const penQuat = new THREE.Quaternion(pRot.x, pRot.y, pRot.z, pRot.w);
-      const halfLen = this.playerPen.config.length / 2;
+      const halfLen = activePen.config.length / 2;
 
       // Real 3D endpoints in world space
       const capLocal = new THREE.Vector3(0, 0, halfLen * 0.85).applyQuaternion(penQuat);
@@ -287,10 +322,12 @@ class GameEngine {
       const distToCap = hit.distanceTo(capWorld);
       const distToNib = hit.distanceTo(nibWorld);
 
+      // Strict proximity check: Must touch the ACTIVE player's pen endpoint
       if (Math.min(distToCap, distToNib) > 0.35) {
-        return; // Touched away from pen
+        return; // Touched away from active pen (or touched wrong player's pen)
       }
 
+      this.activeFlickSide = activeSide;
       if (distToCap <= distToNib) {
         this.activeFlickZone = 'cap';
         this.flickAnchorPoint.copy(capWorld);
@@ -308,7 +345,10 @@ class GameEngine {
       this.aimArrow.visible = true;
 
       if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = this.activeFlickZone === 'cap' ? '🎯 Aiming from DHAKKAN (Cap)...' : '🎯 Aiming from NIB (Tip)...';
+        const is2P = this.rules.mode === 'pass_and_play';
+        const playerLabel = activeSide === 'player' ? 'P1' : (is2P ? 'P2' : 'Opponent');
+        const zoneLabel = this.activeFlickZone === 'cap' ? 'DHAKKAN (Cap)' : 'NIB (Tip)';
+        this.statusMsgEl.innerText = `🎯 [${playerLabel}] Aiming from ${zoneLabel}...`;
       }
     };
 
@@ -350,7 +390,7 @@ class GameEngine {
       const dragPx = Math.hypot(pxDiffX, pxDiffY);
 
       if (dragPx >= DEAD_ZONE_PX) {
-        this.executePlayerFlick(-pxDiffX, -pxDiffY, dragPx);
+        this.executeFlick(this.activeFlickSide || 'player', -pxDiffX, -pxDiffY, dragPx);
       }
     };
 
@@ -359,11 +399,11 @@ class GameEngine {
     window.addEventListener('pointerup', onPointerUp);
   }
 
-  executePlayerFlick(dirX, dirZ, dragPx) {
+  executeFlick(side, dirX, dirZ, dragPx) {
     this.isSimulating = true;
     this.simStartTime = performance.now();
     this.stableStartTime = 0;
-    this.rules.onFlickExecuted('player');
+    this.rules.onFlickExecuted(side);
     this.updateTurnBadge();
     synth.playFlick();
 
@@ -379,15 +419,20 @@ class GameEngine {
       dirWorld.z * impulseMag
     );
 
+    const targetPen = side === 'player' ? this.playerPen : this.opponentPen;
     const flickPt = new RAPIER.Vector3(
       this.flickAnchorPoint.x,
       this.flickAnchorPoint.y,
       this.flickAnchorPoint.z
     );
 
-    this.playerPen.body.applyImpulseAtPoint(impulse, flickPt, true);
+    targetPen.body.applyImpulseAtPoint(impulse, flickPt, true);
 
-    if (this.statusMsgEl) this.statusMsgEl.innerText = "Flick executed! Waiting to settle...";
+    if (this.statusMsgEl) {
+      const is2P = this.rules.mode === 'pass_and_play';
+      const playerLabel = side === 'player' ? 'Player 1' : (is2P ? 'Player 2' : 'Opponent');
+      this.statusMsgEl.innerText = `${playerLabel} ne flick kiya!`;
+    }
   }
 
   executeBotFlick() {
@@ -468,20 +513,23 @@ class GameEngine {
 
   resolveTurnOutcome() {
     const outcome = this.rules.evaluateTurnOutcome(this.playerPen.isFallen, this.opponentPen.isFallen);
+    const is2P = this.rules.mode === 'pass_and_play';
+    const p1Label = is2P ? "P1" : "PLAYER";
+    const p2Label = is2P ? "P2" : "OPPONENT";
 
     // 1. Blackboard chalk announcement
     if (outcome.type === 'DRAW_REFLICK') {
       updateBlackboardDisplay("ROUND DRAW! RE-FLICK");
     } else if (outcome.type === 'MATCH_WIN_PLAYER') {
-      updateBlackboardDisplay(`PLAYER WINS MATCH! [${outcome.score.player} - ${outcome.score.opponent}]`);
+      updateBlackboardDisplay(`${p1Label} WINS MATCH! [${outcome.score.player} - ${outcome.score.opponent}]`);
     } else if (outcome.type === 'MATCH_WIN_OPPONENT') {
-      updateBlackboardDisplay(`OPPONENT WINS MATCH! [${outcome.score.opponent} - ${outcome.score.player}]`);
+      updateBlackboardDisplay(`${p2Label} WINS MATCH! [${outcome.score.opponent} - ${outcome.score.player}]`);
     } else if (outcome.winner === 'player') {
-      updateBlackboardDisplay(`ROUND WON! [P1: ${outcome.score.player} - ${outcome.score.opponent}]`);
+      updateBlackboardDisplay(`ROUND WON! [${p1Label}: ${outcome.score.player} - ${outcome.score.opponent}]`);
     } else if (outcome.winner === 'opponent') {
-      updateBlackboardDisplay(`ROUND LOST! [P1: ${outcome.score.player} - ${outcome.score.opponent}]`);
+      updateBlackboardDisplay(`ROUND WON! [${p2Label}: ${outcome.score.opponent} - ${outcome.score.player}]`);
     } else {
-      updateBlackboardDisplay(`R${outcome.currentRound} [P1: ${outcome.score.player} - ${outcome.score.opponent}]`);
+      updateBlackboardDisplay(`R${outcome.currentRound} [${p1Label}: ${outcome.score.player} - ${outcome.score.opponent}]`);
     }
 
     // 2. HUD Status message
@@ -503,9 +551,10 @@ class GameEngine {
         // Match Over!
         this.updateTurnBadge();
         if (this.statusMsgEl) {
-          this.statusMsgEl.innerText = outcome.winner === 'player'
-            ? `🏆 Match Winner! Player ${outcome.score.player} - ${outcome.score.opponent} Opponent (Tap 🔄 Reset to Play Again)`
-            : `💀 Match Lost! Opponent ${outcome.score.opponent} - ${outcome.score.player} Player (Tap 🔄 Reset to Retry)`;
+          const winnerName = outcome.winner === 'player' ? (is2P ? 'Player 1' : 'Player') : (is2P ? 'Player 2' : 'Opponent');
+          const p1Final = outcome.score.player;
+          const p2Final = outcome.score.opponent;
+          this.statusMsgEl.innerText = `🏆 ${winnerName} Wins the Match! [${p1Final} - ${p2Final}] (Tap 🔄 Reset to Play Again)`;
         }
       }
       return;
@@ -513,24 +562,42 @@ class GameEngine {
 
     // 5. Safe Duel (Both on table) -> Pass turn
     if (outcome.nextTurn === 'opponent') {
-      setTimeout(() => this.executeBotFlick(), 750);
+      if (this.rules.mode === 'bot') {
+        setTimeout(() => this.executeBotFlick(), 750);
+      } else {
+        // Pass & Play Mode: Player 2 (North) is waiting to flick
+        if (this.statusMsgEl) this.statusMsgEl.innerText = "👥 Player 2 (North) ki baari! Drag pen to flick.";
+      }
+    } else if (outcome.nextTurn === 'player') {
+      if (this.statusMsgEl) {
+        this.statusMsgEl.innerText = is2P
+          ? "👥 Player 1 (South) ki baari! Drag pen to flick."
+          : "Your Turn! Drag pen to flick.";
+      }
     }
   }
 
   updateTurnBadge() {
     if (!this.turnBadgeEl) return;
+    const is2P = this.rules.mode === 'pass_and_play';
+
     if (this.rules.matchOver) {
-      this.turnBadgeEl.innerText = this.rules.winner === 'player' ? "🏆 MATCH WON" : "💀 MATCH LOST";
-      this.turnBadgeEl.style.background = this.rules.winner === 'player' ? "#3f8b61" : "#c85b4a";
+      if (this.rules.winner === 'player') {
+        this.turnBadgeEl.innerText = is2P ? "🏆 PLAYER 1 WINS" : "🏆 MATCH WON";
+        this.turnBadgeEl.style.background = "#3f8b61";
+      } else {
+        this.turnBadgeEl.innerText = is2P ? "🏆 PLAYER 2 WINS" : "💀 MATCH LOST";
+        this.turnBadgeEl.style.background = is2P ? "#2b6cb0" : "#c85b4a";
+      }
       return;
     }
 
     if (this.rules.state === MatchState.P1_AIMING) {
-      this.turnBadgeEl.innerText = "Your Turn (Drag to Flick)";
+      this.turnBadgeEl.innerText = is2P ? "P1 Turn (South)" : "Your Turn (Drag to Flick)";
       this.turnBadgeEl.style.background = "#3f8b61";
     } else if (this.rules.state === MatchState.OPPONENT_AIMING) {
-      this.turnBadgeEl.innerText = "Opponent Aiming...";
-      this.turnBadgeEl.style.background = "#c85b4a";
+      this.turnBadgeEl.innerText = is2P ? "P2 Turn (North)" : "Opponent Aiming...";
+      this.turnBadgeEl.style.background = is2P ? "#2b6cb0" : "#c85b4a";
     } else if (this.rules.state === MatchState.SIMULATING || this.rules.state === MatchState.SETTLING) {
       this.turnBadgeEl.innerText = "Flicking...";
       this.turnBadgeEl.style.background = "#d9822b";
@@ -568,7 +635,11 @@ class GameEngine {
     updateBlackboardDisplay("MATCH RESET: 0 - 0");
     setTimeout(() => updateBlackboardDisplay(null), 1200);
     this.resetRound();
-    if (this.statusMsgEl) this.statusMsgEl.innerText = "🔄 Match Reset: Round 1 (Best of 5) | [P1: 0 - 0 Opponent]";
+    if (this.statusMsgEl) {
+      const is2P = this.rules.mode === 'pass_and_play';
+      const p2Label = is2P ? "P2" : "Opponent";
+      this.statusMsgEl.innerText = `🔄 Match Reset: Round 1 (Best of 5) | [P1: 0 - 0 ${p2Label}]`;
+    }
   }
 
   resetRound() {
@@ -611,7 +682,9 @@ class GameEngine {
       this.rules.setState(MatchState.P1_AIMING);
       this.updateTurnBadge();
       if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = `Round ${this.rules.currentRound} (Best of 5) | [P1: ${this.rules.score.player} - ${this.rules.score.opponent} Opponent]`;
+        const is2P = this.rules.mode === 'pass_and_play';
+        const p2Label = is2P ? "P2" : "Opponent";
+        this.statusMsgEl.innerText = `Round ${this.rules.currentRound} (Best of 5) | [P1: ${this.rules.score.player} - ${this.rules.score.opponent} ${p2Label}]`;
       }
     }
   }
