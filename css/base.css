@@ -38,13 +38,63 @@
   --shadow-btn-red: 0 6px 0 #991b1b, 0 8px 14px rgba(0, 0, 0, 0.35);
 
   /* --- Typography Stacks --- */
+  --font-doodle: 'Permanent Marker', 'Caveat Brush', 'Fredoka', cursive, sans-serif;
   --font-arcade: 'Fredoka', 'Titan One', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-chalk: 'Caveat', 'Comic Neue', 'Chalkboard SE', cursive, sans-serif;
 }
 
 /* ==========================================================================
-   1. Typography & Text Outlines
+   1. Typography, Text Outlines & Sketchbook Doodle UI
    ========================================================================== */
+.title-doodle {
+  font-family: var(--font-doodle);
+  font-weight: 900;
+  color: #fde047;
+  -webkit-text-stroke: 2.5px var(--color-arcade-dark);
+  text-shadow: 
+    3px 3px 0 var(--color-arcade-dark),
+    5px 5px 0 rgba(30, 64, 175, 0.45),
+    0 8px 16px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+  transform: rotate(-1.5deg);
+  display: inline-block;
+}
+
+.text-doodle-red {
+  color: #ef4444;
+  -webkit-text-stroke: 2px #7f1d1d;
+  text-shadow: 2px 2px 0 #7f1d1d;
+}
+
+.text-doodle-blue {
+  color: #3b82f6;
+  -webkit-text-stroke: 2px #1e3a8a;
+  text-shadow: 2px 2px 0 #1e3a8a;
+}
+
+.border-doodle {
+  border: 3px solid var(--color-arcade-dark);
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+  box-shadow: 4px 6px 0 var(--color-arcade-dark);
+}
+
+.underline-doodle {
+  position: relative;
+  display: inline-block;
+}
+
+.underline-doodle::after {
+  content: "";
+  position: absolute;
+  left: -5%;
+  bottom: -6px;
+  width: 110%;
+  height: 4px;
+  background: #ef4444;
+  border-radius: 4px;
+  transform: rotate(-1.2deg);
+}
+
 .text-arcade-stroke {
   font-family: var(--font-arcade);
   -webkit-text-stroke: 2.5px var(--color-arcade-dark);

@@ -36,22 +36,90 @@ The visual language bridges authentic 90s Indian classroom memories (teak desks,
 
 ---
 
-## 2. 🔤 TYPOGRAPHY & TEXT STROKE RULES
+## 2. 🔤 TYPOGRAPHY & SKETCHBOOK / DOODLE UI SYSTEM
 
-Every UI text element placed over 3D wooden desk surfaces or patterned notebooks must remain 100% legible under all lighting conditions.
+All titles, game logos, screen headers, badges, and score announcements use an authentic **"Sketchbook / Rough Backbencher Doodle"** aesthetic—as if hand-drawn by a 90s student with ballpoint pens and pencils on the back pages of a rough notebook.
 
-- **Display & Headline Font:** `Fredoka`, `Titan One`, system-ui, sans-serif (Bold, punchy, rounded).
-- **Chalk & Handwritten Script:** `Caveat`, `Comic Neue`, `Chalkboard SE`, cursive (Chalkboard labels & notebook notes).
-- **Body & Numerical Stats:** `Inter`, system-ui, -apple-system, sans-serif (Weight: 600 - 800).
-- **Mandatory Text Stroke Utility:**
-  ```css
-  .text-arcade-stroke {
-    -webkit-text-stroke: 2.5px #111827;
-    text-shadow: 0 3px 0 #111827, 0 6px 12px rgba(0, 0, 0, 0.45);
-    color: #ffffff;
-    font-weight: 900;
-  }
-  ```
+### Typography Hierarchy:
+- **Doodle Title Font (Primary Game Logo & Big Headers):** `Permanent Marker`, `Caveat Brush`, `Gochi Hand`, `Fredoka One`, cursive. Hand-sketched, slightly tilted, bold marker strokes with high personality.
+- **Classroom Chalkboard & Notes Script:** `Caveat`, `Comic Neue`, `Chalkboard SE`, cursive. For teacher chits, blackboard thoughts, roll numbers, and dialogs.
+- **Card Body & Numerical Stats:** `Inter`, system-ui, -apple-system, sans-serif (Clean, bold 700-800 for instant legibility).
+
+### Doodle Title & Text Stroke Rules:
+```css
+/* Sketchbook / Doodle Headline with Ballpoint Hatch Shadow */
+.title-doodle {
+  font-family: 'Permanent Marker', 'Caveat Brush', 'Fredoka', cursive, sans-serif;
+  font-weight: 900;
+  color: #fde047; /* Chalk yellow or White */
+  -webkit-text-stroke: 2.5px #111827;
+  text-shadow: 
+    3px 3px 0 #111827,
+    5px 5px 0 rgba(30, 64, 175, 0.45), /* Blue ink scribble shadow */
+    0 8px 16px rgba(0, 0, 0, 0.5);
+  letter-spacing: 1px;
+  transform: rotate(-1.5deg); /* Organic hand-sketched slight tilt */
+  display: inline-block;
+}
+
+/* Red Marker Doodle Stamp */
+.text-doodle-red {
+  color: #ef4444;
+  -webkit-text-stroke: 2px #7f1d1d;
+  text-shadow: 2px 2px 0 #7f1d1d;
+}
+
+/* Blue Ballpoint Doodle Scribble */
+.text-doodle-blue {
+  color: #3b82f6;
+  -webkit-text-stroke: 2px #1e3a8a;
+  text-shadow: 2px 2px 0 #1e3a8a;
+}
+```
+
+---
+
+## 3. ✏️ DOODLE UI EMBELLISHMENTS & SKETCH PATTERNS
+
+Every screen incorporates rough hand-drawn sketchbook embellishments that evoke classroom nostalgia:
+
+### 1. Organic Hand-Sketched Borders (`.border-doodle`)
+Instead of rigid geometric boxes, doodle containers use irregular, slightly wobbly border curves:
+```css
+.border-doodle {
+  border: 3px solid #111827;
+  border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; /* Hand-drawn box */
+  box-shadow: 4px 6px 0 #111827;
+}
+```
+
+### 2. Hand-Drawn Squiggly Underlines (`.underline-doodle`)
+Titles feature double-stroked, wavy marker underlines underneath:
+```css
+.underline-doodle {
+  position: relative;
+  display: inline-block;
+}
+.underline-doodle::after {
+  content: "";
+  position: absolute;
+  left: -5%;
+  bottom: -8px;
+  width: 110%;
+  height: 6px;
+  background: radial-gradient(circle, #ef4444 20%, transparent 20%);
+  background-size: 8px 6px;
+  border-bottom: 3px solid #ef4444;
+  transform: rotate(-1deg);
+}
+```
+
+### 3. Back-of-Notebook Doodles & Stamps
+- **Hand-Drawn Stars (⭐):** Chunky 5-point doodle stars drawn with ballpoint pen lines for rank XP and stage ratings.
+- **Crossed Pen Swords (⚔️):** Hand-sketched 045 vs Trimax crossed duel doodle.
+- **Lightning Bolts (⚡):** Rough jagged lightning sketch for critical knockout hits.
+- **Teacher Red Checked Tick (✔️):** Bold, authentic red ink flourish for completed stages.
+- **Circled Doodle Badges:** Uneven double-circle ballpoint pen rings circling student roll numbers and turn badges.
 
 ---
 
