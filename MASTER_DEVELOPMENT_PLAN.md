@@ -101,7 +101,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **11% (Step 3.1 Done, Step 3.2 Next)** | Step 3.1 Design Tokens (`DESIGN.md` + `css/base.css`) ready | Steps 3.2-3.9: Screen-by-Screen Verifiable Pipeline (Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **44% (Steps 3.1-3.4 Done, Step 3.5 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit) ready & verified | Steps 3.5-3.9: Screen-by-Screen Verifiable Pipeline (Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -285,9 +285,18 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - **Implementation:** Stitch AI se user ka banaya hua *Main Menu Home Screen (Pencil Sketch CTA)* fetch karke `index.html`, `css/menu.css`, aur local asset `assets/desk_duel_arena.jpg` me wire kiya gaya. Notebook Page 02 layout, attested student profile, level/XP progress bar, center wooden desk photo stage (Reynolds 045 vs Cello Gripper with neon trajectory arc), tactile `[⚡ TOSS + PLAY ➔]` pencil sketch CTA, aur 4 retro mode cards (Story Mode, Pass & Play, Compass Box, Trophy Rack) integrated.
   - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Splash screen se smoothly transition hokar Main Menu khulta hai, `⚡ TOSS + PLAY` ya `FIGHT` dabane par bot match start hota hai, `TOSS ⇄` dabane par 2-Player Pass & Play mode activate hota hai, aur HUD me `🏫 Menu` button se wapas Main Menu par aaya ja sakta hai. Commit: `cc2c6d3`.
 
-- [ ] **Step 3.4: Visual Campaign Map & Stage Details Chit (Class 7 ➔ Class 8):**
-  - **Kya banega:** Ruled notebook page layout with hand-drawn pencil path (11 stages). Defeated stages par teacher ka **Red Ink Stamp (✔️)**, locked stages par **"Period Ongoing"** stamp lock. Stage tap par classroom chit modal (Opponent Classmate avatar, difficulty, pen reward, aur chunky `[Battle ⚔️ / Replay 🔄]` buttons).
-  - *Verification Receipt:* Beaten stages par tap karne se Replay option mile, locked stages par lock alert aaye, aur path responsive scroll ho.
+- [x] **Step 3.4 (COMPLETED): Visual Campaign Map & Stage Details Chit (Class 7 ➔ Class 8):**
+  - **Implementation:** Stitch AI Screen `4c5110bfc5ba48e499bfe56e02187162` se Notebook Page 03 layout fetch karke `index.html`, `css/campaign.css`, aur 11 unique opponent caricatures (`assets/opponents/stage_01.jpg` to `stage_11.jpg`) me wire kiya gaya.
+  - **Core Features Implemented:**
+    - Notebook Page 03 header with Saraswati Vidyalaya branding, Page No & Date index, aur live Canteen Fund balance.
+    - 11-Desk promotion track (`X/11 Desks Cleared`, dynamic star sum `X/33 Stars ⭐`, pencil progress bar).
+    - Cleared desks: Green checkmark badge `✔️`, actual earned star count (1★, 2★, 3★ from `stageStars`), and `Replay Recess?` match launcher.
+    - Active Challenge: Authentic **Yellow Lined Revision Chit (`yellow-chit-hatch`)** with paperclip, pushpin 📌, opponent sketch caricature, weapon badge, Flick Force & Bench Grip bars, bench rule, rewards, aur `⚔️ FIGHT! ➔` / `🔄 WARMUP` buttons.
+    - Next locked stage: Dashed border with lock icon `🔒` and `PERIOD X LOCK` tag.
+    - Mid-campaign Boss 1 gateway preview (Stage 06 Vikram Topper / Maths Sir Desk).
+    - Floating Recess Bell Timer with live countdown (`03:45 mins left`) and 00:00 non-blocking period bell alert toast.
+    - Dynamic Teacher's Stamp (`NEW ADMISSION` ➔ `PASSED STG 0X` ➔ `CHAMPION 1998`).
+  - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Story Mode entry from Menu, Stage match launch (`FIGHT! ➔`), Hub return (`← HUB`), dynamic stars rendering, aur recess timer reset verified. Commits: `ec15e65` & `9046db1`.
 
 - [ ] **Step 3.5: Tin Compass Box Screen (Collectible Pen Showcase):**
   - **Kya banega:** Steel geometry box visual with 6 collectible pen slots. 3D pen preview with toy finishes + exact physics stats (Weight in grams, Knockout Mass, Agility, Roll Drag) + chunky `[Equip Pen]` action.
