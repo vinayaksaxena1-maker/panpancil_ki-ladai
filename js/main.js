@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import RAPIER from 'rapier';
 import { createDeskMesh } from './desk.js?v=chalkboard_sharp';
-import { PEN_CONFIGS, createPenMesh } from './pens.js?v=cel_shaded_pbr';
+import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
@@ -52,6 +52,7 @@ class GameEngine {
     this.isSimulating = false;
     this.turn = 'player';
     this.stableStartTime = 0;
+    this.difficulty = 'normal'; // Default: Normal Mode (Balanced Competition)
 
     // 3D Raycasting
     this.raycaster = new THREE.Raycaster();
@@ -178,6 +179,27 @@ class GameEngine {
       this.camera.lookAt(0, 0.08, -0.18);
     }
     this.camera.updateProjectionMatrix();
+  }
+
+  setDifficulty(mode) {
+    if (!['easy', 'normal', 'hard'].includes(mode)) return;
+    this.difficulty = mode;
+
+    document.querySelectorAll('.diff-btn').forEach(btn => {
+      btn.classList.remove('active', 'easy', 'normal', 'hard');
+      if (btn.dataset.diff === mode) {
+        btn.classList.add('active', mode);
+      }
+    });
+
+    if (this.statusMsgEl) {
+      const modeLabels = {
+        easy: "Easy Mode (Aasan)",
+        normal: "Normal Mode (Balanced)",
+        hard: "Hard Mode (Class Champion)"
+      };
+      this.statusMsgEl.innerText = `Bot AI: ${modeLabels[mode]}`;
+    }
   }
 
   spawnPen(config, pos, rotY) {

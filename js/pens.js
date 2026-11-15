@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-// 6 Balanced Classic Pens Config - Exactly as per Clean-Room Spec
+// 6 Balanced Classic Pens Config - Clean-Room Physics Spec
 export const PEN_CONFIGS = {
   trimax: {
     id: 'trimax',
@@ -9,9 +9,9 @@ export const PEN_CONFIGS = {
     length: 0.146,
     radius: 0.0069,
     mass: 0.0155, // Heavy Tank mass
-    color: 0x1d3557, // Deep Navy body
+    color: 0x152844, // Deep Metallic Navy body
     accentColor: 0xd4af37, // Golden metal ring
-    capColor: 0x112233,
+    capColor: 0x0f1c30,
     restitution: 0.68, // ~70% Elasticity for crisp rigid plastic impact
     friction: 0.42,
     linearDamping: 0.06,
@@ -24,9 +24,9 @@ export const PEN_CONFIGS = {
     length: 0.145,
     radius: 0.0049,
     mass: 0.0122, // Lighter Speed mass
-    color: 0xf4f0e4, // Transparent Off-white body
-    accentColor: 0x243b5a, // Classic blue cap
-    capColor: 0x243b5a,
+    color: 0xf5f1e8, // Semi-translucent Off-white body
+    accentColor: 0x1c3d73, // Classic blue cap & plug
+    capColor: 0x1c3d73,
     restitution: 0.68, // ~70% Elasticity
     friction: 0.35,
     linearDamping: 0.06,
@@ -39,9 +39,9 @@ export const PEN_CONFIGS = {
     length: 0.146,
     radius: 0.0053,
     mass: 0.0133,
-    color: 0xb77a49,
-    accentColor: 0x111111, // Black rubber grip
-    capColor: 0x333333,
+    color: 0x9e602e, // Warm Amber Translucent
+    accentColor: 0x151515, // Black rubber grip
+    capColor: 0x242424,
     restitution: 0.68,
     friction: 0.28,
     linearDamping: 0.06,
@@ -54,9 +54,9 @@ export const PEN_CONFIGS = {
     length: 0.142,
     radius: 0.0046,
     mass: 0.0112,
-    color: 0x3f8b61,
-    accentColor: 0xc0c0c0,
-    capColor: 0x27593f,
+    color: 0x184a2d, // Deep Emerald
+    accentColor: 0xdcdcdc, // Silver precision ring
+    capColor: 0x123621,
     restitution: 0.68,
     friction: 0.32,
     linearDamping: 0.06,
@@ -69,8 +69,8 @@ export const PEN_CONFIGS = {
     length: 0.176,
     radius: 0.0040,
     mass: 0.0087,
-    color: 0xc85b4a, // Red & Black stripes
-    accentColor: 0x111111,
+    color: 0xb5241c, // Red & Black stripes
+    accentColor: 0x181818,
     capColor: 0x222222, // Dark graphite lead
     restitution: 0.65,
     friction: 0.30,
@@ -84,8 +84,8 @@ export const PEN_CONFIGS = {
     length: 0.128,
     radius: 0.0040,
     mass: 0.0087,
-    color: 0x222222, // Silver & Black stripes
-    accentColor: 0xc0c0c0,
+    color: 0x202020, // Silver & Black stripes
+    accentColor: 0xa8a8a8,
     capColor: 0x111111,
     restitution: 0.65,
     friction: 0.29,
@@ -94,149 +94,307 @@ export const PEN_CONFIGS = {
   }
 };
 
-// 7. Cel-Shaded Inverted Hull Outline Material (Comic Inking Effect)
-const OUTLINE_MATERIAL = new THREE.MeshBasicMaterial({
-  color: 0x111622, // Deep crisp comic inking black stroke
-  side: THREE.BackSide
-});
+// 1. Procedural High-Res UV Canvas Decal Generator (Logos, Brands, Decals)
+function createPenDecalTexture(config) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1024;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d');
 
-function createOutlinedMesh(geometry, material, scaleX = 1.07, scaleY = 1.01, scaleZ = 1.07) {
-  const mesh = new THREE.Mesh(geometry, material);
-  mesh.castShadow = true;
-  mesh.receiveShadow = true;
+  if (config.id === 'reynolds045') {
+    // Semi-translucent milky white plastic barrel
+    ctx.fillStyle = '#f4f0e6';
+    ctx.fillRect(0, 0, 1024, 256);
 
-  // Inverted hull child mesh scaled slightly outwards with BackSide culling
-  const outline = new THREE.Mesh(geometry, OUTLINE_MATERIAL);
-  outline.scale.set(scaleX, scaleY, scaleZ);
-  mesh.add(outline);
+    // Subtle longitudinal plastic mold seam
+    ctx.fillStyle = 'rgba(215, 205, 190, 0.45)';
+    ctx.fillRect(0, 126, 1024, 4);
 
-  return mesh;
+    // Iconic Red & Blue "045 REYNOLDS FINE CARBURE" Stamp
+    ctx.fillStyle = '#b7221a';
+    ctx.font = 'bold 44px -apple-system, sans-serif';
+    ctx.fillText('045', 280, 145);
+
+    ctx.fillStyle = '#1c3d73';
+    ctx.font = 'bold 36px "Arial Black", sans-serif';
+    ctx.fillText('REYNOLDS', 390, 145);
+
+    ctx.font = 'bold 22px monospace';
+    ctx.fillText('FINE CARBURE  •  FRANCE', 660, 145);
+
+    // Decorative fine blue border lines
+    ctx.strokeStyle = '#1c3d73';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(260, 95, 620, 66);
+
+  } else if (config.id === 'trimax') {
+    // Deep metallic navy triangular body
+    ctx.fillStyle = '#13233c';
+    ctx.fillRect(0, 0, 1024, 256);
+
+    // Golden metallic branding
+    ctx.fillStyle = '#d4af37';
+    ctx.font = 'bold 42px "Arial Black", sans-serif';
+    ctx.fillText('★  REYNOLDS TRIMAX  ★', 320, 145);
+
+    ctx.font = '22px monospace';
+    ctx.fillText('ADVANCED FLUID INK SYSTEM', 360, 185);
+
+    // Golden border stripes
+    ctx.strokeStyle = '#d4af37';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(100, 100);
+    ctx.lineTo(924, 100);
+    ctx.moveTo(100, 200);
+    ctx.lineTo(924, 200);
+    ctx.stroke();
+
+  } else if (config.id === 'pilotV5') {
+    // Deep emerald green body
+    ctx.fillStyle = '#163d27';
+    ctx.fillRect(0, 0, 1024, 256);
+
+    // Silver hi-tecpoint branding
+    ctx.fillStyle = '#e2e6e3';
+    ctx.font = 'bold 40px sans-serif';
+    ctx.fillText('PILOT  V5', 300, 135);
+
+    ctx.font = 'bold 26px sans-serif';
+    ctx.fillStyle = '#a8b5ab';
+    ctx.fillText('HI-TECPOINT  0.5', 540, 135);
+
+    // Ink level window illustration
+    ctx.fillStyle = '#08140d';
+    ctx.fillRect(200, 155, 620, 22);
+    ctx.fillStyle = '#2d6d45';
+    ctx.fillRect(204, 159, 440, 14);
+
+  } else if (config.id === 'butterflow') {
+    // Amber body with black grip section
+    ctx.fillStyle = '#9e602e';
+    ctx.fillRect(0, 0, 1024, 256);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'italic bold 46px serif';
+    ctx.fillText('cello  Butterflow', 340, 145);
+
+    ctx.font = '20px sans-serif';
+    ctx.fillText('SMOOTHEST BALLPEN', 410, 180);
+
+  } else if (config.id === 'nataraj621') {
+    // Red and black stripes
+    for (let y = 0; y < 256; y += 42) {
+      ctx.fillStyle = (Math.floor(y / 42) % 2 === 0) ? '#b5241c' : '#141414';
+      ctx.fillRect(0, y, 1024, 42);
+    }
+    // Gold embossed stamp
+    ctx.fillStyle = '#e6c86e';
+    ctx.font = 'bold 42px monospace';
+    ctx.fillText('★ NATARAJ 621 ★  HB', 340, 145);
+
+  } else if (config.id === 'apsaraPlatinum') {
+    // Silver and dark charcoal stripes
+    for (let y = 0; y < 256; y += 42) {
+      ctx.fillStyle = (Math.floor(y / 42) % 2 === 0) ? '#8f9296' : '#141414';
+      ctx.fillRect(0, y, 1024, 42);
+    }
+    // Silver foil stamp
+    ctx.fillStyle = '#f0f0f0';
+    ctx.font = 'bold 38px monospace';
+    ctx.fillText('APSARA PLATINUM  EXTRA DARK', 280, 145);
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.ClampToEdgeWrapping;
+  return texture;
 }
 
-// Procedural 3D Mesh Creator (Aligned natively along Z-axis)
+// 2. Inverted Hull Cel-Shading Outline Helper (Comic / Pop-out Inking Effect)
+function addInvertedHullOutline(mesh, scaleFactor = 1.035, outlineColor = 0x14181f) {
+  const outlineGeo = mesh.geometry.clone();
+  const outlineMat = new THREE.MeshBasicMaterial({
+    color: outlineColor,
+    side: THREE.BackSide
+  });
+  const outlineMesh = new THREE.Mesh(outlineGeo, outlineMat);
+  outlineMesh.scale.set(scaleFactor, scaleFactor, scaleFactor);
+  mesh.add(outlineMesh);
+  return outlineMesh;
+}
+
+// 3. Procedural 3D Mesh Creator with 5 PBR & Cel-Shaded Tricks
 export function createPenMesh(config) {
   const group = new THREE.Group();
   const radius = config.radius;
   const len = config.length;
-  // 3 segments for Trimax (Triangular), 6 for Pencils (Hexagonal), 28 for smooth cylinders
-  const segments = config.type === 'triangular' ? 3 : (config.type === 'hexagonal' ? 6 : 28);
+  const segments = config.type === 'triangular' ? 3 : (config.type === 'hexagonal' ? 6 : 24);
 
-  const barrelLen = len * 0.60;
-  const capLen = len * 0.22;
-  const capRadius = radius * 1.10;
-  const collarLen = len * 0.07;
-  const nibLen = len * 0.11;
+  const decalTexture = createPenDecalTexture(config);
 
-  // 1. Main Pen Barrel (Procedural cylindrical body)
+  // 1. Main Pen Barrel (PBR MeshPhysicalMaterial with Clearcoat shine & Decal wrap)
+  const barrelLen = len * 0.72;
   const barrelGeo = new THREE.CylinderGeometry(radius, radius, barrelLen, segments);
-  const barrelMat = new THREE.MeshStandardMaterial({
-    color: config.color,
-    roughness: config.type === 'hexagonal' ? 0.65 : 0.32,
-    metalness: config.id === 'trimax' ? 0.18 : 0.04
+  const barrelMat = new THREE.MeshPhysicalMaterial({
+    map: decalTexture,
+    color: 0xffffff,
+    roughness: config.type === 'hexagonal' ? 0.55 : 0.28,
+    metalness: config.id === 'trimax' ? 0.25 : 0.02,
+    clearcoat: config.type === 'hexagonal' ? 0.2 : 0.65,
+    clearcoatRoughness: 0.20,
+    flatShading: config.type === 'triangular' || config.type === 'hexagonal'
   });
-  const barrel = createOutlinedMesh(barrelGeo, barrelMat, 1.08, 1.005, 1.08);
+  const barrel = new THREE.Mesh(barrelGeo, barrelMat);
   barrel.rotation.x = Math.PI / 2;
-  barrel.position.z = -len * 0.04;
+  barrel.castShadow = true;
+  barrel.receiveShadow = true;
   group.add(barrel);
+  addInvertedHullOutline(barrel, 1.035);
 
-  // 2. Front Grip Collar (Blue grip for Reynolds 045 / Grip collar)
-  const collarGeo = new THREE.CylinderGeometry(radius * 0.72, radius * 0.98, collarLen, segments);
-  const collarMat = new THREE.MeshStandardMaterial({
-    color: config.id === 'reynolds045' ? 0x243b5a : (config.accentColor || config.color),
-    roughness: 0.28,
-    metalness: 0.08
-  });
-  const collar = createOutlinedMesh(collarGeo, collarMat, 1.09, 1.01, 1.09);
-  collar.rotation.x = Math.PI / 2;
-  collar.position.z = barrel.position.z - barrelLen / 2 - collarLen / 2;
-  group.add(collar);
+  // 2. Internal Refill Tube (visible inside Reynolds 045 translucent barrel)
+  if (config.id === 'reynolds045' || config.id === 'butterflow') {
+    // Inner plastic refill rod
+    const refillGeo = new THREE.CylinderGeometry(radius * 0.40, radius * 0.40, barrelLen * 0.90, 12);
+    const refillMat = new THREE.MeshStandardMaterial({
+      color: 0xfcfcfc,
+      roughness: 0.4,
+      metalness: 0.0
+    });
+    const refill = new THREE.Mesh(refillGeo, refillMat);
+    refill.rotation.x = Math.PI / 2;
+    group.add(refill);
 
-  // 3. Front Nib (Sharpened Tip / Stainless Steel Nib)
-  const nibGeo = new THREE.ConeGeometry(radius * 0.72, nibLen, segments);
-  const nibMat = new THREE.MeshStandardMaterial({
-    color: config.id.includes('pencil') ? 0x222222 : 0xe8e8e8, // Lead or Stainless Steel
-    roughness: 0.15,
-    metalness: config.id.includes('pencil') ? 0.10 : 0.92
-  });
-  const nib = createOutlinedMesh(nibGeo, nibMat, 1.10, 1.03, 1.10);
-  nib.rotation.x = -Math.PI / 2;
-  nib.position.z = collar.position.z - collarLen / 2 - nibLen / 2;
-  group.add(nib);
+    // Inner ink column (Blue ink inside refill)
+    const inkGeo = new THREE.CylinderGeometry(radius * 0.28, radius * 0.28, barrelLen * 0.68, 12);
+    const inkMat = new THREE.MeshStandardMaterial({
+      color: 0x183a78,
+      roughness: 0.3,
+      metalness: 0.1
+    });
+    const ink = new THREE.Mesh(inkGeo, inkMat);
+    ink.rotation.x = Math.PI / 2;
+    ink.position.z = -barrelLen * 0.06;
+    group.add(ink);
+  }
 
-  // Tiny Tungsten Ink Ball at apex of nib
-  if (!config.id.includes('pencil')) {
-    const ballGeo = new THREE.SphereGeometry(radius * 0.20, 12, 12);
-    const ballMat = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.2, metalness: 0.85 });
+  // 3. Front Metal Nib / Cone Tip (Stainless steel sheen)
+  const nibLen = len * 0.16;
+  if (config.type === 'hexagonal') {
+    // Sharpened wood cone for pencils
+    const woodGeo = new THREE.ConeGeometry(radius, nibLen, segments);
+    const woodMat = new THREE.MeshStandardMaterial({ color: 0xdfba8c, roughness: 0.6 });
+    const wood = new THREE.Mesh(woodGeo, woodMat);
+    wood.rotation.x = -Math.PI / 2;
+    wood.position.z = -barrelLen / 2 - nibLen / 2;
+    wood.castShadow = true;
+    group.add(wood);
+    addInvertedHullOutline(wood, 1.035);
+
+    // Exposed graphite lead tip
+    const leadLen = nibLen * 0.32;
+    const leadGeo = new THREE.ConeGeometry(radius * 0.35, leadLen, segments);
+    const leadMat = new THREE.MeshStandardMaterial({ color: 0x1f1f1f, roughness: 0.2, metalness: 0.8 });
+    const lead = new THREE.Mesh(leadGeo, leadMat);
+    lead.rotation.x = -Math.PI / 2;
+    lead.position.z = -barrelLen / 2 - nibLen + leadLen / 2;
+    lead.castShadow = true;
+    group.add(lead);
+  } else {
+    // Metal Nib
+    const nibGeo = new THREE.ConeGeometry(radius, nibLen, segments);
+    const nibMat = new THREE.MeshPhysicalMaterial({
+      color: 0xe8e8e8,
+      metalness: 0.90,
+      roughness: 0.14,
+      clearcoat: 0.5
+    });
+    const nib = new THREE.Mesh(nibGeo, nibMat);
+    nib.rotation.x = -Math.PI / 2;
+    nib.position.z = -barrelLen / 2 - nibLen / 2;
+    nib.castShadow = true;
+    group.add(nib);
+    addInvertedHullOutline(nib, 1.035);
+
+    // Ballpoint micro-tip sphere
+    const ballGeo = new THREE.SphereGeometry(radius * 0.32, 12, 12);
+    const ballMat = new THREE.MeshStandardMaterial({ color: 0x333333, metalness: 0.95, roughness: 0.1 });
     const ball = new THREE.Mesh(ballGeo, ballMat);
-    ball.position.z = nib.position.z - nibLen / 2;
+    ball.position.z = -barrelLen / 2 - nibLen;
     group.add(ball);
   }
 
-  // 4. Back Cap (Dhakkan plugged onto the back)
+  // 4. Back Cap / Dhakkan (Iconic shaped cap with rim)
+  const capLen = len * 0.14;
+  const capRadius = radius * 1.08;
   const capGeo = new THREE.CylinderGeometry(capRadius, capRadius, capLen, segments);
-  const capMat = new THREE.MeshStandardMaterial({
+  const capMat = new THREE.MeshPhysicalMaterial({
     color: config.capColor,
-    roughness: 0.20,
-    metalness: 0.08
+    roughness: 0.24,
+    metalness: config.id === 'trimax' ? 0.15 : 0.04,
+    clearcoat: 0.70,
+    clearcoatRoughness: 0.18,
+    flatShading: config.type === 'triangular'
   });
-  const cap = createOutlinedMesh(capGeo, capMat, 1.08, 1.005, 1.08);
+  const cap = new THREE.Mesh(capGeo, capMat);
   cap.rotation.x = Math.PI / 2;
-  cap.position.z = barrel.position.z + barrelLen / 2 + capLen / 2;
+  cap.position.z = barrelLen / 2 + capLen / 2;
+  cap.castShadow = true;
   group.add(cap);
+  addInvertedHullOutline(cap, 1.035);
 
-  // 5. Rubber Stopper / End-Cap Hemisphere (Round dome cap at +Z rear)
-  const stopperGeo = new THREE.SphereGeometry(capRadius * 0.97, segments, 12, 0, Math.PI * 2, 0, Math.PI / 2);
-  const stopperMat = new THREE.MeshStandardMaterial({
-    color: config.id === 'reynolds045' ? 0x182c44 : config.capColor,
-    roughness: 0.35,
-    metalness: 0.05
-  });
-  const stopper = createOutlinedMesh(stopperGeo, stopperMat, 1.08, 1.08, 1.08);
-  stopper.rotation.x = -Math.PI / 2; // Point dome outwards towards +Z
-  stopper.position.z = cap.position.z + capLen / 2;
+  // Rounded end stopper (Hemisphere on the end of the cap)
+  const stopperGeo = new THREE.SphereGeometry(capRadius, segments, 8, 0, Math.PI * 2, 0, Math.PI / 2);
+  const stopper = new THREE.Mesh(stopperGeo, capMat);
+  stopper.rotation.x = Math.PI / 2;
+  stopper.position.z = barrelLen / 2 + capLen;
+  stopper.castShadow = true;
   group.add(stopper);
+  addInvertedHullOutline(stopper, 1.035);
 
-  // 6. Extruded Pen Clip (Dhakkan ki Patti)
-  const clipGroup = new THREE.Group();
-  const clipMat = new THREE.MeshStandardMaterial({
-    color: config.accentColor && config.id === 'trimax' ? 0xd4af37 : config.capColor,
+  // 5. Pocket Clip (Extruded glossy plastic/metal clip firmly attached to cap)
+  const clipLen = capLen * 0.85;
+  const clipGeo = new THREE.BoxGeometry(radius * 0.38, radius * 0.50, clipLen);
+  const clipMat = new THREE.MeshPhysicalMaterial({
+    color: config.accentColor || 0xd8d8d8,
+    metalness: config.id === 'trimax' || config.id === 'pilotV5' ? 0.90 : 0.20,
     roughness: 0.18,
-    metalness: config.id === 'trimax' ? 0.80 : 0.15
+    clearcoat: 0.60
   });
+  const clip = new THREE.Mesh(clipGeo, clipMat);
+  clip.position.set(0, capRadius + radius * 0.20, barrelLen / 2 + capLen * 0.45);
+  clip.castShadow = true;
+  group.add(clip);
+  addInvertedHullOutline(clip, 1.045);
 
-  // Base attachment lug on cap
-  const baseLugGeo = new THREE.BoxGeometry(capRadius * 0.36, capRadius * 0.40, capLen * 0.18);
-  const baseLug = createOutlinedMesh(baseLugGeo, clipMat, 1.15, 1.15, 1.10);
-  baseLug.position.set(0, capRadius * 1.15, cap.position.z + capLen * 0.36);
-  clipGroup.add(baseLug);
-
-  // Long slender clip arm extending forward along cap
-  const armLen = capLen * 0.80;
-  const armGeo = new THREE.BoxGeometry(capRadius * 0.28, capRadius * 0.18, armLen);
-  const arm = createOutlinedMesh(armGeo, clipMat, 1.15, 1.20, 1.04);
-  arm.position.set(0, capRadius * 1.22, baseLug.position.z - armLen / 2);
-  clipGroup.add(arm);
-
-  // Clip beak / tip pressing down against pen
-  const beakGeo = new THREE.BoxGeometry(capRadius * 0.28, capRadius * 0.30, capLen * 0.12);
-  const beak = createOutlinedMesh(beakGeo, clipMat, 1.15, 1.15, 1.10);
-  beak.position.set(0, capRadius * 1.10, arm.position.z - armLen / 2);
-  clipGroup.add(beak);
-
-  group.add(clipGroup);
-
-  // 7. Golden Accent Ring (Trimax / Premium pens)
-  if (config.accentColor && config.id !== 'reynolds045') {
-    const ringGeo = new THREE.CylinderGeometry(radius * 1.05, radius * 1.05, len * 0.035, segments);
-    const ringMat = new THREE.MeshStandardMaterial({
-      color: config.accentColor,
-      roughness: 0.18,
-      metalness: 0.85
+  // 6. Accent Gold / Rubber Grip Rings
+  if (config.id === 'trimax') {
+    // Gold separator ring between body and tip
+    const ringGeo = new THREE.CylinderGeometry(radius * 1.06, radius * 1.06, len * 0.035, 16);
+    const ringMat = new THREE.MeshPhysicalMaterial({
+      color: 0xd4af37,
+      metalness: 0.92,
+      roughness: 0.15,
+      clearcoat: 0.8
     });
-    const ring = createOutlinedMesh(ringGeo, ringMat, 1.08, 1.02, 1.08);
+    const ring = new THREE.Mesh(ringGeo, ringMat);
     ring.rotation.x = Math.PI / 2;
-    ring.position.z = barrel.position.z + barrelLen / 2;
+    ring.position.z = -barrelLen * 0.42;
     group.add(ring);
+    addInvertedHullOutline(ring, 1.035);
+  } else if (config.id === 'butterflow') {
+    // Textured black rubber grip
+    const gripGeo = new THREE.CylinderGeometry(radius * 1.08, radius * 1.08, len * 0.18, 20);
+    const gripMat = new THREE.MeshStandardMaterial({
+      color: 0x141414,
+      roughness: 0.80,
+      metalness: 0.05
+    });
+    const grip = new THREE.Mesh(gripGeo, gripMat);
+    grip.rotation.x = Math.PI / 2;
+    grip.position.z = -barrelLen * 0.35;
+    group.add(grip);
+    addInvertedHullOutline(grip, 1.035);
   }
 
   return group;
