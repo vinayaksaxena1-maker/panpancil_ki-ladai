@@ -76,10 +76,10 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
-| **Phase 1** | Core 3D Desk & Physics Engine | 🟢 **90% Complete** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement fix | Desk surface carvings/scratches texture visual details |
-| **Phase 2** | Stitch 2D UI & Nostalgia Screens | 🔴 **15% Complete (Heavy Debt)** | Temporary barebones HTML HUD (`[Easy \| Normal \| Hard]`, `New Match` button, basic end modal) | **Baki Kaam (Major):** Splash screen, Admission Form onboarding, Main Menu Hero screen, 11-Level Merit Ladder UI, Compass Box Pen Selector UI, 16-Badge Trophy Cabinet, Profile Report Card |
-| **Phase 3** | Audio Synthesizer & SFX | 🟡 **60% Complete (Adha)** | Standalone Web Audio API synth (`playFlick`, `playClack`, `playThud`), pen-to-pen collision clack, 11 local audio files in `assets/audio/` | UI button click sounds, School victory bell on match win, Round defeat sound, Level-up chime, Background classroom chatter loop |
-| **Phase 4** | Rules, Bot AI & Progression | 🟡 **50% Complete (Adha)** | Best of 5 match loop, 3-tier Bot AI (Easy/Normal/Hard), Live 3D chalkboard chalk score updates `[■] [ ] [ ]`, LocalStorage XP persistence | **Baki Kaam:** Full 16 Badges ledger (abhi sirf 4 trophies hain), 7 Ranking Tiers, 11 Levels unlock progression logic, Dynamic pen swapping (045 lock todna) |
+| **Phase 1** | Core 3D Desk & Physics Engine | 🟢 **90% Complete** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement fix | Step 1.6: Out-of-order logic decoupling + desk carvings/scratch details |
+| **Phase 2** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Reset for Pure Sequencing)** | Reset to zero | Splash, Admission Form, Main Menu Hero screen, 11-Level Merit Ladder UI, Compass Box Pen Selector UI, 16-Badge Trophy Cabinet, Profile Report Card |
+| **Phase 3** | Audio Synthesizer & SFX | ⚪ **0% (Reset to Zero)** | Reset to zero (Assets preserved in `assets/audio/`, execution halted until Gate 2 approval) | Step 3.1 synth, Step 3.2 SFX slotting, UI clicks, victory bell, level-up sound, chatter loop |
+| **Phase 4** | Rules, Bot AI & Progression | ⚪ **0% (Reset to Zero)** | Reset to zero (Logic quarantined until Gate 3 approval) | Full 16 Badges ledger, 7 Ranking Tiers, 11 Levels progression, Dynamic pen swapping, Tournament rules |
 | **Phase 5** | Flutter Android APK Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Flutter webview container, asset bundling, Android back button, release APK build |
 
 ---
@@ -113,7 +113,7 @@ flowchart TD
 > - **Stitch AI (2D UI Cards):** Stitch in pens ke 2D presentation cards banayega (Pen selection menu, stat bars: Weight, Accuracy, Friction, Description, aur Pencil Box layout).
 
 - **Step 1.1:** Setup self-contained local web container (`index.html`, Three.js r160, `@dimforge/rapier3d-compat` WASM).
-- **Step 1.2:** Procedural Classroom Desk (`0.70m x 1.10m x 0.035m`) with wood finish and boundary colliders.
+- **Step 1.2:** Procedural Classroom Desk (`0.70m x 1.00m x 0.030m`) with wood finish and boundary colliders.
 - **Step 1.3:** 3D Pen Geometries for Player & Opponent:
   - Custom weight distribution: Cap/Tip Center of Mass (COM) offset.
   - Rapier RigidBody setup (Cylinder + Cone nib).
@@ -121,9 +121,12 @@ flowchart TD
   - Backwards touch/drag gesture vector $\vec{D}$.
   - Force clamping + Off-center torque impulse $\vec{\tau} = \vec{r}_{\text{offset}} \times \vec{F}$.
 - **Step 1.5:** Desk Edge Teetering & Out-of-Bounds Detection:
-  - Velocity rest threshold check ($\|\vec{v}\| < 0.005$, $\|\vec{\omega}\| < 0.01$).
-  - Pen drops below $desk.y - 0.02m$ ➔ Fall detection.
-- 🎯 **APPROVAL GATE 1:** User runs and tests flicking on browser/mobile. "Kya pen ka slide, takkar aur kone par latakna real school pen-fight jaisa laga?"
+  - Velocity rest threshold check ($\|\vec{v}\| < 0.015$, $\|\vec{\omega}\| < 0.08$).
+  - Pen drops below $desk.y - 0.02m$ ➔ Fall detection and settlement timer.
+- **Step 1.6 (Pure Sequencing Quarantine & Reset to Zero):**
+  - Premature Phase 3 (audio hooks) aur Phase 4 (match loops, fake XP modals) ko Phase 1 ke core physics engine se cleanly decouple karna taaki Phase 3 aur Phase 4 wapas zero baseline par set ho sakein.
+  - Phase 1 ko ek pure, high-precision 3D physical sandbox banana jisme sirf 2 pens, student desk, tactile flick feel, pen-to-pen collisions, aur edge teetering test ho sakein.
+- 🎯 **APPROVAL GATE 1:** User runs and tests flicking on browser/mobile. "Kya pen ka slide, takkar aur kone par latakna real school pen-fight jaisa laga? Zero UI/audio bloat."
 
 ---
 
@@ -148,13 +151,14 @@ flowchart TD
 ---
 
 ### 🔊 Phase 3: Audio Synthesis & Sound Effects
+*(Current Status: ⚪ Reset to 0% — Execution halted until Phase 1 & 2 pass Approval Gates)*
 *Goal: Zero-latency tactile feedback without broken remote URLs.*
 
 - **Step 3.1:** 20-line standalone Web Audio API synthesizer for instant mechanical audio:
   - `synth_flick()` (Air whoosh pop)
   - `synth_clack()` (Crisp high-frequency plastic impact)
   - `synth_thud()` (Low-frequency wood desk hit)
-- **Step 3.2:** Pixabay CC0 local assets slotting for the 10 core sounds:
+- **Step 3.2:** Local assets slotting for the 10 core sounds (`assets/audio/`):
   - `sfx_flick.mp3`, `sfx_pen_hit_pen.mp3`, `sfx_pen_desk_slide.mp3`, `sfx_pen_fall.mp3`, `sfx_ui_button.mp3`, `sfx_round_win.mp3`, `sfx_round_loss.mp3`, `sfx_match_win.mp3` (school bell), `sfx_level_up.mp3`, `sfx_badge_unlock.mp3`.
 - **Step 3.3:** Sound manager with audio toggles & fallback if files fail to load.
 - 🎯 **APPROVAL GATE 3:** Sound triggers verified during flick, collision, and button clicks.
@@ -162,6 +166,7 @@ flowchart TD
 ---
 
 ### 🧠 Phase 4: Game Rules, PC Opponent & Local Persistence
+*(Current Status: ⚪ Reset to 0% — Execution halted until Phase 3 passes Approval Gate)*
 *Goal: Rule-based classmate AI, match flow, 11-level progression, and 16 badges.*
 
 - **Step 4.1:** Match Loop State Machine:
