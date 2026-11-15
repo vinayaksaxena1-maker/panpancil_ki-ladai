@@ -4,17 +4,17 @@ import * as THREE from 'three';
 export function createProceduralDeskTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
-  canvas.height = 2048; // 1:2 ratio matching 0.56m x 1.12m desk
+  canvas.height = 660; // Ratio matching 0.70m width x 0.45m depth
   const ctx = canvas.getContext('2d');
 
   // Base warm honey school desk wood
   ctx.fillStyle = '#b67a42';
-  ctx.fillRect(0, 0, 1024, 2048);
+  ctx.fillRect(0, 0, 1024, 660);
 
   // Wood grain layers
   ctx.fillStyle = 'rgba(128, 72, 35, 0.22)';
-  for (let i = 0; i < 2048; i += 4) {
-    const wave = Math.sin(i * 0.015) * 8 + Math.cos(i * 0.03) * 4;
+  for (let i = 0; i < 660; i += 4) {
+    const wave = Math.sin(i * 0.02) * 8 + Math.cos(i * 0.04) * 4;
     ctx.fillRect(0, i + wave, 1024, 2.5);
   }
 
@@ -24,34 +24,34 @@ export function createProceduralDeskTexture() {
 
   // Scratched Compass Circles near opponent side
   ctx.beginPath();
-  ctx.arc(420, 500, 75, 0, Math.PI * 2);
+  ctx.arc(380, 200, 60, 0, Math.PI * 2);
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(420, 500, 125, 0, Math.PI * 1.5);
+  ctx.arc(380, 200, 100, 0, Math.PI * 1.5);
   ctx.stroke();
 
   // Scratched initials "7 - A" & "BENCH #4"
-  ctx.font = 'bold 50px monospace';
+  ctx.font = 'bold 42px monospace';
   ctx.fillStyle = 'rgba(75, 42, 20, 0.38)';
-  ctx.fillText('7 - A', 440, 1050);
-  ctx.font = 'bold 36px monospace';
-  ctx.fillText('BENCH #4', 620, 1450);
+  ctx.fillText('7 - A', 480, 320);
+  ctx.font = 'bold 30px monospace';
+  ctx.fillText('BENCH #4', 640, 480);
 
   // Scratched geometric ruler ticks
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
   ctx.lineWidth = 2;
-  for (let r = 150; r < 650; r += 25) {
+  for (let r = 150; r < 550; r += 20) {
     ctx.beginPath();
-    ctx.moveTo(r, 1750);
-    ctx.lineTo(r, 1785);
+    ctx.moveTo(r, 560);
+    ctx.lineTo(r, 580);
     ctx.stroke();
   }
 
   // Random pencil & compass scratches across the board
-  for (let k = 0; k < 110; k++) {
+  for (let k = 0; k < 60; k++) {
     const x = Math.random() * 1024;
-    const y = Math.random() * 2048;
+    const y = Math.random() * 660;
     ctx.strokeStyle = Math.random() > 0.5 ? 'rgba(75, 38, 15, 0.32)' : 'rgba(255, 255, 255, 0.25)';
     ctx.lineWidth = Math.random() * 2 + 1;
     ctx.beginPath();
@@ -316,12 +316,12 @@ export function createDeskMesh(width, depth, thickness) {
   };
 
   // Left Row benches
-  group.add(createSideBench(-0.95, -0.45));
-  group.add(createSideBench(-0.95, 0.50));
+  group.add(createSideBench(-1.05, -0.45));
+  group.add(createSideBench(-1.05, 0.50));
 
   // Right Row benches
-  group.add(createSideBench(0.95, -0.45));
-  group.add(createSideBench(0.95, 0.50));
+  group.add(createSideBench(1.05, -0.45));
+  group.add(createSideBench(1.05, 0.50));
 
   // 7. Backpacks hanging on side desks
   const createBackpack = (color, x, y, z) => {
@@ -340,9 +340,9 @@ export function createDeskMesh(width, depth, thickness) {
   };
 
   // Blue backpack on right bench
-  group.add(createBackpack(0x1e355b, 0.65, -0.15, -0.45));
+  group.add(createBackpack(0x1e355b, 0.74, -0.15, -0.45));
   // Maroon backpack on left bench
-  group.add(createBackpack(0x661e27, -0.65, -0.15, 0.10));
+  group.add(createBackpack(0x661e27, -0.74, -0.15, 0.10));
 
   return group;
 }

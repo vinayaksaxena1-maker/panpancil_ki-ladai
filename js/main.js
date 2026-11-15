@@ -4,10 +4,10 @@ import { createDeskMesh } from './desk.js';
 import { PEN_CONFIGS, createPenMesh } from './pens.js';
 import { synth } from './sound.js';
 
-// Table dimensions (meters) - Authentic 1:2 Student Duel Desk
-const DESK_WIDTH = 0.56;      // 56 cm width (X-axis, East-West)
-const DESK_LENGTH = 1.12;     // 112 cm length (Z-axis, North-South)
-const DESK_THICKNESS = 0.035; // 3.5 cm thickness
+// Table dimensions (meters) - Exact requested specs
+const DESK_WIDTH = 0.70;      // 70 cm width (X-axis, East-West)
+const DESK_DEPTH = 0.45;      // 45 cm depth (Z-axis, North-South)
+const DESK_THICKNESS = 0.030; // 3 cm thickness
 
 // Authentic baseline physics
 const GRAVITY = -9.81;
@@ -111,29 +111,29 @@ class GameEngine {
     this.container.appendChild(this.renderer.domElement);
 
     // 5. Central Desk & Classroom Environment
-    this.deskMesh = createDeskMesh(DESK_WIDTH, DESK_LENGTH, DESK_THICKNESS);
+    this.deskMesh = createDeskMesh(DESK_WIDTH, DESK_DEPTH, DESK_THICKNESS);
     this.scene.add(this.deskMesh);
 
     // Rapier desk collider
     const deskBodyDesc = RAPIER.RigidBodyDesc.fixed().setTranslation(0, -DESK_THICKNESS / 2, 0);
     const deskBody = this.world.createRigidBody(deskBodyDesc);
-    const deskColliderDesc = RAPIER.ColliderDesc.cuboid(DESK_WIDTH / 2, DESK_THICKNESS / 2, DESK_LENGTH / 2)
+    const deskColliderDesc = RAPIER.ColliderDesc.cuboid(DESK_WIDTH / 2, DESK_THICKNESS / 2, DESK_DEPTH / 2)
       .setFriction(DESK_FRICTION)
       .setRestitution(DESK_RESTITUTION);
     this.world.createCollider(deskColliderDesc, deskBody);
 
     // 6. Spawn 2 Pens FLAT HORIZONTALLY (East-West widthwise across desk)
-    // Player Pen: Reynolds 045 (White barrel, Blue cap/plug) near player edge
+    // Player Pen: Reynolds 045 near player edge (z = 0.13m)
     this.playerPen = this.spawnPen(
       PEN_CONFIGS.reynolds045, 
-      new THREE.Vector3(0, PEN_CONFIGS.reynolds045.radius, 0.38), 
+      new THREE.Vector3(0, PEN_CONFIGS.reynolds045.radius, 0.13), 
       -Math.PI / 2
     );
 
-    // Opponent Pen: Reynolds Trimax (Dark blue body) near far edge
+    // Opponent Pen: Reynolds Trimax near far edge (z = -0.13m)
     this.opponentPen = this.spawnPen(
       PEN_CONFIGS.trimax, 
-      new THREE.Vector3(0, PEN_CONFIGS.trimax.radius, -0.38), 
+      new THREE.Vector3(0, PEN_CONFIGS.trimax.radius, -0.13), 
       Math.PI / 2
     );
 
@@ -157,19 +157,19 @@ class GameEngine {
 
     if (aspect >= 1.2) {
       // Landscape (PC / Laptop)
-      this.camera.fov = 50;
-      this.camera.position.set(0, 0.92, 1.10);
-      this.camera.lookAt(0, 0.08, -0.16);
+      this.camera.fov = 52;
+      this.camera.position.set(0, 0.65, 0.72);
+      this.camera.lookAt(0, 0.04, -0.15);
     } else if (aspect <= 0.75) {
       // Portrait (Mobile)
-      this.camera.fov = 66;
-      this.camera.position.set(0, 1.12, 0.96);
-      this.camera.lookAt(0, 0.08, -0.16);
+      this.camera.fov = 68;
+      this.camera.position.set(0, 0.85, 0.66);
+      this.camera.lookAt(0, 0.04, -0.15);
     } else {
       // Tablet / Medium
       this.camera.fov = 58;
-      this.camera.position.set(0, 1.02, 1.02);
-      this.camera.lookAt(0, 0.07, -0.16);
+      this.camera.position.set(0, 0.75, 0.70);
+      this.camera.lookAt(0, 0.04, -0.15);
     }
     this.camera.updateProjectionMatrix();
   }
@@ -383,11 +383,11 @@ class GameEngine {
     const pPos = this.playerPen.body.translation();
     const oPos = this.opponentPen.body.translation();
 
-    // 1.12m desk length out-of-bounds check
+    // 0.45m desk depth out-of-bounds check
     const isOutOfBounds = (pos) => (
       pos.y < -0.02 || 
       Math.abs(pos.x) > (DESK_WIDTH / 2 + 0.02) || 
-      Math.abs(pos.z) > (DESK_LENGTH / 2 + 0.02)
+      Math.abs(pos.z) > (DESK_DEPTH / 2 + 0.02)
     );
 
     if (!this.playerPen.isFallen && isOutOfBounds(pPos)) {
@@ -458,21 +458,21 @@ class GameEngine {
 
     // Reset pens flat horizontally across desk length
     const qPlayer = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
-    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.reynolds045.radius, 0.38), true);
+    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.reynolds045.radius, 0.13), true);
     this.playerPen.body.setRotation({ x: qPlayer.x, y: qPlayer.y, z: qPlayer.z, w: qPlayer.w }, true);
     this.playerPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.playerPen.prevPos.set(0, PEN_CONFIGS.reynolds045.radius, 0.38);
+    this.playerPen.prevPos.set(0, PEN_CONFIGS.reynolds045.radius, 0.13);
     this.playerPen.currPos.copy(this.playerPen.prevPos);
     this.playerPen.prevQuat.copy(qPlayer);
     this.playerPen.currQuat.copy(qPlayer);
 
     const qBot = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.trimax.radius, -0.38), true);
+    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.trimax.radius, -0.13), true);
     this.opponentPen.body.setRotation({ x: qBot.x, y: qBot.y, z: qBot.z, w: qBot.w }, true);
     this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.opponentPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.opponentPen.prevPos.set(0, PEN_CONFIGS.trimax.radius, -0.38);
+    this.opponentPen.prevPos.set(0, PEN_CONFIGS.trimax.radius, -0.13);
     this.opponentPen.currPos.copy(this.opponentPen.prevPos);
     this.opponentPen.prevQuat.copy(qBot);
     this.opponentPen.currQuat.copy(qBot);
