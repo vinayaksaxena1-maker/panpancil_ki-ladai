@@ -70,6 +70,20 @@
 
 ---
 
+## 📊 Current Execution Status & Phase Health (Zameeni Haqeeqat)
+
+Pehle external references ke confusion ki wajah se phases strictly serial order me execute nahi hue the aur kai hisse adhe chhut gaye the. Yeh raha har phase ka unvarnished audit ledger:
+
+| Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Phase 1** | Core 3D Desk & Physics Engine | 🟢 **90% Complete** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement fix | Desk surface carvings/scratches texture visual details |
+| **Phase 2** | Stitch 2D UI & Nostalgia Screens | 🔴 **15% Complete (Heavy Debt)** | Temporary barebones HTML HUD (`[Easy \| Normal \| Hard]`, `New Match` button, basic end modal) | **Baki Kaam (Major):** Splash screen, Admission Form onboarding, Main Menu Hero screen, 11-Level Merit Ladder UI, Compass Box Pen Selector UI, 16-Badge Trophy Cabinet, Profile Report Card |
+| **Phase 3** | Audio Synthesizer & SFX | 🟡 **60% Complete (Adha)** | Standalone Web Audio API synth (`playFlick`, `playClack`, `playThud`), pen-to-pen collision clack, 11 local audio files in `assets/audio/` | UI button click sounds, School victory bell on match win, Round defeat sound, Level-up chime, Background classroom chatter loop |
+| **Phase 4** | Rules, Bot AI & Progression | 🟡 **50% Complete (Adha)** | Best of 5 match loop, 3-tier Bot AI (Easy/Normal/Hard), Live 3D chalkboard chalk score updates `[■] [ ] [ ]`, LocalStorage XP persistence | **Baki Kaam:** Full 16 Badges ledger (abhi sirf 4 trophies hain), 7 Ranking Tiers, 11 Levels unlock progression logic, Dynamic pen swapping (045 lock todna) |
+| **Phase 5** | Flutter Android APK Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Flutter webview container, asset bundling, Android back button, release APK build |
+
+---
+
 ## 🗺️ Master Phase Map & Approval Gates
 
 ```mermaid
