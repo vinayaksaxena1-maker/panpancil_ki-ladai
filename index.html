@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="./css/base.css?v=p3_s1">
   <link rel="stylesheet" href="./css/splash.css?v=p3_s2">
   <link rel="stylesheet" href="./css/menu.css?v=p3_s3">
+  <link rel="stylesheet" href="./css/campaign.css?v=p3_s4">
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -935,11 +936,159 @@
     </main>
   </div>
 
+  <!-- Phase 3 Step 3.4: Visual Campaign Map & Stage Details Chit Overlay -->
+  <div id="campaign-map-overlay" style="display: none;">
+    <main class="w-[390px] h-[844px] max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
+      <!-- Ambient Compass / Doodles in Outer Margin -->
+      <div class="absolute top-2 right-4 pointer-events-none opacity-20 text-secondary z-0">
+        <svg fill="none" height="52" stroke="currentColor" stroke-width="1.5" viewBox="0 0 100 100" width="52">
+          <circle cx="50" cy="50" r="42" stroke-dasharray="4 3"></circle>
+          <path d="M50 8 V92 M8 50 H92 M22 22 L78 78"></path>
+        </svg>
+      </div>
+      <div class="absolute top-36 -left-2 pointer-events-none opacity-30 text-secondary select-none z-0">
+        <svg class="transform -rotate-12" fill="none" height="48" viewBox="0 0 56 56" width="48">
+          <polygon points="28,6 50,46 6,46" stroke="currentColor" stroke-dasharray="2 1" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"></polygon>
+        </svg>
+      </div>
+
+      <!-- Scrollable Inner Viewport Container -->
+      <div class="flex flex-col w-full relative px-2.5 pt-2 pb-2 select-none flex-1 overflow-y-auto">
+        <!-- Top Recess & Status Header Pill with Back Button -->
+        <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
+          <button type="button" onclick="window.hideCampaignMap(); window.showMainMenu();" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#1e293b] font-bold text-[11px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[12px] font-bold">←</span>
+            <span>HUB</span>
+          </button>
+
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
+            <span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
+            <span class="font-bold text-[11px] tracking-wider uppercase" style="font-family: 'Patrick Hand', cursive;">RECESS • BENCH #4</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping ml-0.5"></span>
+          </div>
+
+          <div class="inline-flex items-center gap-1 px-2 py-0.5 bg-white/95 rounded-full text-primary font-bold text-[11px] shadow-sm" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[#dc2626]">★</span>
+            <span>ROADMAP</span>
+          </div>
+        </header>
+
+        <!-- TORN NOTEBOOK PAGE SHELL matching Stitch design -->
+        <div class="relative z-10 select-none filter drop-shadow-[0_8px_16px_rgba(40,30,15,0.18)] mb-2">
+          <div class="relative overflow-hidden p-2.5 pl-6 border bg-surface-container-lowest border-outline-variant/30" style="clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 10px 100%, 7px 97.5%, 11px 95%, 6px 92.5%, 9px 90%, 5px 87.5%, 11px 85%, 7px 82.5%, 10px 80%, 6px 77.5%, 12px 75%, 7px 72.5%, 11px 70%, 5px 67.5%, 10px 65%, 6px 62.5%, 12px 60%, 7px 57.5%, 10px 55%, 5px 52.5%, 11px 50%, 6px 47.5%, 12px 45%, 7px 42.5%, 10px 40%, 6px 37.5%, 11px 35%, 5px 32.5%, 10px 30%, 7px 27.5%, 12px 25%, 6px 22.5%, 10px 20%, 5px 17.5%, 11px 15%, 7px 12.5%, 10px 10%, 6px 7.5%, 11px 5%, 7px 2.5%, 10px 0%); background-color: rgb(255, 255, 255); border-radius: 0px 4px 4px 4px; box-shadow: rgb(30, 41, 59) 0px 0px 0px 1.8px inset, rgba(30, 41, 59, 0.35) 0px 0px 0px 3px inset, rgb(30, 41, 59) 0px 3px 0px 0px;">
+            <!-- Spiral Torn Perforated Edge & Hole Punches -->
+            <div class="absolute top-0 bottom-0 left-0 w-4 pointer-events-none z-15" style="background: linear-gradient(to right, rgba(235, 230, 218, 0.95) 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%); filter: drop-shadow(rgba(120, 100, 80, 0.25) 1.5px 0px 1px);"></div>
+            <div class="absolute top-0 bottom-0 left-0 w-[2px] pointer-events-none z-20 opacity-80" style="background: repeating-linear-gradient(to bottom, #ffffff 0px, #ffffff 3px, #e2dac9 4px, #ffffff 6px, #f5f0e6 9px);"></div>
+            <!-- Ruled Horizontal Lines -->
+            <div class="absolute inset-0 pointer-events-none" style="background-image: repeating-linear-gradient(transparent 0px, transparent 23px, rgba(96, 165, 250, 0.22) 24px, rgba(96, 165, 250, 0.22) 25px); background-size: 100% 25px;"></div>
+            <!-- Double Vertical Red Margin Lines -->
+            <div class="absolute top-0 bottom-0 left-7 w-[1.5px] bg-[#dc2626] opacity-90 pointer-events-none z-10"></div>
+            <div class="absolute top-0 bottom-0 left-[33px] w-[1px] bg-[#b91c1c] opacity-35 pointer-events-none"></div>
+
+            <!-- Inner Content -->
+            <div class="relative z-10 pl-5 flex flex-col gap-2.5">
+              <!-- 1. Index Header -->
+              <div class="flex items-center justify-between border-b border-[#dc2626]/40 pb-1 select-none">
+                <div class="text-[9px] font-bold text-[#dc2626] tracking-wider uppercase opacity-85" style="font-family: 'Patrick Hand', cursive;">★ CLASSMATE NOTEBOOK INDEX ★</div>
+                <div class="border-2 border-[#dc2626] rounded-xs px-2 py-0.5 bg-white/90 shadow-2xs flex items-center gap-2 text-[10px] text-[#dc2626] font-bold tracking-tight" style="font-family: 'Nunito Sans', sans-serif;">
+                  <div class="flex items-center gap-1"><span>PAGE NO:</span><span class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">03</span></div>
+                  <div class="w-[1px] h-3 bg-[#dc2626]/50"></div>
+                  <div class="flex items-center gap-1"><span>DATE:</span><span class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">15/08/98</span></div>
+                </div>
+              </div>
+
+              <!-- 2. School Title & Promotion Track -->
+              <div class="flex items-start justify-between border-b border-[#c4c5d5]/40 pb-1.5">
+                <div>
+                  <span class="block tracking-wider uppercase font-bold text-[#b91c1c] text-[11px]" style="font-family: Kalam, cursive; letter-spacing: 0.08em; text-shadow: rgba(185, 28, 28, 0.2) 0.5px 0.5px 0px;">★ SARASWATI VIDYALAYA ★</span>
+                  <h2 class="leading-none tracking-wide font-extrabold text-[#00288e] text-[16px] uppercase" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(0, 40, 142, 0.45) 0.5px 0.5px 1px; transform: rotate(-0.5deg); display: inline-block;">
+                    CLASS 7-A ➔ SCHOOL FINALE
+                  </h2>
+                  <div class="text-[11px] font-bold text-secondary leading-tight mt-0.5" style="font-family: Caveat, cursive;">
+                    Desk Arena Recess Promotion Track
+                  </div>
+                </div>
+                <div class="text-right pr-1 flex flex-col items-end justify-center">
+                  <span class="text-[9px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">CANTEEN FUND</span>
+                  <span id="map-canteen-fund" class="font-black text-[#16a34a] text-[16px] leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(22, 163, 74, 0.2) 1px 1px 0px;">
+                    ₹1,420
+                  </span>
+                </div>
+              </div>
+
+              <!-- 3. Promotion Progress Strip -->
+              <div class="bg-white/85 rounded-lg p-2 border border-outline-variant/30 flex flex-col gap-1 shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 8px 4px 7px 5px;">
+                <div class="flex justify-between items-center text-[10px]" style="font-family: 'Patrick Hand', cursive;">
+                  <span class="text-[#475569] font-bold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-[12px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+                    Cleared: <strong id="map-cleared-summary" class="text-[#00288e] text-[11px]">0/11 Desks (0%)</strong>
+                  </span>
+                  <span id="map-stars-summary" class="text-[#b91c1c] font-black tracking-wide">0/33 Stars ⭐</span>
+                </div>
+                <div class="w-full h-2.5 bg-surface-variant rounded-full overflow-hidden p-0.5 border border-slate-300">
+                  <div id="map-progress-bar" class="h-full bg-gradient-to-r from-primary to-[#16a34a] rounded-full transition-all duration-500 flex items-center justify-end pr-0.5" style="width: 5%;">
+                    <div class="w-1.5 h-1.5 bg-white rounded-full animate-ping"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Dynamic Campaign Stage Trail & Stage Chit -->
+              <div id="campaign-stages-container" class="flex flex-col gap-1.5 pt-0.5">
+                <!-- Injected dynamically via syncCampaignMap() -->
+              </div>
+
+              <!-- Bottom Notebook Margin Sign Off -->
+              <div class="pt-1 border-t border-[#dc2626]/30 flex items-center justify-between select-none text-[9px] mt-0.5">
+                <div class="flex items-center gap-1 text-[#64748b] font-medium tracking-wide" style="font-family: 'Patrick Hand', cursive;">
+                  <span>SARASWATI VIDYALAYA</span>
+                  <span class="text-[8px]">•</span>
+                  <span>RECESS ROADMAP #03</span>
+                </div>
+                <div class="flex items-center gap-1 text-right pr-1">
+                  <span class="text-[9px] font-bold text-[#475569] uppercase" style="font-family: 'Patrick Hand', cursive;">Teacher's Stamp:</span>
+                  <span class="text-[#b91c1c] text-[10px] font-bold" style="font-family: Caveat, cursive;">PASSED 15/8</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Floating Recess Bell Timer Pill -->
+        <aside class="w-full mb-1.5 z-20">
+          <div class="bg-[#00288e] text-white rounded-full px-3 py-1.5 shadow-md flex items-center justify-between border-2 border-slate-900" style="box-shadow: 2px 2.5px 0px #1e293b;">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-amber-300 text-[18px] animate-bounce">notifications_active</span>
+              <div class="flex flex-col leading-none">
+                <span class="text-[8px] uppercase tracking-wider font-extrabold text-blue-200" style="font-family: 'Patrick Hand', cursive;">Recess Bell Timer</span>
+                <span class="text-[13px] font-black tracking-tight" id="recess-timer" style="font-family: 'Permanent Marker', cursive;">03:45 mins left</span>
+              </div>
+            </div>
+            <button id="quick-floating-fight-btn" onclick="window.launchCurrentStageMatch()" class="bg-amber-400 text-slate-900 hover:bg-amber-300 active:scale-95 px-3 py-1 rounded-full font-black text-[12px] uppercase tracking-wider shadow flex items-center gap-1 cursor-pointer sketch-btn-hatch border border-slate-900 select-none" style="font-family: 'Permanent Marker', cursive;">
+              <span>FIGHT!</span>
+              <span class="material-symbols-outlined text-[13px]">arrow_forward</span>
+            </button>
+          </div>
+        </aside>
+
+        <!-- Golden Rule Footer -->
+        <footer class="relative z-10 text-center mt-auto pb-1">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container rounded-full text-secondary font-label-md shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
+            <span class="material-symbols-outlined text-xs text-secondary">edit</span>
+            <span class="text-[#0038a8] text-[12px] font-bold tracking-wide -rotate-1 inline-block" style="font-family: Caveat, cursive;">
+              Rule #1: Desk se neeche gira pen out maana jayega! No elbow pushing!
+            </span>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </div>
+
   <script>
     // Step 3.2 & Step 3.3: Splash Screen & Main Menu Hub Lifecycle
     (function initUIOrchestrator() {
       const splashOverlay = document.getElementById('splash-screen-overlay');
       const menuOverlay = document.getElementById('main-menu-overlay');
+      const campaignOverlay = document.getElementById('campaign-map-overlay');
       const enterBtn = document.getElementById('enter-classroom-btn');
       const nameInput = document.getElementById('student-name-input');
 
@@ -961,6 +1110,23 @@
         }, 380);
       };
 
+      window.showCampaignMap = function() {
+        if (!campaignOverlay) return;
+        campaignOverlay.style.display = 'flex';
+        requestAnimationFrame(() => {
+          campaignOverlay.classList.remove('campaign-dismissed');
+        });
+        syncCampaignMap();
+      };
+
+      window.hideCampaignMap = function() {
+        if (!campaignOverlay) return;
+        campaignOverlay.classList.add('campaign-dismissed');
+        setTimeout(() => {
+          campaignOverlay.style.display = 'none';
+        }, 350);
+      };
+
       window.startQuickDuel = function() {
         if (window.gameEngine) {
           window.gameEngine.setGameMode('bot');
@@ -968,11 +1134,42 @@
         window.hideMainMenu();
       };
 
+      // Story Mode opens Step 3.4 Visual Campaign Map & Stage Chit!
       window.startStoryMode = function() {
+        window.hideMainMenu();
+        window.showCampaignMap();
+      };
+
+      window.launchStageMatch = function(stageId, isWarmup = false) {
+        const stage = CAMPAIGN_OPPONENTS.find(s => s.stage === stageId) || CAMPAIGN_OPPONENTS[0];
         if (window.gameEngine) {
           window.gameEngine.setGameMode('bot');
+          const penKeyMap = {
+            "NATARAJ 621": "nataraj621",
+            "REYNOLDS 045": "reynolds045",
+            "BUTTERFLOW": "butterflow",
+            "PILOT V5": "pilotV5",
+            "TRIMAX GOLD": "trimax",
+            "APSARA PLATINUM": "apsaraPlatinum",
+            "TRIMAX LEGEND": "trimax"
+          };
+          const mappedPen = penKeyMap[stage.pen] || 'trimax';
+          window.gameEngine.changePen('opponent', mappedPen);
         }
-        window.hideMainMenu();
+        window.hideCampaignMap();
+        const statusEl = document.getElementById('status-msg');
+        if (statusEl) {
+          statusEl.textContent = isWarmup 
+            ? `Warmup Practice: Stage ${stageId} (${stage.name})` 
+            : `Stage ${stageId}: Defeat ${stage.name} (${stage.pen})!`;
+        }
+      };
+
+      window.launchCurrentStageMatch = function() {
+        const rawSave = localStorage.getItem('penfight_save_v2');
+        const parsed = rawSave ? JSON.parse(rawSave) : null;
+        const currentStage = (parsed && parsed.progression && (parsed.progression.highestStageUnlocked || parsed.progression.currentStageId)) || 1;
+        window.launchStageMatch(currentStage);
       };
 
       window.startPassAndPlay = function() {
@@ -1323,6 +1520,416 @@
             }
           }
         } catch(e) {}
+      }
+
+      function syncCampaignMap() {
+        try {
+          const rawSave = localStorage.getItem('penfight_save_v2');
+          const parsed = rawSave ? JSON.parse(rawSave) : null;
+          const activeStage = (parsed && parsed.progression && (parsed.progression.highestStageUnlocked || parsed.progression.currentStageId)) || 1;
+          const coins = (parsed && parsed.progression && parsed.progression.coins) || 1420;
+
+          const clearedDesks = Math.max(0, activeStage - 1);
+          const pct = Math.min(100, Math.round((clearedDesks / 11) * 100));
+          const stars = clearedDesks * 3;
+
+          const clearedSummaryEl = document.getElementById('map-cleared-summary');
+          const starsSummaryEl = document.getElementById('map-stars-summary');
+          const progressBarEl = document.getElementById('map-progress-bar');
+          const canteenFundEl = document.getElementById('map-canteen-fund');
+
+          if (clearedSummaryEl) clearedSummaryEl.textContent = `${clearedDesks}/11 Desks (${pct}%)`;
+          if (starsSummaryEl) starsSummaryEl.textContent = `${stars}/33 Stars ⭐`;
+          if (progressBarEl) progressBarEl.style.width = `${Math.max(5, pct)}%`;
+          if (canteenFundEl) canteenFundEl.textContent = `₹${coins.toLocaleString('en-IN')}`;
+
+          const FULL_STAGES = [
+            {
+              id: 1,
+              bench: "Bench #1",
+              name: "Bunty 'Chhotu'",
+              title: "Backbencher Knockout",
+              desc: "First period free hai. Bunty ne lunch se pehle challenge de diya!",
+              penDisplay: "NATARAJ 621",
+              flickForce: "+35 Knockout",
+              flickPct: 65,
+              grip: "72% Anti-Slide",
+              gripPct: 72,
+              diff: "★☆☆☆☆ (Easy)",
+              rule: "Bench Rule: First shot toss coin winner flick karega!",
+              rewards: ["Wood Shavings", "+₹150 Coins", "Green House Star"]
+            },
+            {
+              id: 2,
+              bench: "Bench #2",
+              name: "Rohan 'Geometry'",
+              title: "Middle Row Ruler King",
+              desc: "Rohan ke paas classic 045 white pen hai, nishana bilkul seedha!",
+              penDisplay: "REYNOLDS 045",
+              flickForce: "+40 Knockout",
+              flickPct: 70,
+              grip: "80% Anti-Slide",
+              gripPct: 80,
+              diff: "★★☆☆☆ (Normal)",
+              rule: "Bench Rule: Center desk compass box barrier cross karna hoga!",
+              rewards: ["Eraser Dust", "+₹200 Coins", "Blue House Star"]
+            },
+            {
+              id: 3,
+              bench: "Bench #3",
+              name: "Aditya 'Monitor'",
+              title: "Class 7-A Monitor (Boss)",
+              desc: "Monitor ki Butterflow super smooth hai table pe. Isko harakar hero bano!",
+              penDisplay: "BUTTERFLOW 0.7",
+              flickForce: "+50 Knockout",
+              flickPct: 82,
+              grip: "85% Anti-Slide",
+              gripPct: 85,
+              diff: "★★★☆☆ (Boss Duel)",
+              rule: "Bench Rule: Double-tap flick allowed on center seam gap!",
+              rewards: ["Butterflow Refill", "+₹300 Coins", "Red House Star"]
+            },
+            {
+              id: 4,
+              bench: "Bench #4",
+              name: "Sameer 'Power Hitter'",
+              title: "7-B Recess Challenger",
+              desc: "Recess bell baji hai. 7-B wale humari class me aakar duel maang rahe hain.",
+              penDisplay: "REYNOLDS 045",
+              flickForce: "+45 Knockout",
+              flickPct: 75,
+              grip: "78% Anti-Slide",
+              gripPct: 78,
+              diff: "★★★☆☆ (Normal)",
+              rule: "Bench Rule: Corner bank shots count double momentum!",
+              rewards: ["Grip Tape Refill", "+₹350 Coins", "Yellow House Star"]
+            },
+            {
+              id: 5,
+              bench: "Bench #5",
+              name: "Farhan 'Spin Master'",
+              title: "7-C Point Spin Ace",
+              desc: "Farhan Pilot V5 ki point-spin se edge shots maarta hai.",
+              penDisplay: "PILOT V5 LIQUID",
+              flickForce: "+55 Knockout",
+              flickPct: 85,
+              grip: "90% Anti-Slide",
+              gripPct: 90,
+              diff: "★★★★☆ (Hard)",
+              rule: "Bench Rule: Ink leak spill area - 20% extra slide friction!",
+              rewards: ["Pilot Blue Ink Refill", "+₹400 Coins", "All-Rounder Crest"]
+            },
+            {
+              id: 6,
+              bench: "Bench #6",
+              name: "Vikram 'Topper'",
+              title: "Class 7 Overall Champion (Boss)",
+              desc: "Poori 7th class ka sabse khatarnak khiladi. Jeetne par Seniors ko challenge!",
+              penDisplay: "PILOT V5 HI-TECH",
+              flickForce: "+60 Knockout",
+              flickPct: 90,
+              grip: "92% Anti-Slide",
+              gripPct: 92,
+              diff: "★★★★☆ (Class Boss)",
+              rule: "Bench Rule: Wooden Duster and Geometry obstacle on desk!",
+              rewards: ["Gold Nib Refill", "+₹500 Coins", "Senior Pass Token"]
+            },
+            {
+              id: 7,
+              bench: "Bench #7",
+              name: "Nikhil 'Senior 8-A'",
+              title: "8-A Frontbencher",
+              desc: "Senior keh rahe hain 7th wale bachhe hain. Dikha do unhe!",
+              penDisplay: "BUTTERFLOW 0.7",
+              flickForce: "+55 Knockout",
+              flickPct: 84,
+              grip: "85% Anti-Slide",
+              gripPct: 85,
+              diff: "★★★★☆ (Hard)",
+              rule: "Bench Rule: Heavy oak desk with wider edge drop bounds!",
+              rewards: ["Butterflow Gold", "+₹600 Coins", "Seniors Respect Badge"]
+            },
+            {
+              id: 8,
+              bench: "Bench #8",
+              name: "Rocky 'Heavyweight'",
+              title: "8-B Backbencher Gang",
+              desc: "Rocky bhari Trimax chalata hai, table par zor ka thud padta hai.",
+              penDisplay: "TRIMAX GOLD 0.5",
+              flickForce: "+70 Knockout",
+              flickPct: 94,
+              grip: "94% Anti-Slide",
+              gripPct: 94,
+              diff: "★★★★★ (Heavyweight)",
+              rule: "Bench Rule: High momentum shockwave knocks light pens easily!",
+              rewards: ["Trimax Metal Cap", "+₹750 Coins", "Heavyweight Star"]
+            },
+            {
+              id: 9,
+              bench: "Bench #9",
+              name: "Kabir 'Seniors Captain'",
+              title: "8-C Heavy Trimax King (Boss)",
+              desc: "Kabir ki Trimax ko rokna namumkin lagta hai. Tactical spin shots use karo!",
+              penDisplay: "TRIMAX GOLD ELITE",
+              flickForce: "+80 Knockout",
+              flickPct: 96,
+              grip: "95% Anti-Slide",
+              gripPct: 95,
+              diff: "★★★★★ (Seniors Boss)",
+              rule: "Bench Rule: Best of 5 with instant sudden-death off desk!",
+              rewards: ["Legend Trimax Skin", "+₹900 Coins", "Corridor Master Key"]
+            },
+            {
+              id: 10,
+              bench: "Bench #10",
+              name: "Arjun 'Runner-Up'",
+              title: "Staff Room Corridor Duel",
+              desc: "Staff room ke bahar ki bench par duel. Teachers round laga rahe hain!",
+              penDisplay: "APSARA PLATINUM",
+              flickForce: "+85 Knockout",
+              flickPct: 98,
+              grip: "96% Anti-Slide",
+              gripPct: 96,
+              diff: "★★★★★ (Extreme)",
+              rule: "Bench Rule: Quick shot timer - 10 seconds per flick!",
+              rewards: ["Platinum Nib", "+₹1,100 Coins", "Staff Room Hall Pass"]
+            },
+            {
+              id: 11,
+              bench: "Bench #11",
+              name: "Dev 'The Legend'",
+              title: "School Championship Final (Grand Boss)",
+              desc: "Poore school ka Grand Finale! Desk Wars ki Ultimate Trophy ka faisla!",
+              penDisplay: "TRIMAX LEGEND",
+              flickForce: "+100 Knockout",
+              flickPct: 100,
+              grip: "98% Anti-Slide",
+              gripPct: 98,
+              diff: "★★★★★ (FINAL BOSS)",
+              rule: "Bench Rule: Official Saraswati Vidyalaya Grand Championship Desk!",
+              rewards: ["Bench King Grand Cup 🏆", "+₹2,000 Coins", "School Pen Fight Legend"]
+            }
+          ];
+
+          const container = document.getElementById('campaign-stages-container');
+          if (!container) return;
+
+          let html = '';
+
+          // 1. Cleared stages (before activeStage)
+          for (let i = 1; i < activeStage; i++) {
+            const stg = FULL_STAGES[i - 1];
+            if (!stg) continue;
+            html += `
+              <div class="bg-white/95 rounded-lg p-2 shadow-xs flex items-center justify-between" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 6px 4px 7px 5px;">
+                <div class="flex items-center gap-2">
+                  <div class="relative shrink-0 w-8 h-8 rounded-full bg-[#16a34a] text-white flex items-center justify-center font-black text-[13px] border border-slate-900 shadow-sm" style="font-family: 'Permanent Marker', cursive;">
+                    ${stg.id}
+                    <span class="absolute -bottom-1 -right-1 bg-white text-[#b91c1c] font-bold text-[8px] px-1 rounded-full border border-slate-800 leading-tight">✔️</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-bold text-[12px] text-on-surface" style="font-family: 'Permanent Marker', cursive;">${stg.bench}: ${stg.name}</span>
+                      <span class="bg-secondary-fixed text-on-secondary-fixed text-[8px] font-bold px-1.5 py-0.2 rounded border border-slate-800/40" style="font-family: 'Patrick Hand', cursive;">${stg.penDisplay}</span>
+                    </div>
+                    <span class="text-[10px] text-[#64748b] leading-tight" style="font-family: 'Patrick Hand', cursive;">${stg.title}</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end">
+                  <div class="flex text-amber-500 text-[10px]">
+                    <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    <span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                  </div>
+                  <button type="button" class="text-[#00288e] text-[11px] font-bold underline cursor-pointer active:scale-95" onclick="window.launchStageMatch(${stg.id})" style="font-family: Caveat, cursive;">
+                    Replay Recess?
+                  </button>
+                </div>
+              </div>
+              <div class="w-full flex justify-center py-0.2">
+                <div class="h-3 border-l-2 border-dashed border-[#475569]/70"></div>
+              </div>
+            `;
+          }
+
+          // 2. Current Active Stage Chit (The authentic yellow lined revision chit)
+          const currentStage = FULL_STAGES[Math.min(FULL_STAGES.length - 1, activeStage - 1)];
+          if (currentStage) {
+            html += `
+              <div class="w-full flex justify-between items-center px-4 py-0.5 relative">
+                <div class="h-4 border-l-2 border-dashed border-[#00288e]"></div>
+                <span class="text-[11px] font-bold text-[#b91c1c] bg-[#ffdad6] px-2 py-0.2 rounded border border-[#dc2626]/40 -rotate-1 shadow-xs" style="font-family: 'Patrick Hand', cursive;">
+                  ➔ ACTIVE CHALLENGE NOW!
+                </span>
+              </div>
+              <article class="w-full rounded-xl p-2.5 shadow-md relative overflow-hidden yellow-chit-hatch bg-white" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 2.5px 3px 0px; transform: rotate(-0.4deg);">
+                <div class="absolute -top-1 left-5 w-4 h-7 border-2 border-zinc-700 rounded-full pointer-events-none z-20 shadow-xs"></div>
+                <div class="absolute top-1.5 right-2 w-4 h-4 rounded-full bg-[#b91c1c] flex items-center justify-center text-white text-[9px] font-bold shadow-xs">📌</div>
+                
+                <div class="flex flex-col border-b border-amber-400 pb-1.5 mb-1.5 pr-5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                    <span class="text-[9px] font-extrabold bg-[#00288e] text-white px-1.5 py-0.2 rounded uppercase tracking-wider" style="font-family: 'Patrick Hand', cursive;">STAGE 0${currentStage.id} DUEL CHIT</span>
+                    <span class="text-[#b91c1c] font-bold text-[12px]" style="font-family: Caveat, cursive;">${currentStage.title}</span>
+                  </div>
+                  <h3 class="text-[15px] font-black text-[#00288e] uppercase leading-tight mt-0.5" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(0, 40, 142, 0.2) 0.5px 0.5px 0px;">
+                    ${currentStage.bench}: ${currentStage.name}
+                  </h3>
+                  <p class="text-[10px] text-[#475569] leading-tight" style="font-family: 'Patrick Hand', cursive;">
+                    ${currentStage.desc}
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-12 gap-2 items-center bg-white/80 rounded-lg p-2 border border-amber-300 shadow-inner">
+                  <div class="col-span-4 flex flex-col items-center">
+                    <div class="w-14 h-16 bg-surface-container-high rounded-md overflow-hidden relative shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;">
+                      <img class="w-full h-full object-cover" alt="Caricature of ${currentStage.name}" src="./assets/opponent_monitor.jpg">
+                    </div>
+                    <span class="text-[11px] font-bold text-secondary mt-0.5" style="font-family: Caveat, cursive;">"Desk pe milo!"</span>
+                  </div>
+                  <div class="col-span-8 flex flex-col gap-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-[9px] font-bold text-[#475569] uppercase" style="font-family: 'Patrick Hand', cursive;">WEAPON:</span>
+                      <span class="text-[9px] font-black bg-[#1e40af] text-white px-1.5 py-0.2 rounded" style="font-family: 'Patrick Hand', cursive;">${currentStage.penDisplay}</span>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px]" style="font-family: 'Patrick Hand', cursive;">
+                      <span class="text-slate-800 font-bold">Heavy Flick Force:</span>
+                      <strong class="text-[#b91c1c] text-[10px]">${currentStage.flickForce}</strong>
+                    </div>
+                    <div class="w-full h-1.5 bg-amber-200 rounded-full overflow-hidden border border-amber-300">
+                      <div class="h-full bg-[#b91c1c] rounded-full" style="width: ${currentStage.flickPct}%;"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-[9px]" style="font-family: 'Patrick Hand', cursive;">
+                      <span class="text-slate-800 font-bold">Bench Rubber Grip:</span>
+                      <strong class="text-[#00288e] text-[10px]">${currentStage.grip}</strong>
+                    </div>
+                    <div class="w-full h-1.5 bg-amber-200 rounded-full overflow-hidden border border-amber-300">
+                      <div class="h-full bg-[#00288e] rounded-full" style="width: ${currentStage.gripPct}%;"></div>
+                    </div>
+                    <div class="flex items-center gap-1 text-[9px] font-bold text-amber-800" style="font-family: 'Patrick Hand', cursive;">
+                      <span class="material-symbols-outlined text-[11px] text-amber-700">warning</span>
+                      <span>Diff: ${currentStage.diff}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="mt-1.5 bg-white/70 rounded-md p-1.5 border border-amber-300 flex flex-col gap-1 text-[10px]" style="font-family: 'Patrick Hand', cursive;">
+                  <div class="flex items-start gap-1 text-[#00288e] font-bold">
+                    <span class="material-symbols-outlined text-[13px] shrink-0">rule</span>
+                    <span>${currentStage.rule}</span>
+                  </div>
+                  <div class="flex items-center gap-1 text-[#475569] font-bold text-[9px] flex-wrap">
+                    <span class="text-amber-800 font-black">REWARDS:</span>
+                    ${currentStage.rewards.map(r => `<span class="bg-amber-100 px-1 py-0.2 rounded border border-amber-300 text-slate-800">${r}</span>`).join('')}
+                  </div>
+                </div>
+
+                <div class="mt-2 grid grid-cols-12 gap-1.5">
+                  <button type="button" class="col-span-8 py-2 px-2.5 rounded-lg font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-all cursor-pointer relative overflow-hidden active:translate-y-1 select-none text-slate-900 bg-amber-400 hover:bg-amber-300 sketch-btn-hatch" onclick="window.launchStageMatch(${currentStage.id})" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(30, 41, 59) 2px 2.5px 0px; font-family: 'Permanent Marker', cursive; font-size: 14px;">
+                    <span class="material-symbols-outlined text-[17px]">swords</span>
+                    <span>FIGHT! ➔</span>
+                  </button>
+                  <button type="button" class="col-span-4 py-2 px-1 rounded-lg font-bold uppercase tracking-wider flex items-center justify-center gap-1 transition-all cursor-pointer relative overflow-hidden active:translate-y-1 select-none text-[#475569] bg-white/90 hover:bg-white sketch-btn-hatch" onclick="window.launchStageMatch(${currentStage.id}, true)" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(30, 41, 59) 1.5px 2px 0px; font-family: 'Permanent Marker', cursive; font-size: 11px;">
+                    <span class="material-symbols-outlined text-[14px]">replay</span>
+                    <span>WARMUP</span>
+                  </button>
+                </div>
+              </article>
+            `;
+          }
+
+          // 3. Next Locked Stage (if activeStage < 11)
+          if (activeStage < 11) {
+            const nextStage = FULL_STAGES[activeStage];
+            if (nextStage) {
+              html += `
+                <div class="w-full flex justify-center py-0.2">
+                  <div class="h-3 border-l-2 border-dashed border-[#475569]/70"></div>
+                </div>
+                <div class="bg-white/60 rounded-lg p-2 shadow-xs flex items-center justify-between opacity-80" style="border: 1.5px dashed rgb(71, 85, 105); border-radius: 6px 5px 7px 4px;">
+                  <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 flex items-center justify-center font-bold border border-slate-400">
+                      <span class="material-symbols-outlined text-[16px]">lock</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <div class="flex items-center gap-1.5">
+                        <span class="font-bold text-[12px] text-slate-600" style="font-family: 'Permanent Marker', cursive;">${nextStage.bench}: ${nextStage.name}</span>
+                        <span class="bg-slate-200 text-slate-600 text-[8px] font-bold px-1.5 py-0.2 rounded" style="font-family: 'Patrick Hand', cursive;">${nextStage.penDisplay}</span>
+                      </div>
+                      <span class="text-[10px] text-slate-500 leading-tight" style="font-family: 'Patrick Hand', cursive;">Locked until Bench #${currentStage.id} is tossed off desk</span>
+                    </div>
+                  </div>
+                  <div class="bg-rose-100 text-[#ba1a1a] font-bold text-[9px] px-1.5 py-0.5 rounded border border-rose-300" style="font-family: 'Patrick Hand', cursive;">
+                    PERIOD ${nextStage.id} LOCK
+                  </div>
+                </div>
+              `;
+            }
+          }
+
+          // 4. Mid-Campaign Boss Gate (Vikram Topper / Boss 1) if activeStage < 6
+          if (activeStage < 6) {
+            html += `
+              <div class="w-full flex justify-center py-0.2">
+                <div class="h-3 border-l-2 border-dashed border-[#475569]/70"></div>
+              </div>
+              <div class="bg-[#9b000d] text-white rounded-lg p-2 shadow-sm flex items-center justify-between" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 7px 4px 6px 5px;">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-full bg-[#700006] text-white flex items-center justify-center font-bold text-[13px] border border-red-300/40">
+                    ☠️
+                  </div>
+                  <div class="flex flex-col">
+                    <div class="flex items-center gap-1.5">
+                      <span class="font-bold text-[12px] tracking-wide" style="font-family: 'Permanent Marker', cursive;">STAGE 06: 'Vikram Topper'</span>
+                    </div>
+                    <span class="text-[9px] text-rose-200 leading-tight" style="font-family: 'Patrick Hand', cursive;">Wooden Duster + Geometry Obstacles (Class 7 Final)</span>
+                  </div>
+                </div>
+                <div class="flex flex-col items-end">
+                  <span class="text-[8px] bg-[#700006] text-white px-1.5 py-0.5 rounded font-black uppercase tracking-wider border border-red-300/30" style="font-family: 'Patrick Hand', cursive;">BOSS 1</span>
+                  <span class="text-[10px] text-rose-200 font-bold" style="font-family: Caveat, cursive;">Class 8 Gateway</span>
+                </div>
+              </div>
+            `;
+          }
+
+          // 5. Senior Corridors / Class 8 Gateway preview badge
+          html += `
+            <div class="bg-white/80 rounded-lg p-1.5 flex items-center justify-between border border-outline-variant/40 mt-1" style="border: 1.5px solid rgb(30, 41, 59); border-radius: 5px 7px 4px 6px;">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[16px] text-primary">school</span>
+                <div class="flex flex-col">
+                  <span class="font-bold text-[10px] text-[#00288e]" style="font-family: 'Patrick Hand', cursive;">Class 8 Corridor Benches (7 to 11)</span>
+                  <span class="text-[8px] text-[#64748b]" style="font-family: 'Patrick Hand', cursive;">Includes Principal's Office Pen Duel</span>
+                </div>
+              </div>
+              <span class="bg-surface-variant text-slate-700 text-[8px] font-bold px-1.5 py-0.5 rounded border border-slate-300" style="font-family: 'Patrick Hand', cursive;">
+                ${11 - clearedDesks} Desks Left
+              </span>
+            </div>
+          `;
+
+          container.innerHTML = html;
+
+          // 6. Recess Timer Interval
+          if (!window._recessTimerStarted) {
+            window._recessTimerStarted = true;
+            let secondsLeft = 225;
+            const timerElem = document.getElementById('recess-timer');
+            if (timerElem) {
+              setInterval(() => {
+                if (secondsLeft > 0) {
+                  secondsLeft--;
+                  const mins = Math.floor(secondsLeft / 60);
+                  const secs = secondsLeft % 60;
+                  timerElem.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')} mins left`;
+                }
+              }, 1000);
+            }
+          }
+        } catch(err) {
+          console.error("Error in syncCampaignMap:", err);
+        }
       }
 
       // Hydrate existing saved student data from LocalStorage
