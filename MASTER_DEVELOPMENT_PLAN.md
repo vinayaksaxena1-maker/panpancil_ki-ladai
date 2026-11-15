@@ -1,4 +1,5 @@
 # 🎯 Production Development Plan: Pen Fight — Desk Wars
+**Target Platform:** 100% Offline Android Mobile Game (Touch-First • Portrait 9:16 Layout • Flutter Container)  
 **Project Sovereignty:** 100% Standalone Offline Game Repository (`D:\FInal`)  
 **Game Title:** **Pen Fight: Desk Wars — The Last Bench Game**  
 **Local Asset Root:** `assets/` (All 3D models, textures, rooms, audio 100% self-contained)  
@@ -30,6 +31,10 @@
 7. **Clean Layer Separation:**
    - **3D World (Three.js + Rapier):** Desk, Pens, Lighting, Physics Collisions, Flick mechanics.
    - **2D UI Layer (HTML/CSS via Stitch):** Top Scoreboard, Power Bar, Menus, Cards, Trophy Cabinet.
+8. **Rule 8 (Strict Mobile-First & Touch-First Architecture):**
+   - Yeh game **100% Android Mobile Touchscreen (Portrait 9:16 / 9:20)** ke liye ban raha hai.
+   - Koi bhi PC desktop pattern jaise physical keyboard shortcuts (`KeyR`), mouse hover effects (`:hover`), ya desktop-style horizontal bars game me nahi chalenge.
+   - Saari UI elements, touch targets (minimum 48px), responsive safe areas, aur flick gestures sirf aur sirf Android mobile screen ko dhyan me rakh kar design aur build honge.
 
 ---
 
@@ -100,6 +105,26 @@ flowchart TD
     G4 -- Approved --> P5[Phase 5: Flutter Android APK Packaging & QA]
     P5 --> G5[Final Acceptance]
 ```
+
+---
+
+## 📱 Mobile-First Sovereignty (Kahan AI Ne Web Ka Kaam Kiya Tha Aur Kahan Sudhaar Hoga)
+
+Yeh game **100% Android Mobile Touchscreen (Portrait 9:16 Layout)** ke liye ban raha hai. Purani AI ne kahan-kahan desktop/web ke patterns inject kiye the, uska exact audit:
+
+1. **PC Keyboard Shortcut (`js/main.js`):**
+   * Physical keyboard listener `window.addEventListener('keydown', e => e.code === 'KeyR')` lagaya tha, jabki mobile device me physical keyboard nahi hota.
+2. **Desktop HTML `<select>` Dropdowns (`index.html`):**
+   * Top bar me standard browser desktop dropdowns lagaye the, jabki mobile UI me thumb-friendly touch cards ya bottom-sheets hoti hain.
+3. **PC Landscape Camera Viewport (`js/main.js`):**
+   * Camera calculation me `if (aspect >= 1.2)` (PC/Laptop widescreen) ko priority di gayi thi, jabki primary target mobile portrait vertical desk view hai.
+4. **Horizontal Overcrowded Header (`index.html`):**
+   * Top bar me 5-6 buttons aur controls ek hi line me horizontal flex the jo wide laptop screen ke hisab se the, vertical mobile screen par wo cut/squeeze hote hain.
+5. **CSS `:hover` Pseudo-Classes (`index.html`):**
+   * Desktop mouse hover states lagaye the jo mobile touch par sticky tap bug ban jate hain.
+
+**Why WebGL/HTML was used:**
+Architecture me Three.js + Rapier WASM ko Flutter Android container (`webview_flutter`) ke andar offline APK ke roop me package kiya ja raha hai (Phase 5). Lekin iska UI aur interaction **Desktop Web jaisa nahi, balki 100% Mobile Touch-First** hoga.
 
 ---
 
