@@ -4,16 +4,16 @@ import * as THREE from 'three';
 export function createProceduralDeskTexture() {
   const canvas = document.createElement('canvas');
   canvas.width = 1024;
-  canvas.height = 1880; // Matching 0.60m x 1.10m vertical long table
+  canvas.height = 1460; // Matching 0.70m x 1.00m vertical table
   const ctx = canvas.getContext('2d');
 
   // Base warm honey school desk wood
   ctx.fillStyle = '#b67a42';
-  ctx.fillRect(0, 0, 1024, 1880);
+  ctx.fillRect(0, 0, 1024, 1460);
 
   // Wood grain layers
   ctx.fillStyle = 'rgba(128, 72, 35, 0.22)';
-  for (let i = 0; i < 1880; i += 4) {
+  for (let i = 0; i < 1460; i += 4) {
     const wave = Math.sin(i * 0.015) * 8 + Math.cos(i * 0.03) * 4;
     ctx.fillRect(0, i + wave, 1024, 2.5);
   }
@@ -24,34 +24,34 @@ export function createProceduralDeskTexture() {
 
   // Scratched Compass Circles near opponent side
   ctx.beginPath();
-  ctx.arc(420, 450, 75, 0, Math.PI * 2);
+  ctx.arc(420, 380, 70, 0, Math.PI * 2);
   ctx.stroke();
 
   ctx.beginPath();
-  ctx.arc(420, 450, 120, 0, Math.PI * 1.5);
+  ctx.arc(420, 380, 110, 0, Math.PI * 1.5);
   ctx.stroke();
 
   // Scratched initials "7 - A" & "BENCH #4"
-  ctx.font = 'bold 50px monospace';
+  ctx.font = 'bold 48px monospace';
   ctx.fillStyle = 'rgba(75, 42, 20, 0.38)';
-  ctx.fillText('7 - A', 440, 950);
-  ctx.font = 'bold 36px monospace';
-  ctx.fillText('BENCH #4', 600, 1320);
+  ctx.fillText('7 - A', 440, 750);
+  ctx.font = 'bold 34px monospace';
+  ctx.fillText('BENCH #4', 600, 1050);
 
   // Scratched geometric ruler ticks
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.25)';
   ctx.lineWidth = 2;
   for (let r = 150; r < 600; r += 25) {
     ctx.beginPath();
-    ctx.moveTo(r, 1600);
-    ctx.lineTo(r, 1635);
+    ctx.moveTo(r, 1250);
+    ctx.lineTo(r, 1285);
     ctx.stroke();
   }
 
   // Random pencil & compass scratches across the board
-  for (let k = 0; k < 90; k++) {
+  for (let k = 0; k < 80; k++) {
     const x = Math.random() * 1024;
-    const y = Math.random() * 1880;
+    const y = Math.random() * 1460;
     ctx.strokeStyle = Math.random() > 0.5 ? 'rgba(75, 38, 15, 0.32)' : 'rgba(255, 255, 255, 0.25)';
     ctx.lineWidth = Math.random() * 2 + 1;
     ctx.beginPath();
@@ -140,29 +140,30 @@ export function createProceduralBlackboardTexture() {
   }
 
   // Chalk Heading: "STD 9 - A" & Date
-  ctx.fillStyle = 'rgba(235, 240, 235, 0.75)';
-  ctx.font = '22px monospace';
-  ctx.fillText('STD 9 - A', 45, 60);
-  ctx.fillText('Sub: Maths', 45, 90);
-  ctx.fillText('Date: 15 / 11', 820, 60);
+  ctx.fillStyle = 'rgba(245, 248, 245, 0.92)';
+  ctx.font = 'bold 34px monospace';
+  ctx.fillText('STD 9 - A', 50, 75);
+  ctx.font = '26px monospace';
+  ctx.fillText('Sub: Maths', 50, 115);
+  ctx.fillText('Date: 15 / 11', 780, 75);
 
   // Center: "PEN FIGHT" Match Score
-  ctx.font = 'bold 32px monospace';
-  ctx.fillText('PEN FIGHT', 420, 180);
+  ctx.font = 'bold 42px monospace';
+  ctx.fillText('PEN FIGHT', 385, 215);
 
-  ctx.font = '26px monospace';
-  ctx.fillText('P1  0', 430, 230);
-  ctx.fillText('BOT 0', 430, 270);
+  ctx.font = 'bold 34px monospace';
+  ctx.fillText('P1   0', 430, 275);
+  ctx.fillText('BOT  0', 430, 325);
 
   // Thought for the day
-  ctx.font = 'italic 20px serif';
-  ctx.fillStyle = 'rgba(235, 240, 235, 0.65)';
-  ctx.fillText('Thought for the day: "Practice makes a man perfect"', 310, 110);
+  ctx.font = 'italic 24px serif';
+  ctx.fillStyle = 'rgba(245, 248, 245, 0.85)';
+  ctx.fillText('Thought for the day: "Practice makes a man perfect"', 230, 130);
 
   // Chalk border box
-  ctx.strokeStyle = 'rgba(235, 240, 235, 0.35)';
-  ctx.lineWidth = 2;
-  ctx.strokeRect(380, 140, 260, 160);
+  ctx.strokeStyle = 'rgba(245, 248, 245, 0.65)';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(340, 160, 344, 200);
 
   const texture = new THREE.CanvasTexture(canvas);
   return texture;
@@ -233,24 +234,24 @@ export function createDeskMesh(width, depth, thickness) {
   // 4. Classroom Front Wall
   const wallGeo = new THREE.PlaneGeometry(8, 3.5);
   const wallMat = new THREE.MeshStandardMaterial({
-    color: 0x5e7563, // Soft institutional classroom green
+    color: 0x485e50, // Authentic classroom olive green matching penfight.xyz
     roughness: 0.90
   });
   const wall = new THREE.Mesh(wallGeo, wallMat);
-  wall.position.set(0, 0.52, -1.67);
+  wall.position.set(0, 0.35, -1.25);
   wall.receiveShadow = true;
   group.add(wall);
 
   // 5. Blackboard on Front Wall (Framed in camera view)
-  const boardWidth = 1.35;
-  const boardHeight = 0.62;
+  const boardWidth = 1.08;
+  const boardHeight = 0.48;
   const boardGeo = new THREE.BoxGeometry(boardWidth, boardHeight, 0.02);
   const boardMat = new THREE.MeshStandardMaterial({
     map: createProceduralBlackboardTexture(),
     roughness: 0.6
   });
   const board = new THREE.Mesh(boardGeo, boardMat);
-  board.position.set(0, 0.52, -1.65);
+  board.position.set(0, 0.34, -1.22);
   group.add(board);
 
   // Blackboard wooden frame
@@ -260,7 +261,7 @@ export function createDeskMesh(width, depth, thickness) {
     roughness: 0.5
   });
   const frame = new THREE.Mesh(frameGeo, frameMat);
-  frame.position.set(0, 0.52, -1.66);
+  frame.position.set(0, 0.34, -1.23);
   group.add(frame);
 
   // 6. Side Desks and Benches (Classroom Aisle)
@@ -316,12 +317,12 @@ export function createDeskMesh(width, depth, thickness) {
   };
 
   // Left Row benches
-  group.add(createSideBench(-0.98, -0.45));
-  group.add(createSideBench(-0.98, 0.50));
+  group.add(createSideBench(-1.04, -0.45));
+  group.add(createSideBench(-1.04, 0.50));
 
   // Right Row benches
-  group.add(createSideBench(0.98, -0.45));
-  group.add(createSideBench(0.98, 0.50));
+  group.add(createSideBench(1.04, -0.45));
+  group.add(createSideBench(1.04, 0.50));
 
   // 7. Backpacks hanging on side desks
   const createBackpack = (color, x, y, z) => {
@@ -340,9 +341,9 @@ export function createDeskMesh(width, depth, thickness) {
   };
 
   // Blue backpack on right bench
-  group.add(createBackpack(0x1e355b, 0.68, -0.15, -0.45));
+  group.add(createBackpack(0x1e355b, 0.73, -0.15, -0.45));
   // Maroon backpack on left bench
-  group.add(createBackpack(0x661e27, -0.68, -0.15, 0.10));
+  group.add(createBackpack(0x661e27, -0.73, -0.15, 0.10));
 
   return group;
 }
