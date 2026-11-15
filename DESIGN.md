@@ -1,47 +1,57 @@
-# DESIGN SYSTEM: Pen Fight — Desk Wars
-**Aesthetic:** 90s Indian Classroom Nostalgia × High-Energy Arcade Juice (Hot Wheels / Subway Surfers tactile feel)  
-**Target Platform:** Mobile-First Touchscreen (Portrait 9:16 / 9:20 • 360x800 to 412x915)  
-**Design System Version:** 1.0.0 (Stitch AI Master Foundation)
+# 🎨 PEN FIGHT: DESK WARS — MASTER DESIGN SYSTEM (`DESIGN.md`)
+**Aesthetic Theme:** 90s Indian Classroom Nostalgia × High-Energy Arcade Juice × Sketchbook Doodle UI  
+**Target Platform:** Android Touchscreen Mobile (Portrait 9:16 / 9:20 • 360x800 to 412x915)  
+**Design System Master:** `D:\FInal\DESIGN.md` (Root Authority for Stitch AI)  
+**Version:** 1.0.0 (Official Production Standard)
 
 ---
 
-## 1. 🎨 COLOR PALETTE & DESIGN TOKENS
+## 1. 🌈 COLOR PALETTE & SEMANTIC DESIGN TOKENS
 
-The visual language bridges authentic 90s Indian classroom memories (teak desks, dusty green chalkboards, ruled notebooks) with vibrant, hyper-casual tactile arcade finishes.
+```css
+:root {
+  /* --- Authentic 90s Classroom Heritage --- */
+  --color-blackboard-dark: #0f241f;    /* Deep chalkboard shadow & panel backing */
+  --color-blackboard-surface: #183b32; /* Classroom chalkboard green surface */
+  --color-chalk-white: #f5f5f0;        /* Pure dusty chalk text */
+  --color-chalk-yellow: #fde047;       /* Chalk highlight text & doodles */
+  --color-notebook-cream: #faf5e8;     /* Ruled notebook paper background */
+  --color-notebook-ruled: #cbd5e1;     /* Faint notebook horizontal rule line */
+  --color-margin-red: #ef4444;         /* Teacher's red margin line & checked ticks */
+  --color-desk-wood: #70452e;          /* Varnished teak classroom dual-bench */
+  --color-desk-bevel: #452a1c;         /* Desk edge shadow / bevel */
 
-### Primary Heritage Colors
-- `--color-blackboard-dark`: `#0F241F` — Deep chalkboard shadow & panel backing
-- `--color-blackboard-surface`: `#183B32` — Classroom chalkboard green surface
-- `--color-chalk-white`: `#F5F5F0` — Dusty handwritten chalk text
-- `--color-chalk-yellow`: `#FDE047` — Chalkboard highlights & accented notes
-- `--color-notebook-cream`: `#FAF5E8` — Ruled paper card background
-- `--color-notebook-ruled`: `#CBD5E1` — Faint blue/gray horizontal notebook guidelines
-- `--color-margin-red`: `#EF4444` — Teacher's red ink margin lines & checked ticks
-- `--color-desk-wood`: `#70452E` — Varnished dual-bench teak desk surface
-- `--color-desk-bevel`: `#452A1C` — Wooden desk shadow and chamfered edges
+  /* --- Arcade / Hyper-Casual Juicy Accents --- */
+  --color-ink-blue: #1e40af;           /* Reynolds 045 classic ballpoint blue ink */
+  --color-ink-blue-glow: #3b82f6;      /* Trimax glowing neon fluid chamber */
+  --color-arcade-gold: #f59e0b;        /* Trophy gold / Rank XP fill */
+  --color-arcade-amber: #d97706;       /* 3D button base depth shadow */
+  --color-arcade-crimson: #dc2626;     /* Danger / Knockout banner / Fall alert */
+  --color-arcade-green: #16a34a;       /* Victory / Your Turn / Equipped badge */
+  --color-arcade-dark: #111827;        /* 2.5px - 3.5px solid dark outline stroke */
 
-### Arcade Juicy Accent Colors
-- `--color-ink-blue`: `#1E40AF` — Reynolds 045 classic ballpoint blue ink
-- `--color-ink-blue-glow`: `#3B82F6` — Glowing neon fluid chamber of the Reynolds Trimax
-- `--color-arcade-gold`: `#F59E0B` — Trophy gold, star ratings, XP progression fill
-- `--color-arcade-amber`: `#D97706` — 3D button base depth shadow for gold actions
-- `--color-arcade-crimson`: `#DC2626` — Danger alerts, knockout banners, edge fall warnings
-- `--color-arcade-green`: `#16A34A` — Victory state, "Your Turn" indicator, equip status
-- `--color-arcade-dark`: `#111827` — Solid 2.5px - 3.5px dark outline strokes & borders
+  /* --- Slingshot Trajectory Force Tokens --- */
+  --force-low: #22c55e;                /* 0% - 40% Gentle approach / glider push */
+  --force-mid: #f59e0b;                /* 41% - 75% Balanced competition duel punch */
+  --force-max: #ef4444;                /* 76% - 100% Full power explosive rocket */
 
-### Slingshot Force Meter Tokens
-- `--force-low`: `#22C55E` — Gentle approach / glider push (0% - 40%)
-- `--force-mid`: `#F59E0B` — Balanced competition duel strike (41% - 75%)
-- `--force-max`: `#EF4444` — Explosive knockout impulse with subtle vibration (76% - 100%)
+  /* --- Tactile 3D Depth Shadows --- */
+  --shadow-btn-gold: 0 6px 0 #b45309, 0 8px 14px rgba(0, 0, 0, 0.4);
+  --shadow-btn-green: 0 6px 0 #15803d, 0 8px 14px rgba(0, 0, 0, 0.4);
+  --shadow-btn-blue: 0 6px 0 #1d4ed8, 0 8px 14px rgba(0, 0, 0, 0.4);
+  --shadow-btn-red: 0 6px 0 #991b1b, 0 8px 14px rgba(0, 0, 0, 0.4);
+  --shadow-btn-pressed: 0 2px 0 currentColor, 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+```
 
 ---
 
 ## 2. 🔤 TYPOGRAPHY & SKETCHBOOK / DOODLE UI SYSTEM
 
-All titles, game logos, screen headers, badges, and score announcements use an authentic **"Sketchbook / Rough Backbencher Doodle"** aesthetic—as if hand-drawn by a 90s student with ballpoint pens and pencils on the back pages of a rough notebook.
+All main titles, game logos, screen headers, badges, and score announcements use an authentic **"Sketchbook / Rough Backbencher Doodle"** aesthetic—as if hand-drawn by a student with ballpoint pens and markers on the back pages of a school rough notebook.
 
 ### Typography Hierarchy:
-- **Doodle Title Font (Primary Game Logo & Big Headers):** `Permanent Marker`, `Caveat Brush`, `Gochi Hand`, `Fredoka One`, cursive. Hand-sketched, slightly tilted, bold marker strokes with high personality.
+- **Doodle Title Font (Game Logos & Main Headers):** `Permanent Marker`, `Caveat Brush`, `Gochi Hand`, `Fredoka One`, cursive. Hand-sketched, slightly tilted, bold marker strokes with high personality.
 - **Classroom Chalkboard & Notes Script:** `Caveat`, `Comic Neue`, `Chalkboard SE`, cursive. For teacher chits, blackboard thoughts, roll numbers, and dialogs.
 - **Card Body & Numerical Stats:** `Inter`, system-ui, -apple-system, sans-serif (Clean, bold 700-800 for instant legibility).
 
@@ -75,6 +85,15 @@ All titles, game logos, screen headers, badges, and score announcements use an a
   -webkit-text-stroke: 2px #1e3a8a;
   text-shadow: 2px 2px 0 #1e3a8a;
 }
+
+/* General Arcade Dark Stroke Utility */
+.text-arcade-stroke {
+  font-family: 'Fredoka', 'Titan One', sans-serif;
+  -webkit-text-stroke: 2.5px #111827;
+  text-shadow: 0 3px 0 #111827, 0 5px 8px rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  font-weight: 900;
+}
 ```
 
 ---
@@ -104,13 +123,12 @@ Titles feature double-stroked, wavy marker underlines underneath:
   content: "";
   position: absolute;
   left: -5%;
-  bottom: -8px;
+  bottom: -6px;
   width: 110%;
-  height: 6px;
-  background: radial-gradient(circle, #ef4444 20%, transparent 20%);
-  background-size: 8px 6px;
-  border-bottom: 3px solid #ef4444;
-  transform: rotate(-1deg);
+  height: 4px;
+  background: #ef4444;
+  border-radius: 4px;
+  transform: rotate(-1.2deg);
 }
 ```
 
@@ -123,28 +141,87 @@ Titles feature double-stroked, wavy marker underlines underneath:
 
 ---
 
-## 3. 👆 TACTILE 3D PUSH BUTTONS
+## 4. 👆 TACTILE 3D PUSH BUTTONS
 
 Every interactive button is styled like a physical arcade machine button or collectible toy push piece:
 - **Border:** `3px solid #111827`
 - **Corner Radius:** `16px` (Pill / rounded rectangular)
-- **Base 3D Depth Shadow:** `box-shadow: 0 6px 0 [darker-shade], 0 8px 14px rgba(0,0,0,0.35)`
+- **Base 3D Depth Shadow:** `box-shadow: 0 6px 0 [darker-shade], 0 8px 14px rgba(0, 0, 0, 0.35)`
 - **Active Touch State:** Sinks down instantly by 4px on tap (`transform: translateY(4px); box-shadow: 0 2px 0 [darker-shade];`)
 - **Zero Tap Delay:** Mandatory `touch-action: manipulation;`
 
-### Button Hierarchy:
-1. **Primary Gold Button (`.btn-arcade-gold`):** High-priority actions ("PLAY MATCH ⚔️", "START DUEL").
-   - Gradient: `#FCD34D` ➔ `#F59E0B` | Depth: `#B45309`
-2. **Victory Green Button (`.btn-arcade-green`):** Confirmations & unlocks ("EQUIP PEN ✔️", "CLAIM REWARD").
-   - Gradient: `#4ADE80` ➔ `#16A34A` | Depth: `#15803D`
-3. **Duel Blue Button (`.btn-arcade-blue`):** Mode selectors & secondary actions ("PASS & PLAY 👥", "BATTLE").
-   - Gradient: `#60A5FA` ➔ `#2563EB` | Depth: `#1D4ED8`
-4. **Red Danger Button (`.btn-arcade-red`):** Resets & exits ("RESET 🔄", "QUIT").
-   - Gradient: `#F87171` ➔ `#DC2626` | Depth: `#991B1B`
+```css
+.btn-arcade-3d {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 10px 20px;
+  border-radius: 16px;
+  border: 3px solid #111827;
+  font-weight: 800;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+/* Primary Gold Button */
+.btn-arcade-gold {
+  background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+  color: #111827;
+  box-shadow: 0 6px 0 #b45309, 0 8px 14px rgba(0, 0, 0, 0.35);
+}
+
+.btn-arcade-gold:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #b45309, 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Victory Green Button */
+.btn-arcade-green {
+  background: linear-gradient(180deg, #4ade80 0%, #16a34a 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 0 #15803d, 0 8px 14px rgba(0, 0, 0, 0.35);
+}
+
+.btn-arcade-green:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #15803d, 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Duel Blue Button */
+.btn-arcade-blue {
+  background: linear-gradient(180deg, #60a5fa 0%, #2563eb 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 0 #1d4ed8, 0 8px 14px rgba(0, 0, 0, 0.35);
+}
+
+.btn-arcade-blue:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #1d4ed8, 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Red Danger / Reset Button */
+.btn-arcade-red {
+  background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 0 #991b1b, 0 8px 14px rgba(0, 0, 0, 0.35);
+}
+
+.btn-arcade-red:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 #991b1b, 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+```
 
 ---
 
-## 4. 📦 CONTAINER CARDS & NOSTALGIA FRAMES
+## 5. 📦 CONTAINER CARDS & NOSTALGIA FRAMES
 
 ### 1. The Ruled Notebook Card (`.card-notebook`)
 - Background: Warm cream paper (`#FAF5E8`) with faint horizontal lines (`#CBD5E1`) and a vertical red margin line (`#EF4444`).
@@ -158,7 +235,7 @@ Every interactive button is styled like a physical arcade machine button or coll
 
 ---
 
-## 5. 🎪 FLOATING BANNERS & SPRING ANIMATION
+## 6. 🎪 FLOATING BANNERS & SPRING ANIMATION
 
 Match events enter with an exaggerated, high-energy spring bounce:
 ```css
@@ -179,7 +256,13 @@ Match events enter with an exaggerated, high-energy spring bounce:
     transform: translate3d(-50%, -50%, 0) scale(1.0);
   }
 }
+
+.banner-spring {
+  animation: springPopIn 0.42s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  will-change: transform, opacity;
+}
 ```
+
 Banner Pill Variants:
 - `"YOUR TURN! 🎯"` — Green gradient pill with glowing outline
 - `"ROUND WON! 🎉"` — Gold amber gradient with celebratory stars
@@ -188,7 +271,16 @@ Banner Pill Variants:
 
 ---
 
-## 6. 📱 MOBILE-FIRST TOUCH & PERFORMANCE INVARIANTS
+## 7. 🎯 COLOR-SHIFTING SLINGSHOT ARC
+
+Touch-and-drag ke samay pen ke piche trajectory aur power-fill dynamic color-shift karegi:
+* **0% - 40% (Gentle Glider):** Neon Green (`#22C55E`)
+* **41% - 75% (Duel Punch):** Amber Gold (`#F59E0B`)
+* **76% - 100% (Explosive Blast):** Crimson Red (`#EF4444`) with subtle pulse vibration
+
+---
+
+## 8. 📱 MOBILE-FIRST TOUCH & PERFORMANCE INVARIANTS
 
 1. **Touch Target Size:** Minimum `48px x 48px` on all tappable elements.
 2. **Safe Area Insets:** `padding-top: max(16px, env(safe-area-inset-top)); padding-bottom: max(16px, env(safe-area-inset-bottom));`.
