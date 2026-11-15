@@ -128,6 +128,28 @@ Architecture me Three.js + Rapier WASM ko Flutter Android container (`webview_fl
 
 ---
 
+## 🧭 Feature-to-Phase Mapping (Easy/Normal/Hard & Scorecard Ka Asli Ghar)
+
+Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase me aane the aur AI ne kahan confusion kiya:
+
+### 1. 🎚️ Easy / Normal / Hard (Difficulty Toggle)
+* **Visual UI (Kahan dikhega):** **Phase 2 (Step 2.2 / 2.4 — Match Setup Screen)**
+  * Stitch AI jab match setup screen banayega, wahan player friendly classmate card ke sath **Easy / Normal / Hard** chunega.
+* **AI Logic & Algorithm (Code me kahan chalega):** **Phase 4 (Step 4.2 — Mathematical PCOpponentController)**
+  * *Easy:* High aim error spread ($\pm 16^\circ$), weak punch speed.
+  * *Normal:* Realistic human error spread ($\pm 6.5^\circ$), balanced approach.
+  * *Hard:* Sharp aim ($\pm 3^\circ$), high speed, aur 60% spin cut-shots.
+* **Phase 1 ki Galti:** AI ne Phase 4 ki logic aur Phase 2 ka UI wait kiye bina Phase 1 ke sandbox par temporary button chipka diye the.
+
+### 2. 📋 Score Card (Scoreboard & Match Result)
+* **Visual 2D HUD & Result Modal (Kahan dikhega):** **Phase 2 (Step 2.4 — HUD & Gameplay Overlays)**
+  * Transparent top scoreboard (P1 avatar vs Opponent avatar, round indicators, selected pen names) aur Match Win/Loss certificate modal Stitch AI banayega.
+* **Match Rules & Score Counting (Code me kahan chalega):** **Phase 4 (Step 4.1 — Match Loop State Machine)**
+  * Best of 5 format (first to 3 wins), double fall = re-flick, round won logic, aur result save.
+* **Phase 1 ki Galti:** AI ne Phase 1 me hi 3D blackboard par Best of 5 aur fake win popup daal diya tha, jise Step 1.6 me decouple karke pure physics banaya gaya.
+
+---
+
 ## 📋 Phase-by-Phase Detailed Breakdown
 
 ### 🧱 Phase 1: Core 3D Desk, Pens & Rapier Physics Engine
@@ -157,21 +179,23 @@ Architecture me Three.js + Rapier WASM ko Flutter Android container (`webview_fl
 ---
 
 ### 🎨 Phase 2: Stitch AI 2D UI & Nostalgia Visual System
+*(Current Status: ⚪ 0% — Ready to start after Gate 1 Approval)*
 *Goal: Desi Indian School Nostalgia UI layers banwana using tumhari existing images.*
 
-- **Step 2.1:** Author `DESIGN.md` (Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching nostalgic 90s school themes).
-- **Step 2.2:** Batch A Prompt (Core Flow):
-  - Splash screen + First Launch onboarding.
-  - Main Menu (using `hero.png`).
-- **Step 2.3:** Batch B Prompt (Identity & Collection):
-  - Player Profile & Level Ladder (11 levels).
-  - Pen Collection (using `tin-closed.png` / `tin-open-seven.png` compass box open animation).
-- **Step 2.4:** Batch C Prompt (HUD & Gameplay Overlays):
-  - Transparent in-game HUD (Scoreboard, turn indicator, power meter).
-  - Pause menu + Match Win/Loss result (using `hero-championship-certificate.png` & `pen-fight-champion.png`).
-- **Step 2.5:** Batch D Prompt (Cabinet & Settings):
-  - 16-Badge Trophy Cabinet (using `penfight-trophy.png` & `penfight-belt-640.png`).
-  - Ranking details (7 tiers: Beginner ➔ Legend) + Offline Settings.
+- [ ] **Step 2.1:** Author `DESIGN.md` (Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching nostalgic 90s school themes).
+- [ ] **Step 2.2:** Batch A (Core Flow Screens):
+  - Splash screen + First Launch onboarding / Admission Form.
+  - Main Menu Home Screen (with hero desk duel illustration).
+- [ ] **Step 2.3:** Batch B (Identity, Collection & Levels):
+  - Player Profile report card & 11-Level Merit Ladder visual journey.
+  - Pen Collection Tin Compass Box Screen (6 pen slots, stat bars, equip action).
+- [ ] **Step 2.4:** Batch C (HUD, Match Setup & Score Overlays):
+  - Transparent in-game HUD (Top Scoreboard, turn badge, power meter).
+  - Play vs PC Match Setup (Classmate card, Easy/Normal/Hard selector).
+  - Pause menu + Match Win/Loss result certificate.
+- [ ] **Step 2.5:** Batch D (Cabinet & Settings):
+  - 16-Badge Trophy Cabinet shelf (monochrome locked vs enamel pin earned states).
+  - 7 Ranking tiers details + Offline Settings.
 - 🎯 **APPROVAL GATE 2:** All 11 screens visually inspected. "Kya theme 90s classroom jaisi hai aur HUD transparent Three.js canvas ke sath match kar raha hai?"
 
 ---
@@ -180,13 +204,9 @@ Architecture me Three.js + Rapier WASM ko Flutter Android container (`webview_fl
 *(Current Status: ⚪ Reset to 0% — Execution halted until Phase 1 & 2 pass Approval Gates)*
 *Goal: Zero-latency tactile feedback without broken remote URLs.*
 
-- **Step 3.1:** 20-line standalone Web Audio API synthesizer for instant mechanical audio:
-  - `synth_flick()` (Air whoosh pop)
-  - `synth_clack()` (Crisp high-frequency plastic impact)
-  - `synth_thud()` (Low-frequency wood desk hit)
-- **Step 3.2:** Local assets slotting for the 10 core sounds (`assets/audio/`):
-  - `sfx_flick.mp3`, `sfx_pen_hit_pen.mp3`, `sfx_pen_desk_slide.mp3`, `sfx_pen_fall.mp3`, `sfx_ui_button.mp3`, `sfx_round_win.mp3`, `sfx_round_loss.mp3`, `sfx_match_win.mp3` (school bell), `sfx_level_up.mp3`, `sfx_badge_unlock.mp3`.
-- **Step 3.3:** Sound manager with audio toggles & fallback if files fail to load.
+- [ ] **Step 3.1:** 20-line standalone Web Audio API synthesizer for instant mechanical audio (`synth_flick`, `synth_clack`, `synth_thud`).
+- [ ] **Step 3.2:** Local assets slotting for the 10 core sounds (`assets/audio/`: flick, impact, slide, fall, UI click, round win, round loss, victory bell, level up, badge unlock).
+- [ ] **Step 3.3:** Sound manager with audio toggles, ambient classroom chatter loop, & fallback.
 - 🎯 **APPROVAL GATE 3:** Sound triggers verified during flick, collision, and button clicks.
 
 ---
@@ -195,25 +215,22 @@ Architecture me Three.js + Rapier WASM ko Flutter Android container (`webview_fl
 *(Current Status: ⚪ Reset to 0% — Execution halted until Phase 3 passes Approval Gate)*
 *Goal: Rule-based classmate AI, match flow, 11-level progression, and 16 badges.*
 
-- **Step 4.1:** Match Loop State Machine:
-  - Best of 5 rounds (First to 3 wins).
-  - Replay on double-fall, turn pass on zero-fall.
-- **Step 4.2:** Mathematical `PCOpponentController`:
-  - Distance and angle calculation (Target: knock player pen off nearest desk edge).
-  - Easy (higher error spread) & Normal (accurate aim) difficulty.
-- **Step 4.3:** Local Persistence (`IndexedDB` / `localStorage`):
-  - Profile (name, avatar, level, XP).
+- [ ] **Step 4.1:** Match Loop State Machine (Best of 5 rounds, first to 3 wins, double fall re-flick, round winner score increment).
+- [ ] **Step 4.2:** Mathematical `PCOpponentController` (Easy spread, Normal human aim, Hard tactical aggression & spin shots).
+- [ ] **Step 4.3:** Local Persistence Engine (`localStorage` / IndexedDB):
+  - 11-Level progression & XP calculation.
   - 16 Badges unlock conditions ledger.
-  - Ranking points & 7 tiers tracker.
+  - 7 Ranking tiers calculation & dynamic pen swapping on desk.
 - 🎯 **APPROVAL GATE 4:** Full 3-round match played against PC. Results screen properly updates XP and badges without duplicates.
 
 ---
 
 ### 📱 Phase 5: Flutter Android APK Packaging & Delivery
+*(Current Status: ⚪ 0% — Strict Gate-by-Gate Policy)*
 *Goal: 60 FPS offline Android APK.*
 
-- **Step 5.1:** Flutter project integration (`webview_flutter` container).
-- **Step 5.2:** Bundle all WebGL, Rapier WASM, HTML, and assets in `assets/web/`.
-- **Step 5.3:** Android back-button handling, full-screen immersive mode, and touch calibration.
-- **Step 5.4:** Build Release APK (`flutter build apk --release`).
+- [ ] **Step 5.1:** Flutter project integration (`webview_flutter` container).
+- [ ] **Step 5.2:** Bundle all WebGL, Rapier WASM, HTML, and assets in `assets/web/`.
+- [ ] **Step 5.3:** Android back-button handling, full-screen immersive mode, and touch calibration.
+- [ ] **Step 5.4:** Build Release APK (`flutter build apk --release`).
 - 🎯 **APPROVAL GATE 5:** Final APK installed and verified on physical Android phone.
