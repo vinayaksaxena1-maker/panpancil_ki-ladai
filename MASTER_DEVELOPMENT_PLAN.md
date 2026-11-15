@@ -83,7 +83,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🟢 **100% Complete** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | None (Ready for User Gate 1 Approval) |
-| **Phase 2** | Rules, Match Loop & Bot AI | ⚪ **0% (Next Active Phase)** | Physics sandbox ready | Step 2.1 Turn State Machine, Step 2.2 Best-of-5 Match Loop, Step 2.3 Bot AI Kinematics (Easy/Norm/Hard), Step 2.4 Local 2-Player Pass & Play, Step 2.5 XP & Badges Engine, Step 2.6 LocalStorage Persistence |
+| **Phase 2** | Rules, Match Loop & Bot AI | ⚪ **0% (Next Active Phase)** | Physics sandbox ready | Step 2.1 Match Loop & Turns (`rules.js`), Step 2.2 Mathematical Bot AI (`bot.js`), Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`progression.js`), Step 2.5 LocalStorage Persistence (`storage.js`) |
 | **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Step 3.1 DESIGN.md, Step 3.2 Batch A (Splash/Menu), Step 3.3 Batch B (Profile/Compass Box), Step 3.4 Batch C (HUD/Scoreboard/Setup), Step 3.5 Batch D (Cabinet/Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Flutter Android APK Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Flutter webview container, asset bundling, Android back button, release APK build |
@@ -182,34 +182,52 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 *(Current Status: ⚪ 0% — Next Active Phase after Gate 1 Approval)*
 *Goal: Turn system, Best-of-5 scoring, 3-tier mathematical Bot AI, 2-player Pass & Play, aur offline local persistence.*
 
-- [ ] **Step 2.1: Turn Management State Machine & Failsafe:**
-  - Strict Turn Flow: `PLAYER_TURN` ➔ `SIMULATING` ➔ `SETTLING` ($\|\vec{v}\| < 0.015\text{ m/s}$, $\|\vec{\omega}\| < 0.08\text{ rad/s}$) ➔ `OUTCOME_CHECK` ➔ `OPPONENT_TURN` (with 0.8s human-like thought pause).
-  - Failsafe timeout: 3.5s simulation limit to prevent infinite spinning/rolling locks.
-- [ ] **Step 2.2: Best-of-5 Match Scoring Loop:**
-  - First to 3 round wins format (Best of 5 rounds).
-  - Round scoring: 1 point to player whose pen knocks opponent off while staying on desk.
-  - Double fall: Simultaneous drop = Re-flick (Round Draw, no point).
-  - Safe Duel: Both stay on table = Turn passes smoothly to other player.
-  - Round reset (re-centering pens to spawn positions) vs Match End trigger (declares winner, triggers XP calculation).
-- [ ] **Step 2.3: Mathematical `PCOpponentController` (Easy, Normal, Hard Algorithm):**
-  - Raycasting target vector $\vec{D} = \text{Pos}_{\text{player}} - \text{Pos}_{\text{bot}}$.
-  - **Easy Mode:** Angular spread error $\pm 16^\circ$, weak force multiplier, random contact point offset (often glances or misses).
-  - **Normal Mode:** Realistic human spread $\pm 6.5^\circ$, distance-clamped force (fair, balanced 50/50 duel).
-  - **Hard Mode:** Razor aim $\pm 3^\circ$, edge cut-shots targeting player pen's nib/clip to induce spin torque and fling it sideways.
-  - Dynamic internal tester toggle in sandbox HUD for developer/user verification prior to Phase 3 UI.
-- [ ] **Step 2.4: Local 2-Player "Pass & Play" Engine:**
-  - 100% offline two-player duel on single phone screen (no internet or WiFi needed).
-  - Player 1 (Bottom/South side) flick input; Player 2 (Top/North side) 180° inverted flick input.
-  - Strict input lock ensuring only the active player's pen accepts touch/drag interaction.
-- [ ] **Step 2.5: Progression & XP Calculation Engine:**
-  - Match rewards: Win = `+50 XP`, Clean Sweep 3-0 = `+75 XP`, Match Loss = `+15 XP`.
-  - 11-Level Progression thresholds ($0 \rightarrow 3250$ XP) unlocking school ranks (*Backbencher* to *School Champion*).
-  - Automatic pen unlocking based on player level (Butterflow at Lvl 3, Pilot V5 at Lvl 6, Trimax at Lvl 8, Apsara Platinum at Lvl 9).
-  - 16 Badges unlock conditions checker (e.g. *First Blood*, *Edge Survivor*, *Clean Sweep*, *Desk Boss*).
-- [ ] **Step 2.6: Local Persistence Engine (`localStorage`):**
-  - Clean data schema: `penfight_profile` (name, level, xp, unlocked_pens, selected_pen, stats: matches, wins, knockouts, badges_unlocked).
-  - Auto-save on match end and auto-load on boot, keeping progress safe across browser refreshes and mobile re-launches.
-- 🎯 **APPROVAL GATE 2:** Sandbox me Bot ke khilaf poora Best-of-5 match khel kar test karna. "Kya Bot realistic shots le raha hai, score/winner properly determine ho raha hai, aur refresh karne par progress save rehti hai?"
+> [!NOTE]
+> **Modular Architecture Rule for Phase 2:**
+> `js/main.js` ko 1000+ lines ka monolithic spaghetti banane se bachane ke liye har step ka code dedicated, decoupled module me banega:
+> - Match Rules: `js/rules.js`
+> - Bot AI: `js/bot.js`
+> - Progression & Badges: `js/progression.js`
+> - Local Persistence: `js/storage.js`
+
+- [ ] **Step 2.1: Match Loop & Turn State Machine (`js/rules.js`):**
+  - **Turn Flow:** `P1_AIMING` ➔ `SIMULATING` ➔ `SETTLING` ($\|\vec{v}\| < 0.015\text{ m/s}$, $\|\vec{\omega}\| < 0.08\text{ rad/s}$) ➔ `ROUND_OUTCOME` ➔ `NEXT_TURN / ROUND_RESET`.
+  - **Failsafe Timeout:** 3.5s maximum simulation timer to prevent infinite spinning/rolling locks.
+  - **Scoring Rules:** Best-of-5 format (first to 3 round wins). Point awarded on knocking opponent off table while staying safe. Simultaneous drop = Draw (Re-flick). Both stay on desk = Turn passes to opponent.
+  - **Round Reset:** Re-centering pens to spawn duel positions ($Z: \pm0.35m$) smoothly without page reload.
+  - *Verification Receipt:* Player aur Opponent बारी-बारी फ्लिक कर सकें, पॉइंट्स 3 तक सही गिने जाएँ, और ड्रा होने पर री-फ्लिक हो।
+
+- [ ] **Step 2.2: Mathematical `PCOpponentController` (`js/bot.js`):**
+  - **Targeting Kinematics:** 3D Raycasting to player pen ($\vec{D} = \text{Pos}_{\text{player}} - \text{Pos}_{\text{bot}}$).
+  - **3 Difficulty Tiers:**
+    - *Easy Mode:* Angular spread error $\pm 16^\circ$, weak force scaling, random contact point offset (kabhi chhootega, kabhi halki takkar).
+    - *Normal Mode:* Realistic human spread $\pm 6.5^\circ$, distance-clamped proportional impulse (50/50 fair duel).
+    - *Hard Mode:* Razor aim $\pm 3^\circ$, tactical edge cut-shots targeting player pen's tip/cap to induce high angular spin torque.
+  - **Human Pacing:** 0.8s contemplation pause before bot flicks (lagna chahiye ki samne koi insaan khel raha hai).
+  - **Dynamic Tester Toggle:** Sandbox HUD me Easy/Normal/Hard switch taaki Gate 2 verification ke liye tino modes live test ho sakein.
+  - *Verification Receipt:* Bot tino modes me alag accuracy se shot maare, aur Best-of-5 me player ko challenge de sake.
+
+- [ ] **Step 2.3: Local 2-Player "Pass & Play" Engine:**
+  - **1-Phone Dual Duel:** Ek hi phone par bina internet do dost aamne-saamne baithkar khel sakein.
+  - **Dual Input Handling:** Player 1 (Bottom/South side) flick; Player 2 (Top/North side) 180° inverted flick.
+  - **Strict Input Lock:** Jis player ki baari hai, sirf usi ki pen touch/drag accept karegi; doosre player ki pen lock rahegi.
+  - **Mode Selector:** Sandbox me "VS Bot" ↔ "Pass & Play (2P)" toggle.
+  - *Verification Receipt:* Dono insaan ek hi screen par alternate turns le sakein bina controls fumble hue.
+
+- [ ] **Step 2.4: 11-Level Progression & 16 Badges Ledger (`js/progression.js`):**
+  - **XP Calculation:** Match Win = `+50 XP`, Clean Sweep 3-0 = `+75 XP`, Match Loss = `+15 XP`.
+  - **11 Ranks Ladder:** $0 \rightarrow 3250$ XP curve (*Backbencher* se *School Champion* tak).
+  - **Dynamic Pen Unlocks:** Level 3 par Butterflow, Level 6 par Pilot V5, Level 8 par Trimax, Level 9 par Apsara Platinum unlock conditions.
+  - **16 Badges Evaluator:** Pure criteria functions (e.g. *First Blood*, *Edge Survivor*, *Clean Sweep*, *Desk Boss*).
+  - *Verification Receipt:* Match khatam hone par XP calculate ho, level badhe, aur eligible badges trigger hon.
+
+- [ ] **Step 2.5: Offline LocalStorage Persistence & State Hydration (`js/storage.js`):**
+  - **Clean Schema:** `penfight_career` (profile, level, xp, unlockedPens, selectedPen, matchStats, badgesUnlocked).
+  - **Hydration:** Game boot par data memory me load ho, match khatam hone par auto-save ho.
+  - **Safety & Reset:** Corrupt data recovery fallback aur development reset method (`clearCareerData()`).
+  - *Verification Receipt:* Browser refresh karne par XP, level, aur unlocked pens reset nahi honge, wahi se resume honge.
+
+- 🎯 **APPROVAL GATE 2:** Sandbox me Bot aur 2P ke khilaf poora Best-of-5 match khel kar test karna. "Kya turns, bot aim, 2-player mode, score counting, aur refresh par data save 100% chal raha hai?"
 
 ---
 
