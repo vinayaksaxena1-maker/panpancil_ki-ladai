@@ -39,7 +39,7 @@
    - **Phase 1 (Core 3D Physics & Rendering Engine) 100% Complete aur PERMANENTLY LOCKED hai.**
    - User Directive: *"Phase 1 ko lock kar do bina meri approval ke engine me koi change nahi hoga."*
    - Core files: `js/pens.js`, `js/desk.js`, Three.js scene setup, 120Hz Rapier WASM simulation loop, 6 parametric pen geometries, mass distribution, friction constants, table boundaries, aur drop detection strictly FROZEN hain.
-   - Aage ke sabhi phases (Phase 2 Rules & AI, Phase 3 Stitch UI, Phase 4 Audio) Phase 1 ko immutable (unalterable) base foundation maan kar chalenge. Bina explicit user approval ke engine files me koi bhi badlav karna strictly prohibited hai.
+   - Aage ke sabhi phases Phase 1 ko immutable (unalterable) base foundation maan kar chalenge. Bina explicit user approval ke engine files me koi bhi badlav karna strictly prohibited hai.
 10. **Rule 10 (Official Google Play Store Policy & Architecture Compliance):**
    - Game ka koi bhi code, architecture ya asset Google Play Store ki official policies ke khilaf nahi jayega.
    - **Compliance Tools & Routing Boundaries:**
@@ -47,6 +47,11 @@
      - **`search_web`:** Google Play Developer Policy Center (`support.google.com/googleplay/android-developer`) se latest store policy updates (Families Policy, 20-tester requirement, zero data tracking policies) live verify karne ke liye use hoga.
      - **`android-cli`:** Android SDK platform tools, Gradle configurations (`minSdkVersion 24`, `targetSdkVersion 34/35`, NDK 64-bit ABI filters), aur local emulator/device testing ke liye use hoga.
    - **Data Safety Mandate:** Game 100% offline rahega (`localStorage` only). Zero analytics, zero unnecessary permissions (`INTERNET`, `CAMERA`, `STORAGE` etc. blocked from manifest), taaki Google Play Data Safety form 100% "No data collected, No data shared" rahe.
+11. **Rule 11 (Phase 2 Logic & Rules Engine Freeze & Strict Lock):**
+   - **Phase 2 (Rules, Match Loop, Bot AI, Progression & Storage) 100% Complete aur PERMANENTLY LOCKED hai.**
+   - User Directive: *"Phase 2 ko bhi lock kar do bina meri approval ke koi change nahi hoga."*
+   - Core logic files: `js/rules.js` (State machine & scoring), `js/bot.js` (Mathematical kinematics & difficulty tiers), `js/progression.js` (11 stages & 16 badges), aur `js/storage.js` (100% offline persistence) strictly FROZEN hain.
+   - Phase 3 (Stitch UI) sirf inke exposed methods aur properties ko read/consume karega. Bina explicit user approval ke Phase 2 logic files me koi bhi change karna strictly prohibited hai.
 
 ---
 
@@ -95,8 +100,8 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | Phase | Naam | Current Status | Kya Ho Chuka Hai (Done) | Kya Adha / Baki Hai (Pending Debt) |
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
-| **Phase 2** | Rules, Match Loop & Bot AI | 🟢 **100% Complete (Gate 2 Ready)** | Step 2.1 Match Loop & Turns (`js/rules.js`), Step 2.2 Bot AI (`js/bot.js`), Step 2.3 Pass & Play 2P Mode, Step 2.4 Progression & Badges (`js/progression.js`), Step 2.5 LocalStorage Persistence (`js/storage.js`) complete & verified | None. All 5 steps completed & verified via automated tests. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | ⚪ **0% (Waiting Gate 2)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
+| **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **Ready to Start (Step 3.1 Next)** | Design specs & reference images ready | Steps 3.1-3.9: Screen-by-Screen Verifiable Pipeline (Tokens, Splash/ID, Main Menu, Campaign Map, Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings) |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -190,17 +195,14 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 
 ---
 
-### 🧠 Phase 2: Rules, Match Loop & Bot AI
-*(Current Status: ⚪ 0% — Next Active Phase after Gate 1 Approval)*
+### 🧠 Phase 2: Rules, Match Loop & Bot AI 🔒 (100% COMPLETE & LOCKED)
+*(Current Status: 🔒 100% Complete & Permanently Frozen under Rule 11)*
 *Goal: Turn system, Best-of-5 scoring, 3-tier mathematical Bot AI, 2-player Pass & Play, aur offline local persistence.*
 
-> [!NOTE]
-> **Modular Architecture Rule for Phase 2:**
-> `js/main.js` ko 1000+ lines ka monolithic spaghetti banane se bachane ke liye har step ka code dedicated, decoupled module me banega:
-> - Match Rules: `js/rules.js`
-> - Bot AI: `js/bot.js`
-> - Progression & Badges: `js/progression.js`
-> - Local Persistence: `js/storage.js`
+> [!CAUTION]
+> **RULE 11 ENFORCEMENT — PHASE 2 ENGINE FREEZE:**
+> Phase 2 ke sabhi 4 core modules (`js/rules.js`, `js/bot.js`, `js/progression.js`, `js/storage.js`) 100% complete aur verified hain. User Directive: *"Phase 2 ko bhi lock kar do bina meri approval ke engine me koi change nahi hoga."*
+> Phase 3 (UI) sirf inke methods ko read/consume karega. In files me koi bhi manual edit strictly PROHIBITED hai.
 
 - [x] **Step 2.1 (COMPLETED): Match Loop & Turn State Machine (`js/rules.js`):**
   - **Turn Flow:** `P1_AIMING` ➔ `SIMULATING` ➔ `SETTLING` ($\|\vec{v}\| < 0.015\text{ m/s}$, $\|\vec{\omega}\| < 0.08\text{ rad/s}$) ➔ `ROUND_OUTCOME` ➔ `NEXT_TURN / ROUND_RESET`.
@@ -244,12 +246,12 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - **Safety & Reset:** Corrupt data recovery fallback aur development reset method (`clearCareerData()`).
   - *Verification Receipt:* Puppeteer automated tests passed (8/8 tests pass). Settings & pen auto-save, full page refresh hydration test, corrupt JSON graceful fallback, aur `clearCareerData()` reset verified.
 
-- 🎯 **APPROVAL GATE 2:** Sandbox me Bot aur 2P ke khilaf poora Best-of-5 match khel kar test karna. "Kya turns, bot aim, 2-player mode, score counting, aur refresh par data save 100% chal raha hai?"
+- 🎯 [x] **APPROVAL GATE 2 (PASSED & LOCKED 🔒):** Best-of-5 scoring, 3-tier bot kinematics, 2-player mode, 11-level progression, 16 badges, aur offline local persistence 100% verified and permanently frozen under Rule 11.
 
 ---
 
 ### 🎨 Phase 3: Stitch AI 2D UI & Nostalgia Visual System
-*(Current Status: ⚪ 0% — Execution starts after Phase 2 Gate Approval)*
+*(Current Status: 🟡 Ready to Start — Step 3.1 Next)*
 *Goal: Har screen ko ek-ek karke banana aur turant 100% test & check (verifiable receipt) karna, jisse UI me koi bhi visual flaw na rahe.*
 
 > [!IMPORTANT]
