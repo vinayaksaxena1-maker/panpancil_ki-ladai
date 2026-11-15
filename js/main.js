@@ -703,11 +703,9 @@ class GameEngine {
       this.turnBadgeEl.innerText = "Your Turn (Drag to Flick)";
       this.turnBadgeEl.style.background = "#3f8b61";
     }
-  }
-      this.turnBadgeEl.innerText = "Your Turn (Drag to Flick)";
-      this.turnBadgeEl.style.background = "#3f8b61";
+    if (this.statusMsgEl) {
+      this.statusMsgEl.innerText = "Ready! Touch Dhakkan or Nib & flick!";
     }
-    if (this.statusMsgEl) this.statusMsgEl.innerText = "Ready! Touch Dhakkan or Nib & flick!";
   }
 
   onWindowResize() {
@@ -864,7 +862,17 @@ class GameEngine {
   }
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  window.gameEngine = new GameEngine();
-  window.gameEngine.init();
-});
+function bootGame() {
+  if (!window.gameEngine) {
+    window.gameEngine = new GameEngine();
+    window.gameEngine.init().catch(err => {
+      console.error("GameEngine init failed:", err);
+    });
+  }
+}
+
+if (document.readyState === 'loading') {
+  window.addEventListener('DOMContentLoaded', bootGame);
+} else {
+  bootGame();
+}
