@@ -117,56 +117,104 @@ export function createProceduralFloorTexture() {
   return texture;
 }
 
-// 3. Procedural Blackboard Texture with Authentic School Chalk Text
-export function createProceduralBlackboardTexture() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1024;
-  canvas.height = 512;
-  const ctx = canvas.getContext('2d');
+// 3. Dynamic Procedural Blackboard Texture with Authentic School Chalk Text
+let bbCanvas = null;
+let bbCtx = null;
+let bbTexture = null;
+
+export function renderBlackboardChalk(p1Score = 0, botScore = 0, announcement = null) {
+  if (!bbCtx) return;
 
   // Dark slate chalkboard green
-  ctx.fillStyle = '#1e382b';
-  ctx.fillRect(0, 0, 1024, 512);
+  bbCtx.fillStyle = '#1e382b';
+  bbCtx.fillRect(0, 0, 1024, 512);
 
   // Subtle chalk dust clouds
-  ctx.fillStyle = 'rgba(235, 240, 235, 0.05)';
-  for (let i = 0; i < 40; i++) {
-    const cx = Math.random() * 1024;
-    const cy = Math.random() * 512;
-    const r = Math.random() * 90 + 30;
-    ctx.beginPath();
-    ctx.arc(cx, cy, r, 0, Math.PI * 2);
-    ctx.fill();
+  bbCtx.fillStyle = 'rgba(235, 240, 235, 0.04)';
+  for (let i = 0; i < 35; i++) {
+    const cx = (i * 137.5) % 1024;
+    const cy = (i * 83.3) % 512;
+    bbCtx.beginPath();
+    bbCtx.arc(cx, cy, 65, 0, Math.PI * 2);
+    bbCtx.fill();
   }
 
   // Chalk Heading: "STD 9 - A" & Date
-  ctx.fillStyle = 'rgba(245, 248, 245, 0.92)';
-  ctx.font = 'bold 34px monospace';
-  ctx.fillText('STD 9 - A', 50, 75);
-  ctx.font = '26px monospace';
-  ctx.fillText('Sub: Maths', 50, 115);
-  ctx.fillText('Date: 15 / 11', 780, 75);
-
-  // Center: "PEN FIGHT" Match Score
-  ctx.font = 'bold 42px monospace';
-  ctx.fillText('PEN FIGHT', 385, 215);
-
-  ctx.font = 'bold 34px monospace';
-  ctx.fillText('P1   0', 430, 275);
-  ctx.fillText('BOT  0', 430, 325);
+  bbCtx.fillStyle = 'rgba(245, 248, 245, 0.92)';
+  bbCtx.font = 'bold 34px monospace';
+  bbCtx.fillText('STD 9 - A', 50, 75);
+  bbCtx.font = '26px monospace';
+  bbCtx.fillText('Sub: Maths', 50, 115);
+  bbCtx.fillText('Date: 15 / 11', 780, 75);
 
   // Thought for the day
-  ctx.font = 'italic 24px serif';
-  ctx.fillStyle = 'rgba(245, 248, 245, 0.85)';
-  ctx.fillText('Thought for the day: "Practice makes a man perfect"', 230, 130);
+  bbCtx.font = 'italic 24px serif';
+  bbCtx.fillStyle = 'rgba(245, 248, 245, 0.85)';
+  bbCtx.fillText('Thought for the day: "Practice makes a man perfect"', 230, 130);
 
-  // Chalk border box
-  ctx.strokeStyle = 'rgba(245, 248, 245, 0.65)';
-  ctx.lineWidth = 3;
-  ctx.strokeRect(340, 160, 344, 200);
+  // Center: "PEN FIGHT" Match Score Box
+  bbCtx.strokeStyle = 'rgba(245, 248, 245, 0.65)';
+  bbCtx.lineWidth = 3;
+  bbCtx.strokeRect(320, 155, 384, 210);
 
-  const texture = new THREE.CanvasTexture(canvas);
-  return texture;
+  bbCtx.font = 'bold 40px monospace';
+  bbCtx.fillStyle = 'rgba(245, 248, 245, 0.95)';
+  bbCtx.fillText('PEN FIGHT', 400, 210);
+
+  // Best of 5 Win Indicator Boxes [■] [■] [ ]
+  const drawWinBoxes = (startX, y, wins) => {
+    for (let k = 0; k < 3; k++) {
+      const bx = startX + k * 30;
+      bbCtx.strokeStyle = 'rgba(245, 248, 245, 0.85)';
+      bbCtx.lineWidth = 2;
+      bbCtx.strokeRect(bx, y - 22, 22, 22);
+      if (k < wins) {
+        bbCtx.fillStyle = '#f2c75c'; // Golden chalk fill
+        bbCtx.fillRect(bx + 3, y - 19, 16, 16);
+      }
+    }
+  };
+
+  // P1 Score Line
+  bbCtx.font = 'bold 34px monospace';
+  bbCtx.fillStyle = 'rgba(245, 248, 245, 0.95)';
+  bbCtx.fillText(`P1   ${p1Score}`, 355, 275);
+  drawWinBoxes(520, 275, p1Score);
+
+  // BOT Score Line
+  bbCtx.fillStyle = 'rgba(245, 248, 245, 0.95)';
+  bbCtx.fillText(`BOT  ${botScore}`, 355, 335);
+  drawWinBoxes(520, 335, botScore);
+
+  // Announcement / Mode Footer
+  bbCtx.font = 'bold 26px monospace';
+  if (announcement) {
+    bbCtx.fillStyle = '#f2c75c'; // Bright yellow chalk announcement
+    bbCtx.fillText(announcement, 330, 420);
+  } else {
+    bbCtx.fillStyle = 'rgba(245, 248, 245, 0.65)';
+    bbCtx.font = '22px monospace';
+    bbCtx.fillText('BEST OF 5  (FIRST TO 3 WINS)', 335, 415);
+  }
+
+  if (bbTexture) {
+    bbTexture.needsUpdate = true;
+  }
+}
+
+export function updateBlackboardDisplay(p1Score, botScore, announcement = null) {
+  renderBlackboardChalk(p1Score, botScore, announcement);
+}
+
+export function createProceduralBlackboardTexture() {
+  bbCanvas = document.createElement('canvas');
+  bbCanvas.width = 1024;
+  bbCanvas.height = 512;
+  bbCtx = bbCanvas.getContext('2d');
+  bbTexture = new THREE.CanvasTexture(bbCanvas);
+
+  renderBlackboardChalk(0, 0, null);
+  return bbTexture;
 }
 
 // 4. Central Desk + Surrounding Classroom Environment

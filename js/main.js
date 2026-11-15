@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import RAPIER from 'rapier';
-import { createDeskMesh } from './desk.js?v=chalkboard_sharp';
+import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=blackboard_live';
 import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
+import { career, TROPHIES, TITLES } from './career.js';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
 const DESK_WIDTH = 0.70;      // 70 cm width (X-axis, East-West)
@@ -53,6 +54,16 @@ class GameEngine {
     this.turn = 'player';
     this.stableStartTime = 0;
     this.difficulty = 'normal'; // Default: Normal Mode (Balanced Competition)
+
+    // Best of 5 Match Management & Career
+    this.matchManager = {
+      p1Score: 0,
+      botScore: 0,
+      targetWins: 3,
+      isMatchOver: false,
+      roundHistory: []
+    };
+    this.collisionSoundCooldown = false;
 
     // 3D Raycasting
     this.raycaster = new THREE.Raycaster();
@@ -559,20 +570,48 @@ class GameEngine {
   }
 
   resolveTurnOutcome() {
+    if (this.matchManager.isMatchOver) return;
+
     if (this.playerPen.isFallen && this.opponentPen.isFallen) {
       if (this.statusMsgEl) this.statusMsgEl.innerText = "⚖️ Dono pens gir gayin! Draw / Re-flick!";
-      setTimeout(() => this.resetRound(), 1500);
+      updateBlackboardDisplay(this.matchManager.p1Score, this.matchManager.botScore, "ROUND DRAW! RE-FLICK");
+      setTimeout(() => {
+        updateBlackboardDisplay(this.matchManager.p1Score, this.matchManager.botScore, null);
+        this.resetRound();
+      }, 1600);
       return;
     }
 
     if (this.opponentPen.isFallen) {
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "🏆 Round Player jeeta! Badhai ho!";
+      this.matchManager.p1Score++;
+      this.matchManager.roundHistory.push('p1');
+      updateBlackboardDisplay(this.matchManager.p1Score, this.matchManager.botScore);
+
+      if (this.matchManager.p1Score >= this.matchManager.targetWins) {
+        this.handleMatchComplete(true);
+        return;
+      }
+
+      if (this.statusMsgEl) {
+        this.statusMsgEl.innerText = `🏆 Round Player jeeta! [P1 ${this.matchManager.p1Score} - ${this.matchManager.botScore} BOT]`;
+      }
       setTimeout(() => this.resetRound(), 1800);
       return;
     }
 
     if (this.playerPen.isFallen) {
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "❌ Opponent round jeet gaya!";
+      this.matchManager.botScore++;
+      this.matchManager.roundHistory.push('bot');
+      updateBlackboardDisplay(this.matchManager.p1Score, this.matchManager.botScore);
+
+      if (this.matchManager.botScore >= this.matchManager.targetWins) {
+        this.handleMatchComplete(false);
+        return;
+      }
+
+      if (this.statusMsgEl) {
+        this.statusMsgEl.innerText = `❌ Opponent round jeet gaya! [P1 ${this.matchManager.p1Score} - ${this.matchManager.botScore} BOT]`;
+      }
       setTimeout(() => this.resetRound(), 1800);
       return;
     }
@@ -591,6 +630,71 @@ class GameEngine {
       if (this.statusMsgEl) this.statusMsgEl.innerText = "🎯 Opponent target lock kar raha hai...";
       setTimeout(() => this.executeBotFlick(), 850);
     }
+  }
+
+  handleMatchComplete(isPlayerWin) {
+    this.matchManager.isMatchOver = true;
+    const p1 = this.matchManager.p1Score;
+    const bot = this.matchManager.botScore;
+
+    const result = career.recordMatch(p1, bot, this.difficulty, this.matchManager.roundHistory);
+
+    if (isPlayerWin) {
+      synth.playClack();
+      updateBlackboardDisplay(p1, bot, "🏆 P1 IS THE CHAMPION!");
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "🎉 BADHAI HO! MATCH JEET GAYE!";
+    } else {
+      updateBlackboardDisplay(p1, bot, "BOT WON THE MATCH!");
+      if (this.statusMsgEl) this.statusMsgEl.innerText = "Match Over! Bot ne match jeet liya!";
+    }
+
+    setTimeout(() => {
+      this.showMatchModal(isPlayerWin, p1, bot, result);
+    }, 1200);
+  }
+
+  showMatchModal(isPlayerWin, p1, bot, result) {
+    const modal = document.getElementById('match-modal');
+    if (!modal) return;
+
+    const titleEl = document.getElementById('modal-title');
+    const scoreEl = document.getElementById('modal-score');
+    const xpEl = document.getElementById('modal-xp');
+    const rankEl = document.getElementById('modal-rank');
+    const trophyEl = document.getElementById('modal-trophies');
+
+    if (titleEl) {
+      titleEl.innerText = isPlayerWin ? "🏆 MATCH JEET GAYE! CHAMPION!" : "💔 MATCH OVER! HAAR GAYE!";
+      titleEl.style.color = isPlayerWin ? "#f2c75c" : "#e07a5f";
+    }
+    if (scoreEl) scoreEl.innerText = `Final Score: P1 [ ${p1} ] - [ ${bot} ] BOT`;
+    if (xpEl) xpEl.innerText = `Earned: +${result.earnedXp} XP (Total: ${result.currentXp} XP)`;
+    if (rankEl) rankEl.innerText = `Rank: ${result.title} | Won: ${career.data.matchesWon}/${career.data.matchesPlayed}`;
+
+    if (trophyEl) {
+      if (result.newTrophies && result.newTrophies.length > 0) {
+        trophyEl.innerHTML = `<div class="trophy-badge">🎖️ New Trophy Unlocked: <b>${result.newTrophies.map(t => t.title).join(', ')}</b></div>`;
+      } else {
+        trophyEl.innerHTML = '';
+      }
+    }
+
+    modal.style.display = 'flex';
+  }
+
+  resetMatch() {
+    this.matchManager.p1Score = 0;
+    this.matchManager.botScore = 0;
+    this.matchManager.isMatchOver = false;
+    this.matchManager.roundHistory = [];
+
+    updateBlackboardDisplay(0, 0, null);
+
+    const modal = document.getElementById('match-modal');
+    if (modal) modal.style.display = 'none';
+
+    this.resetRound();
+    if (this.statusMsgEl) this.statusMsgEl.innerText = "Naya Match shuru! Best of 5 (First to 3 wins)";
   }
 
   resetRound() {
@@ -655,6 +759,23 @@ class GameEngine {
   applyCustomPhysics(dt) {
     const halfW = DESK_WIDTH / 2;
     const halfL = DESK_LENGTH / 2;
+
+    // Tactical Pen-to-Pen dynamic collision sound ("DHISHUM!")
+    if (this.playerPen && this.opponentPen && !this.playerPen.isFallen && !this.opponentPen.isFallen) {
+      const pP = this.playerPen.body.translation();
+      const oP = this.opponentPen.body.translation();
+      const penDist = Math.hypot(pP.x - oP.x, pP.z - oP.z);
+      if (penDist < 0.12 && !this.collisionSoundCooldown) {
+        const pLin = this.playerPen.body.linvel();
+        const oLin = this.opponentPen.body.linvel();
+        const relSpeed = Math.hypot(pLin.x - oLin.x, pLin.z - oLin.z);
+        if (relSpeed > 0.12) {
+          synth.playClack();
+          this.collisionSoundCooldown = true;
+          setTimeout(() => { this.collisionSoundCooldown = false; }, 260);
+        }
+      }
+    }
 
     for (const pen of [this.playerPen, this.opponentPen]) {
       if (!pen || !pen.body || pen.isFallen) continue;
