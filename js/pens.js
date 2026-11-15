@@ -8,11 +8,11 @@ export const PEN_CONFIGS = {
     type: 'triangular', // 3-segmented Triangular Prism (Stops rolling, grips desk!)
     length: 0.146,
     radius: 0.0069,
-    mass: 0.0155,
+    mass: 0.0155, // Heavy Tank mass
     color: 0x1d3557, // Deep Navy body
     accentColor: 0xd4af37, // Golden metal ring
     capColor: 0x112233,
-    restitution: 0.20,
+    restitution: 0.68, // ~70% Elasticity for crisp rigid plastic impact
     friction: 0.42,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -23,11 +23,11 @@ export const PEN_CONFIGS = {
     type: 'cylinder', // 24-segmented smooth transparent cylinder
     length: 0.145,
     radius: 0.0049,
-    mass: 0.0122,
+    mass: 0.0122, // Lighter Speed mass
     color: 0xf4f0e4, // Transparent Off-white body
     accentColor: 0x243b5a, // Classic blue cap
     capColor: 0x243b5a,
-    restitution: 0.22,
+    restitution: 0.68, // ~70% Elasticity
     friction: 0.35,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -42,7 +42,7 @@ export const PEN_CONFIGS = {
     color: 0xb77a49,
     accentColor: 0x111111, // Black rubber grip
     capColor: 0x333333,
-    restitution: 0.18,
+    restitution: 0.68,
     friction: 0.28,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -57,7 +57,7 @@ export const PEN_CONFIGS = {
     color: 0x3f8b61,
     accentColor: 0xc0c0c0,
     capColor: 0x27593f,
-    restitution: 0.25,
+    restitution: 0.68,
     friction: 0.32,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -72,7 +72,7 @@ export const PEN_CONFIGS = {
     color: 0xc85b4a, // Red & Black stripes
     accentColor: 0x111111,
     capColor: 0x222222, // Dark graphite lead
-    restitution: 0.15,
+    restitution: 0.65,
     friction: 0.30,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -87,7 +87,7 @@ export const PEN_CONFIGS = {
     color: 0x222222, // Silver & Black stripes
     accentColor: 0xc0c0c0,
     capColor: 0x111111,
-    restitution: 0.16,
+    restitution: 0.65,
     friction: 0.29,
     linearDamping: 0.06,
     angularDamping: 0.80

@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import RAPIER from 'rapier';
-import { createDeskMesh } from './desk.js';
-import { PEN_CONFIGS, createPenMesh } from './pens.js';
+import { createDeskMesh } from './desk.js?v=2';
+import { PEN_CONFIGS, createPenMesh } from './pens.js?v=2';
 import { synth } from './sound.js';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.60m x 1.10m)
@@ -15,7 +15,7 @@ const DESK_FRICTION = 0.33;
 const DESK_RESTITUTION = 0.10;
 const PEN_LINEAR_DAMPING = 0.06;
 const PEN_ANGULAR_DAMPING = 0.80;
-const PEN_RESTITUTION = 0.38;
+const PEN_RESTITUTION = 0.68; // ~70% Elasticity for crisp rigid plastic collision
 const PEN_FRICTION = 0.30;
 
 // Input & flick parameters
@@ -510,6 +510,93 @@ class GameEngine {
     }
   }
 
+  // 5 Custom Physics Principles Implementation
+  applyCustomPhysics(dt) {
+    const halfW = DESK_WIDTH / 2;
+    const halfL = DESK_LENGTH / 2;
+
+    for (const pen of [this.playerPen, this.opponentPen]) {
+      if (!pen || !pen.body || pen.isFallen) continue;
+
+      const pos = pen.body.translation();
+      const rot = pen.body.rotation();
+      const linvel = pen.body.linvel();
+      const angvel = pen.body.angvel();
+      const penQuat = new THREE.Quaternion(rot.x, rot.y, rot.z, rot.w);
+
+      const speed = Math.hypot(linvel.x, linvel.z);
+      const isOverDesk = Math.abs(pos.x) <= halfW && Math.abs(pos.z) <= halfL && pos.y >= -0.01;
+
+      if (isOverDesk && speed > 0.0001) {
+        // Principle 1: Dual-Friction Model (Coulomb Kinetic + Viscous Friction)
+        // v_next = v * (1 - mu_desk * dt)
+        const muDesk = pen.config.friction || DESK_FRICTION;
+        const dragFactor = Math.max(0, 1.0 - muDesk * dt * 2.2);
+        linvel.x *= dragFactor;
+        linvel.z *= dragFactor;
+
+        // Static Threshold (Damp Stop): smooth micro-deceleration curve
+        if (speed < 0.035) {
+          const dampBrake = Math.pow(speed / 0.035, 1.35);
+          linvel.x *= dampBrake;
+          linvel.z *= dampBrake;
+          if (speed < 0.006) {
+            linvel.x = 0;
+            linvel.z = 0;
+          }
+        }
+
+        // Principle 2: Angular Damping & Spin Dynamics (Nib vs Body Pivot)
+        // omega_next = omega * (1 - spinDamping * dt)
+        const spinDamping = pen.config.angularDamping || 0.80;
+        angvel.y *= Math.max(0, 1.0 - spinDamping * dt * 2.5);
+
+        // Asymmetric friction: metal nib slides freely, plastic body drags -> generates drift pivot
+        const penDir = new THREE.Vector3(0, 0, 1).applyQuaternion(penQuat);
+        const lateralDrift = linvel.x * penDir.z - linvel.z * penDir.x;
+        angvel.y += lateralDrift * 0.12 * dt;
+
+        pen.body.setLinvel(linvel, true);
+        pen.body.setAngvel(angvel, true);
+      }
+
+      // Principle 4: Edge-Hang & Table Fall Physics
+      // Center of Gravity or >50% length hanging over table border
+      const halfLen = pen.config.length / 2;
+      const nibWorld = new THREE.Vector3(0, 0, -halfLen).applyQuaternion(penQuat).add(new THREE.Vector3(pos.x, pos.y, pos.z));
+      const capWorld = new THREE.Vector3(0, 0, halfLen).applyQuaternion(penQuat).add(new THREE.Vector3(pos.x, pos.y, pos.z));
+
+      const isComOverEdge = Math.abs(pos.x) > halfW || Math.abs(pos.z) > halfL;
+      const isNibOverEdge = Math.abs(nibWorld.x) > halfW || Math.abs(nibWorld.z) > halfL;
+      const isCapOverEdge = Math.abs(capWorld.x) > halfW || Math.abs(capWorld.z) > halfL;
+
+      if (isComOverEdge || (isNibOverEdge && isCapOverEdge)) {
+        if (pos.y >= -0.05) {
+          // Horizontal slide dampens at edge
+          linvel.x *= 0.90;
+          linvel.z *= 0.90;
+
+          // Induce realistic tipping torque downwards over edge
+          if (pos.x > halfW) {
+            angvel.z -= 4.5 * dt; // tilts down right edge
+          } else if (pos.x < -halfW) {
+            angvel.z += 4.5 * dt; // tilts down left edge
+          }
+
+          if (pos.z > halfL) {
+            angvel.x += 4.5 * dt; // tilts down front edge
+          } else if (pos.z < -halfL) {
+            angvel.x -= 4.5 * dt; // tilts down back edge
+          }
+
+          pen.body.setLinvel(linvel, true);
+          pen.body.setAngvel(angvel, true);
+        }
+      }
+    }
+  }
+
+  // Principle 5: Fixed Timestep + Substepping & State Interpolation (Zero Stuttering)
   animate(timestamp = 0) {
     requestAnimationFrame((t) => this.animate(t));
 
@@ -522,6 +609,7 @@ class GameEngine {
 
     while (this.accumulator >= this.fixedTimeStep) {
       this.storePreviousTransforms();
+      this.applyCustomPhysics(this.fixedTimeStep);
       this.world.step();
       this.checkPhysicsSettled();
       this.accumulator -= this.fixedTimeStep;
