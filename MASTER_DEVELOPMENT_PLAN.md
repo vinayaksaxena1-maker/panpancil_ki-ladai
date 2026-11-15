@@ -1,24 +1,28 @@
 # 🎯 Production Development Plan: Pen Fight — Desk Wars
-**Project Sovereignty:** Offline Android 3D Game (Flutter + Three.js + Rapier.js WASM + Stitch 2D HUD)  
+**Project Sovereignty:** 100% Standalone Offline Game Repository (`D:\FInal`)  
 **Game Title:** **Pen Fight: Desk Wars — The Last Bench Game**  
-**Asset Anchor:** `D:\PAnfight\assets\Images`  
-**Specification Anchor:** `D:\PAnfight\CLEAN_ROOM_SPECIFICATION.MD` (Physics-only reference)  
-**Isolated External Reference:** `D:\penfight` *(Strictly read-only external benchmark: use only for verifying Center of Mass [COM] tuning and Bot aim trajectory formulas; zero code copy-paste or asset bleeding).*
+**Local Asset Root:** `assets/` (All 3D models, textures, rooms, audio 100% self-contained)  
+**Active Development Master:** `MASTER_DEVELOPMENT_PLAN.md` & `STITCH_AI_MASTER_PROMPT.md` (Project Root)  
 
 ---
 
-## 🛑 Strict Governance & Anti-Skipping Protocol (Iron Rules)
+## 🛑 Strict Governance & Iron Sovereignty Rules
 
-1. **Gate-by-Gate Execution (Approval Gates):**
+1. **Rule 1 (Sole Single Source of Truth):**
+   - Sirf aur sirf root folder me maujood `MASTER_DEVELOPMENT_PLAN.MD` aur `STITCH_AI_MASTER_PROMPT.MD` ko follow kiya jayega. Koi bhi feature, task ya code inhi do master plans ke hisab se aage badhega.
+2. **Rule 2 (External Folders Strictly Read-Only Benchmark):**
+   - `D:\PAnfight\CLEAN_ROOM_SPECIFICATION.MD` ya koi bhi bahari folder sirf aur sirf user ke external reference ke liye hai. Unka koi bhi plan, path, link ya dependency root project (`D:\FInal`) me bilkul nahi hogi.
+3. **Rule 3 (100% Standalone Repository Sovereignty):**
+   - Game ka 100% saara data, assets, code, audio, textures, physics aur documentation isi project folder (`D:\FInal`) me hoga. Yeh repo GitHub par akele push hone par poori tarah complete, independent aur playable rahegi.
+4. **Gate-by-Gate Execution (Approval Gates):**
    - Agla phase tab tak shuru **NAHI** hoga jab tak pichla phase chalakar (browser/terminal/device me) test pass na ho jaye aur user explicitly **"APPROVED / NEXT"** na bole.
-2. **Zero Unsolicited Deviation:**
+5. **Zero Unsolicited Deviation:**
    - AI apne man se koi library, formula, pen count, ya UI structure change/skip nahi karega.
-   - Agar koi mechanical majboori aaye, toh pehle User se poochha jayega: **"Kyun kiya aur kahe kar rahe hain?"**
-3. **No 44-Pen / External Bloat:**
+6. **No 44-Pen / External Bloat:**
    - Strict 6 pens: *Reynolds Trimax, Reynolds 045, Cello Butterflow, Pilot V5, Nataraj 621, Apsara Platinum*.
    - Strict 11 levels (Naya Khiladi ➔ Last Bench Legend).
    - Strict 16 badges & 7 ranking tiers.
-4. **Clean Layer Separation:**
+7. **Clean Layer Separation:**
    - **3D World (Three.js + Rapier):** Desk, Pens, Lighting, Physics Collisions, Flick mechanics.
    - **2D UI Layer (HTML/CSS via Stitch):** Top Scoreboard, Power Bar, Menus, Cards, Trophy Cabinet.
 
@@ -70,7 +74,7 @@ flowchart TD
 ### 🎨 Phase 2: Stitch AI 2D UI & Nostalgia Visual System
 *Goal: Desi Indian School Nostalgia UI layers banwana using tumhari existing images.*
 
-- **Step 2.1:** Author `DESIGN.md` (Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching `D:\PAnfight\assets\Images`).
+- **Step 2.1:** Author `DESIGN.md` (Design tokens: Blackboard Green `#183B32`, Notebook Cream `#F3E5C8`, Desk Wood `#70452E`, typography and card frames matching nostalgic 90s school themes).
 - **Step 2.2:** Batch A Prompt (Core Flow):
   - Splash screen + First Launch onboarding.
   - Main Menu (using `hero.png`).
