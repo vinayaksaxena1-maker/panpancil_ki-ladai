@@ -277,9 +277,9 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - **Foundation Ready:** `D:\FInal\DESIGN.md` (Design system documentation) aur `D:\FInal\css\base.css` (CSS Custom properties, 3D button depths, text strokes, container cards, spring keyframes) create karke `index.html` me link kar diye gaye hain taaki Stitch AI ko feed karke saari upcoming screens (3.2 se 3.9) ek hi consistent theme me generate karwayi ja sakein.
   - *Verification Receipt:* 90s Classroom + Juicy Arcade palette, `.btn-arcade-3d` tactile push classes, text stroke rules, aur slingshot force tokens 100% defined and offline ready.
 
-- [ ] **Step 3.2: Splash Screen & School ID Card (Collectible Onboarding):**
-  - **Kya banega:** First launch retro school badge splash with bouncy sound hint ➔ High-contrast Collectible Student ID Card (Enter Student Name, Section 7-A Badge, Chunky 3D `[Enter Classroom ➔]` button). Zero multi-step forms.
-  - *Verification Receipt:* Name input karne par mobile soft keyboard layout na tode, aur player profile name `localStorage` me save ho.
+- [x] **Step 3.2 (COMPLETED): Splash Screen & School ID Card (Collectible Onboarding):**
+  - **Implementation:** Stitch AI se design fetch karke `index.html`, `css/splash.css`, aur local asset `assets/student_avatar.jpg` me wire kiya gaya. Authentic 90s torn notebook chit, Saraswati Vidyalaya pass, Roll #14, Class 7th-B, Khiladi ka Naam input, Reynolds 045 Fine primary stats, aur tactile 3D `[ENTER CLASSROOM ➔]` button integrated.
+  - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Name input syncs directly with `StorageManager` (`localStorage.penfight_save_v2`), Enter button tap par smooth 0.4s exit transition ke sath arena reveal hota hai. Commit: `e229b64`.
 
 - [ ] **Step 3.3: Main Menu Home Screen (The Classroom Arcade Hub):**
   - **Kya banega:** Desk duel hero visual, top profile header (Avatar badge, Student Name, Level & XP bar), aur 5 thumb-friendly tactile cards with 3D drop depth: `[Story Campaign 🏫]`, `[Pass & Play (2P) 👥]`, `[Compass Box 🧰]`, `[Trophy Cabinet 🏆]`, `[Settings ⚙️]`.
