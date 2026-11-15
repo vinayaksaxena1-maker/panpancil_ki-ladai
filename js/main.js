@@ -4,10 +4,10 @@ import { createDeskMesh } from './desk.js';
 import { PEN_CONFIGS, createPenMesh } from './pens.js';
 import { synth } from './sound.js';
 
-// Table dimensions (meters)
-const DESK_WIDTH = 0.70;      // 70 cm width
-const DESK_DEPTH = 0.45;      // 45 cm depth
-const DESK_THICKNESS = 0.030; // 3 cm thickness
+// Table dimensions (meters) - Authentic 1:2 Student Duel Desk
+const DESK_WIDTH = 0.56;      // 56 cm width (X-axis, East-West)
+const DESK_LENGTH = 1.12;     // 112 cm length (Z-axis, North-South)
+const DESK_THICKNESS = 0.035; // 3.5 cm thickness
 
 // Authentic baseline physics
 const GRAVITY = -9.81;
@@ -76,28 +76,33 @@ class GameEngine {
     this.world = new RAPIER.World(gravity);
     this.world.timestep = 1 / 120;
 
-    // 2. Setup Three.js Scene with clean blackboard green background
+    // 2. Setup Three.js Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x183b32);
+    this.scene.background = new THREE.Color(0x5e7563); // Matches upper classroom wall color
 
-    // Warm classroom lighting
-    const ambientLight = new THREE.AmbientLight(0xfff3e0, 1.3);
+    // Warm classroom overhead lighting
+    const ambientLight = new THREE.AmbientLight(0xfff7ee, 1.25);
     this.scene.add(ambientLight);
 
-    const deskLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    deskLight.position.set(0.6, 1.8, 0.6);
+    const deskLight = new THREE.DirectionalLight(0xffffff, 2.3);
+    deskLight.position.set(0.5, 2.2, 0.4);
     deskLight.castShadow = true;
     deskLight.shadow.mapSize.width = 2048;
     deskLight.shadow.mapSize.height = 2048;
+    deskLight.shadow.camera.near = 0.5;
+    deskLight.shadow.camera.far = 5;
+    deskLight.shadow.camera.left = -1.5;
+    deskLight.shadow.camera.right = 1.5;
+    deskLight.shadow.camera.top = 2.0;
+    deskLight.shadow.camera.bottom = -2.0;
+    deskLight.shadow.bias = -0.0005;
     this.scene.add(deskLight);
 
-    // Camera: FOV 52, Position (0, 0.44, 0.68), LookAt (0, 0, -0.52)
-    const aspect = window.innerWidth / window.innerHeight;
-    this.camera = new THREE.PerspectiveCamera(52, aspect, 0.05, 20);
-    this.camera.position.set(0, 0.44, 0.68);
-    this.camera.lookAt(0, 0, -0.52);
+    // 3. Perspective Camera (Exact penfight.xyz elevated framing)
+    this.camera = new THREE.PerspectiveCamera(54, window.innerWidth / window.innerHeight, 0.05, 20);
+    this.updateCameraView();
 
-    // 3. WebGL Renderer
+    // 4. WebGL Renderer
     this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -105,35 +110,68 @@ class GameEngine {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.container.appendChild(this.renderer.domElement);
 
-    // 4. Clean Desk Mesh & Physics Body (0.70m x 0.45m x 0.03m)
-    this.deskMesh = createDeskMesh(DESK_WIDTH, DESK_DEPTH, DESK_THICKNESS);
+    // 5. Central Desk & Classroom Environment
+    this.deskMesh = createDeskMesh(DESK_WIDTH, DESK_LENGTH, DESK_THICKNESS);
     this.scene.add(this.deskMesh);
 
+    // Rapier desk collider
     const deskBodyDesc = RAPIER.RigidBodyDesc.fixed().setTranslation(0, -DESK_THICKNESS / 2, 0);
     const deskBody = this.world.createRigidBody(deskBodyDesc);
-    const deskColliderDesc = RAPIER.ColliderDesc.cuboid(DESK_WIDTH / 2, DESK_THICKNESS / 2, DESK_DEPTH / 2)
+    const deskColliderDesc = RAPIER.ColliderDesc.cuboid(DESK_WIDTH / 2, DESK_THICKNESS / 2, DESK_LENGTH / 2)
       .setFriction(DESK_FRICTION)
       .setRestitution(DESK_RESTITUTION);
     this.world.createCollider(deskColliderDesc, deskBody);
 
-    // 5. Spawn 2 Pens FLAT HORIZONTALLY (East-West widthwise across desk)
-    // Player Pen: Reynolds Trimax near player edge
-    this.playerPen = this.spawnPen(PEN_CONFIGS.trimax, new THREE.Vector3(0, PEN_CONFIGS.trimax.radius, 0.145), -Math.PI / 2);
-    // Opponent Pen: Cello Butterflow near opponent edge
-    this.opponentPen = this.spawnPen(PEN_CONFIGS.butterflow, new THREE.Vector3(0, PEN_CONFIGS.butterflow.radius, -0.145), Math.PI / 2);
+    // 6. Spawn 2 Pens FLAT HORIZONTALLY (East-West widthwise across desk)
+    // Player Pen: Reynolds 045 (White barrel, Blue cap/plug) near player edge
+    this.playerPen = this.spawnPen(
+      PEN_CONFIGS.reynolds045, 
+      new THREE.Vector3(0, PEN_CONFIGS.reynolds045.radius, 0.38), 
+      -Math.PI / 2
+    );
 
-    // 6. Aim Arrow Helper
+    // Opponent Pen: Reynolds Trimax (Dark blue body) near far edge
+    this.opponentPen = this.spawnPen(
+      PEN_CONFIGS.trimax, 
+      new THREE.Vector3(0, PEN_CONFIGS.trimax.radius, -0.38), 
+      Math.PI / 2
+    );
+
+    // 7. Aim Arrow Helper
     const dir = new THREE.Vector3(0, 0, -1);
     this.aimArrow = new THREE.ArrowHelper(dir, new THREE.Vector3(0, 0, 0), 0.1, 0xf2c75c, 0.04, 0.03);
     this.aimArrow.visible = false;
     this.scene.add(this.aimArrow);
 
-    // 7. Event Listeners & Natural Touch Controls
+    // 8. Event Listeners & Natural Touch Controls
     window.addEventListener('resize', () => this.onWindowResize());
     this.setupNaturalTouchControls();
 
     // Start 120 Hz render loop
     this.animate();
+  }
+
+  updateCameraView() {
+    const aspect = window.innerWidth / window.innerHeight;
+    this.camera.aspect = aspect;
+
+    if (aspect >= 1.2) {
+      // Landscape (PC / Laptop)
+      this.camera.fov = 50;
+      this.camera.position.set(0, 0.92, 1.10);
+      this.camera.lookAt(0, 0.08, -0.16);
+    } else if (aspect <= 0.75) {
+      // Portrait (Mobile)
+      this.camera.fov = 66;
+      this.camera.position.set(0, 1.12, 0.96);
+      this.camera.lookAt(0, 0.08, -0.16);
+    } else {
+      // Tablet / Medium
+      this.camera.fov = 58;
+      this.camera.position.set(0, 1.02, 1.02);
+      this.camera.lookAt(0, 0.07, -0.16);
+    }
+    this.camera.updateProjectionMatrix();
   }
 
   spawnPen(config, pos, rotY) {
@@ -206,7 +244,7 @@ class GameEngine {
       const distToCap = hit.distanceTo(capWorld);
       const distToNib = hit.distanceTo(nibWorld);
 
-      if (Math.min(distToCap, distToNib) > 0.30) {
+      if (Math.min(distToCap, distToNib) > 0.35) {
         return; // Touched away from pen
       }
 
@@ -255,7 +293,7 @@ class GameEngine {
 
       const aimDir = new THREE.Vector3(-pxDiffX, 0, -pxDiffY).normalize();
       this.aimArrow.setDirection(aimDir);
-      this.aimArrow.setLength(Math.min(curvedPower * 0.24, 0.24));
+      this.aimArrow.setLength(Math.min(curvedPower * 0.28, 0.28));
     };
 
     const onPointerUp = () => {
@@ -312,13 +350,13 @@ class GameEngine {
     const pPos = this.playerPen.body.translation();
     const oPos = this.opponentPen.body.translation();
 
-    // Bot aims from its cap towards player pen with slight realistic error
+    // Bot aims from its cap towards player pen with slight realistic human error
     const dir = new THREE.Vector3(pPos.x - oPos.x, 0, pPos.z - oPos.z).normalize();
-    const errorAngle = (Math.random() - 0.5) * 0.18;
+    const errorAngle = (Math.random() - 0.5) * 0.16;
     dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), errorAngle);
 
     const dist = Math.hypot(pPos.x - oPos.x, pPos.z - oPos.z);
-    const powerFraction = Math.min(Math.max(dist / 0.40, 0.35), 0.85);
+    const powerFraction = Math.min(Math.max(dist / 0.85, 0.40), 0.90);
     const botImpulse = J_MIN + Math.pow(powerFraction, GAMMA) * (J_MAX - J_MIN);
 
     const impulse = new RAPIER.Vector3(dir.x * botImpulse, 0.0, dir.z * botImpulse);
@@ -345,10 +383,11 @@ class GameEngine {
     const pPos = this.playerPen.body.translation();
     const oPos = this.opponentPen.body.translation();
 
+    // 1.12m desk length out-of-bounds check
     const isOutOfBounds = (pos) => (
       pos.y < -0.02 || 
       Math.abs(pos.x) > (DESK_WIDTH / 2 + 0.02) || 
-      Math.abs(pos.z) > (DESK_DEPTH / 2 + 0.02)
+      Math.abs(pos.z) > (DESK_LENGTH / 2 + 0.02)
     );
 
     if (!this.playerPen.isFallen && isOutOfBounds(pPos)) {
@@ -409,7 +448,7 @@ class GameEngine {
     }
 
     if (this.turn === 'bot') {
-      setTimeout(() => this.executeBotFlick(), 600);
+      setTimeout(() => this.executeBotFlick(), 700);
     }
   }
 
@@ -417,23 +456,23 @@ class GameEngine {
     this.playerPen.isFallen = false;
     this.opponentPen.isFallen = false;
 
-    // Reset pens flat horizontally (widthwise across desk)
+    // Reset pens flat horizontally across desk length
     const qPlayer = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
-    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.trimax.radius, 0.145), true);
+    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.reynolds045.radius, 0.38), true);
     this.playerPen.body.setRotation({ x: qPlayer.x, y: qPlayer.y, z: qPlayer.z, w: qPlayer.w }, true);
     this.playerPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.playerPen.prevPos.set(0, PEN_CONFIGS.trimax.radius, 0.145);
+    this.playerPen.prevPos.set(0, PEN_CONFIGS.reynolds045.radius, 0.38);
     this.playerPen.currPos.copy(this.playerPen.prevPos);
     this.playerPen.prevQuat.copy(qPlayer);
     this.playerPen.currQuat.copy(qPlayer);
 
     const qBot = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.butterflow.radius, -0.145), true);
+    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, PEN_CONFIGS.trimax.radius, -0.38), true);
     this.opponentPen.body.setRotation({ x: qBot.x, y: qBot.y, z: qBot.z, w: qBot.w }, true);
     this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.opponentPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.opponentPen.prevPos.set(0, PEN_CONFIGS.butterflow.radius, -0.145);
+    this.opponentPen.prevPos.set(0, PEN_CONFIGS.trimax.radius, -0.38);
     this.opponentPen.currPos.copy(this.opponentPen.prevPos);
     this.opponentPen.prevQuat.copy(qBot);
     this.opponentPen.currQuat.copy(qBot);
@@ -447,8 +486,7 @@ class GameEngine {
   }
 
   onWindowResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
+    this.updateCameraView();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
