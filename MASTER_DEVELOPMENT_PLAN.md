@@ -281,9 +281,9 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - **Implementation:** Stitch AI se design fetch karke `index.html`, `css/splash.css`, aur local asset `assets/student_avatar.jpg` me wire kiya gaya. Authentic 90s torn notebook chit, Saraswati Vidyalaya pass, Roll #14, Class 7th-B, Khiladi ka Naam input, Reynolds 045 Fine primary stats, aur tactile 3D `[ENTER CLASSROOM ➔]` button integrated.
   - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Name input syncs directly with `StorageManager` (`localStorage.penfight_save_v2`), Enter button tap par smooth 0.4s exit transition ke sath arena reveal hota hai. Commit: `e229b64`.
 
-- [ ] **Step 3.3: Main Menu Home Screen (The Classroom Arcade Hub):**
-  - **Kya banega:** Desk duel hero visual, top profile header (Avatar badge, Student Name, Level & XP bar), aur 5 thumb-friendly tactile cards with 3D drop depth: `[Story Campaign 🏫]`, `[Pass & Play (2P) 👥]`, `[Compass Box 🧰]`, `[Trophy Cabinet 🏆]`, `[Settings ⚙️]`.
-  - *Verification Receipt:* Har card minimum 48px touch target ho, tactile active press state smooth ho, aur tap karne par target screen shell load ho.
+- [x] **Step 3.3 (COMPLETED): Main Menu Home Screen (The Classroom Arcade Hub):**
+  - **Implementation:** Stitch AI se user ka banaya hua *Main Menu Home Screen (Pencil Sketch CTA)* fetch karke `index.html`, `css/menu.css`, aur local asset `assets/desk_duel_arena.jpg` me wire kiya gaya. Notebook Page 02 layout, attested student profile, level/XP progress bar, center wooden desk photo stage (Reynolds 045 vs Cello Gripper with neon trajectory arc), tactile `[⚡ TOSS + PLAY ➔]` pencil sketch CTA, aur 4 retro mode cards (Story Mode, Pass & Play, Compass Box, Trophy Rack) integrated.
+  - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Splash screen se smoothly transition hokar Main Menu khulta hai, `⚡ TOSS + PLAY` ya `FIGHT` dabane par bot match start hota hai, `TOSS ⇄` dabane par 2-Player Pass & Play mode activate hota hai, aur HUD me `🏫 Menu` button se wapas Main Menu par aaya ja sakta hai. Commit: `cc2c6d3`.
 
 - [ ] **Step 3.4: Visual Campaign Map & Stage Details Chit (Class 7 ➔ Class 8):**
   - **Kya banega:** Ruled notebook page layout with hand-drawn pencil path (11 stages). Defeated stages par teacher ka **Red Ink Stamp (✔️)**, locked stages par **"Period Ongoing"** stamp lock. Stage tap par classroom chit modal (Opponent Classmate avatar, difficulty, pen reward, aur chunky `[Battle ⚔️ / Replay 🔄]` buttons).
