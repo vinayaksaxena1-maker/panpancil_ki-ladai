@@ -454,19 +454,19 @@
                 </div>
 
                 <div class="flex-1 min-w-0 flex flex-col gap-1">
-                  <label class="block uppercase font-bold tracking-wider text-[#b91c1c] text-[11px]" for="student-name-input" style="font-family: 'Patrick Hand', cursive; letter-spacing: 0.05em;">✎ KHILADI KA NAAM (NAME):</label>
+                  <label class="block uppercase font-bold tracking-wider text-[#b91c1c] text-[11px]" for="student-name-input" style="font-family: 'Patrick Hand', cursive; letter-spacing: 0.05em;">✎ KHILADI KA NAAM (ENTER NAME):</label>
                   <div class="bg-white/85 backdrop-blur-xs rounded-lg p-1.5 shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgba(30, 41, 59, 0.45) 2px 2px 0px, rgba(30, 41, 59, 0.15) 0px 0px 0px 1px inset; border-radius: 12px 6px 14px 5px / 6px 13px 5px 12px;">
-                    <input aria-label="Student battle name" class="w-full bg-transparent text-[#0038a8] font-bold focus:outline-hidden p-0 m-0 leading-tight text-[20px] tracking-wide" id="student-name-input" style="font-family: 'Caveat', cursive; transform: rotate(-0.8deg);" type="text" value="Arjun 'Thunder' Sharma">
+                    <input aria-label="Student battle name" class="w-full bg-transparent text-[#0038a8] font-bold focus:outline-hidden p-0 m-0 leading-tight text-[20px] tracking-wide" id="student-name-input" style="font-family: 'Caveat', cursive; transform: rotate(-0.8deg);" type="text" placeholder="Enter Name" value="Enter Name">
                     <div class="text-[#64748b] text-xs mt-0.5 flex items-center gap-1">
                       <span class="material-symbols-outlined text-[13px] text-primary">edit</span>
-                      <span class="font-medium text-[11px]" style="font-family: 'Patrick Hand', cursive;">Tap to sign / edit name</span>
+                      <span class="font-medium text-[11px]" style="font-family: 'Patrick Hand', cursive;">Tap to enter your name</span>
                     </div>
                   </div>
                   <div class="flex flex-wrap gap-1.5 items-center mt-0.5">
-                    <div id="student-house-chip" class="interactive-chip px-2 py-0.5 rounded shadow-xs text-[10px] flex items-center gap-1 select-none" style="border: 1.5px solid #ef4444; background-color: #fee2e2; box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 2px;" title="Tap to switch House">
+                    <div id="student-house-chip" class="interactive-chip px-2 py-0.5 rounded shadow-xs text-[10px] flex items-center gap-1 select-none" style="border: 1.5px solid #ef4444; background-color: #fee2e2; box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 2px;" title="Tap to select House">
                       <span id="student-house-label" class="font-bold text-[#b91c1c] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">HOUSE:</span>
                       <span id="student-house-val" class="font-bold text-[#b91c1c] text-[13px]" style="font-family: Caveat, cursive;">Nehru Red</span>
-                      <span class="text-[9px] text-[#b91c1c] opacity-70">✎</span>
+                      <span class="text-[9px] text-[#b91c1c] opacity-70">▼</span>
                     </div>
                     <div id="student-rank-badge" class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed shadow-xs text-[10px] flex items-center gap-1 select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 3px 6px 2px 5px;">
                       <span class="font-bold text-[#00288e] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">RANK:</span>
@@ -482,9 +482,8 @@
                   <div class="flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-primary text-base">ink_pen</span>
                     <span class="font-bold text-[#475569] uppercase tracking-wider text-[11px]" style="font-family: 'Patrick Hand', cursive;">PRIMARY WEAPON:</span>
-                    <span class="font-bold text-[#0038a8] text-[16px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">Reynolds 045 Fine</span>
+                    <span class="font-bold text-[#0038a8] text-[16px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">Reynolds 045 Fine - 0.5mm Tip</span>
                   </div>
-                  <span class="bg-primary text-on-primary font-bold px-2 py-0.5 rounded-full text-[11px] shadow-xs tracking-wide" style="font-family: 'Patrick Hand', cursive;">0.5mm Tip</span>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-2 mb-1.5">
@@ -558,6 +557,110 @@
             <span class="text-[#0038a8] text-base font-bold tracking-wide -rotate-1 inline-block" style="font-family: Caveat, cursive; text-shadow: rgba(0, 56, 168, 0.2) 0.2px 0.2px 0px;">Rule #1: Desk se neeche gira pen out maana jayega!</span>
           </div>
         </div>
+      </div>
+
+      <!-- Avatar Picker Modal Popup -->
+      <div id="avatar-picker-modal" class="notebook-modal-backdrop" onclick="if(event.target===this)window.closeAvatarPicker()">
+        <div class="notebook-modal-card">
+          <div class="flex items-center justify-between border-b-2 border-[#0f172a] pb-1.5 mb-2.5">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-primary text-base">palette</span>
+              <h3 class="font-bold text-[14px] text-[#00288e] uppercase tracking-wide" style="font-family: 'Permanent Marker', cursive;">CHOOSE AVATAR</h3>
+            </div>
+            <button type="button" onclick="window.closeAvatarPicker()" class="w-6 h-6 rounded-full bg-surface-container-high border border-[#0f172a] text-[#0f172a] font-bold text-xs flex items-center justify-center cursor-pointer active:scale-90 select-none">✕</button>
+          </div>
+
+          <div class="mb-3">
+            <span class="block text-[10px] font-bold text-[#b91c1c] uppercase tracking-wider mb-1.5" style="font-family: 'Patrick Hand', cursive;">★ PRESET KHILADI SKETCHES:</span>
+            <div class="grid grid-cols-2 gap-2">
+              <div id="preset-avatar-boy" onclick="window.selectPresetAvatar('boy')" class="interactive-chip p-1.5 rounded-lg border-2 border-[#0f172a] bg-surface-container-lowest flex flex-col items-center gap-1 shadow-xs relative">
+                <div class="w-16 h-18 rounded overflow-hidden border border-[#0f172a]">
+                  <img src="./assets/student_avatar.jpg" class="w-full h-full object-cover" alt="Boy Khiladi">
+                </div>
+                <span class="text-[11px] font-bold text-[#0f172a]" style="font-family: 'Patrick Hand', cursive;">Boy Khiladi ♂</span>
+                <div id="badge-check-boy" class="avatar-check-badge absolute top-1 right-1 w-4 h-4 bg-primary text-white rounded-full text-[9px] font-bold flex items-center justify-center shadow-xs">✓</div>
+              </div>
+
+              <div id="preset-avatar-girl" onclick="window.selectPresetAvatar('girl')" class="interactive-chip p-1.5 rounded-lg border-2 border-[#0f172a] bg-surface-container-lowest flex flex-col items-center gap-1 shadow-xs relative">
+                <div class="w-16 h-18 rounded overflow-hidden border border-[#0f172a]">
+                  <img src="./assets/student_avatar_girl.jpg" class="w-full h-full object-cover" alt="Girl Khiladi">
+                </div>
+                <span class="text-[11px] font-bold text-[#0f172a]" style="font-family: 'Patrick Hand', cursive;">Girl Khiladi ♀</span>
+                <div id="badge-check-girl" class="avatar-check-badge hidden absolute top-1 right-1 w-4 h-4 bg-primary text-white rounded-full text-[9px] font-bold flex items-center justify-center shadow-xs">✓</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-2 border-t border-dashed border-[#0f172a]/30">
+            <span class="block text-[10px] font-bold text-[#00288e] uppercase tracking-wider mb-1.5" style="font-family: 'Patrick Hand', cursive;">📁 APNE MAN SE PHOTO UPLOAD KARO:</span>
+            <label for="custom-avatar-input" class="w-full py-2 px-2.5 rounded-lg border-2 border-dashed border-[#0f172a] bg-[#f8f3e6] hover:bg-[#ede8db] flex items-center justify-center gap-2 cursor-pointer active:scale-98 transition-transform select-none">
+              <span class="material-symbols-outlined text-primary text-base">add_photo_alternate</span>
+              <span class="text-[12px] font-bold text-[#0f172a]" style="font-family: 'Patrick Hand', cursive;">Device se Photo Chuno (Upload)</span>
+            </label>
+            <input type="file" id="custom-avatar-input" accept="image/*" class="hidden" onchange="window.handleCustomAvatarUpload(event)">
+          </div>
+        </div>
+      </div>
+
+      <!-- House Picker Modal Popup -->
+      <div id="house-picker-modal" class="notebook-modal-backdrop" onclick="if(event.target===this)window.closeHousePicker()">
+        <div class="notebook-modal-card">
+          <div class="flex items-center justify-between border-b-2 border-[#0f172a] pb-1.5 mb-2.5">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[#b91c1c] text-base">shield</span>
+              <h3 class="font-bold text-[14px] text-[#00288e] uppercase tracking-wide" style="font-family: 'Permanent Marker', cursive;">APNA HOUSE CHUNO</h3>
+            </div>
+            <button type="button" onclick="window.closeHousePicker()" class="w-6 h-6 rounded-full bg-surface-container-high border border-[#0f172a] text-[#0f172a] font-bold text-xs flex items-center justify-center cursor-pointer active:scale-90 select-none">✕</button>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <div onclick="window.selectHouse('Nehru Red')" class="interactive-chip p-2 rounded-lg border-2 border-[#ef4444] bg-[#fee2e2] flex items-center justify-between shadow-xs select-none">
+              <div class="flex items-center gap-2">
+                <div class="w-3.5 h-3.5 rounded-full bg-[#b91c1c] border border-[#0f172a]"></div>
+                <div>
+                  <span class="font-bold text-[13px] text-[#b91c1c] block leading-tight" style="font-family: 'Permanent Marker', cursive;">NEHRU RED</span>
+                  <span class="text-[10px] text-[#7f1d1d]" style="font-family: 'Patrick Hand', cursive;">Valiant & Aggressive Flickers</span>
+                </div>
+              </div>
+              <span id="house-check-nehru" class="text-sm font-bold text-[#b91c1c]">✓</span>
+            </div>
+
+            <div onclick="window.selectHouse('Gandhi Green')" class="interactive-chip p-2 rounded-lg border-2 border-[#22c55e] bg-[#dcfce7] flex items-center justify-between shadow-xs select-none">
+              <div class="flex items-center gap-2">
+                <div class="w-3.5 h-3.5 rounded-full bg-[#15803d] border border-[#0f172a]"></div>
+                <div>
+                  <span class="font-bold text-[13px] text-[#15803d] block leading-tight" style="font-family: 'Permanent Marker', cursive;">GANDHI GREEN</span>
+                  <span class="text-[10px] text-[#14532d]" style="font-family: 'Patrick Hand', cursive;">Peaceful Table Control & Precision</span>
+                </div>
+              </div>
+              <span id="house-check-gandhi" class="text-sm font-bold text-[#15803d] hidden">✓</span>
+            </div>
+
+            <div onclick="window.selectHouse('Tagore Blue')" class="interactive-chip p-2 rounded-lg border-2 border-[#3b82f6] bg-[#dbeafe] flex items-center justify-between shadow-xs select-none">
+              <div class="flex items-center gap-2">
+                <div class="w-3.5 h-3.5 rounded-full bg-[#1d4ed8] border border-[#0f172a]"></div>
+                <div>
+                  <span class="font-bold text-[13px] text-[#1d4ed8] block leading-tight" style="font-family: 'Permanent Marker', cursive;">TAGORE BLUE</span>
+                  <span class="text-[10px] text-[#1e3a8a]" style="font-family: 'Patrick Hand', cursive;">Tactical Angles & Curve Spins</span>
+                </div>
+              </div>
+              <span id="house-check-tagore" class="text-sm font-bold text-[#1d4ed8] hidden">✓</span>
+            </div>
+
+            <div onclick="window.selectHouse('Shastri Yellow')" class="interactive-chip p-2 rounded-lg border-2 border-[#eab308] bg-[#fef9c3] flex items-center justify-between shadow-xs select-none">
+              <div class="flex items-center gap-2">
+                <div class="w-3.5 h-3.5 rounded-full bg-[#a16207] border border-[#0f172a]"></div>
+                <div>
+                  <span class="font-bold text-[13px] text-[#a16207] block leading-tight" style="font-family: 'Permanent Marker', cursive;">SHASTRI YELLOW</span>
+                  <span class="text-[10px] text-[#713f12]" style="font-family: 'Patrick Hand', cursive;">Speed, Simplicity & Clutch Defenses</span>
+                </div>
+              </div>
+              <span id="house-check-shastri" class="text-sm font-bold text-[#a16207] hidden">✓</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       </div>
     </main>
   </div>
@@ -910,6 +1013,9 @@
       const chipGripper = document.getElementById('chip-gripper-lock');
       const tooltipGripper = document.getElementById('tooltip-gripper');
 
+      const avatarPickerModal = document.getElementById('avatar-picker-modal');
+      const housePickerModal = document.getElementById('house-picker-modal');
+
       function calculateRank(xp = 0) {
         if (xp < 100) return "#01 Naya Admission";
         if (xp < 250) return "#02 Front Bencher";
@@ -925,7 +1031,7 @@
       }
 
       function applyHouse(houseName) {
-        const foundIdx = HOUSES.findIndex(h => h.name === houseName);
+        const foundIdx = HOUSES.findIndex(h => h.name.toLowerCase() === (houseName || "").toLowerCase());
         if (foundIdx !== -1) currentHouseIndex = foundIdx;
         const h = HOUSES[currentHouseIndex];
         if (houseChip && houseLabel && houseVal) {
@@ -935,12 +1041,36 @@
           houseVal.style.color = h.valColor;
           houseVal.textContent = h.name;
         }
+
+        // Update modal check indicators
+        const checkMap = {
+          "nehru red": "house-check-nehru",
+          "gandhi green": "house-check-gandhi",
+          "tagore blue": "house-check-tagore",
+          "shastri yellow": "house-check-shastri"
+        };
+        Object.entries(checkMap).forEach(([k, id]) => {
+          const el = document.getElementById(id);
+          if (el) {
+            if (h.name.toLowerCase() === k) el.classList.remove('hidden');
+            else el.classList.add('hidden');
+          }
+        });
       }
 
-      function applyAvatar(avatarType) {
-        currentAvatar = avatarType === 'girl' ? 'girl' : 'boy';
+      function applyAvatar(avatarType, customSrc) {
+        currentAvatar = avatarType;
+        const checkBoy = document.getElementById('badge-check-boy');
+        const checkGirl = document.getElementById('badge-check-girl');
+
+        if (checkBoy) checkBoy.classList.toggle('hidden', currentAvatar !== 'boy');
+        if (checkGirl) checkGirl.classList.toggle('hidden', currentAvatar !== 'girl');
+
         if (avatarImg && avatarLabel) {
-          if (currentAvatar === 'girl') {
+          if (currentAvatar === 'custom' && customSrc) {
+            avatarImg.src = customSrc;
+            avatarLabel.textContent = 'KHILADI ★';
+          } else if (currentAvatar === 'girl') {
             avatarImg.src = './assets/student_avatar_girl.jpg';
             avatarLabel.textContent = 'KHILADI ♀';
           } else {
@@ -950,31 +1080,74 @@
         }
       }
 
-      // 1. House Selector Click
+      // Modal Controls
+      window.applyAvatar = applyAvatar;
+      window.saveProfilePartial = saveProfilePartial;
+
+      window.openAvatarPicker = function() {
+        if (avatarPickerModal) avatarPickerModal.classList.add('modal-open');
+      };
+      window.closeAvatarPicker = function() {
+        if (avatarPickerModal) avatarPickerModal.classList.remove('modal-open');
+      };
+
+      window.selectPresetAvatar = function(type) {
+        applyAvatar(type);
+        saveProfilePartial({ avatar: type, avatarCustom: null });
+        setTimeout(window.closeAvatarPicker, 180);
+      };
+
+      window.handleCustomAvatarUpload = function(event) {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            // Resize image to 160x160 JPEG for fast offline storage
+            const canvas = document.createElement('canvas');
+            canvas.width = 160;
+            canvas.height = 160;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, 160, 160);
+            const optimizedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+            applyAvatar('custom', optimizedDataUrl);
+            saveProfilePartial({ avatar: 'custom', avatarCustom: optimizedDataUrl });
+            window.closeAvatarPicker();
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      };
+
+      window.openHousePicker = function() {
+        if (housePickerModal) housePickerModal.classList.add('modal-open');
+      };
+      window.closeHousePicker = function() {
+        if (housePickerModal) housePickerModal.classList.remove('modal-open');
+      };
+
+      window.selectHouse = function(houseName) {
+        applyHouse(houseName);
+        saveProfilePartial({ house: houseName });
+        setTimeout(window.closeHousePicker, 180);
+      };
+
+      // 1. House Selector Click -> Opens Modal List
       if (houseChip) {
-        houseChip.addEventListener('click', function() {
-          currentHouseIndex = (currentHouseIndex + 1) % HOUSES.length;
-          const h = HOUSES[currentHouseIndex];
-          applyHouse(h.name);
-          saveProfilePartial({ house: h.name });
+        houseChip.addEventListener('click', function(e) {
+          e.stopPropagation();
+          window.openHousePicker();
         });
       }
 
-      // 2. Avatar Toggle Click
+      // 2. Avatar Photo Frame Click -> Opens Avatar Modal Picker
       if (avatarFrame) {
-        avatarFrame.addEventListener('click', function() {
-          const nextAvatar = currentAvatar === 'boy' ? 'girl' : 'boy';
-          // Name adaptation if using default preset
-          if (nameInput) {
-            const currentName = nameInput.value.trim();
-            if (nextAvatar === 'girl' && currentName === "Arjun 'Thunder' Sharma") {
-              nameInput.value = "Ananya 'Spark' Verma";
-            } else if (nextAvatar === 'boy' && currentName === "Ananya 'Spark' Verma") {
-              nameInput.value = "Arjun 'Thunder' Sharma";
-            }
-          }
-          applyAvatar(nextAvatar);
-          saveProfilePartial({ avatar: nextAvatar, name: nameInput ? nameInput.value.trim() : undefined });
+        avatarFrame.addEventListener('click', function(e) {
+          e.stopPropagation();
+          window.openAvatarPicker();
         });
       }
 
@@ -1048,10 +1221,14 @@
             }
 
             const avatarType = (parsed && parsed.profile && parsed.profile.avatar) || "boy";
+            const customSrc = parsed && parsed.profile && parsed.profile.avatarCustom;
             const menuAvatarImg = document.getElementById('menu-student-avatar');
             const menuAvatarLabel = document.getElementById('menu-avatar-label');
             if (menuAvatarImg && menuAvatarLabel) {
-              if (avatarType === 'girl') {
+              if (avatarType === 'custom' && customSrc) {
+                menuAvatarImg.src = customSrc;
+                menuAvatarLabel.textContent = 'KHILADI ★';
+              } else if (avatarType === 'girl') {
                 menuAvatarImg.src = './assets/student_avatar_girl.jpg';
                 menuAvatarLabel.textContent = 'KHILADI ♀';
               } else {
@@ -1077,14 +1254,19 @@
         if (rawSave) {
           const parsed = JSON.parse(rawSave);
           if (parsed && parsed.profile) {
-            if (parsed.profile.name && nameInput) nameInput.value = parsed.profile.name;
+            if (parsed.profile.name && nameInput) {
+              nameInput.value = parsed.profile.name;
+            } else if (nameInput) {
+              nameInput.value = "Enter Name";
+            }
             if (parsed.profile.house) applyHouse(parsed.profile.house);
-            if (parsed.profile.avatar) applyAvatar(parsed.profile.avatar);
+            if (parsed.profile.avatar) applyAvatar(parsed.profile.avatar, parsed.profile.avatarCustom);
           }
           const xp = (parsed && parsed.progression && parsed.progression.xp) || 0;
           if (rankText) rankText.textContent = calculateRank(xp);
         } else {
           if (rankText) rankText.textContent = calculateRank(0);
+          if (nameInput) nameInput.value = "Enter Name";
         }
       } catch (e) {}
 
@@ -1096,7 +1278,7 @@
 
       if (enterBtn && splashOverlay) {
         enterBtn.addEventListener('click', function() {
-          const chosenName = (nameInput && nameInput.value.trim()) || "Arjun 'Thunder' Sharma";
+          const chosenName = (nameInput && nameInput.value.trim()) || "Enter Name";
           
           // Persist to game storage
           const profileData = { 

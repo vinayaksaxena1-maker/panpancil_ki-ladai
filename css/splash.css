@@ -73,3 +73,43 @@
   transform: scale(0.94) translateY(1px);
 }
 
+/* Step 3.2 Modal Popup Dialogs (House & Avatar Picker) */
+.notebook-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.notebook-modal-backdrop.modal-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.notebook-modal-card {
+  width: 100%;
+  max-width: 330px;
+  background: #ffffff;
+  border: 2.5px solid #0f172a;
+  box-shadow: 4px 5px 0px #0f172a;
+  border-radius: 14px 8px 16px 7px / 8px 15px 7px 14px;
+  padding: 14px;
+  position: relative;
+  transform: translateY(12px) scale(0.95);
+  transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.notebook-modal-backdrop.modal-open .notebook-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+
