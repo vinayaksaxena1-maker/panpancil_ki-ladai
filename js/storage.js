@@ -27,6 +27,7 @@ export const DEFAULT_SAVE_STATE = {
     matchesWon: 0,
     winStreak: 0,
     highestWinStreak: 0,
+    edgeSaves: 0,
     passAndPlayCount: 0,
     pensUsed: ['reynolds045'],
     unlockedBadges: []
@@ -158,6 +159,7 @@ export class StorageManager {
       state.progression.matchesWon = Math.max(0, Number(parsed.progression.matchesWon) || 0);
       state.progression.winStreak = Math.max(0, Number(parsed.progression.winStreak) || 0);
       state.progression.highestWinStreak = Math.max(0, Number(parsed.progression.highestWinStreak) || 0);
+      state.progression.edgeSaves = Math.max(0, Number(parsed.progression.edgeSaves) || 0);
       state.progression.passAndPlayCount = Math.max(0, Number(parsed.progression.passAndPlayCount) || 0);
       state.progression.pensUsed = Array.isArray(parsed.progression.pensUsed) ? parsed.progression.pensUsed : ['reynolds045'];
       state.progression.unlockedBadges = Array.isArray(parsed.progression.unlockedBadges) ? parsed.progression.unlockedBadges : [];

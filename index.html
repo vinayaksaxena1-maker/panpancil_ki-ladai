@@ -1092,14 +1092,15 @@
 
               <!-- 3. Student Avatar + Profile Info + Wallet -->
               <div class="flex gap-2.5 items-center">
-                <div class="relative shrink-0">
-                  <div class="w-14 h-16 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm border border-outline-variant/30" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;">
+                <!-- Clickable Student Photo -> Opens Career Dossier Modal -->
+                <div onclick="window.showCareerDossier()" class="relative shrink-0 cursor-pointer active:scale-95 transition-transform group" title="Tap to view Student Career Dossier & Stats">
+                  <div class="w-14 h-16 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm border border-outline-variant/30 group-hover:border-blue-600" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;">
                     <img id="menu-student-avatar" class="w-full h-full object-cover" alt="Student avatar" src="./assets/student_avatar.jpg">
                     <div class="absolute bottom-0 inset-x-0 bg-surface-container/90 py-0.5 text-center">
                       <span id="menu-avatar-label" class="text-[8px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
                     </div>
                   </div>
-                  <div class="absolute -bottom-1 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[7px] font-bold border border-outline-variant/30" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED</div>
+                  <div class="absolute -bottom-1 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[7px] font-bold border border-outline-variant/30 group-hover:bg-amber-100" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED 🪪</div>
                 </div>
 
                 <div class="flex-1 min-w-0 flex flex-col gap-1">
@@ -1555,11 +1556,6 @@
                   <div class="absolute -top-1 left-6 w-12 h-3.5 bg-amber-200/80 border-x border-amber-300 rotate-2 shadow-xs"></div>
                   <div class="w-full h-24 relative flex items-center justify-center">
                     <img id="inspect-pen-img" class="max-w-[85%] max-h-[85%] object-contain drop-shadow-md -rotate-1" alt="Pen Macro Photo" src="./assets/pens/reynolds_macro.jpg">
-                    <!-- Sticky Mod Annotation Chit -->
-                    <div id="inspect-mod-chit" class="absolute bottom-0.5 left-0.5 bg-yellow-100 border border-yellow-400 text-yellow-950 px-1.5 py-0.2 rounded shadow-xs text-[10px] -rotate-1 flex items-center gap-1" style="font-family: Caveat, cursive;">
-                      <span class="text-[11px] text-amber-700">🛠️</span>
-                      <span id="inspect-mod-text" class="font-bold">Mod: Double Rubber Band + M-Seal Cap Weight</span>
-                    </div>
                   </div>
                 </div>
 
@@ -2606,6 +2602,163 @@
   <!-- ====================================================================== -->
   <!-- SUB-PAGE: LEVEL JOURNEY MERIT LADDER (CLASSROOM MERIT BOARD)           -->
   <!-- ====================================================================== -->
+  
+  <!-- ====================================================================== -->
+  <!-- SUB-PAGE: STUDENT CAREER DOSSIER (KHILADI STATS CARD MODAL)            -->
+  <!-- ====================================================================== -->
+  <div id="career-dossier-modal" class="fixed inset-0 flex items-center justify-center p-3 sm:p-4 overflow-y-auto" style="display: none; z-index: 1050;">
+    <!-- Backdrop Blur -->
+    <div class="fixed inset-0 bg-[#2d1b0e]/75 backdrop-blur-sm transition-opacity" onclick="window.hideCareerDossier()"></div>
+
+    <!-- Handcrafted Student Progress Record Sheet -->
+    <div class="relative w-full max-w-[380px] my-auto bg-[#fffdf8] rounded-2xl border-4 border-slate-900 shadow-[0_16px_0_0_#0f172a,0_24px_50px_rgba(0,0,0,0.6)] overflow-hidden z-20 flex flex-col" style="background-color: #fffef8; background-image: repeating-linear-gradient(transparent, transparent 23px, rgba(30, 64, 175, 0.07) 24px);">
+      
+      <!-- Top Paper Tape -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2.5 w-32 h-5 bg-[#fef3c7] border border-[#d97706]/40 rotate-1 shadow-sm rounded-sm pointer-events-none z-30 flex items-center justify-center">
+        <span class="text-[8px] tracking-widest text-[#92400e] font-mono font-black uppercase">STUDENT CUMULATIVE RECORD</span>
+      </div>
+
+      <!-- Red Margin Lines -->
+      <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-rose-400/40 pointer-events-none z-10"></div>
+      <div class="absolute left-7 top-0 bottom-0 w-0.5 bg-rose-300/30 pointer-events-none z-10"></div>
+
+      <!-- Header Chit -->
+      <div class="pt-5 pb-2 px-4 pl-9 border-b-2 border-dashed border-amber-900/30 bg-amber-50/90 flex items-start justify-between">
+        <div class="flex flex-col">
+          <div class="inline-flex items-center gap-1 text-[9px] font-black uppercase text-rose-700 border border-rose-300 rounded px-1.5 py-0.2 bg-rose-50 w-fit">
+            <span>★ SARASWATI VIDYALAYA</span>
+            <span>•</span>
+            <span>SESSION 1998</span>
+          </div>
+          <h3 class="text-sm font-black text-slate-900 uppercase tracking-tight mt-1" style="font-family: 'Permanent Marker', cursive;">
+            KHILADI CAREER DOSSIER
+          </h3>
+          <span class="text-[10px] text-slate-600 font-bold" style="font-family: 'Patrick Hand', cursive;">
+            Classroom Bench Duels & Conduct Registry
+          </span>
+        </div>
+        <button type="button" onclick="window.hideCareerDossier()" class="w-8 h-8 rounded-lg bg-white border border-slate-300 text-slate-700 flex items-center justify-center active:scale-95 shadow-sm font-black cursor-pointer" title="Close Dossier">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <!-- Profile Passport Summary -->
+      <div class="p-3 pl-9 flex flex-col gap-2.5 z-20">
+        
+        <div class="flex items-center gap-3 p-2 rounded-xl bg-white/90 border-2 border-slate-900 shadow-[0_2px_0_0_#0f172a]">
+          <!-- Avatar Preview -->
+          <div class="relative shrink-0">
+            <div class="w-16 h-18 bg-slate-100 rounded-lg overflow-hidden border-2 border-slate-900 shadow-sm">
+              <img id="dossier-avatar-img" class="w-full h-full object-cover" alt="Student Photo" src="./assets/student_avatar.jpg">
+            </div>
+            <span class="absolute -bottom-1 -right-1 text-[8px] font-black bg-emerald-100 border border-emerald-500 text-emerald-900 px-1 rounded shadow-xs">PASSED</span>
+          </div>
+
+          <!-- Student Meta Info -->
+          <div class="flex-1 min-w-0 flex flex-col">
+            <div class="flex items-center justify-between">
+              <span id="dossier-roll-tag" class="text-[9px] font-mono font-black text-slate-500 uppercase">ROLL #14 • 7TH-B</span>
+              <span id="dossier-house-tag" class="px-1.5 py-0.2 rounded bg-amber-100 border border-amber-400 text-amber-900 font-black text-[8.5px] uppercase">NEHRU RED</span>
+            </div>
+            <h4 id="dossier-name-label" class="text-base font-black text-slate-900 leading-tight truncate mt-0.5" style="font-family: 'Permanent Marker', cursive;">
+              Student Fighter
+            </h4>
+            <span id="dossier-rank-title" class="text-[10.5px] font-black text-[#00288e] uppercase" style="font-family: 'Patrick Hand', cursive;">
+              Current Rank: Naya Admission
+            </span>
+          </div>
+        </div>
+
+        <!-- 4-Box Performance Metric Grid -->
+        <div class="grid grid-cols-2 gap-2">
+          
+          <!-- Box 1: Duels Record -->
+          <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col">
+            <span class="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-blue-600">sports_kabaddi</span>
+              Duels Record
+            </span>
+            <span id="dossier-duels-record" class="text-xs font-black text-slate-900 mt-0.5" style="font-family: 'Permanent Marker', cursive;">
+              0 Duels Played
+            </span>
+            <span id="dossier-win-rate" class="text-[9px] font-bold text-emerald-700 mt-0.5 font-mono">
+              Win Rate: 0%
+            </span>
+          </div>
+
+          <!-- Box 2: Defense Streak -->
+          <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col">
+            <span class="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-rose-600">local_fire_department</span>
+              Win Streak
+            </span>
+            <span id="dossier-streak-val" class="text-xs font-black text-rose-800 mt-0.5" style="font-family: 'Permanent Marker', cursive;">
+              0 Duels Unbeaten
+            </span>
+            <span class="text-[9px] font-bold text-slate-500 mt-0.5" style="font-family: Caveat, cursive;">
+              Consecutive Bench Defense
+            </span>
+          </div>
+
+          <!-- Box 3: Favorite Weapon -->
+          <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col">
+            <span class="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-amber-600">edit</span>
+              Active Pen
+            </span>
+            <span id="dossier-fav-pen" class="text-xs font-black text-slate-900 mt-0.5 truncate" style="font-family: 'Permanent Marker', cursive;">
+              Reynolds 045
+            </span>
+            <span class="text-[9px] font-bold text-slate-500 mt-0.5" style="font-family: Caveat, cursive;">
+              Primary Desk Ballpoint
+            </span>
+          </div>
+
+          <!-- Box 4: Edge Glider / Cliffhanger Saves & Benches -->
+          <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col">
+            <span class="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-emerald-600">airline_stops</span>
+              Edge Glider Saves
+            </span>
+            <span id="dossier-discipline-val" class="text-xs font-black text-emerald-800 mt-0.5" style="font-family: 'Permanent Marker', cursive;">
+              0 Table Saves
+            </span>
+            <span id="dossier-desks-cleared" class="text-[9px] font-bold text-slate-600 mt-0.5 font-mono">
+              00/11 Desks Cleared
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Teacher's Attested Conduct Note -->
+        <div class="p-2 rounded-xl bg-amber-50/80 border-2 border-dashed border-amber-300 flex items-start gap-2">
+          <span class="text-lg select-none leading-none">✍️</span>
+          <div class="flex flex-col leading-tight">
+            <span class="text-[8.5px] font-black uppercase text-amber-900 tracking-wider">Class Teacher's Cumulative Remarks:</span>
+            <p id="dossier-teacher-remark" class="text-[10px] font-bold italic text-slate-800 mt-0.5" style="font-family: Caveat, cursive;">
+              "Roll call me shant rehta hai, lekin recess shuru hote hi desk champion ban jata hai! - Sharma Sir"
+            </p>
+          </div>
+        </div>
+
+        <!-- Dual Action Buttons -->
+        <div class="flex flex-col gap-1.5 pt-1">
+          <button type="button" onclick="window.changePhotoFromDossier()" class="w-full py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs uppercase tracking-wider border border-blue-900 shadow-[0_2.5px_0_0_#0f172a] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1.5 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+            <span class="material-symbols-outlined text-[16px]">account_box</span>
+            <span>CHANGE AVATAR / PHOTO 🖼️</span>
+          </button>
+          <button type="button" onclick="window.hideCareerDossier()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-[11px] border border-dashed border-slate-400 active:translate-y-0.5 flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-[15px]">arrow_back</span>
+            <span>CLOSE DOSSIER [✕] RETURN TO HUB</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+
   <div id="level-ladder-modal" class="fixed inset-0 flex items-center justify-center p-3 sm:p-4 overflow-y-auto" style="display: none; z-index: 1050;">
     <!-- Backdrop Blur -->
     <div class="fixed inset-0 bg-[#2d1b0e]/75 backdrop-blur-sm transition-opacity" onclick="window.hideLevelLadder()"></div>
@@ -2858,6 +3011,100 @@
         }).join('');
       };
 
+      
+      // Sub-Page: Student Career Dossier Controller
+      window.syncCareerDossier = function() {
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
+        const profile = saved.profile || {};
+        const progression = saved.progression || {};
+
+        const avatarImg = document.getElementById('dossier-avatar-img');
+        const rollTag = document.getElementById('dossier-roll-tag');
+        const houseTag = document.getElementById('dossier-house-tag');
+        const nameLabel = document.getElementById('dossier-name-label');
+        const rankTitle = document.getElementById('dossier-rank-title');
+        const duelsRecord = document.getElementById('dossier-duels-record');
+        const winRate = document.getElementById('dossier-win-rate');
+        const streakVal = document.getElementById('dossier-streak-val');
+        const favPen = document.getElementById('dossier-fav-pen');
+        const disciplineVal = document.getElementById('dossier-discipline-val');
+        const desksCleared = document.getElementById('dossier-desks-cleared');
+
+        // 1. Student Avatar Image (Handles boy, girl, custom)
+        if (avatarImg) {
+          const avatarType = profile.avatar || "boy";
+          if (avatarType === 'custom' && profile.avatarCustom) {
+            avatarImg.src = profile.avatarCustom;
+          } else if (avatarType === 'girl') {
+            avatarImg.src = './assets/student_avatar_girl.jpg';
+          } else {
+            avatarImg.src = './assets/student_avatar.jpg';
+          }
+        }
+
+        // 2. Student Meta Info
+        if (rollTag) rollTag.textContent = `ROLL #${profile.rollNo || '14'} • 7TH-B`;
+        if (houseTag) {
+          const houseName = profile.house || 'Nehru Red';
+          houseTag.textContent = houseName.toUpperCase();
+          const houseMatch = HOUSES.find(h => h.name.toLowerCase() === houseName.toLowerCase());
+          if (houseMatch) {
+            houseTag.style.backgroundColor = houseMatch.bg;
+            houseTag.style.borderColor = houseMatch.border;
+            houseTag.style.color = houseMatch.labelColor;
+          }
+        }
+        if (nameLabel) nameLabel.textContent = profile.name || 'Student Fighter';
+
+        // 3. Current Level Rank
+        const xp = progression.xp || 0;
+        const lvlInfo = (typeof getMenuLevel === 'function') ? getMenuLevel(xp) : { title: 'Lvl 1: Naya Admission' };
+        if (rankTitle) rankTitle.textContent = `Current Rank: ${lvlInfo.title}`;
+
+        // 4. Duels Record & Win Rate
+        const played = progression.matchesPlayed || 0;
+        const won = progression.matchesWon !== undefined ? progression.matchesWon : (progression.highestStageUnlocked ? Math.max(0, progression.highestStageUnlocked - 1) : 0);
+        const rate = played > 0 ? Math.round((won / played) * 100) : 0;
+        if (duelsRecord) duelsRecord.textContent = `${played} Duels (${won} Won)`;
+        if (winRate) winRate.textContent = `Win Rate: ${rate}%`;
+
+        // 5. Knockout Streak
+        const streak = progression.highestWinStreak || progression.winStreak || 0;
+        if (streakVal) streakVal.textContent = `${streak} Duels Unbeaten`;
+
+        // 6. Active Combat Pen
+        const activePenKey = profile.selectedPlayerPen || 'reynolds045';
+        if (favPen) favPen.textContent = PEN_DISPLAY_NAMES[activePenKey] || 'Reynolds 045';
+
+        // 7. Edge Glider Saves & Cleared Desks
+        const edgeSaves = progression.edgeSaves || progression.cliffhangerSaves || 0;
+        if (disciplineVal) disciplineVal.textContent = `${edgeSaves} Table Saves`;
+
+        const clearedCount = progression.highestStageUnlocked ? Math.max(0, progression.highestStageUnlocked - 1) : 0;
+        if (desksCleared) desksCleared.textContent = `${String(clearedCount).padStart(2, '0')}/11 Desks Cleared`;
+      };
+
+      window.showCareerDossier = function() {
+        window.syncCareerDossier();
+        const modal = document.getElementById('career-dossier-modal');
+        if (!modal) return;
+        modal.style.display = 'flex';
+      };
+
+      window.hideCareerDossier = function() {
+        const modal = document.getElementById('career-dossier-modal');
+        if (!modal) return;
+        modal.style.display = 'none';
+      };
+
+      window.changePhotoFromDossier = function() {
+        window.hideCareerDossier();
+        if (window.openAvatarPicker) {
+          setTimeout(() => window.openAvatarPicker(), 150);
+        }
+      };
+
       window.showLevelLadder = function() {
         window.syncLevelLadder();
         const modal = document.getElementById('level-ladder-modal');
@@ -3023,6 +3270,32 @@
           } else {
             avatarImg.src = './assets/student_avatar.jpg';
             avatarLabel.textContent = 'KHILADI ♂';
+          }
+        }
+
+        // Also sync Main Menu & Career Dossier avatar if open
+        const menuAvatar = document.getElementById('menu-student-avatar');
+        const menuAvatarLbl = document.getElementById('menu-avatar-label');
+        if (menuAvatar && menuAvatarLbl) {
+          if (currentAvatar === 'custom' && customSrc) {
+            menuAvatar.src = customSrc;
+            menuAvatarLbl.textContent = 'KHILADI ★';
+          } else if (currentAvatar === 'girl') {
+            menuAvatar.src = './assets/student_avatar_girl.jpg';
+            menuAvatarLbl.textContent = 'KHILADI ♀';
+          } else {
+            menuAvatar.src = './assets/student_avatar.jpg';
+            menuAvatarLbl.textContent = 'KHILADI ♂';
+          }
+        }
+        const dossierAvatar = document.getElementById('dossier-avatar-img');
+        if (dossierAvatar) {
+          if (currentAvatar === 'custom' && customSrc) {
+            dossierAvatar.src = customSrc;
+          } else if (currentAvatar === 'girl') {
+            dossierAvatar.src = './assets/student_avatar_girl.jpg';
+          } else {
+            dossierAvatar.src = './assets/student_avatar.jpg';
           }
         }
       }
@@ -3746,8 +4019,7 @@
           tipPct: 80,
           unlockedDefault: true,
           reqStage: 1,
-          lore: '"The king of bench corners. Fast recoil, rapid wrist flicks, but prone to high-speed bounce if hit sideways."',
-          modText: 'Mod: Double Rubber Band + M-Seal Cap Weight'
+          lore: '"The king of bench corners. Fast recoil, rapid wrist flicks, but prone to high-speed bounce if hit sideways."'
         },
         {
           key: 'nataraj621',
@@ -3768,8 +4040,7 @@
           tipPct: 70,
           unlockedDefault: true,
           reqStage: 1,
-          lore: '"Classic red and black stripes. 6 flat edges prevent desk rollaway. Perfect for sudden angle ricochets."',
-          modText: 'Mod: Apsara Sharpener Razor Tip + Back Eraser Cap'
+          lore: '"Classic red and black stripes. 6 flat edges prevent desk rollaway. Perfect for sudden angle ricochets."'
         },
         {
           key: 'butterflow',
@@ -3790,8 +4061,7 @@
           tipPct: 84,
           unlockedDefault: false,
           reqStage: 3,
-          lore: '"Smooth glide with soft ribbed rubber collar. Absorbs heavy opponent impacts without sliding off the edge."',
-          modText: 'Mod: Thread Wound Grip + Double Lead Refill Weight'
+          lore: '"Smooth glide with soft ribbed rubber collar. Absorbs heavy opponent impacts without sliding off the edge."'
         },
         {
           key: 'pilotV5',
@@ -3812,8 +4082,7 @@
           tipPct: 95,
           unlockedDefault: false,
           reqStage: 5,
-          lore: '"Strictly forbidden in middle school exam halls! Razor sharp needle point delivers devastating precision trickshots."',
-          modText: 'Mod: Transparent Clip Lock + Solder Wire Inside Barrel'
+          lore: '"Strictly forbidden in middle school exam halls! Razor sharp needle point delivers devastating precision trickshots."'
         },
         {
           key: 'trimax',
@@ -3834,8 +4103,7 @@
           tipPct: 90,
           unlockedDefault: false,
           reqStage: 8,
-          lore: '"The Heavyweight Champion of Saraswati Vidyalaya. Flat triangular body locks onto the desk wood. Nearly impossible to toss off."',
-          modText: 'Mod: Solid Gold Clip + Dual Heavy Cartridge Counterweight'
+          lore: '"The Heavyweight Champion of Saraswati Vidyalaya. Flat triangular body locks onto the desk wood. Nearly impossible to toss off."'
         },
         {
           key: 'apsaraPlatinum',
@@ -3856,8 +4124,7 @@
           tipPct: 75,
           unlockedDefault: false,
           reqStage: 10,
-          lore: '"Top of the class stealth weapon. Dark silver and metallic black hexagon body with razor-tight center of gravity for championship finals."',
-          modText: 'Mod: Steel Compass Needle Cap + Polished Lacquer'
+          lore: '"Top of the class stealth weapon. Dark silver and metallic black hexagon body with razor-tight center of gravity for championship finals."'
         }
       ];
 
@@ -4003,9 +4270,6 @@
           img.className = `max-w-[85%] max-h-[85%] object-contain drop-shadow-md -rotate-1 ${!isUnlocked ? 'filter grayscale opacity-60' : ''}`;
         }
 
-        const modText = document.getElementById('inspect-mod-text');
-        if (modText) modText.textContent = pen.modText;
-
         const nameEl = document.getElementById('inspect-pen-name');
         if (nameEl) nameEl.textContent = pen.fullName;
 
@@ -4108,16 +4372,6 @@
 
           // Re-sync compass box UI
           syncCompassBox(pen.key);
-
-          // Subtle feedback toast
-          const modTextEl = document.getElementById('inspect-mod-text');
-          if (modTextEl) {
-            const original = modTextEl.textContent;
-            modTextEl.textContent = `✔ ${pen.name} EQUIPPED FOR NEXT RECESS!`;
-            setTimeout(() => {
-              modTextEl.textContent = original;
-            }, 2500);
-          }
         } catch(err) {
           console.error("Error equipping pen:", err);
         }
