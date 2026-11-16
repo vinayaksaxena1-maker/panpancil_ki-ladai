@@ -101,7 +101,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **55% (Steps 3.1-3.5 Done, Step 3.6 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Tin Compass Box Arsenal) ready & verified | • Steps 3.6-3.9 screens pending (Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings).<br>• Steps 3.1-3.5 internal debt: Tailwind/Google Fonts local bundling, Settings placeholder alert hookup, aur Match Outcome reward loop. |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **66% (Steps 3.1-3.6 Done, Step 3.7 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Page 4 Tin Compass Box), Step 3.6 (Page 5 Match Setup) ready & verified | • Steps 3.7-3.9 screens pending (Transparent HUD, Result Certificate, Trophy Shelf & Settings).<br>• Steps 3.1-3.6 internal debt: Tailwind/Google Fonts local bundling, Settings placeholder alert hookup, aur Match Outcome reward loop. |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -325,11 +325,16 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
     - `Mod Customizer Workshop`: Future update me actual stat modifiers apply karne ke liye visual upgrade workbench.
     - `Unlock Animation Fanfare`: Campaign stage clear hone par newly unlocked pen ka geometry box opening animation Step 3.8 ke reward flow se trigger hoga.
 
-- [ ] **Step 3.6: Match Setup Screen (Single Player & Pass-and-Play Cards):**
-  - **Kya banega:**
-    - Single Player: Classmate profile card, `[Easy / Normal / Hard]` tactile difficulty pills, aur `[Start Duel ⚔️]`.
-    - Pass & Play: 1 hi phone par Player 1 vs Player 2 dual pen selector cards aur `[Start Pass & Play ⚔️]`.
-  - *Verification Receipt:* Difficulty switch karne par active bot difficulty change ho, aur Pass & Play me dono players apni-apni pen choose kar sakein.
+- [x] **Step 3.6 (COMPLETED): Match Setup Screen (Single Player & Pass-and-Play Cards):**
+  - **Implementation:** Stitch Screen `0876780d14b04991b1414caa8664fb98` ("Match Setup - Desk Duel") ko `index.html`, `css/match_setup.css`, aur local pen/opponent assets ke sath wire kiya gaya.
+    - Two-tab tactile mode switcher (`Single Player` vs `Pass & Play`) with hatched 3D arcade buttons.
+    - Single Player Mode: Pinned yellow revision ID slip with paperclip, red pushpin, opponent caricature photo (`assets/opponents/stage_06.jpg`), `ROLL #09`, House tag, rival weapon label, `DESK RIVAL ATTESTED` red rubber stamp, speech bubble quote, and 3 tactile difficulty pills (`1st Bencher` / `Desk Regular` / `Monitor`) connecting to `gameEngine.setBotDifficulty()`.
+    - Pass & Play Mode: 1 Phone • 2 Khiladi turn-based dual pen selector with center `VS` red chalk seal. Blue Corner (P1) and Red Corner (P2) interactive pen cards with macro photo, agility/mass stats, and click-to-cycle pen mechanism (`window.cyclePassPlayPen()`).
+    - Match Launch Flow: Single player button `[START DUEL ⚔️]` and pass-and-play button `[START PASS & PLAY ⚔️]` seamlessly dismiss overlay, configure `gameEngine` mode, and start the round.
+  - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Single Player difficulty selection, Pass & Play dual pen cycling, and match launch transition verified. Screenshots: `match_setup_single_player_live.png`, `match_setup_passplay_fixed.png`.
+  - 🚨 **Pending Debt / Future Connectors (Step 3.6):**
+    - `Coin Toss Interactive Flip Animation`: Pass & Play mode me actual coin flipping 3D/2D animation Step 3.7 ke HUD animation loop me polish hoga.
+    - `Custom Rival Caricature Mapping`: Quick duel me random student caricatures ya high-tier bosses ka dynamic selection.
 
 - [ ] **Step 3.7: In-Game Transparent HUD & Color-Shifting Slingshot:**
   - **Kya banega:** 3D Three.js canvas ke upar transparent arcade scoreboard (P1 score vs Opponent score: 0-3 with chunky round indicators), active turn badge, color-shifting slingshot arc (Green ➔ Amber ➔ Red trajectory dots), and elastic spring banners (*"YOUR TURN!"*, *"KNOCKOUT!"*).

@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./css/menu.css?v=p3_s3">
   <link rel="stylesheet" href="./css/campaign.css?v=p3_s4">
   <link rel="stylesheet" href="./css/compass.css?v=p3_s5">
+  <link rel="stylesheet" href="./css/match_setup.css?v=p3_s6">
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -1285,6 +1286,281 @@
     </main>
   </div>
 
+  <!-- Phase 3 Step 3.6: Match Setup Screen (Single Player & Pass-and-Play Cards) -->
+  <div id="match-setup-overlay" style="display: none;">
+    <main class="w-[390px] h-[844px] max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
+      <!-- Ambient Compass Geometry Doodles in Outer Margin -->
+      <div class="absolute -top-4 -right-6 pointer-events-none opacity-20 text-secondary z-0">
+        <svg fill="none" height="64" stroke="currentColor" stroke-width="1.2" viewBox="0 0 100 100" width="64">
+          <circle cx="50" cy="50" r="42" stroke-dasharray="3 2"></circle>
+          <circle cx="50" cy="50" r="24"></circle>
+          <path d="M50 6 V94 M6 50 H94"></path>
+        </svg>
+      </div>
+
+      <!-- Scrollable Inner Viewport Container -->
+      <div class="flex flex-col w-full relative px-2.5 pt-2 pb-2 select-none flex-1 overflow-y-auto">
+        <!-- Top Status Header Pill with Back Button -->
+        <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
+          <button type="button" onclick="window.hideMatchSetup(); window.showMainMenu();" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#1e293b] font-bold text-[11px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[12px] font-bold">←</span>
+            <span>HUB</span>
+          </button>
+
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
+            <span class="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span>
+            <span id="setup-status-bench-pill" class="font-bold text-[11px] tracking-wider uppercase text-rose-700" style="font-family: 'Patrick Hand', cursive;">PERIOD: RECESS • BENCH #1</span>
+          </div>
+
+          <div class="inline-flex items-center gap-1 px-2 py-0.5 bg-white/95 rounded-full text-primary font-bold text-[11px] shadow-sm" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[#00288e]">⚔️</span>
+            <span>DESK DUEL</span>
+          </div>
+        </header>
+
+        <!-- TORN NOTEBOOK PAGE SHELL matching Stitch design -->
+        <div class="relative z-10 select-none filter drop-shadow-[0_8px_16px_rgba(40,30,15,0.18)] mb-2">
+          <div class="relative overflow-hidden p-2.5 pl-6 border bg-surface-container-lowest border-outline-variant/30" style="clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 10px 100%, 7px 97.5%, 11px 95%, 6px 92.5%, 9px 90%, 5px 87.5%, 11px 85%, 7px 82.5%, 10px 80%, 6px 77.5%, 12px 75%, 7px 72.5%, 11px 70%, 5px 67.5%, 10px 65%, 6px 62.5%, 12px 60%, 7px 57.5%, 10px 55%, 5px 52.5%, 11px 50%, 6px 47.5%, 12px 45%, 7px 42.5%, 10px 40%, 6px 37.5%, 11px 35%, 5px 32.5%, 10px 30%, 7px 27.5%, 12px 25%, 6px 22.5%, 10px 20%, 5px 17.5%, 11px 15%, 7px 12.5%, 10px 10%, 6px 7.5%, 11px 5%, 7px 2.5%, 10px 0%); background-color: rgb(255, 255, 255); border-radius: 0px 4px 4px 4px; box-shadow: rgb(30, 41, 59) 0px 0px 0px 1.8px inset, rgba(30, 41, 59, 0.35) 0px 0px 0px 3px inset, rgb(30, 41, 59) 0px 3px 0px 0px;">
+            <!-- Spiral Edge & Margin lines -->
+            <div class="absolute top-0 bottom-0 left-0 w-4 pointer-events-none z-15" style="background: linear-gradient(to right, rgba(235, 230, 218, 0.95) 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%);"></div>
+            <div class="absolute inset-0 pointer-events-none" style="background-image: repeating-linear-gradient(transparent 0px, transparent 23px, rgba(96, 165, 250, 0.22) 24px, rgba(96, 165, 250, 0.22) 25px); background-size: 100% 25px;"></div>
+            <div class="absolute top-0 bottom-0 left-7 w-[1.5px] bg-[#dc2626] opacity-90 pointer-events-none z-10"></div>
+            <div class="absolute top-0 bottom-0 left-[33px] w-[1px] bg-[#b91c1c] opacity-35 pointer-events-none"></div>
+
+            <!-- Inner Content -->
+            <div class="relative z-10 pl-5 flex flex-col gap-2.5">
+              <!-- 1. Top Notebook Index Header Box -->
+              <div class="relative w-full border-2 border-rose-600/70 bg-white/95 rounded-md p-2 shadow-xs">
+                <div class="flex items-center justify-between border-b border-rose-400/40 pb-1 text-[10px] font-bold text-rose-700 tracking-wider" style="font-family: 'Patrick Hand', cursive;">
+                  <span>★ CLASSMATE NOTEBOOK INDEX ★</span>
+                  <div class="flex items-center gap-2 text-[10px] text-slate-700" style="font-family: 'Nunito Sans', sans-serif;">
+                    <span>PAGE: <strong id="setup-page-no" class="text-rose-800">05</strong></span>
+                    <span>•</span>
+                    <span>DATE: <strong id="setup-date-stamp" class="text-rose-800">18/08/98</strong></span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between pt-1.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                    <h2 class="text-[15px] font-black text-[#00288e] leading-tight uppercase tracking-wide" style="font-family: 'Permanent Marker', cursive;">
+                      MATCH SETUP: DESK DUEL
+                    </h2>
+                  </div>
+                  <div class="flex items-center gap-1">
+                    <span id="setup-roll-badge" class="bg-[#ffdbcb] text-[#321302] text-[10px] font-bold px-2 py-0.5 rounded border border-slate-800/40 shadow-xs -rotate-1" style="font-family: 'Patrick Hand', cursive;">
+                      ROLL NO: #14
+                    </span>
+                    <span class="bg-blue-50 text-[#00288e] border border-blue-400/60 text-[9px] font-black px-2 py-0.5 rounded-full shadow-xs" style="font-family: 'Permanent Marker', cursive;">
+                      DESK WARS 98
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Tactile Mode Switcher Tabs (Single Player vs Pass & Play) -->
+              <div class="grid grid-cols-2 gap-2 select-none">
+                <!-- Tab 1: Single Player -->
+                <button type="button" id="tab-setup-single" onclick="window.switchMatchSetupTab('single')" class="py-2 px-2 rounded-lg text-center transition-all min-h-[44px] flex items-center justify-center gap-1.5 border-2 border-slate-900 text-white text-[13px] tracking-wider hatched-primary shadow-[0_3px_0_0_#0f172a] active:translate-y-0.5 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+                  <span class="material-symbols-outlined text-[18px]">person</span>
+                  <span>Single Player</span>
+                </button>
+                <!-- Tab 2: Pass & Play -->
+                <button type="button" id="tab-setup-passplay" onclick="window.switchMatchSetupTab('passplay')" class="py-2 px-2 rounded-lg text-center transition-all min-h-[44px] flex items-center justify-center gap-1.5 border-2 border-slate-800 bg-[#faf6ed] text-slate-700 text-[13px] tracking-wider shadow-[0_2.5px_0_0_#475569] active:translate-y-0.5 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+                  <span class="material-symbols-outlined text-[18px]">group</span>
+                  <span>Pass & Play</span>
+                </button>
+              </div>
+
+              <!-- SECTION 1: SINGLE PLAYER MODE -->
+              <div id="section-setup-single" class="flex flex-col gap-2.5">
+                <!-- Pinned Yellow Classroom ID Slip / Opponent Chit -->
+                <article class="relative w-full rounded-xl p-3 bg-white yellow-chit-hatch border-2 border-slate-900 shadow-[3px_4px_0_0_#1e293b]" style="transform: rotate(-0.3deg);">
+                  <!-- Paperclip & Pushpin Graphics -->
+                  <div class="absolute -top-3 left-7 w-4 h-8 border-2 border-slate-700 rounded-full pointer-events-none z-20 shadow-xs bg-slate-100/30"></div>
+                  <div class="absolute top-2 right-2.5 flex items-center justify-center w-5 h-5 rounded-full bg-[#dc2626] text-white shadow-xs z-20">
+                    <span class="material-symbols-outlined text-[13px]">push_pin</span>
+                  </div>
+
+                  <!-- Opponent Profile Header -->
+                  <div class="flex items-start gap-2.5 mt-1 pr-6">
+                    <!-- Opponent Caricature Photo -->
+                    <div class="relative shrink-0">
+                      <div class="w-16 h-20 bg-surface-container-high rounded-md overflow-hidden relative shadow-xs border-2 border-slate-900">
+                        <img id="setup-rival-photo" class="w-full h-full object-cover" alt="Opponent Caricature" src="./assets/opponents/stage_06.jpg" onerror="this.src='./assets/opponent_monitor.jpg';">
+                        <div class="absolute bottom-0 inset-x-0 bg-slate-900/90 py-0.5 text-center text-white">
+                          <span id="setup-rival-roll" class="text-[9px] font-bold uppercase tracking-wider" style="font-family: 'Patrick Hand', cursive;">ROLL #09</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Opponent Info & Stamped Details -->
+                    <div class="flex-1 min-w-0 flex flex-col gap-1">
+                      <h3 id="setup-rival-name" class="text-[15px] font-black text-[#00288e] leading-tight truncate" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 0px rgba(0, 40, 142, 0.2);">
+                        Vikram 'Backbencher'
+                      </h3>
+                      <div class="flex flex-wrap items-center gap-1 text-[10px]" style="font-family: 'Patrick Hand', cursive;">
+                        <span id="setup-rival-class" class="px-2 py-0.2 rounded bg-amber-100 text-amber-900 font-bold border border-amber-300">
+                          Class 7-B Rival
+                        </span>
+                        <span id="setup-rival-house" class="px-2 py-0.2 rounded bg-rose-100 text-[#b91c1c] font-bold border border-rose-300">
+                          House: Nehru Red
+                        </span>
+                      </div>
+                      <div class="flex items-center gap-1 text-[11px] font-bold text-slate-800" style="font-family: 'Patrick Hand', cursive;">
+                        <span class="material-symbols-outlined text-[14px] text-primary">edit</span>
+                        <span>Weapon: <strong id="setup-rival-pen" class="text-primary text-[12px]">Trimax Gold 0.5</strong></span>
+                      </div>
+                      <!-- Red Rubber Stamp -->
+                      <div class="self-start mt-0.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded border border-[#dc2626] text-[#dc2626] font-bold text-[9px] uppercase tracking-wider rotate-[-2deg] bg-rose-50/80 shadow-2xs" style="font-family: 'Permanent Marker', cursive;">
+                        <span class="material-symbols-outlined text-[11px]">verified</span>
+                        <span>DESK RIVAL ATTESTED</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Opponent Handwritten Quote Bubble -->
+                  <div class="mt-2.5 p-2 rounded-lg bg-amber-50/80 border border-amber-300 relative shadow-2xs">
+                    <div class="flex items-start gap-1">
+                      <span class="material-symbols-outlined text-amber-700 text-[16px] shrink-0 mt-0.5">format_quote</span>
+                      <p id="setup-rival-quote" class="text-[12px] font-bold text-slate-800 leading-snug" style="font-family: Caveat, cursive;">
+                        “Aadha period bacha hai, dekh lenge kiska pen tikta hai! Double-flick allow nahi hoga!”
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Tactile Difficulty Selector Pills -->
+                  <div class="mt-2.5">
+                    <div class="flex items-center justify-between mb-1 text-[10px] uppercase font-bold text-slate-600" style="font-family: 'Patrick Hand', cursive;">
+                      <span>SELECT DIFFICULTY</span>
+                      <span class="text-amber-800">Recess Match Stakes</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-1.5">
+                      <!-- Easy Pill -->
+                      <button type="button" id="diff-btn-easy" onclick="window.selectSetupDifficulty('easy')" class="diff-btn diff-btn-inactive flex flex-col items-center justify-center p-1.5 rounded-lg active:translate-y-0.5 min-h-[46px] cursor-pointer">
+                        <span class="text-[11px] font-bold leading-tight" style="font-family: 'Permanent Marker', cursive;">1st Bencher</span>
+                        <span class="text-[11px] font-bold" style="font-family: Caveat, cursive;">1x Coin</span>
+                      </button>
+                      <!-- Normal Pill (Default Selected) -->
+                      <button type="button" id="diff-btn-normal" onclick="window.selectSetupDifficulty('normal')" class="diff-btn diff-btn-active flex flex-col items-center justify-center p-1.5 rounded-lg active:translate-y-0.5 min-h-[46px] relative hatched-paper cursor-pointer">
+                        <div class="flex items-center gap-0.5 text-[11px] font-black leading-tight" style="font-family: 'Permanent Marker', cursive;">
+                          <span>Desk Regular</span>
+                          <span class="material-symbols-outlined text-[13px] text-emerald-700">check_circle</span>
+                        </div>
+                        <span class="text-[11px] font-extrabold text-amber-900" style="font-family: Caveat, cursive;">1.5x Bounty</span>
+                      </button>
+                      <!-- Hard Pill -->
+                      <button type="button" id="diff-btn-hard" onclick="window.selectSetupDifficulty('hard')" class="diff-btn diff-btn-inactive flex flex-col items-center justify-center p-1.5 rounded-lg active:translate-y-0.5 min-h-[46px] cursor-pointer">
+                        <span class="text-[11px] font-bold leading-tight text-[#b91c1c]" style="font-family: 'Permanent Marker', cursive;">Monitor</span>
+                        <span class="text-[11px] font-bold text-[#b91c1c]" style="font-family: Caveat, cursive;">3x High Risk</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Bench Rule Warning Strip -->
+                  <div class="mt-2.5 flex items-center gap-1.5 p-1.5 rounded bg-amber-100 border border-amber-400 text-amber-950 text-[10px]" style="font-family: 'Patrick Hand', cursive;">
+                    <span class="material-symbols-outlined text-[15px] text-[#b91c1c] shrink-0">warning</span>
+                    <span class="leading-tight font-bold">
+                      Bench Rule: White chalk boundary • Drop from teak bench = instant defeat!
+                    </span>
+                  </div>
+                </article>
+
+                <!-- Single Player Action Button -->
+                <button type="button" onclick="window.launchSingleDuelMatch()" class="w-full py-3 px-4 rounded-xl hatched-amber text-slate-950 text-base tracking-wider border-[2.5px] border-slate-900 shadow-[0_4px_0_0_#b45309] active:translate-y-1 active:shadow-[0_1px_0_0_#b45309] transition-all flex items-center justify-center gap-2 cursor-pointer select-none" style="font-family: 'Permanent Marker', cursive;">
+                  <span>START DUEL</span>
+                  <span class="material-symbols-outlined text-[20px]">swords</span>
+                  <span class="text-[10px] font-extrabold bg-white/90 text-slate-900 px-2 py-0.5 rounded-full border border-slate-900" style="font-family: 'Patrick Hand', cursive;">
+                    1P RECESS
+                  </span>
+                </button>
+              </div>
+
+              <!-- SECTION 2: PASS & PLAY MODE -->
+              <div id="section-setup-passplay" class="hidden flex flex-col gap-2.5">
+                <article class="relative w-full rounded-xl p-3 bg-white yellow-chit-hatch border-2 border-slate-900 shadow-[3px_4px_0_0_#1e293b]">
+                  <!-- Pass & Play Header -->
+                  <div class="flex items-center justify-between border-b border-amber-400 pb-1.5 mb-2">
+                    <div class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-primary text-[20px]">phone_android</span>
+                      <span class="text-[14px] text-primary" style="font-family: 'Permanent Marker', cursive;">1 PHONE • 2 KHILADI</span>
+                    </div>
+                    <span class="bg-primary text-white text-[10px] px-2 py-0.5 rounded-full font-bold" style="font-family: 'Patrick Hand', cursive;">
+                      Local Turn-Based
+                    </span>
+                  </div>
+
+                  <!-- Dual Pen Selector Layout -->
+                  <div class="relative grid grid-cols-2 gap-2 my-1">
+                    <!-- Center VS Chalk Seal Stamp -->
+                    <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center w-9 h-9 rounded-full bg-[#9b000d] text-white shadow-md text-xs border border-white rotate-[-6deg]" style="font-family: 'Permanent Marker', cursive;">
+                      VS
+                    </div>
+
+                    <!-- Player 1 Corner -->
+                    <div class="p-2 rounded-lg bg-[#f0f4ff] border-2 border-primary shadow-[2px_2px_0px_#00288e] flex flex-col items-center text-center cursor-pointer active:scale-98" onclick="window.cyclePassPlayPen(1)">
+                      <span class="text-[10px] text-primary uppercase font-bold tracking-wider" style="font-family: 'Patrick Hand', cursive;">P1 (Blue Corner)</span>
+                      <span id="setup-p1-name" class="text-[12px] font-bold text-slate-900 truncate w-full" style="font-family: 'Permanent Marker', cursive;">Player 1</span>
+                      <div class="w-full h-14 my-1 bg-white rounded border border-blue-200 flex items-center justify-center p-1 shadow-inner overflow-hidden">
+                        <img id="setup-p1-pen-img" class="h-10 w-auto object-contain -rotate-6" alt="P1 Pen" src="./assets/pens/reynolds_macro.jpg">
+                      </div>
+                      <span id="setup-p1-pen-name" class="text-[11px] font-bold text-slate-800" style="font-family: Caveat, cursive;">Reynolds 045</span>
+                      <span id="setup-p1-pen-stat" class="mt-0.5 bg-blue-100 text-blue-900 text-[10px] px-2 py-0.2 rounded-full border border-blue-300" style="font-family: 'Patrick Hand', cursive;">
+                        Agility: <strong>92</strong>
+                      </span>
+                      <span class="text-[8px] text-blue-600 font-bold mt-1">Tap to change pen ↻</span>
+                    </div>
+
+                    <!-- Player 2 Corner -->
+                    <div class="p-2 rounded-lg bg-[#fff1f2] border-2 border-[#b91c1c] shadow-[2px_2px_0px_#991b1b] flex flex-col items-center text-center cursor-pointer active:scale-98" onclick="window.cyclePassPlayPen(2)">
+                      <span class="text-[10px] text-[#b91c1c] uppercase font-bold tracking-wider" style="font-family: 'Patrick Hand', cursive;">P2 (Red Corner)</span>
+                      <span id="setup-p2-name" class="text-[12px] font-bold text-slate-900 truncate w-full" style="font-family: 'Permanent Marker', cursive;">Class Rival</span>
+                      <div class="w-full h-14 my-1 bg-white rounded border border-red-200 flex items-center justify-center p-1 shadow-inner overflow-hidden">
+                        <img id="setup-p2-pen-img" class="h-10 w-auto object-contain rotate-6" alt="P2 Pen" src="./assets/pens/trimax_slot.jpg">
+                      </div>
+                      <span id="setup-p2-pen-name" class="text-[11px] font-bold text-slate-800" style="font-family: Caveat, cursive;">Reynolds Trimax</span>
+                      <span id="setup-p2-pen-stat" class="mt-0.5 bg-rose-100 text-rose-900 text-[10px] px-2 py-0.2 rounded-full border border-rose-300" style="font-family: 'Patrick Hand', cursive;">
+                        Mass: <strong>98</strong>
+                      </span>
+                      <span class="text-[8px] text-rose-600 font-bold mt-1">Tap to change pen ↻</span>
+                    </div>
+                  </div>
+
+                  <!-- Coin Toss Rule Indicator -->
+                  <div class="mt-2 p-1.5 rounded-lg bg-amber-50 border border-amber-300 flex items-center justify-between text-slate-900" style="font-family: 'Patrick Hand', cursive;">
+                    <div class="flex items-center gap-1 text-[11px] font-bold">
+                      <span class="material-symbols-outlined text-amber-700 text-[16px]">monetization_on</span>
+                      <span>Coin Toss for 1st Flick:</span>
+                    </div>
+                    <span class="bg-amber-200 text-amber-950 text-[11px] px-2 py-0.5 rounded border border-amber-400 font-bold">
+                      Head / Tail Flip
+                    </span>
+                  </div>
+                </article>
+
+                <!-- Pass & Play Action Button -->
+                <button type="button" onclick="window.launchPassPlayMatch()" class="w-full py-3 px-4 rounded-xl hatched-primary text-white text-base tracking-wider border-[2.5px] border-slate-900 shadow-[0_4px_0_0_#0f172a] active:translate-y-1 active:shadow-[0_1px_0_0_#0f172a] transition-all flex items-center justify-center gap-2 cursor-pointer select-none" style="font-family: 'Permanent Marker', cursive;">
+                  <span>START PASS & PLAY</span>
+                  <span class="material-symbols-outlined text-[20px]">sports_kabaddi</span>
+                  <span class="text-[10px] font-extrabold bg-blue-200 text-[#00288e] px-2 py-0.5 rounded-full" style="font-family: 'Patrick Hand', cursive;">
+                    TOSS & FLICK
+                  </span>
+                </button>
+              </div>
+
+              <!-- 3. Classroom Cautionary Rule Lore Footer -->
+              <div class="w-full p-2 rounded-lg bg-amber-50/90 border border-amber-300 shadow-xs flex items-start gap-1.5 mt-0.5">
+                <span class="material-symbols-outlined text-rose-600 text-[16px] shrink-0 mt-0.5">warning</span>
+                <p class="text-[11px] font-bold text-slate-800 leading-tight" style="font-family: Caveat, cursive;">
+                  "Rule #2: Ek baar flick karne ke baad haath table se turant peeche rakhna! No sliding body blocks!"
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
   <script>
     // Step 3.2 & Step 3.3: Splash Screen & Main Menu Hub Lifecycle
     (function initUIOrchestrator() {
@@ -1292,6 +1568,7 @@
       const menuOverlay = document.getElementById('main-menu-overlay');
       const campaignOverlay = document.getElementById('campaign-map-overlay');
       const compassOverlay = document.getElementById('compass-box-overlay');
+      const setupOverlay = document.getElementById('match-setup-overlay');
       const enterBtn = document.getElementById('enter-classroom-btn');
       const nameInput = document.getElementById('student-name-input');
 
@@ -1354,11 +1631,28 @@
         }, 120);
       };
 
+      window.showMatchSetup = function(initialTab = 'single') {
+        if (!setupOverlay) return;
+        setupOverlay.style.display = 'flex';
+        requestAnimationFrame(() => {
+          setupOverlay.classList.remove('setup-dismissed');
+        });
+        syncMatchSetup(initialTab);
+      };
+
+      window.hideMatchSetup = function() {
+        if (!setupOverlay) return;
+        setupOverlay.classList.add('setup-dismissed');
+        setTimeout(() => {
+          setupOverlay.style.display = 'none';
+        }, 350);
+      };
+
       window.startQuickDuel = function() {
-        if (window.gameEngine) {
-          window.gameEngine.setGameMode('bot');
-        }
         window.hideMainMenu();
+        setTimeout(() => {
+          window.showMatchSetup('single');
+        }, 120);
       };
 
       // Story Mode opens Step 3.4 Visual Campaign Map & Stage Chit!
@@ -1400,10 +1694,10 @@
       };
 
       window.startPassAndPlay = function() {
-        if (window.gameEngine) {
-          window.gameEngine.setGameMode('pass_and_play');
-        }
         window.hideMainMenu();
+        setTimeout(() => {
+          window.showMatchSetup('passplay');
+        }, 120);
       };
 
       window.openFeatureNotice = function(featureName) {
@@ -2599,6 +2893,192 @@
         } catch(err) {
           console.error("Error equipping pen:", err);
         }
+      };
+
+      // Step 3.6: Match Setup Screen Controller (Single Player vs Pass & Play)
+      const PASSPLAY_PENS = [
+        { key: 'reynolds045', name: 'Reynolds 045', stat: 'Agility: 92', thumb: './assets/pens/reynolds_macro.jpg' },
+        { key: 'trimax', name: 'Reynolds Trimax', stat: 'Mass: 98', thumb: './assets/pens/trimax_slot.jpg' },
+        { key: 'butterflow', name: 'Cello Butterflow', stat: 'Grip: 85', thumb: './assets/pens/gripper_slot.jpg' },
+        { key: 'nataraj621', name: 'Nataraj 621', stat: 'Agility: 96', thumb: './assets/pens/nataraj_slot.jpg' },
+        { key: 'pilotV5', name: 'Pilot V5', stat: 'Precision: 95', thumb: './assets/pens/pen_extra.jpg' },
+        { key: 'apsaraPlatinum', name: 'Apsara Platinum', stat: 'Stealth: 98', thumb: './assets/pens/apsara_slot.jpg' }
+      ];
+
+      let selectedSetupDifficulty = 'normal';
+      let setupP1Index = 0;
+      let setupP2Index = 1;
+
+      window.switchMatchSetupTab = function(mode) {
+        const tabSingle = document.getElementById('tab-setup-single');
+        const tabPassplay = document.getElementById('tab-setup-passplay');
+        const secSingle = document.getElementById('section-setup-single');
+        const secPassplay = document.getElementById('section-setup-passplay');
+
+        if (mode === 'single') {
+          if (tabSingle) {
+            tabSingle.className = "py-2 px-2 rounded-lg text-center transition-all min-h-[44px] flex items-center justify-center gap-1.5 border-2 border-slate-900 text-white text-[13px] tracking-wider hatched-primary shadow-[0_3px_0_0_#0f172a] active:translate-y-0.5 cursor-pointer";
+          }
+          if (tabPassplay) {
+            tabPassplay.className = "py-2 px-2 rounded-lg text-center transition-all min-h-[44px] flex items-center justify-center gap-1.5 border-2 border-slate-800 bg-[#faf6ed] text-slate-700 text-[13px] tracking-wider shadow-[0_2.5px_0_0_#475569] active:translate-y-0.5 cursor-pointer";
+          }
+          if (secSingle) secSingle.classList.remove('hidden');
+          if (secPassplay) secPassplay.classList.add('hidden');
+        } else {
+          if (tabPassplay) {
+            tabPassplay.className = "py-2 px-2 rounded-lg text-center transition-all min-h-[44px] flex items-center justify-center gap-1.5 border-2 border-slate-900 text-white text-[13px] tracking-wider hatched-primary shadow-[0_3px_0_0_#0f172a] active:translate-y-0.5 cursor-pointer";
+          }
+          if (tabSingle) {
+            tabSingle.className = "py-2 px-2 rounded-lg text-center transition-all min-h-[44px] flex items-center justify-center gap-1.5 border-2 border-slate-800 bg-[#faf6ed] text-slate-700 text-[13px] tracking-wider shadow-[0_2.5px_0_0_#475569] active:translate-y-0.5 cursor-pointer";
+          }
+          if (secPassplay) secPassplay.classList.remove('hidden');
+          if (secSingle) secSingle.classList.add('hidden');
+        }
+      };
+
+      window.selectSetupDifficulty = function(diff) {
+        selectedSetupDifficulty = diff;
+        const btnEasy = document.getElementById('diff-btn-easy');
+        const btnNormal = document.getElementById('diff-btn-normal');
+        const btnHard = document.getElementById('diff-btn-hard');
+
+        [btnEasy, btnNormal, btnHard].forEach(b => {
+          if (b) {
+            b.classList.remove('diff-btn-active');
+            b.classList.add('diff-btn-inactive');
+            const check = b.querySelector('.material-symbols-outlined');
+            if (check) check.remove();
+          }
+        });
+
+        const activeBtn = diff === 'easy' ? btnEasy : (diff === 'hard' ? btnHard : btnNormal);
+        if (activeBtn) {
+          activeBtn.classList.remove('diff-btn-inactive');
+          activeBtn.classList.add('diff-btn-active');
+          const titleSpan = activeBtn.querySelector('span:first-child') || activeBtn.querySelector('div span:first-child');
+          if (titleSpan && !activeBtn.querySelector('.material-symbols-outlined')) {
+            const icon = document.createElement('span');
+            icon.className = 'material-symbols-outlined text-[13px] text-emerald-700 ml-0.5';
+            icon.textContent = 'check_circle';
+            titleSpan.parentNode.appendChild(icon);
+          }
+        }
+      };
+
+      window.cyclePassPlayPen = function(playerNum) {
+        if (playerNum === 1) {
+          setupP1Index = (setupP1Index + 1) % PASSPLAY_PENS.length;
+          updatePassPlayPenCard(1, PASSPLAY_PENS[setupP1Index]);
+        } else {
+          setupP2Index = (setupP2Index + 1) % PASSPLAY_PENS.length;
+          updatePassPlayPenCard(2, PASSPLAY_PENS[setupP2Index]);
+        }
+      };
+
+      function updatePassPlayPenCard(playerNum, pen) {
+        if (playerNum === 1) {
+          const img = document.getElementById('setup-p1-pen-img');
+          const name = document.getElementById('setup-p1-pen-name');
+          const stat = document.getElementById('setup-p1-pen-stat');
+          if (img) img.src = pen.thumb;
+          if (name) name.textContent = pen.name;
+          if (stat) stat.innerHTML = `${pen.stat.split(':')[0]}: <strong>${pen.stat.split(':')[1]}</strong>`;
+        } else {
+          const img = document.getElementById('setup-p2-pen-img');
+          const name = document.getElementById('setup-p2-pen-name');
+          const stat = document.getElementById('setup-p2-pen-stat');
+          if (img) img.src = pen.thumb;
+          if (name) name.textContent = pen.name;
+          if (stat) stat.innerHTML = `${pen.stat.split(':')[0]}: <strong>${pen.stat.split(':')[1]}</strong>`;
+        }
+      }
+
+      function syncMatchSetup(initialTab) {
+        try {
+          let savedState = {};
+          try {
+            savedState = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}');
+          } catch(e) {}
+
+          const profile = savedState.profile || {};
+          const progression = savedState.progression || {};
+          const currentStage = progression.currentStageId || 1;
+
+          // Header Bench Pill
+          const benchPill = document.getElementById('setup-status-bench-pill');
+          if (benchPill) {
+            benchPill.textContent = currentStage > 11 ? 'PERIOD: RECESS • CHAMPION DESK' : `PERIOD: RECESS • BENCH #${currentStage}`;
+          }
+
+          // Header Page & Date
+          const pageNoEl = document.getElementById('setup-page-no');
+          if (pageNoEl) pageNoEl.textContent = '05';
+
+          const dateStampEl = document.getElementById('setup-date-stamp');
+          if (dateStampEl) {
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            dateStampEl.textContent = `${dd}/${mm}/98`;
+          }
+
+          const rollBadge = document.getElementById('setup-roll-badge');
+          if (rollBadge) {
+            rollBadge.textContent = `ROLL NO: #${profile.rollNo || '14'}`;
+          }
+
+          // Dynamic Opponent Info based on currentStage
+          const oppStage = Math.min(11, Math.max(1, currentStage));
+          const oppPhoto = document.getElementById('setup-rival-photo');
+          if (oppPhoto) {
+            oppPhoto.src = `./assets/opponents/stage_${String(oppStage).padStart(2, '0')}.jpg`;
+          }
+
+          // P1 Name in Pass & Play
+          const p1NameEl = document.getElementById('setup-p1-name');
+          if (p1NameEl) {
+            p1NameEl.textContent = profile.name || 'Khiladi 1';
+          }
+
+          // Initialize P1 pen to user's currently equipped pen
+          const equippedKey = profile.selectedPlayerPen || 'reynolds045';
+          const p1Idx = PASSPLAY_PENS.findIndex(p => p.key === equippedKey);
+          if (p1Idx !== -1) setupP1Index = p1Idx;
+          updatePassPlayPenCard(1, PASSPLAY_PENS[setupP1Index]);
+          updatePassPlayPenCard(2, PASSPLAY_PENS[setupP2Index]);
+
+          // Switch to initial tab
+          window.switchMatchSetupTab(initialTab || 'single');
+        } catch(err) {
+          console.error("Error in syncMatchSetup:", err);
+        }
+      }
+
+      window.launchSingleDuelMatch = function() {
+        if (window.gameEngine) {
+          if (window.gameEngine.storage) {
+            window.gameEngine.storage.save({ settings: { difficulty: selectedSetupDifficulty, mode: 'bot' } });
+          }
+          if (window.gameEngine.bot && typeof window.gameEngine.bot.setDifficulty === 'function') {
+            window.gameEngine.bot.setDifficulty(selectedSetupDifficulty);
+          }
+          window.gameEngine.setGameMode('bot');
+          window.gameEngine.resetRound();
+        }
+        window.hideMatchSetup();
+      };
+
+      window.launchPassPlayMatch = function() {
+        const p1Pen = PASSPLAY_PENS[setupP1Index].key;
+        const p2Pen = PASSPLAY_PENS[setupP2Index].key;
+
+        if (window.gameEngine) {
+          window.gameEngine.changePen('player', p1Pen);
+          window.gameEngine.changePen('opponent', p2Pen);
+          window.gameEngine.setGameMode('pass_and_play');
+          window.gameEngine.resetRound();
+        }
+        window.hideMatchSetup();
       };
 
       // Hydrate existing saved student data from LocalStorage
