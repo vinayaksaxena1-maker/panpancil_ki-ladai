@@ -101,7 +101,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **77% (Steps 3.1-3.7 Done, Step 3.8 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Page 4 Tin Compass Box), Step 3.6 (Page 5 Match Setup), Step 3.7 (Page 6 Live HUD & Slingshot Gauge) ready & verified | • Steps 3.8-3.9 screens pending (Result Certificate, Trophy Shelf & Settings).<br>• Steps 3.1-3.7 internal debt: Tailwind/Google Fonts local bundling, Settings placeholder alert hookup, aur Match Outcome reward loop. |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **88% (Steps 3.1-3.8 Done, Step 3.9 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Page 4 Tin Compass Box), Step 3.6 (Page 5 Match Setup), Step 3.7 (Page 6 Live HUD & Slingshot Gauge), Step 3.8 (Page 7 Match Result Certificate - 3 States) ready & verified | • Step 3.9 screen pending (Trophy Cabinet & Offline Settings).<br>• Steps 3.1-3.8 internal debt: Tailwind/Google Fonts local bundling, Settings placeholder alert hookup. |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -352,11 +352,38 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - 🚨 **Pending Debt / Future Connectors (Step 3.7):**
     - Step 3.8 Match Outcome Certificate: Match end hone par result report card popup trigger karna.
 
-- [ ] **Step 3.8: Match Outcome Certificate & Pause Drawer:**
-  - **Kya banega:**
-    - Pause modal: Nostalgic ruled chit with tactile 3D buttons (Resume, Restart, Quit to Menu).
-    - Match Result Certificate: School report card popup with round breakdown, XP gained progress bar with count-up animation, chunky `[Next Classmate ➔]` aur `[Rematch 🔄]` buttons.
-  - *Verification Receipt:* 3 rounds jeetne/haarne par certificate trigger ho, aur Rematch/Next buttons se match sahi restart ho.
+- [x] **Step 3.8 (COMPLETED): Match Outcome Certificate & Promotion System (3 States):**
+  - **Implementation:** Stitch AI Screen `9fd5eb7ac4c54d018df4bd37ff119db3` ("Match Result Certificate - School Report Card"), Screen `6f96b5f9c8bc483eb82fe80eda0b9bdd` ("Defeat & Penalty State"), aur Screen `271cb175534e4e7985ab3c19ba7577b2` ("Rank Up Promotion State") ko unified `#match-result-overlay`, `css/match_result.css`, aur decoupled `js/match_result.js` controller ke through implement kiya gaya.
+  - **Core Features Implemented across 3 States:**
+    - **State 1: Victory Report Card (`#result-view-victory`):**
+      - Notebook perforated edge leaf with red vertical margin & blue ruled lines.
+      - Saraswati Vidyalaya Certificate header (Page 07, dynamic date, student roll #).
+      - `✪ VICTORY! ✪` banner + tilted pink rubber stamp: `★ PASSED WITH DISTINCTION (A+) ★`.
+      - Combatant breakdown: P1 Champion sets vs P2 Defeated sets.
+      - Recess Log: Dynamic round-by-round strike notes (`WIN`/`LOSS` badges).
+      - Rewards & Battle Pass: `+₹150 Canteen Fund`, `+350 XP`, dynamic animated level-up bar.
+      - Teacher's Red Ink Remark: *"Excellent wrist flick trajectory. Keep pens away during Maths period!" — Sharmila Ma'am* + Purple `BENCH KING` rubber stamp.
+      - Dynamic Level-Up Banner: surfaces `[VIEW CHIT ➔]` button when promotion triggers.
+    - **State 2: Defeat / Penalty Slip (`#result-view-defeat`):**
+      - Table Fall Out header with strict discipline warning.
+      - `💔 DEFEAT! OUT OF BOUNDS! 💔` banner + tilted red rubber stamp: `★ FAILED TO DEFEND BENCH • RE-TEST ORDERED ★`.
+      - Canteen Penalty: `-₹50 Canteen Fund (Samosa Fine)` with authentic classroom quote: *"Haarne wale ko samosa lana padega!"*.
+      - PT Tiwari Sir Discipline Slip: *"Table se pen neeche gira diya! Agle recess tak zero duel permission! Murga bano corridor me!"* + `RE-TEST ORDERED` stamp.
+    - **State 3: Rank Up Promotion Chit (`#result-view-promotion`):**
+      - Official Saraswati Vidyalaya Promotion Chit with spiral torn paper perforation holes.
+      - `🎖️ PROMOTED! LEVEL UP! 🎖️` with previous rank line-through ➔ new rank title.
+      - Inspection Stat Boosts: Desk Grip (+6%), Flick Velocity (+35 km/h), Refill Ink Pressure (+100 ml).
+      - New Weapon Unlocked: `Cello Gripper 0.5mm (Precision Trajectory Grip Edition)` with `READY` badge.
+      - Sharmaji Canteen Token: `1x Free Hot Samosa Coupon (+₹250)`.
+      - Principal Approval Note: *"Shabaash Arjun! Pure class me sabse tezi se pen ghumaya hai."*.
+    - **Tactile 3D Action Docks:**
+      - Victory: `[NEXT CLASSMATE ➔]`, `[REMATCH (PASS PHONE) 🔄]`, `[RETURN TO CLASSROOM HUB 🚪]`.
+      - Defeat: `[⚔️ REMATCH! RECLAIM BENCH]`, `[RETURN TO CLASSROOM HUB 🚪]`.
+      - Promotion: `[CLAIM ARSENAL REWARD & ADVANCE 🏆]`, `[RETURN TO CLASSROOM HUB 🚪]`.
+    - **Engine Hookup:** `js/main.js` me match settling ke baad 2.2s celebration delay ke sath `window.matchResultController.show()` automatically trigger hota hai.
+  - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Victory report card, Defeat penalty slip, and Rank Up promotion chit all verified with receipts: `certificate_victory_live.png`, `certificate_defeat_live.png`, `certificate_promotion_live.png`.
+  - 🚨 **Pending Debt / Future Connectors (Step 3.8):**
+    - Step 3.9 Trophy Cabinet: Unlocked badges and career stats screen hookup.
 
 - [ ] **Step 3.9: Trophy Cabinet & Offline Settings (with Audio Bridge):**
   - **Kya banega:**

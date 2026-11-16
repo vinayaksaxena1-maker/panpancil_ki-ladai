@@ -1,0 +1,143 @@
+/* ========================================================================== */
+/* D:\FInal\css\match_result.css                                              */
+/* Step 3.8: Match Result Certificate & Promotion System                      */
+/* Includes: Victory Certificate, Defeat Penalty Chit, Rank Up Promotion Slip */
+/* Standalone, 100% offline compliant, scoped under #match-result-overlay     */
+/* ========================================================================== */
+
+#match-result-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px;
+  opacity: 1;
+  transition: opacity 0.3s ease-out, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#match-result-overlay.result-dismissed {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.96) translateY(12px);
+}
+
+/* 1. MATH GRID & RULED PAPER TEXTURES */
+.result-math-grid {
+  background-color: #fbf8ef;
+  background-image: 
+    linear-gradient(rgba(88, 128, 172, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88, 128, 172, 0.12) 1px, transparent 1px),
+    linear-gradient(rgba(88, 128, 172, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88, 128, 172, 0.05) 1px, transparent 1px);
+  background-size: 20px 20px, 20px 20px, 4px 4px, 4px 4px;
+}
+
+.result-notebook-ruled {
+  background-color: #fffdf9;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 23px,
+    rgba(203, 213, 225, 0.5) 24px
+  );
+}
+
+/* 2. PERFORATED NOTEBOOK TORN EDGE */
+.result-perforated-card {
+  clip-path: polygon(
+    10px 0%, 100% 0%, 100% 100%, 10px 100%, 
+    7px 97.5%, 11px 95%, 6px 92.5%, 9px 90%, 5px 87.5%, 11px 85%, 
+    7px 82.5%, 10px 80%, 6px 77.5%, 12px 75%, 7px 72.5%, 11px 70%, 
+    5px 67.5%, 10px 65%, 6px 62.5%, 12px 60%, 7px 57.5%, 10px 55%, 
+    5px 52.5%, 11px 50%, 6px 47.5%, 12px 45%, 7px 42.5%, 10px 40%, 
+    6px 37.5%, 11px 35%, 5px 32.5%, 10px 30%, 7px 27.5%, 12px 25%, 
+    6px 22.5%, 10px 20%, 5px 17.5%, 11px 15%, 7px 12.5%, 10px 10%, 
+    6px 7.5%, 11px 5%, 7px 2.5%, 10px 0%
+  );
+  box-shadow: 
+    0 0 0 1.5px #1e293b inset,
+    0 0 0 3px rgba(30, 41, 59, 0.25) inset,
+    0 16px 32px -4px rgba(45, 26, 16, 0.4);
+}
+
+/* 3. TILTED RUBBER STAMPS */
+.rubber-stamp-pass {
+  border: 2.5px dashed #dc2626;
+  color: #b91c1c;
+  background-color: #fee2e2;
+  box-shadow: 2px 2px 0 0 rgba(185, 28, 28, 0.3);
+  transform: rotate(-2.5deg);
+}
+
+.rubber-stamp-fail {
+  border: 2.5px dashed #991b1b;
+  color: #7f1d1d;
+  background-color: #fef2f2;
+  box-shadow: 2px 2px 0 0 rgba(153, 27, 27, 0.3);
+  transform: rotate(2deg);
+}
+
+.rubber-stamp-promote {
+  border: 2.5px dashed #0284c7;
+  color: #0369a1;
+  background-color: #e0f2fe;
+  box-shadow: 2px 2px 0 0 rgba(2, 132, 199, 0.3);
+  transform: rotate(-1.5deg);
+}
+
+/* 4. TACTILE HATCHED BUTTONS */
+.result-hatched-green {
+  background-color: #16a34a;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 0px,
+    rgba(255, 255, 255, 0.15) 3px,
+    transparent 3px,
+    transparent 8px
+  );
+}
+
+.result-hatched-amber {
+  background-color: #f59e0b;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(0, 0, 0, 0.08) 0px,
+    rgba(0, 0, 0, 0.08) 3px,
+    transparent 3px,
+    transparent 8px
+  );
+}
+
+.result-hatched-rose {
+  background-color: #e11d48;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 0px,
+    rgba(255, 255, 255, 0.15) 3px,
+    transparent 3px,
+    transparent 8px
+  );
+}
+
+.result-hatched-blue {
+  background-color: #0284c7;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.15) 0px,
+    rgba(255, 255, 255, 0.15) 3px,
+    transparent 3px,
+    transparent 8px
+  );
+}
+
+/* Responsive Container */
+#match-result-overlay main {
+  max-height: 94vh;
+}

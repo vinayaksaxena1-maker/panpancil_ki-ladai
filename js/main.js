@@ -672,6 +672,22 @@ class GameEngine {
           ? `VICTORY! +${progResult.earnedXp} XP (${progResult.levelInfo.title})`
           : `DEFEAT! +${progResult.earnedXp} XP (${progResult.levelInfo.title})`;
         updateBlackboardDisplay(chalkMsg);
+
+        // Step 3.8: Trigger School Report Card Certificate modal after knockout celebration
+        setTimeout(() => {
+          if (window.matchResultController) {
+            window.matchResultController.show({
+              isWin,
+              mode: this.rules.mode,
+              score: outcome.score,
+              roundHistory: this.rules.roundHistory,
+              progResult,
+              playerPen: this.playerPenConfigKey || 'reynolds045',
+              opponentPen: this.opponentPenConfigKey || 'trimax',
+              opponentName: is2P ? 'Player 2 (Rival)' : (window.currentStageOpponent?.name || "Bunty 'Backbencher'")
+            });
+          }
+        }, 2200);
       }
       return;
     }
