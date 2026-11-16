@@ -319,7 +319,8 @@ export class ProgressionEngine {
       totalFlicks = 8,
       roundHistory = [], // array of winners per round: ['player', 'opponent', ...]
       clutchEdgeSurvived = false,
-      playerFellAnyRound = false
+      playerFellAnyRound = false,
+      hasSpinFlick = false
     } = context;
 
     this.matchesPlayed++;
@@ -402,6 +403,10 @@ export class ProgressionEngine {
 
       if (stageId === 11) {
         this._checkBadge('SCHOOL_LEGEND', newBadges);
+      }
+
+      if (hasSpinFlick) {
+        this._checkBadge('SPIN_MASTER', newBadges);
       }
 
       if (totalFlicks <= 6) {

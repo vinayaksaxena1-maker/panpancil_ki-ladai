@@ -90,6 +90,8 @@ class GameEngine {
 
     // Phase 1 Pure Physics Sandbox State
     this.collisionSoundCooldown = false;
+    this.currentStageId = (savedState.progression && savedState.progression.currentStageId) || 1;
+    this.playerUsedSpin = false;
 
     // 3D Raycasting
     this.raycaster = new THREE.Raycaster();
@@ -511,6 +513,13 @@ class GameEngine {
 
     targetPen.body.applyImpulseAtPoint(impulse, flickPt, true);
 
+    if (side === 'player' && targetPen && targetPen.mesh) {
+      const offsetDist = Math.hypot(this.flickAnchorPoint.x - targetPen.mesh.position.x, this.flickAnchorPoint.z - targetPen.mesh.position.z);
+      if (offsetDist > 0.015) {
+        this.playerUsedSpin = true;
+      }
+    }
+
     if (this.statusMsgEl) {
       const is2P = this.rules.mode === 'pass_and_play';
       const playerLabel = side === 'player' ? 'Player 1' : (is2P ? 'Player 2' : 'Opponent');
@@ -650,7 +659,9 @@ class GameEngine {
           score: outcome.score,
           difficulty: this.difficulty || 'normal',
           mode: this.rules.mode,
+          stageId: this.currentStageId || this.progression.currentStageId || 1,
           playerPen: this.playerPenConfigKey || 'reynolds045',
+          hasSpinFlick: this.playerUsedSpin || false,
           roundHistory: this.rules.roundHistory.map(r => r.winner)
         });
 
@@ -789,6 +800,7 @@ class GameEngine {
   }
 
   resetSandbox() {
+    this.playerUsedSpin = false;
     this.rules.startMatch(this.rules.mode || 'bot');
     updateBlackboardDisplay("MATCH RESET: 0 - 0");
     setTimeout(() => updateBlackboardDisplay(null), 1200);

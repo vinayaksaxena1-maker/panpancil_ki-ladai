@@ -3121,6 +3121,10 @@
       window.launchStageMatch = function(stageId, isWarmup = false) {
         const stage = CAMPAIGN_OPPONENTS.find(s => s.stage === stageId) || CAMPAIGN_OPPONENTS[0];
         if (window.gameEngine) {
+          window.gameEngine.currentStageId = stageId;
+          if (window.gameEngine.progression) {
+            window.gameEngine.progression.currentStageId = stageId;
+          }
           window.gameEngine.setGameMode('bot');
           const penKeyMap = {
             "NATARAJ 621": "nataraj621",
