@@ -1110,15 +1110,19 @@
                   <div id="menu-student-name" class="text-[#0038a8] font-bold text-[19px] leading-tight truncate" style="font-family: Caveat, cursive; transform: rotate(-0.5deg); text-shadow: rgba(0, 56, 168, 0.4) 0.5px 0.5px 1px, rgba(30, 41, 59, 0.3) 0.2px 0px 0.5px; letter-spacing: 0.02em;">
                     Arjun 'Thunder' Sharma
                   </div>
-                  <div class="flex items-center justify-between text-xs">
-                    <div class="flex items-center gap-1">
-                      <span class="material-symbols-outlined text-[13px] text-primary">school</span>
-                      <span id="menu-level-name" class="font-bold text-[10px] text-[#475569]" style="font-family: 'Patrick Hand', cursive;">Lvl 2: Backbencher Elite</span>
+                  <!-- Clickable Rank & XP Bar -> Opens Level Journey Merit Ladder -->
+                  <div onclick="window.showLevelLadder()" class="cursor-pointer active:scale-98 transition-transform group p-1 -m-1 rounded-lg hover:bg-blue-50/70 border border-transparent hover:border-blue-300/60" title="Tap to view 11-Tier Classroom Merit List">
+                    <div class="flex items-center justify-between text-xs">
+                      <div class="flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[13px] text-primary">school</span>
+                        <span id="menu-level-name" class="font-bold text-[10px] text-[#475569]" style="font-family: 'Patrick Hand', cursive;">Lvl 2: Backbencher Elite</span>
+                        <span class="text-[8px] bg-amber-200 border border-amber-500 text-amber-950 font-black px-1 rounded uppercase tracking-tighter">MERIT 📜</span>
+                      </div>
+                      <span id="menu-xp-text" class="text-[10px] font-bold text-[#0038a8]" style="font-family: Caveat, cursive;">380 / 500 XP</span>
                     </div>
-                    <span id="menu-xp-text" class="text-[10px] font-bold text-[#0038a8]" style="font-family: Caveat, cursive;">380 / 500 XP</span>
-                  </div>
-                  <div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
-                    <div id="menu-xp-bar" class="h-full bg-primary rounded-full" style="width: 76%;"></div>
+                    <div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden mt-1">
+                      <div id="menu-xp-bar" class="h-full bg-primary rounded-full" style="width: 76%;"></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2598,6 +2602,67 @@
   </div>
 
 
+  
+  <!-- ====================================================================== -->
+  <!-- SUB-PAGE: LEVEL JOURNEY MERIT LADDER (CLASSROOM MERIT BOARD)           -->
+  <!-- ====================================================================== -->
+  <div id="level-ladder-modal" class="fixed inset-0 flex items-center justify-center p-3 sm:p-4 overflow-y-auto" style="display: none; z-index: 1050;">
+    <!-- Backdrop Blur -->
+    <div class="fixed inset-0 bg-[#2d1b0e]/75 backdrop-blur-sm transition-opacity" onclick="window.hideLevelLadder()"></div>
+
+    <!-- Handcrafted School Notice Board Chit -->
+    <div class="relative w-full max-w-[390px] my-auto bg-[#fffdf8] rounded-2xl border-4 border-slate-900 shadow-[0_16px_0_0_#0f172a,0_24px_50px_rgba(0,0,0,0.6)] overflow-hidden z-20 flex flex-col max-h-[90vh]" style="background-color: #fffef8; background-image: repeating-linear-gradient(transparent, transparent 23px, rgba(30, 64, 175, 0.07) 24px);">
+      
+      <!-- Paper Tape at Top Center -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2.5 w-28 h-5 bg-[#fef3c7] border border-[#d97706]/40 rotate-1 shadow-sm rounded-sm pointer-events-none z-30 flex items-center justify-center">
+        <span class="text-[8px] tracking-widest text-[#92400e] font-mono font-black uppercase">ANNUAL MERIT LIST</span>
+      </div>
+
+      <!-- Red Margin Lines (Left Edge) -->
+      <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-rose-400/40 pointer-events-none z-10"></div>
+      <div class="absolute left-7 top-0 bottom-0 w-0.5 bg-rose-300/30 pointer-events-none z-10"></div>
+
+      <!-- Header Banner -->
+      <div class="pt-5 pb-2 px-4 pl-9 border-b-2 border-dashed border-amber-900/30 bg-amber-50/90 flex items-start justify-between">
+        <div class="flex flex-col">
+          <div class="inline-flex items-center gap-1 text-[9.5px] font-black uppercase text-rose-700 border border-rose-300 rounded px-1.5 py-0.2 bg-rose-50 w-fit">
+            <span>★ SARASWATI VIDYALAYA ★</span>
+            <span>•</span>
+            <span>CLASS 7TH-B</span>
+          </div>
+          <h3 class="text-sm font-black text-slate-900 uppercase tracking-tight mt-1" style="font-family: 'Permanent Marker', cursive;">
+            11-TIER KHILADI MERIT LADDER
+          </h3>
+          <span class="text-[10px] text-slate-600 font-bold" style="font-family: 'Patrick Hand', cursive;">
+            Defeat rivals on desks to earn XP & rise to Bench King!
+          </span>
+        </div>
+        <button type="button" onclick="window.hideLevelLadder()" class="w-8 h-8 rounded-lg bg-white border border-slate-300 text-slate-700 flex items-center justify-center active:scale-95 shadow-sm font-black cursor-pointer" title="Close Merit List">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <!-- Scrollable 11 Tiers List -->
+      <div id="level-ladder-list" class="p-3 pl-9 overflow-y-auto flex flex-col gap-2.5 max-h-[60vh] select-none">
+        <!-- Dynamically populated by syncLevelLadder() -->
+      </div>
+
+      <!-- Footer Action -->
+      <div class="p-3 border-t border-slate-200 bg-white/95 flex items-center justify-between gap-2 z-20">
+        <div class="flex flex-col leading-tight">
+          <span class="text-[8.5px] font-black uppercase text-slate-500">Current Progress:</span>
+          <span id="ladder-footer-xp" class="text-[11px] font-black text-blue-900 font-mono">350 Total XP</span>
+        </div>
+        <button type="button" onclick="window.hideLevelLadder()" class="py-2 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-amber-300 font-black text-xs uppercase tracking-wider shadow-[0_2.5px_0_0_#000] active:translate-y-0.5 flex items-center gap-1.5 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+          <span>RETURN TO HUB</span>
+          <span class="material-symbols-outlined text-[15px]">arrow_forward</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
   <script>
     // Step 3.2 & Step 3.3: Splash Screen & Main Menu Hub Lifecycle
     (function initUIOrchestrator() {
@@ -2710,6 +2775,102 @@
       };
 
       // Story Mode opens Step 3.4 Visual Campaign Map & Stage Chit!
+      
+      // Step 3.10 / Sub-Page: Level Journey Merit Ladder Controller
+      const LADDER_DATA = [
+        { level: 1, minXp: 0, title: "Naya Admission", badgeIcon: "🎒", perk: "Starter Kit • Reynolds 045 Basic", note: '"Saraswati Vidyalaya me naya dakhila. Desk ladaai ka pehla sabak!" - Sharma Sir' },
+        { level: 2, minXp: 100, title: "Front Bencher", badgeIcon: "✏️", perk: "+3% Desk Grip • Stable Friction", note: '"Front desk par teacher ki nazar rehti hai, sambhal kar flick maro!" - Sharmila Ma\'am' },
+        { level: 3, minXp: 250, title: "Notebook Scribbler", badgeIcon: "📒", perk: "Cello Butterflow Pen Unlock • Smooth Slide +5%", note: '"Classmate copy ke aakhri page par rough calculations band karo!" - Maths Sir' },
+        { level: 4, minXp: 450, title: "Middle Row Rival", badgeIcon: "📏", perk: "+5% Flick Force • Sharp Parabolic Arc", note: '"Middle bench wale recess me table par khade ho rahe hain." - Monitor' },
+        { level: 5, minXp: 700, title: "Lunch Break Champ", badgeIcon: "🥪", perk: "Pilot V5 Precision Nib Unlock • Sharp Cut +8%", note: '"Tiffin baad me khana, pehle bench duel jeet kar dikhao!" - Bunty' },
+        { level: 6, minXp: 1050, title: "Section 7-A Topper", badgeIcon: "🎖️", perk: "+8% Snap Momentum • Respect Boost", note: '"Exam me bhi itna dhyan lagate toh state rank aati." - Principal Sir' },
+        { level: 7, minXp: 1500, title: "Last Bench Specialist", badgeIcon: "🕶️", perk: "Nataraj 621 Classic Pencil Unlock • Long Lever Arm", note: '"Peeche baithkar pen ghumane ki aawaz staff room tak aati hai!" - PT Tiwari Sir' },
+        { level: 8, minXp: 2050, title: "Senior Challenger", badgeIcon: "⚡", perk: "+10% Edge Balance • Corridor Aisle Access", note: '"8th standard wale seniors ko 7th ke bache ne hara diya!" - School Corridor Gossip' },
+        { level: 9, minXp: 2700, title: "Trimax Veteran", badgeIcon: "🖊️", perk: "Apsara Platinum Extra Dark Unlock • Heavy Inertia +12%", note: '"Heavy pen ki grip par rubber band aur M-Seal perfect laga hai." - Senior Bhaiya' },
+        { level: 10, minXp: 3450, title: "Corridor Cup Master", badgeIcon: "🏆", perk: "+15% Spin Angle Grip • Annual Recess Trophy", note: '"Section B ka naam roshan kar diya is saal ke tournament me!" - Class Teacher' },
+        { level: 11, minXp: 4300, title: "School Pen Fight Legend", badgeIcon: "👑", perk: "Reynolds Trimax Tank Unlock • Saraswati Golden Bench King", note: '"Principal podium desk par bhi iska nishana nahi chuka. All-Time Legend!" - Headmaster' }
+      ];
+
+      window.syncLevelLadder = function() {
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
+        const xp = (saved.progression && saved.progression.xp) || 0;
+
+        let currentLvl = LADDER_DATA[0];
+        for (let i = LADDER_DATA.length - 1; i >= 0; i--) {
+          if (xp >= LADDER_DATA[i].minXp) {
+            currentLvl = LADDER_DATA[i];
+            break;
+          }
+        }
+
+        const listEl = document.getElementById('level-ladder-list');
+        const footerXpEl = document.getElementById('ladder-footer-xp');
+        if (footerXpEl) footerXpEl.textContent = `${xp} Total Khiladi XP`;
+
+        if (!listEl) return;
+
+        listEl.innerHTML = LADDER_DATA.map(item => {
+          const isCurrent = (item.level === currentLvl.level);
+          const isPassed = (xp >= item.minXp && !isCurrent);
+          const isLocked = (xp < item.minXp);
+
+          let statusBadge = '';
+          let cardStyle = '';
+
+          if (isCurrent) {
+            statusBadge = `<span class="px-2 py-0.5 rounded-full bg-amber-300 border border-amber-700 text-amber-950 font-black text-[9px] uppercase shadow-xs flex items-center gap-1">★ ACTIVE RANK ★</span>`;
+            cardStyle = `background: #fffbeb; border: 2.5px solid #b45309; box-shadow: 0 4px 0 0 #78350f, 0 6px 12px rgba(180, 83, 9, 0.15);`;
+          } else if (isPassed) {
+            statusBadge = `<span class="px-2 py-0.5 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-800 font-bold text-[8.5px] uppercase flex items-center gap-0.5"><span class="material-symbols-outlined text-[12px]">check_circle</span> PASSED</span>`;
+            cardStyle = `background: #f8fafc; border: 1.8px solid #94a3b8; opacity: 0.9;`;
+          } else {
+            statusBadge = `<span class="px-2 py-0.5 rounded-full bg-slate-100 border border-slate-300 text-slate-500 font-bold text-[8.5px] uppercase flex items-center gap-0.5"><span class="material-symbols-outlined text-[11px]">lock</span> ${item.minXp} XP</span>`;
+            cardStyle = `background: #f1f5f9; border: 1.8px dashed #cbd5e1; opacity: 0.72;`;
+          }
+
+          return `
+            <div class="rounded-xl p-2.5 flex flex-col gap-1 transition-all" style="${cardStyle}">
+              <div class="flex items-center justify-between border-b border-dashed border-slate-300/80 pb-1">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-lg select-none">${item.badgeIcon}</span>
+                  <div class="flex flex-col">
+                    <span class="text-[9px] font-mono font-black text-slate-500 uppercase">TIER 0${item.level}</span>
+                    <h4 class="text-[12px] font-black text-slate-900 leading-tight" style="font-family: 'Permanent Marker', cursive;">${item.title}</h4>
+                  </div>
+                </div>
+                ${statusBadge}
+              </div>
+
+              <div class="flex items-center justify-between pt-0.5">
+                <span class="text-[9.5px] font-black text-blue-900 flex items-center gap-1" style="font-family: 'Patrick Hand', cursive;">
+                  <span class="material-symbols-outlined text-[13px] text-blue-700">military_tech</span>
+                  ${item.perk}
+                </span>
+                <span class="text-[9px] font-mono font-bold text-slate-600">${item.minXp} XP</span>
+              </div>
+
+              <p class="text-[9px] font-bold italic text-slate-600 leading-tight mt-0.5 border-t border-slate-200/60 pt-1" style="font-family: Caveat, cursive;">
+                ${item.note}
+              </p>
+            </div>
+          `;
+        }).join('');
+      };
+
+      window.showLevelLadder = function() {
+        window.syncLevelLadder();
+        const modal = document.getElementById('level-ladder-modal');
+        if (!modal) return;
+        modal.style.display = 'flex';
+      };
+
+      window.hideLevelLadder = function() {
+        const modal = document.getElementById('level-ladder-modal');
+        if (!modal) return;
+        modal.style.display = 'none';
+      };
+
       window.startStoryMode = function() {
         window.hideMainMenu();
         window.showCampaignMap();
