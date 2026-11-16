@@ -352,6 +352,7 @@ class GameEngine {
 
     const onPointerDown = (e) => {
       if (this.isSimulating) return;
+      if (window.hudController && typeof window.hudController.isPaused === 'function' && window.hudController.isPaused()) return;
 
       // Strict Turn & Input Lock: Determine active side ('player' or 'opponent')
       const activeSide = this.rules.activeTurn;
@@ -429,6 +430,9 @@ class GameEngine {
       if (this.powerMeterEl) {
         this.powerMeterEl.style.width = `${curvedPower * 100}%`;
       }
+      if (window.hudController) {
+        window.hudController.updatePower(curvedPower * 100);
+      }
 
       const aimDir = new THREE.Vector3(-pxDiffX, 0, -pxDiffY).normalize();
       this.aimArrow.setDirection(aimDir);
@@ -440,6 +444,9 @@ class GameEngine {
       this.isDragging = false;
       this.aimArrow.visible = false;
       if (this.powerMeterEl) this.powerMeterEl.style.width = '0%';
+      if (window.hudController) {
+        window.hudController.updatePower(0);
+      }
 
       const pxDiffX = this.smoothedDrag.x - this.dragStart.x;
       const pxDiffY = this.smoothedDrag.y - this.dragStart.y;
@@ -453,6 +460,26 @@ class GameEngine {
     window.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('pointermove', onPointerMove);
     window.addEventListener('pointerup', onPointerUp);
+
+    if (window.hudController && !this._hudBound) {
+      this._hudBound = true;
+      window.hudController.on('restart', () => {
+        this.resetSandbox();
+        if (window.hudController) {
+          window.hudController.updateScore(0, 0, 3);
+          window.hudController.setTurn('P1');
+        }
+      });
+      window.hudController.on('quit', () => {
+        if (window.hudController) window.hudController.hide();
+        if (window.showMainMenu) window.showMainMenu();
+      });
+      window.hudController.on('flick', () => {
+        if (!this.isDragging && this.rules.activeTurn === 'player' && !this.isSimulating) {
+          this.executeFlick('player', 0, -1, 140);
+        }
+      });
+    }
   }
 
   executeFlick(side, dirX, dirZ, dragPx) {
@@ -593,6 +620,17 @@ class GameEngine {
       this.statusMsgEl.innerText = outcome.message;
     }
 
+    if (window.hudController && outcome.score) {
+      window.hudController.updateScore(outcome.score.player, outcome.score.opponent, this.rules.targetWins || 3);
+      if (outcome.winner === 'player') {
+        window.hudController.setBanner('KNOCKOUT! 💥', `${p1Label} scored a point!`, 'POINT');
+      } else if (outcome.winner === 'opponent') {
+        window.hudController.setBanner('KNOCKOUT! 💥', `${p2Label} scored a point!`, 'POINT');
+      } else if (outcome.reFlick) {
+        window.hudController.setBanner('DOUBLE FALL! 🔄', 'Both pens fell! Re-flick round!', 'TIE');
+      }
+    }
+
     // 3. Update Turn Badge
     this.updateTurnBadge();
 
@@ -680,6 +718,22 @@ class GameEngine {
       this.turnBadgeEl.innerText = "Flicking...";
       this.turnBadgeEl.style.background = "#d9822b";
     }
+
+    if (window.hudController) {
+      if (this.rules.matchOver) {
+        const isWin = this.rules.winner === 'player';
+        window.hudController.setBanner(
+          isWin ? 'VICTORY! 🏆' : 'DEFEATED! 💀',
+          isWin ? 'Great match! Bench belongs to you!' : 'Defeated by rival! Better luck next recess!',
+          isWin ? 'WINNER' : 'FALLEN',
+          4000
+        );
+      } else if (this.rules.state === MatchState.P1_AIMING) {
+        window.hudController.setTurn('P1');
+      } else if (this.rules.state === MatchState.OPPONENT_AIMING) {
+        window.hudController.setTurn(is2P ? 'P2' : 'BOT');
+      }
+    }
   }
 
   changePen(side, penKey) {
@@ -763,6 +817,9 @@ class GameEngine {
     this.opponentPen.currQuat.copy(qBot);
 
     if (this.powerMeterEl) this.powerMeterEl.style.width = '0%';
+    if (window.hudController) {
+      window.hudController.updatePower(0);
+    }
     if (this.aimArrow) this.aimArrow.visible = false;
 
     if (!this.rules.matchOver) {
@@ -913,6 +970,12 @@ class GameEngine {
     let dt = (timestamp - this.lastTime) / 1000;
     this.lastTime = timestamp;
     if (dt > 0.1) dt = 0.1;
+
+    // Freeze physics if match is paused
+    if (window.hudController && typeof window.hudController.isPaused === 'function' && window.hudController.isPaused()) {
+      this.renderer.render(this.scene, this.camera);
+      return;
+    }
 
     this.accumulator += dt;
 

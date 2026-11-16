@@ -101,7 +101,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **66% (Steps 3.1-3.6 Done, Step 3.7 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Page 4 Tin Compass Box), Step 3.6 (Page 5 Match Setup) ready & verified | • Steps 3.7-3.9 screens pending (Transparent HUD, Result Certificate, Trophy Shelf & Settings).<br>• Steps 3.1-3.6 internal debt: Tailwind/Google Fonts local bundling, Settings placeholder alert hookup, aur Match Outcome reward loop. |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **77% (Steps 3.1-3.7 Done, Step 3.8 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Page 4 Tin Compass Box), Step 3.6 (Page 5 Match Setup), Step 3.7 (Page 6 Live HUD & Slingshot Gauge) ready & verified | • Steps 3.8-3.9 screens pending (Result Certificate, Trophy Shelf & Settings).<br>• Steps 3.1-3.7 internal debt: Tailwind/Google Fonts local bundling, Settings placeholder alert hookup, aur Match Outcome reward loop. |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -336,9 +336,21 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
     - `Coin Toss Interactive Flip Animation`: Pass & Play mode me actual coin flipping 3D/2D animation Step 3.7 ke HUD animation loop me polish hoga.
     - `Custom Rival Caricature Mapping`: Quick duel me random student caricatures ya high-tier bosses ka dynamic selection.
 
-- [ ] **Step 3.7: In-Game Transparent HUD & Color-Shifting Slingshot:**
-  - **Kya banega:** 3D Three.js canvas ke upar transparent arcade scoreboard (P1 score vs Opponent score: 0-3 with chunky round indicators), active turn badge, color-shifting slingshot arc (Green ➔ Amber ➔ Red trajectory dots), and elastic spring banners (*"YOUR TURN!"*, *"KNOCKOUT!"*).
-  - *Verification Receipt:* 3D canvas HUD ke aar-paar 100% visible rahe, touch/drag gesture HUD se obstruct na ho, trajectory color force ke hisab se shift ho, aur round jeetne par spring banner bounce ho.
+- [x] **Step 3.7 (COMPLETED): In-Game Transparent HUD & Color-Shifting Slingshot:**
+  - **Implementation:** Stitch AI Screen `d0279f0a85b14ef5a16905f61c9de372` ("Live 3D Arena - Slingshot HUD") aur Screen `11ef3533d85340e7a7704e58a6ed52a6` ("Pause Drawer - Recess Timeout Chit") ko `index.html`, `css/hud.css`, aur decoupled controller `js/hud.js` me merge karke `js/main.js` ke physics engine aur match setup se bind kiya gaya.
+  - **Core Features Implemented:**
+    - Transparent overlay (`#game-hud-overlay`) with `pointer-events: none` on backdrop and `pointer-events: auto` on interactive cards/buttons.
+    - Top Status Header: Recess period pill, stake badge, live bounty chip, aur circular tactile 3D pause button.
+    - Head-to-Head Scoreboard Card: Blue ruled notebook slip with red margin, red pushpin, P1 avatar/name/pen/roll, center `ROUND X / Y` timer + `VS` chip, aur P2 avatar/name/pen/roll with best-of-3 dynamic round pips (`round-pip-won`, `round-pip-pending`).
+    - Torn Paper Spring Banner (`#hud-turn-banner`): `YOUR TURN! 🎯` / `OPPONENT AIMING... ⏳` / `KNOCKOUT! 💥` with rubber stamp badge (`OUT OF DESK ⚡`), non-blocking pointer passthrough during drag.
+    - Environment Chips: Ceiling fan drift (`0.4 km/h West`) & desk grip indicator (`Teak Wood - High`).
+    - Tactile Slingshot Power Meter Card: Dynamic progress bar with color shift (Green ➔ Amber ➔ Red), tension zone indicator (`BALANCED`, `SWEET REBOUND ZONE`, `ROCKET BLAST`), and live percentage badge.
+    - Tactile Action Dock: Aim Lock toggle, deep navy `⚡ FLICK! RELEASE STRIKE ➔` hero CTA, peach Spin Grip stance toggle, and Rule #2 cautionary chit.
+    - Recess Timeout Pause Modal (`#pause-menu-modal`): Ruled paper chit with paperclip, pushpin, PT Tiwari Sir alert, live score summary, SFX/Haptics toggles, `RESUME DUEL ⏱️`, `RESTART ROUND 🔄`, and `QUIT TO CLASSROOM HUB 🚪`.
+    - Physics Loop Decoupling: Match paused state cleanly freezes physics accumulator in `animate()` while rendering 3D scene without stutter.
+  - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Duel launch from Match Setup, dynamic slingshot power gauge updates (0% to 68% sweet rebound), pause freeze frame, resume/quit verified. Receipts: `hud_duel_aiming_live.png`, `hud_pause_modal_live.png`.
+  - 🚨 **Pending Debt / Future Connectors (Step 3.7):**
+    - Step 3.8 Match Outcome Certificate: Match end hone par result report card popup trigger karna.
 
 - [ ] **Step 3.8: Match Outcome Certificate & Pause Drawer:**
   - **Kya banega:**
