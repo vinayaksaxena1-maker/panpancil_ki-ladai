@@ -298,7 +298,7 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 - [x] **Step 3.4 (COMPLETED): Visual Campaign Map & Stage Details Chit (Class 7 ➔ Class 8):**
   - **Implementation:** Stitch AI Screen `4c5110bfc5ba48e499bfe56e02187162` se Notebook Page 03 layout fetch karke `index.html`, `css/campaign.css`, aur 11 unique opponent caricatures (`assets/opponents/stage_01.jpg` to `stage_11.jpg`) me wire kiya gaya.
   - **Core Features Implemented:**
-    - Notebook Page 03 header with Saraswati Vidyalaya branding, Page No & Date index, aur live Canteen Fund balance.
+    - Notebook Page 03 header with Saraswati Vidyalaya branding, Page No & Date index, aur live Bench Progress count (`🏫 04/11 Cleared`).
     - 11-Desk promotion track (`X/11 Desks Cleared`, dynamic star sum `X/33 Stars ⭐`, pencil progress bar).
     - Cleared desks: Green checkmark badge `✔️`, actual earned star count (1★, 2★, 3★ from `stageStars`), and `Replay Recess?` match launcher.
     - Active Challenge: Authentic **Yellow Lined Revision Chit (`yellow-chit-hatch`)** with paperclip, pushpin 📌, opponent sketch caricature, weapon badge, Flick Force & Bench Grip bars, bench rule, rewards, aur `⚔️ FIGHT! ➔` / `🔄 WARMUP` buttons.
@@ -361,20 +361,20 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
       - `✪ VICTORY! ✪` banner + tilted pink rubber stamp: `★ PASSED WITH DISTINCTION (A+) ★`.
       - Combatant breakdown: P1 Champion sets vs P2 Defeated sets.
       - Recess Log: Dynamic round-by-round strike notes (`WIN`/`LOSS` badges).
-      - Rewards & Battle Pass: `+₹150 Canteen Fund`, `+350 XP`, dynamic animated level-up bar.
+      - Rewards & Battle Pass: `+350 Khiladi XP`, dynamic animated level-up bar.
       - Teacher's Red Ink Remark: *"Excellent wrist flick trajectory. Keep pens away during Maths period!" — Sharmila Ma'am* + Purple `BENCH KING` rubber stamp.
       - Dynamic Level-Up Banner: surfaces `[VIEW CHIT ➔]` button when promotion triggers.
     - **State 2: Defeat / Penalty Slip (`#result-view-defeat`):**
       - Table Fall Out header with strict discipline warning.
       - `💔 DEFEAT! OUT OF BOUNDS! 💔` banner + tilted red rubber stamp: `★ FAILED TO DEFEND BENCH • RE-TEST ORDERED ★`.
-      - Canteen Penalty: `-₹50 Canteen Fund (Samosa Fine)` with authentic classroom quote: *"Haarne wale ko samosa lana padega!"*.
+      - Bench Demerit Notice: *"Haarne wale ko re-test me baithna padega! Re-flick ordered."*.
       - PT Tiwari Sir Discipline Slip: *"Table se pen neeche gira diya! Agle recess tak zero duel permission! Murga bano corridor me!"* + `RE-TEST ORDERED` stamp.
     - **State 3: Rank Up Promotion Chit (`#result-view-promotion`):**
       - Official Saraswati Vidyalaya Promotion Chit with spiral torn paper perforation holes.
       - `🎖️ PROMOTED! LEVEL UP! 🎖️` with previous rank line-through ➔ new rank title.
       - Inspection Stat Boosts: Desk Grip (+6%), Flick Velocity (+35 km/h), Refill Ink Pressure (+100 ml).
       - New Weapon Unlocked: `Cello Gripper 0.5mm (Precision Trajectory Grip Edition)` with `READY` badge.
-      - Sharmaji Canteen Token: `1x Free Hot Samosa Coupon (+₹250)`.
+      - Classroom Honor Seal Token: `Attested Row Pass ★`.
       - Principal Approval Note: *"Shabaash Arjun! Pure class me sabse tezi se pen ghumaya hai."*.
     - **Tactile 3D Action Docks:**
       - Victory: `[NEXT CLASSMATE ➔]`, `[REMATCH (PASS PHONE) 🔄]`, `[RETURN TO CLASSROOM HUB 🚪]`.

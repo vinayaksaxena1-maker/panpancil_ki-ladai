@@ -42,7 +42,6 @@
     DOM.vP2Pen = document.getElementById('result-v-p2-pen');
     DOM.vP2Score = document.getElementById('result-v-p2-score');
     DOM.vRoundList = document.getElementById('result-v-round-list');
-    DOM.vCanteenBonus = document.getElementById('result-v-canteen-bonus');
     DOM.vXpBonus = document.getElementById('result-v-xp-bonus');
     DOM.vRankLabel = document.getElementById('result-v-rank-label');
     DOM.vXpFill = document.getElementById('result-v-xp-fill');
@@ -67,8 +66,6 @@
     DOM.pNewRank = document.getElementById('result-p-new-rank');
     DOM.pWeaponName = document.getElementById('result-p-weapon-name');
     DOM.pWeaponSub = document.getElementById('result-p-weapon-sub');
-    DOM.pCanteenBonus = document.getElementById('result-p-canteen-bonus');
-    DOM.pWalletTotal = document.getElementById('result-p-wallet-total');
 
     // Button Dock
     DOM.btnNext = document.getElementById('result-btn-next');
@@ -204,7 +201,6 @@
 
         const earnedXp = progResult.earnedXp || 350;
         if (DOM.vXpBonus) DOM.vXpBonus.textContent = `+${earnedXp} XP`;
-        if (DOM.vCanteenBonus) DOM.vCanteenBonus.textContent = `+₹150`;
 
         if (progResult.levelInfo && DOM.vRankLabel) {
           DOM.vRankLabel.textContent = `Rank: ${progResult.levelInfo.title}`;
@@ -267,7 +263,6 @@
         if (DOM.pNewRank) DOM.pNewRank.textContent = `🎖️ ${lvl.title.toUpperCase()} 🎖️`;
         if (DOM.pOldRank) DOM.pOldRank.textContent = `Naya Admission (Lvl ${Math.max(1, lvl.level - 1)})`;
         if (DOM.pWeaponName) DOM.pWeaponName.textContent = 'Cello Gripper 0.5mm';
-        if (DOM.pCanteenBonus) DOM.pCanteenBonus.textContent = '+₹250';
       }
     },
 
