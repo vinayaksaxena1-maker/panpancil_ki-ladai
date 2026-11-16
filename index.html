@@ -1112,7 +1112,7 @@
 
           <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
             <span class="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span>
-            <span class="font-bold text-[11px] tracking-wider uppercase text-rose-700" style="font-family: 'Patrick Hand', cursive;">PERIOD: RECESS • BENCH #4</span>
+            <span id="compass-status-bench-pill" class="font-bold text-[11px] tracking-wider uppercase text-rose-700" style="font-family: 'Patrick Hand', cursive;">PERIOD: RECESS • BENCH #1</span>
           </div>
 
           <div class="inline-flex items-center gap-1 px-2 py-0.5 bg-white/95 rounded-full text-primary font-bold text-[11px] shadow-sm" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
@@ -1137,9 +1137,9 @@
                 <div class="flex items-center justify-between border-b border-rose-400/40 pb-1 text-[10px] font-bold text-rose-700 tracking-wider" style="font-family: 'Patrick Hand', cursive;">
                   <span>★ CLASSMATE NOTEBOOK INDEX ★</span>
                   <div class="flex items-center gap-2 text-[10px] text-slate-700" style="font-family: 'Nunito Sans', sans-serif;">
-                    <span>PAGE: <strong class="text-rose-800">05</strong></span>
+                    <span>PAGE: <strong id="compass-page-no" class="text-rose-800">04</strong></span>
                     <span>•</span>
-                    <span>DATE: <strong class="text-rose-800">16/08/98</strong></span>
+                    <span>DATE: <strong id="compass-date-stamp" class="text-rose-800">18/08/98</strong></span>
                   </div>
                 </div>
                 <div class="flex items-center justify-between pt-1.5">
@@ -1151,10 +1151,10 @@
                     </p>
                   </div>
                   <div class="flex flex-col items-end">
-                    <span class="text-[9px] font-bold text-amber-800 uppercase tracking-tight" style="font-family: 'Patrick Hand', cursive;">CANTEEN FUND</span>
-                    <div id="compass-canteen-fund" class="px-2 py-0.5 rounded-full bg-amber-100 border border-amber-500 text-amber-900 text-[13px] font-black shadow-xs flex items-center gap-0.5" style="font-family: 'Permanent Marker', cursive;">
-                      ₹1,420
-                    </div>
+                    <span class="text-[9px] font-bold text-slate-500 uppercase tracking-tight" style="font-family: 'Patrick Hand', cursive;">GEOMETRY ARSENAL</span>
+                    <span class="px-2 py-0.5 rounded bg-blue-50 border border-blue-400/60 text-[#00288e] text-[10px] font-black shadow-xs -rotate-1" style="font-family: 'Permanent Marker', cursive;">
+                      CLASS 7-B PASS
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1262,17 +1262,12 @@
                 </div>
               </div>
 
-              <!-- 4. Tactile Hatched Action Buttons -->
+              <!-- 4. Tactile Hatched Action Button -->
               <div class="flex flex-col gap-1.5 w-full mt-0.5">
                 <button id="compass-action-btn" onclick="window.handleCompassEquipAction()" class="relative w-full py-2.5 rounded-xl bg-white border-2 border-primary text-primary font-black text-[13px] tracking-wider flex items-center justify-center gap-1.5 shadow-[2px_2px_0px_#00288e] active:translate-y-0.5 transition-all cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
                   <span class="material-symbols-outlined text-[18px]">sports_esports</span>
                   <span id="compass-action-label">EQUIPPED & READY TO FLICK</span>
                   <span class="text-sm font-bold">➔</span>
-                </button>
-
-                <button type="button" onclick="window.tweakPenModsAlert()" class="relative w-full py-1.5 rounded-xl bg-white/90 text-slate-800 font-bold text-[11px] tracking-wide flex items-center justify-center gap-1 border-2 border-slate-800 shadow-[1.5px_1.5px_0px_#334155] active:translate-y-0.5 transition-all cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
-                  <span class="text-amber-700 text-[13px]">🎛️</span>
-                  <span>TWEAK NIB, TAPE & GRIP ⚙️</span>
                 </button>
               </div>
 
@@ -2357,17 +2352,32 @@
           const progression = savedState.progression || {};
           const currentEquippedPen = profile.selectedPlayerPen || 'reynolds045';
           const highestStage = progression.highestStageUnlocked || 1;
+          const currentStage = progression.currentStageId || 1;
           const unlockedPens = savedState.unlockedPens || ['reynolds045', 'nataraj621'];
-          const coins = (progression.xp ? Math.floor(progression.xp * 1.5) : 0) + 1420;
 
-          // Header Roll & Canteen Fund
+          // Dynamic Top Status Header Pill (Bench Sync)
+          const benchPill = document.getElementById('compass-status-bench-pill');
+          if (benchPill) {
+            benchPill.textContent = currentStage > 11 ? 'PERIOD: RECESS • CHAMPION DESK' : `PERIOD: RECESS • BENCH #${currentStage}`;
+          }
+
+          // Header Notebook Page No & Dynamic 90s Date
+          const pageNoEl = document.getElementById('compass-page-no');
+          if (pageNoEl) {
+            pageNoEl.textContent = '04';
+          }
+          const dateStampEl = document.getElementById('compass-date-stamp');
+          if (dateStampEl) {
+            const today = new Date();
+            const dd = String(today.getDate()).padStart(2, '0');
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            dateStampEl.textContent = `${dd}/${mm}/98`;
+          }
+
+          // Student Roll No Badge
           const rollBadge = document.getElementById('compass-roll-badge');
           if (rollBadge) {
             rollBadge.textContent = `ROLL NO: #${profile.rollNo || '14'}`;
-          }
-          const canteenFund = document.getElementById('compass-canteen-fund');
-          if (canteenFund) {
-            canteenFund.textContent = `₹${coins.toLocaleString('en-IN')}`;
           }
 
           // Count unlocked pens
@@ -2589,17 +2599,6 @@
         } catch(err) {
           console.error("Error equipping pen:", err);
         }
-      };
-
-      window.tweakPenModsAlert = function() {
-        const pen = COMPASS_PENS.find(p => p.key === currentInspectedPenKey) || COMPASS_PENS[0];
-        alert(`✂️ Desi Classroom Mod Desk:\n\n` +
-          `Selected Pen: ${pen.fullName}\n` +
-          `Current Setup: ${pen.modText}\n\n` +
-          `Tips:\n` +
-          `• Double rubber band adds +15% grip on varnished desks.\n` +
-          `• M-Seal in the back cap prevents back-heavy flipoffs.\n` +
-          `• Razor sharpened nib increases straight knockout force!`);
       };
 
       // Hydrate existing saved student data from LocalStorage
