@@ -1,0 +1,48 @@
+/* css/compass.css - Step 3.5: Tin Compass Box Screen */
+#compass-box-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(248, 243, 230);
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-overflow-scrolling: touch;
+}
+
+#compass-box-overlay.compass-dismissed {
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+}
+
+#compass-box-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+.tin-tray-emboss {
+  background-color: #f3eddf;
+  border: 2px solid #334155;
+  box-shadow: 3px 4px 0px #1e293b, inset 0 2px 4px rgba(255, 255, 255, 0.7);
+}
+
+.pen-slot-active {
+  border: 2.2px solid #00288e !important;
+  background-color: #ffffff !important;
+  box-shadow: 2.5px 2.5px 0px #00288e !important;
+}
+
+.pen-slot-inactive {
+  border: 1.8px solid #475569 !important;
+  background-color: #faf6ed !important;
+  box-shadow: 1.5px 2px 0px #64748b !important;
+}
+
+.pen-slot-locked {
+  border: 1.8px dashed #94a3b8 !important;
+  background-color: rgba(235, 227, 211, 0.8) !important;
+  opacity: 0.75;
+}

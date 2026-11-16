@@ -101,7 +101,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **44% (Steps 3.1-3.4 Done, Step 3.5 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit) ready & verified | • Steps 3.5-3.9 screens pending (Compass Box, Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings).<br>• Steps 3.1-3.4 internal debt: Tailwind/Google Fonts local bundling, Compass Box & Settings placeholder alerts hookup, aur Match Outcome reward loop. |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟡 **55% (Steps 3.1-3.5 Done, Step 3.6 Next)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Tin Compass Box Arsenal) ready & verified | • Steps 3.6-3.9 screens pending (Match Setup, Transparent HUD, Result Certificate, Trophy Shelf & Settings).<br>• Steps 3.1-3.5 internal debt: Tailwind/Google Fonts local bundling, Settings placeholder alert hookup, aur Match Outcome reward loop. |
 | **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -312,9 +312,18 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
     - `Dynamic Star Overwrite on Replay`: Purane stage ko replay karke behtar score karne par save file me star upgrade Step 3.8 se sync hoga.
     - `Locked Period Chit Modal`: Locked desks par click karne par specific unlock requirement popup card dikhana pending hai.
 
-- [ ] **Step 3.5: Tin Compass Box Screen (Collectible Pen Showcase):**
-  - **Kya banega:** Steel geometry box visual with 6 collectible pen slots. 3D pen preview with toy finishes + exact physics stats (Weight in grams, Knockout Mass, Agility, Roll Drag) + chunky `[Equip Pen]` action.
-  - *Verification Receipt:* 6 pens ke exact stats (12g, 15g, 13.3g etc.) load hon aur equip button dabane par active pen update ho.
+- [x] **Step 3.5 (COMPLETED): Tin Compass Box Screen (Collectible Pen Showcase):**
+  - **Implementation:** Stitch Screen `99b1a1d0c65049f49f2f0614a6efec13` ("Tin Compass Box - Geometry Box Arsenal") ko `index.html`, `css/compass.css`, aur 6 local pen macro assets (`reynolds_slot.jpg`, `nataraj_slot.jpg`, `gripper_slot.jpg`, `pen_extra.jpg`, `trimax_slot.jpg`, `apsara_slot.jpg`) ke sath wire kiya gaya.
+    - Camlin Tin Geometry Box embossed tray with 6 slots (Reynolds 045, Nataraj 621, Cello Butterflow, Pilot V5, Reynolds Trimax, Apsara Platinum).
+    - Unlocked vs locked visual states (`STG 3`, `STG 5`, `STG 8`, `STG 10` badges & grayscale lock filters).
+    - Inspection Report card with pen macro photo, tape sticker mod (`Mod: Double Rubber Band + M-Seal Cap Weight`), pen type, exact weight, and handwriting lore quote.
+    - 4 real-time stat bars (Knockout Mass, Agility/Spin, Roll Drag friction, Tip Nib Precision).
+    - Chunky tactile hatched button (`[EQUIP PEN ->]` / `[EQUIPPED & READY TO FLICK]`) that switches player pen in `localStorage` and 3D physics scene (`gameEngine.changePen('player', penKey)`), updates Main Menu badge (`#menu-player-pen-label`), and updates slots in real time.
+    - Classroom Mod desk alert dialog for rubber grip tape, M-seal counterweight, and sharpened nib tips.
+  - *Verification Receipt:* Mobile viewport (390x844) live verified via Puppeteer. Equipping Nataraj 621 updates save state (`selectedPlayerPen: 'nataraj621'`), reflects on Main Menu hub badge (`NATARAJ 621`), and slots dynamically update. Screenshots: `compass_box_live.png`, `compass_box_nataraj_selected.png`, `compass_box_nataraj_equipped.png`.
+  - 🚨 **Pending Debt / Future Connectors (Step 3.5):**
+    - `Mod Customizer Workshop`: Future update me actual stat modifiers apply karne ke liye visual upgrade workbench.
+    - `Unlock Animation Fanfare`: Campaign stage clear hone par newly unlocked pen ka geometry box opening animation Step 3.8 ke reward flow se trigger hoga.
 
 - [ ] **Step 3.6: Match Setup Screen (Single Player & Pass-and-Play Cards):**
   - **Kya banega:**

@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./css/splash.css?v=p3_s2">
   <link rel="stylesheet" href="./css/menu.css?v=p3_s3">
   <link rel="stylesheet" href="./css/campaign.css?v=p3_s4">
+  <link rel="stylesheet" href="./css/compass.css?v=p3_s5">
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -882,7 +883,7 @@
                 </div>
 
                 <!-- Compass Box -->
-                <div class="bg-white/95 p-2 rounded-lg shadow-xs flex flex-col justify-between cursor-pointer active:scale-98 transition-transform group" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 7px 5px 8px 4px;" onclick="window.openFeatureNotice('Compass Box (Step 3.5 Arsenal)')">
+                <div class="bg-white/95 p-2 rounded-lg shadow-xs flex flex-col justify-between cursor-pointer active:scale-98 transition-transform group" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 7px 5px 8px 4px;" onclick="window.startCompassBox()">
                   <div class="flex items-start justify-between">
                     <div class="w-6 h-6 rounded bg-teal-100 text-teal-800 flex items-center justify-center border border-teal-300/60">
                       <span class="material-symbols-outlined text-[15px]">hardware</span>
@@ -1088,12 +1089,214 @@
     </main>
   </div>
 
+  <!-- Phase 3 Step 3.5: Tin Compass Box Screen (Collectible Pen Arsenal) -->
+  <div id="compass-box-overlay" style="display: none;">
+    <main class="w-[390px] h-[844px] max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
+      <!-- Ambient Compass Geometry Doodles in Outer Margin -->
+      <div class="absolute -top-4 -right-6 pointer-events-none opacity-20 text-secondary z-0">
+        <svg fill="none" height="64" stroke="currentColor" stroke-width="1.2" viewBox="0 0 100 100" width="64">
+          <circle cx="50" cy="50" r="42" stroke-dasharray="3 2"></circle>
+          <circle cx="50" cy="50" r="24"></circle>
+          <path d="M50 6 V94 M6 50 H94"></path>
+        </svg>
+      </div>
+
+      <!-- Scrollable Inner Viewport Container -->
+      <div class="flex flex-col w-full relative px-2.5 pt-2 pb-2 select-none flex-1 overflow-y-auto">
+        <!-- Top Status Header Pill with Back Button -->
+        <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
+          <button type="button" onclick="window.hideCompassBox(); window.showMainMenu();" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#1e293b] font-bold text-[11px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[12px] font-bold">←</span>
+            <span>HUB</span>
+          </button>
+
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
+            <span class="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span>
+            <span class="font-bold text-[11px] tracking-wider uppercase text-rose-700" style="font-family: 'Patrick Hand', cursive;">PERIOD: RECESS • BENCH #4</span>
+          </div>
+
+          <div class="inline-flex items-center gap-1 px-2 py-0.5 bg-white/95 rounded-full text-primary font-bold text-[11px] shadow-sm" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[#00288e]">🧰</span>
+            <span>ARSENAL</span>
+          </div>
+        </header>
+
+        <!-- TORN NOTEBOOK PAGE SHELL matching Stitch design -->
+        <div class="relative z-10 select-none filter drop-shadow-[0_8px_16px_rgba(40,30,15,0.18)] mb-2">
+          <div class="relative overflow-hidden p-2.5 pl-6 border bg-surface-container-lowest border-outline-variant/30" style="clip-path: polygon(10px 0%, 100% 0%, 100% 100%, 10px 100%, 7px 97.5%, 11px 95%, 6px 92.5%, 9px 90%, 5px 87.5%, 11px 85%, 7px 82.5%, 10px 80%, 6px 77.5%, 12px 75%, 7px 72.5%, 11px 70%, 5px 67.5%, 10px 65%, 6px 62.5%, 12px 60%, 7px 57.5%, 10px 55%, 5px 52.5%, 11px 50%, 6px 47.5%, 12px 45%, 7px 42.5%, 10px 40%, 6px 37.5%, 11px 35%, 5px 32.5%, 10px 30%, 7px 27.5%, 12px 25%, 6px 22.5%, 10px 20%, 5px 17.5%, 11px 15%, 7px 12.5%, 10px 10%, 6px 7.5%, 11px 5%, 7px 2.5%, 10px 0%); background-color: rgb(255, 255, 255); border-radius: 0px 4px 4px 4px; box-shadow: rgb(30, 41, 59) 0px 0px 0px 1.8px inset, rgba(30, 41, 59, 0.35) 0px 0px 0px 3px inset, rgb(30, 41, 59) 0px 3px 0px 0px;">
+            <!-- Spiral Edge & Margin lines -->
+            <div class="absolute top-0 bottom-0 left-0 w-4 pointer-events-none z-15" style="background: linear-gradient(to right, rgba(235, 230, 218, 0.95) 0%, rgba(255, 255, 255, 0.8) 50%, transparent 100%);"></div>
+            <div class="absolute inset-0 pointer-events-none" style="background-image: repeating-linear-gradient(transparent 0px, transparent 23px, rgba(96, 165, 250, 0.22) 24px, rgba(96, 165, 250, 0.22) 25px); background-size: 100% 25px;"></div>
+            <div class="absolute top-0 bottom-0 left-7 w-[1.5px] bg-[#dc2626] opacity-90 pointer-events-none z-10"></div>
+            <div class="absolute top-0 bottom-0 left-[33px] w-[1px] bg-[#b91c1c] opacity-35 pointer-events-none"></div>
+
+            <!-- Inner Content -->
+            <div class="relative z-10 pl-5 flex flex-col gap-2.5">
+              <!-- 1. Index Header Box -->
+              <div class="relative w-full border-2 border-rose-600/70 bg-white/95 rounded-md p-2 shadow-xs">
+                <div class="flex items-center justify-between border-b border-rose-400/40 pb-1 text-[10px] font-bold text-rose-700 tracking-wider" style="font-family: 'Patrick Hand', cursive;">
+                  <span>★ CLASSMATE NOTEBOOK INDEX ★</span>
+                  <div class="flex items-center gap-2 text-[10px] text-slate-700" style="font-family: 'Nunito Sans', sans-serif;">
+                    <span>PAGE: <strong class="text-rose-800">05</strong></span>
+                    <span>•</span>
+                    <span>DATE: <strong class="text-rose-800">16/08/98</strong></span>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between pt-1.5">
+                  <div>
+                    <span id="compass-roll-badge" class="inline-block px-1.5 py-0.2 bg-rose-100 text-rose-800 rounded text-[10px] font-bold -rotate-1" style="font-family: 'Patrick Hand', cursive;">ROLL NO: #14</span>
+                    <h2 class="text-[15px] font-black text-[#00288e] leading-tight mt-0.5 uppercase tracking-wide" style="font-family: 'Permanent Marker', cursive;">CAMLIN TIN GEOMETRY BOX</h2>
+                    <p class="text-[11px] font-bold text-slate-600 leading-tight" style="font-family: Caveat, cursive;">
+                      Arsenal of Desks • <span id="compass-unlocked-count" class="text-primary font-bold">2/6 Pens Unlocked</span>
+                    </p>
+                  </div>
+                  <div class="flex flex-col items-end">
+                    <span class="text-[9px] font-bold text-amber-800 uppercase tracking-tight" style="font-family: 'Patrick Hand', cursive;">CANTEEN FUND</span>
+                    <div id="compass-canteen-fund" class="px-2 py-0.5 rounded-full bg-amber-100 border border-amber-500 text-amber-900 text-[13px] font-black shadow-xs flex items-center gap-0.5" style="font-family: 'Permanent Marker', cursive;">
+                      ₹1,420
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Camlin Tin Tray (6 Pens Grid) -->
+              <div class="relative w-full tin-tray-emboss rounded-xl p-2 shadow-sm">
+                <div class="flex items-center justify-between px-2 py-0.5 mb-1.5 bg-[#e8dfce] rounded-lg border border-slate-500/50 shadow-inner">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-1.5 rounded-xs bg-slate-500 border border-slate-600 shadow-sm"></span>
+                    <span class="font-extrabold text-[8px] tracking-wider text-slate-700 uppercase" style="font-family: 'Nunito Sans', sans-serif;">NATRAJ MATH INSTRUMENTS TRAY</span>
+                  </div>
+                  <div class="flex items-center gap-1 text-[8px] font-bold font-mono text-slate-600">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+                    <span>CAMLIN PAT. 1994</span>
+                  </div>
+                </div>
+
+                <!-- 6 Slots (2 rows x 3 cols) -->
+                <div id="compass-pens-grid" class="grid grid-cols-3 gap-1.5">
+                  <!-- Injected dynamically via syncCompassBox() -->
+                </div>
+              </div>
+
+              <!-- 3. Detailed Pen Inspection Report Card -->
+              <div id="compass-inspection-card" class="relative w-full bg-white rounded-xl border-2 border-slate-800 p-2.5 shadow-sm overflow-hidden" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 2px 2.5px 0px;">
+                <div class="flex items-center justify-between mb-1.5">
+                  <div class="flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-red-600 shadow-sm border border-slate-800"></span>
+                    <span id="inspect-header-id" class="text-[12px] font-bold text-slate-600" style="font-family: Caveat, cursive;">INSPECTION REPORT #045</span>
+                  </div>
+                  <div id="inspect-equipped-badge" class="px-2 py-0.2 border border-rose-600 rounded text-rose-600 text-[9px] font-black uppercase tracking-wider rotate-1 bg-rose-50/70" style="font-family: 'Permanent Marker', cursive;">
+                    EQUIPPED IN RECESS
+                  </div>
+                </div>
+
+                <!-- Macro Photo Showcase Frame -->
+                <div class="relative w-full rounded-lg bg-[#f7f2e4] border border-slate-300 p-1.5 overflow-hidden flex flex-col items-center">
+                  <div class="absolute -top-1 left-6 w-12 h-3.5 bg-amber-200/80 border-x border-amber-300 rotate-2 shadow-xs"></div>
+                  <div class="w-full h-24 relative flex items-center justify-center">
+                    <img id="inspect-pen-img" class="max-w-[85%] max-h-[85%] object-contain drop-shadow-md -rotate-1" alt="Pen Macro Photo" src="./assets/pens/reynolds_macro.jpg">
+                    <!-- Sticky Mod Annotation Chit -->
+                    <div id="inspect-mod-chit" class="absolute bottom-0.5 left-0.5 bg-yellow-100 border border-yellow-400 text-yellow-950 px-1.5 py-0.2 rounded shadow-xs text-[10px] -rotate-1 flex items-center gap-1" style="font-family: Caveat, cursive;">
+                      <span class="text-[11px] text-amber-700">🛠️</span>
+                      <span id="inspect-mod-text" class="font-bold">Mod: Double Rubber Band + M-Seal Cap Weight</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Pen Specs Details -->
+                <div class="mt-2">
+                  <div class="flex items-baseline justify-between">
+                    <h3 id="inspect-pen-name" class="text-[14px] font-black text-[#00288e] tracking-wide" style="font-family: 'Permanent Marker', cursive;">Reynolds 045 Fine Ballpoint</h3>
+                    <span id="inspect-pen-weight" class="text-[10px] font-bold text-amber-900 bg-amber-100 px-1.5 py-0.2 rounded border border-amber-300" style="font-family: 'Patrick Hand', cursive;">12.2 Grams (Precision)</span>
+                  </div>
+                  <p id="inspect-pen-lore" class="text-[11px] text-slate-700 leading-tight mt-0.5 font-bold" style="font-family: Caveat, cursive;">
+                    "The king of bench corners. Fast recoil, rapid wrist flicks, but prone to high-speed bounce if hit sideways."
+                  </p>
+                </div>
+
+                <!-- 4 Exact Stat Bars -->
+                <div class="grid grid-cols-2 gap-x-2 gap-y-1.5 mt-2 pt-1.5 border-t border-slate-300 text-[10px]" style="font-family: 'Patrick Hand', cursive;">
+                  <!-- Knockout Mass -->
+                  <div class="flex flex-col gap-0.5">
+                    <div class="flex justify-between items-center text-[10px]">
+                      <span class="font-bold text-slate-700">Knockout Mass</span>
+                      <strong id="stat-mass-val" class="text-primary font-bold">64 / 100</strong>
+                    </div>
+                    <div class="w-full h-1.5 rounded-full bg-slate-200 border border-slate-300 overflow-hidden">
+                      <div id="stat-mass-bar" class="h-full bg-amber-700 rounded-full" style="width: 64%;"></div>
+                    </div>
+                  </div>
+
+                  <!-- Agility / Spin -->
+                  <div class="flex flex-col gap-0.5">
+                    <div class="flex justify-between items-center text-[10px]">
+                      <span class="font-bold text-slate-700">Agility / Spin</span>
+                      <strong id="stat-agility-val" class="text-primary font-bold">92 / 100</strong>
+                    </div>
+                    <div class="w-full h-1.5 rounded-full bg-slate-200 border border-slate-300 overflow-hidden">
+                      <div id="stat-agility-bar" class="h-full bg-primary rounded-full" style="width: 92%;"></div>
+                    </div>
+                  </div>
+
+                  <!-- Roll Drag (Desk Friction) -->
+                  <div class="flex flex-col gap-0.5">
+                    <div class="flex justify-between items-center text-[10px]">
+                      <span class="font-bold text-slate-700">Roll Drag (Friction)</span>
+                      <strong id="stat-friction-val" class="text-slate-700 font-bold">35%</strong>
+                    </div>
+                    <div class="w-full h-1.5 rounded-full bg-slate-200 border border-slate-300 overflow-hidden">
+                      <div id="stat-friction-bar" class="h-full bg-slate-600 rounded-full" style="width: 35%;"></div>
+                    </div>
+                  </div>
+
+                  <!-- Tip Nib Precision -->
+                  <div class="flex flex-col gap-0.5">
+                    <div class="flex justify-between items-center text-[10px]">
+                      <span class="font-bold text-slate-700">Tip Nib Precision</span>
+                      <strong id="stat-tip-val" class="text-rose-700 font-bold">0.5mm Needle</strong>
+                    </div>
+                    <div class="w-full h-1.5 rounded-full bg-slate-200 border border-slate-300 overflow-hidden">
+                      <div id="stat-tip-bar" class="h-full bg-rose-600 rounded-full" style="width: 80%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 4. Tactile Hatched Action Buttons -->
+              <div class="flex flex-col gap-1.5 w-full mt-0.5">
+                <button id="compass-action-btn" onclick="window.handleCompassEquipAction()" class="relative w-full py-2.5 rounded-xl bg-white border-2 border-primary text-primary font-black text-[13px] tracking-wider flex items-center justify-center gap-1.5 shadow-[2px_2px_0px_#00288e] active:translate-y-0.5 transition-all cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+                  <span class="material-symbols-outlined text-[18px]">sports_esports</span>
+                  <span id="compass-action-label">EQUIPPED & READY TO FLICK</span>
+                  <span class="text-sm font-bold">➔</span>
+                </button>
+
+                <button type="button" onclick="window.tweakPenModsAlert()" class="relative w-full py-1.5 rounded-xl bg-white/90 text-slate-800 font-bold text-[11px] tracking-wide flex items-center justify-center gap-1 border-2 border-slate-800 shadow-[1.5px_1.5px_0px_#334155] active:translate-y-0.5 transition-all cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+                  <span class="text-amber-700 text-[13px]">🎛️</span>
+                  <span>TWEAK NIB, TAPE & GRIP ⚙️</span>
+                </button>
+              </div>
+
+              <!-- 5. Classroom Rule #4 Footer Lore -->
+              <div class="w-full p-2 rounded-lg bg-amber-50/90 border border-amber-300 shadow-xs flex items-start gap-1.5">
+                <span class="material-symbols-outlined text-rose-600 text-[16px] shrink-0 mt-0.5">warning</span>
+                <p class="text-[11px] font-bold text-slate-800 leading-tight" style="font-family: Caveat, cursive;">
+                  "Classroom Rule #4: Geometry box ka divider nikal ke desk pe mat godna, Ma'am confiscate kar lengi!"
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
   <script>
     // Step 3.2 & Step 3.3: Splash Screen & Main Menu Hub Lifecycle
     (function initUIOrchestrator() {
       const splashOverlay = document.getElementById('splash-screen-overlay');
       const menuOverlay = document.getElementById('main-menu-overlay');
       const campaignOverlay = document.getElementById('campaign-map-overlay');
+      const compassOverlay = document.getElementById('compass-box-overlay');
       const enterBtn = document.getElementById('enter-classroom-btn');
       const nameInput = document.getElementById('student-name-input');
 
@@ -1130,6 +1333,30 @@
         setTimeout(() => {
           campaignOverlay.style.display = 'none';
         }, 350);
+      };
+
+      window.showCompassBox = function(activeKey) {
+        if (!compassOverlay) return;
+        compassOverlay.style.display = 'flex';
+        requestAnimationFrame(() => {
+          compassOverlay.classList.remove('compass-dismissed');
+        });
+        syncCompassBox(activeKey);
+      };
+
+      window.hideCompassBox = function() {
+        if (!compassOverlay) return;
+        compassOverlay.classList.add('compass-dismissed');
+        setTimeout(() => {
+          compassOverlay.style.display = 'none';
+        }, 350);
+      };
+
+      window.startCompassBox = function() {
+        window.hideMainMenu();
+        setTimeout(() => {
+          window.showCompassBox();
+        }, 120);
       };
 
       window.startQuickDuel = function() {
@@ -1980,6 +2207,400 @@
           console.error("Error in syncCampaignMap:", err);
         }
       }
+
+      // Step 3.5: Tin Compass Box Screen (Collectible Pen Showcase & Specs)
+      const COMPASS_PENS = [
+        {
+          key: 'reynolds045',
+          idNum: '045',
+          name: 'Reynolds 045',
+          fullName: 'Reynolds 045 Fine Ballpoint',
+          slotThumb: './assets/pens/reynolds_slot.jpg',
+          macroPhoto: './assets/pens/reynolds_macro.jpg',
+          type: 'Cylinder (Fine)',
+          weight: '12.2 Grams (Precision)',
+          massVal: '64 / 100',
+          massPct: 64,
+          agilityVal: '92 / 100',
+          agilityPct: 92,
+          frictionVal: '35%',
+          frictionPct: 35,
+          tipVal: '0.5mm Needle',
+          tipPct: 80,
+          unlockedDefault: true,
+          reqStage: 1,
+          lore: '"The king of bench corners. Fast recoil, rapid wrist flicks, but prone to high-speed bounce if hit sideways."',
+          modText: 'Mod: Double Rubber Band + M-Seal Cap Weight'
+        },
+        {
+          key: 'nataraj621',
+          idNum: '621',
+          name: 'Nataraj 621',
+          fullName: 'Nataraj 621 Wooden Pencil',
+          slotThumb: './assets/pens/nataraj_slot.jpg',
+          macroPhoto: './assets/pens/nataraj_slot.jpg',
+          type: 'Hexagonal Prism',
+          weight: '8.7 Grams (Ultra-Light)',
+          massVal: '45 / 100',
+          massPct: 45,
+          agilityVal: '96 / 100',
+          agilityPct: 96,
+          frictionVal: '30%',
+          frictionPct: 30,
+          tipVal: 'Sharpened HB Lead',
+          tipPct: 70,
+          unlockedDefault: true,
+          reqStage: 1,
+          lore: '"Classic red and black stripes. 6 flat edges prevent desk rollaway. Perfect for sudden angle ricochets."',
+          modText: 'Mod: Apsara Sharpener Razor Tip + Back Eraser Cap'
+        },
+        {
+          key: 'butterflow',
+          idNum: '007',
+          name: 'Cello Butterflow',
+          fullName: 'Cello Butterflow Smooth Grip',
+          slotThumb: './assets/pens/gripper_slot.jpg',
+          macroPhoto: './assets/pens/gripper_slot.jpg',
+          type: 'Ergonomic Rubber Grip',
+          weight: '13.3 Grams (Grip-Lock)',
+          massVal: '72 / 100',
+          massPct: 72,
+          agilityVal: '85 / 100',
+          agilityPct: 85,
+          frictionVal: '28%',
+          frictionPct: 28,
+          tipVal: '0.7mm Ball Lubriflow',
+          tipPct: 84,
+          unlockedDefault: false,
+          reqStage: 3,
+          lore: '"Smooth glide with soft ribbed rubber collar. Absorbs heavy opponent impacts without sliding off the edge."',
+          modText: 'Mod: Thread Wound Grip + Double Lead Refill Weight'
+        },
+        {
+          key: 'pilotV5',
+          idNum: '005',
+          name: 'Pilot V5 Hi-Tec',
+          fullName: 'Pilot V5 Hi-Tecpoint Rollerball',
+          slotThumb: './assets/pens/pen_extra.jpg',
+          macroPhoto: './assets/pens/pen_extra.jpg',
+          type: 'Japanese Liquid Ink Needle',
+          weight: '11.2 Grams (Precision Dart)',
+          massVal: '58 / 100',
+          massPct: 58,
+          agilityVal: '95 / 100',
+          agilityPct: 95,
+          frictionVal: '32%',
+          frictionPct: 32,
+          tipVal: '0.5mm 3-Dimple Tip',
+          tipPct: 95,
+          unlockedDefault: false,
+          reqStage: 5,
+          lore: '"Strictly forbidden in middle school exam halls! Razor sharp needle point delivers devastating precision trickshots."',
+          modText: 'Mod: Transparent Clip Lock + Solder Wire Inside Barrel'
+        },
+        {
+          key: 'trimax',
+          idNum: '999',
+          name: 'Reynolds Trimax',
+          fullName: 'Reynolds Trimax Gold Heavy Tank',
+          slotThumb: './assets/pens/trimax_slot.jpg',
+          macroPhoto: './assets/pens/trimax_slot.jpg',
+          type: 'Triangular Prism (Heavy)',
+          weight: '15.5 Grams (Maximum Impact)',
+          massVal: '98 / 100',
+          massPct: 98,
+          agilityVal: '68 / 100',
+          agilityPct: 68,
+          frictionVal: '42%',
+          frictionPct: 42,
+          tipVal: '0.8mm Heavy Flow',
+          tipPct: 90,
+          unlockedDefault: false,
+          reqStage: 8,
+          lore: '"The Heavyweight Champion of Saraswati Vidyalaya. Flat triangular body locks onto the desk wood. Nearly impossible to toss off."',
+          modText: 'Mod: Solid Gold Clip + Dual Heavy Cartridge Counterweight'
+        },
+        {
+          key: 'apsaraPlatinum',
+          idNum: '100',
+          name: 'Apsara Platinum',
+          fullName: 'Apsara Platinum Extra Dark 2B',
+          slotThumb: './assets/pens/apsara_slot.jpg',
+          macroPhoto: './assets/pens/apsara_slot.jpg',
+          type: 'Hexagonal Graphite Elite',
+          weight: '8.7 Grams (Extra Dark Stealth)',
+          massVal: '50 / 100',
+          massPct: 50,
+          agilityVal: '98 / 100',
+          agilityPct: 98,
+          frictionVal: '29%',
+          frictionPct: 29,
+          tipVal: 'Extra Dark 2B Graphite',
+          tipPct: 75,
+          unlockedDefault: false,
+          reqStage: 10,
+          lore: '"Top of the class stealth weapon. Dark silver and metallic black hexagon body with razor-tight center of gravity for championship finals."',
+          modText: 'Mod: Steel Compass Needle Cap + Polished Lacquer'
+        }
+      ];
+
+      let currentInspectedPenKey = 'reynolds045';
+
+      function syncCompassBox(penKeyToInspect) {
+        try {
+          let savedState = {};
+          try {
+            savedState = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}');
+          } catch(e) {}
+
+          const profile = savedState.profile || {};
+          const progression = savedState.progression || {};
+          const currentEquippedPen = profile.selectedPlayerPen || 'reynolds045';
+          const highestStage = progression.highestStageUnlocked || 1;
+          const unlockedPens = savedState.unlockedPens || ['reynolds045', 'nataraj621'];
+          const coins = (progression.xp ? Math.floor(progression.xp * 1.5) : 0) + 1420;
+
+          // Header Roll & Canteen Fund
+          const rollBadge = document.getElementById('compass-roll-badge');
+          if (rollBadge) {
+            rollBadge.textContent = `ROLL NO: #${profile.rollNo || '14'}`;
+          }
+          const canteenFund = document.getElementById('compass-canteen-fund');
+          if (canteenFund) {
+            canteenFund.textContent = `₹${coins.toLocaleString('en-IN')}`;
+          }
+
+          // Count unlocked pens
+          let totalUnlocked = 0;
+          COMPASS_PENS.forEach(p => {
+            const isUnlocked = p.unlockedDefault || unlockedPens.includes(p.key) || highestStage >= p.reqStage;
+            if (isUnlocked) totalUnlocked++;
+          });
+          const unlockedCountEl = document.getElementById('compass-unlocked-count');
+          if (unlockedCountEl) {
+            unlockedCountEl.textContent = `${totalUnlocked}/6 Pens Unlocked`;
+          }
+
+          if (penKeyToInspect) {
+            currentInspectedPenKey = penKeyToInspect;
+          } else if (!currentInspectedPenKey) {
+            currentInspectedPenKey = currentEquippedPen;
+          }
+
+          // Render the 6 pen slots
+          const grid = document.getElementById('compass-pens-grid');
+          if (grid) {
+            let slotsHtml = '';
+            COMPASS_PENS.forEach(pen => {
+              const isUnlocked = pen.unlockedDefault || unlockedPens.includes(pen.key) || highestStage >= pen.reqStage;
+              const isEquipped = pen.key === currentEquippedPen;
+              const isInspected = pen.key === currentInspectedPenKey;
+
+              let slotClass = '';
+              let badgeHtml = '';
+              if (isInspected) {
+                slotClass = 'pen-slot-active';
+              } else if (isUnlocked) {
+                slotClass = 'pen-slot-inactive hover:bg-white cursor-pointer';
+              } else {
+                slotClass = 'pen-slot-locked cursor-not-allowed';
+              }
+
+              if (isEquipped) {
+                badgeHtml = `<span class="absolute -top-1 -right-1 bg-[#b91c1c] text-white text-[7px] font-black px-1 rounded shadow-xs" style="font-family: 'Permanent Marker', cursive;">EQUIPPED</span>`;
+              } else if (!isUnlocked) {
+                badgeHtml = `<span class="absolute -top-1 -right-1 bg-slate-700 text-white text-[7px] font-bold px-1 rounded shadow-xs" style="font-family: 'Patrick Hand', cursive;">STG ${pen.reqStage}</span>`;
+              }
+
+              slotsHtml += `
+                <div class="relative flex flex-col items-center justify-between p-1.5 rounded-lg transition-transform active:scale-95 select-none ${slotClass}"
+                     onclick="window.selectCompassPen('${pen.key}')"
+                     title="${pen.fullName}">
+                  ${badgeHtml}
+                  <div class="w-full h-14 flex items-center justify-center overflow-hidden rounded bg-white/70 border border-slate-200">
+                    <img src="${pen.slotThumb}" alt="${pen.name}" class="max-w-full max-h-full object-contain ${!isUnlocked ? 'filter grayscale opacity-60' : ''}" onerror="this.src='./assets/pens/reynolds_macro.jpg';">
+                  </div>
+                  <span class="text-[9px] font-black text-slate-800 text-center uppercase tracking-tight mt-1 truncate w-full" style="font-family: 'Patrick Hand', cursive;">
+                    ${pen.name}
+                  </span>
+                  <span class="text-[7.5px] font-bold text-slate-500 leading-none">
+                    ${isUnlocked ? pen.weight.split(' ')[0] : '🔒 LOCKED'}
+                  </span>
+                </div>
+              `;
+            });
+            grid.innerHTML = slotsHtml;
+          }
+
+          // Update Inspection Card
+          updateInspectionCard(currentInspectedPenKey, currentEquippedPen, unlockedPens, highestStage);
+        } catch(err) {
+          console.error("Error in syncCompassBox:", err);
+        }
+      }
+
+      function updateInspectionCard(penKey, currentEquippedPen, unlockedPens, highestStage) {
+        const pen = COMPASS_PENS.find(p => p.key === penKey) || COMPASS_PENS[0];
+        const isUnlocked = pen.unlockedDefault || (unlockedPens && unlockedPens.includes(pen.key)) || (highestStage >= pen.reqStage);
+        const isEquipped = pen.key === currentEquippedPen;
+
+        // Elements
+        const headerId = document.getElementById('inspect-header-id');
+        if (headerId) headerId.textContent = `INSPECTION REPORT #${pen.idNum}`;
+
+        const equipBadge = document.getElementById('inspect-equipped-badge');
+        if (equipBadge) {
+          if (isEquipped) {
+            equipBadge.textContent = 'EQUIPPED IN RECESS';
+            equipBadge.className = 'px-2 py-0.2 border border-rose-600 rounded text-rose-600 text-[9px] font-black uppercase tracking-wider rotate-1 bg-rose-50/70';
+            equipBadge.style.display = 'inline-block';
+          } else if (isUnlocked) {
+            equipBadge.textContent = 'READY TO EQUIP';
+            equipBadge.className = 'px-2 py-0.2 border border-blue-600 rounded text-[#00288e] text-[9px] font-black uppercase tracking-wider -rotate-1 bg-blue-50/70';
+            equipBadge.style.display = 'inline-block';
+          } else {
+            equipBadge.textContent = `BENCH #${pen.reqStage} UNLOCK`;
+            equipBadge.className = 'px-2 py-0.2 border border-slate-600 rounded text-slate-700 text-[9px] font-black uppercase tracking-wider bg-slate-100';
+            equipBadge.style.display = 'inline-block';
+          }
+        }
+
+        const img = document.getElementById('inspect-pen-img');
+        if (img) {
+          img.src = pen.macroPhoto;
+          img.className = `max-w-[85%] max-h-[85%] object-contain drop-shadow-md -rotate-1 ${!isUnlocked ? 'filter grayscale opacity-60' : ''}`;
+        }
+
+        const modText = document.getElementById('inspect-mod-text');
+        if (modText) modText.textContent = pen.modText;
+
+        const nameEl = document.getElementById('inspect-pen-name');
+        if (nameEl) nameEl.textContent = pen.fullName;
+
+        const weightEl = document.getElementById('inspect-pen-weight');
+        if (weightEl) weightEl.textContent = pen.weight;
+
+        const loreEl = document.getElementById('inspect-pen-lore');
+        if (loreEl) loreEl.textContent = pen.lore;
+
+        // Stat Bars
+        const massVal = document.getElementById('stat-mass-val');
+        const massBar = document.getElementById('stat-mass-bar');
+        if (massVal) massVal.textContent = pen.massVal;
+        if (massBar) massBar.style.width = `${pen.massPct}%`;
+
+        const agilityVal = document.getElementById('stat-agility-val');
+        const agilityBar = document.getElementById('stat-agility-bar');
+        if (agilityVal) agilityVal.textContent = pen.agilityVal;
+        if (agilityBar) agilityBar.style.width = `${pen.agilityPct}%`;
+
+        const frictionVal = document.getElementById('stat-friction-val');
+        const frictionBar = document.getElementById('stat-friction-bar');
+        if (frictionVal) frictionVal.textContent = pen.frictionVal;
+        if (frictionBar) frictionBar.style.width = `${pen.frictionPct}%`;
+
+        const tipVal = document.getElementById('stat-tip-val');
+        const tipBar = document.getElementById('stat-tip-bar');
+        if (tipVal) tipVal.textContent = pen.tipVal;
+        if (tipBar) tipBar.style.width = `${pen.tipPct}%`;
+
+        // Action Button
+        const actionBtn = document.getElementById('compass-action-btn');
+        const actionLabel = document.getElementById('compass-action-label');
+        if (actionBtn && actionLabel) {
+          if (isEquipped) {
+            actionLabel.textContent = 'EQUIPPED & READY TO FLICK';
+            actionBtn.className = 'relative w-full py-2.5 rounded-xl bg-white border-2 border-[#16a34a] text-[#16a34a] font-black text-[13px] tracking-wider flex items-center justify-center gap-1.5 shadow-[2px_2px_0px_#16a34a] active:translate-y-0.5 transition-all cursor-pointer';
+          } else if (isUnlocked) {
+            actionLabel.textContent = `EQUIP ${pen.name.toUpperCase()}`;
+            actionBtn.className = 'relative w-full py-2.5 rounded-xl bg-amber-400 border-2 border-slate-900 text-slate-900 font-black text-[13px] tracking-wider flex items-center justify-center gap-1.5 shadow-[2px_2.5px_0px_#0f172a] active:translate-y-0.5 transition-all cursor-pointer hover:bg-amber-300';
+          } else {
+            actionLabel.textContent = `LOCKED • BEAT BENCH #${pen.reqStage}`;
+            actionBtn.className = 'relative w-full py-2.5 rounded-xl bg-slate-200 border-2 border-slate-400 text-slate-500 font-black text-[12px] tracking-wider flex items-center justify-center gap-1.5 shadow-none cursor-not-allowed';
+          }
+        }
+      }
+
+      window.selectCompassPen = function(penKey) {
+        currentInspectedPenKey = penKey;
+        syncCompassBox(penKey);
+      };
+
+      window.handleCompassEquipAction = function() {
+        try {
+          let savedState = {};
+          try {
+            savedState = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}');
+          } catch(e) {}
+
+          const profile = savedState.profile || {};
+          const progression = savedState.progression || {};
+          const currentEquippedPen = profile.selectedPlayerPen || 'reynolds045';
+          const highestStage = progression.highestStageUnlocked || 1;
+          const unlockedPens = savedState.unlockedPens || ['reynolds045', 'nataraj621'];
+
+          const pen = COMPASS_PENS.find(p => p.key === currentInspectedPenKey) || COMPASS_PENS[0];
+          const isUnlocked = pen.unlockedDefault || unlockedPens.includes(pen.key) || highestStage >= pen.reqStage;
+
+          if (!isUnlocked) {
+            alert(`⚠️ ${pen.fullName} is locked! Beat Bench #${pen.reqStage} in Campaign Map to unlock this pen.`);
+            return;
+          }
+
+          if (currentEquippedPen === pen.key) {
+            // Already equipped - return to Hub
+            window.hideCompassBox();
+            window.showMainMenu();
+            return;
+          }
+
+          // Equip the new pen!
+          profile.selectedPlayerPen = pen.key;
+          if (!unlockedPens.includes(pen.key)) {
+            unlockedPens.push(pen.key);
+          }
+          savedState.profile = profile;
+          savedState.unlockedPens = unlockedPens;
+          localStorage.setItem('penfight_save_v2', JSON.stringify(savedState));
+
+          // If gameEngine is live, change in 3D physics scene
+          if (window.gameEngine && typeof window.gameEngine.changePen === 'function') {
+            window.gameEngine.changePen('player', pen.key);
+          }
+
+          // Update Main Menu pen badge
+          const menuPenLabel = document.getElementById('menu-player-pen-label');
+          if (menuPenLabel) {
+            menuPenLabel.textContent = PEN_DISPLAY_NAMES[pen.key] || pen.name.toUpperCase();
+          }
+
+          // Re-sync compass box UI
+          syncCompassBox(pen.key);
+
+          // Subtle feedback toast
+          const modTextEl = document.getElementById('inspect-mod-text');
+          if (modTextEl) {
+            const original = modTextEl.textContent;
+            modTextEl.textContent = `✔ ${pen.name} EQUIPPED FOR NEXT RECESS!`;
+            setTimeout(() => {
+              modTextEl.textContent = original;
+            }, 2500);
+          }
+        } catch(err) {
+          console.error("Error equipping pen:", err);
+        }
+      };
+
+      window.tweakPenModsAlert = function() {
+        const pen = COMPASS_PENS.find(p => p.key === currentInspectedPenKey) || COMPASS_PENS[0];
+        alert(`✂️ Desi Classroom Mod Desk:\n\n` +
+          `Selected Pen: ${pen.fullName}\n` +
+          `Current Setup: ${pen.modText}\n\n` +
+          `Tips:\n` +
+          `• Double rubber band adds +15% grip on varnished desks.\n` +
+          `• M-Seal in the back cap prevents back-heavy flipoffs.\n` +
+          `• Razor sharpened nib increases straight knockout force!`);
+      };
 
       // Hydrate existing saved student data from LocalStorage
       try {
