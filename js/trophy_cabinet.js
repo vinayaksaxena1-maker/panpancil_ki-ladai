@@ -290,13 +290,13 @@
 
     hide: function() {
       if (!cacheDOM()) return;
+      if (typeof window.showMainMenu === 'function') {
+        window.showMainMenu();
+      }
       DOM.overlay.classList.add('cabinet-dismissed');
       setTimeout(() => {
         DOM.overlay.style.display = 'none';
         state.visible = false;
-        if (typeof window.showMainMenu === 'function') {
-          window.showMainMenu();
-        }
       }, 300);
     },
 

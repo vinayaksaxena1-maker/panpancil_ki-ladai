@@ -1025,7 +1025,7 @@
 
   <!-- Phase 3 Step 3.3: Main Menu Home Screen (Pencil Sketch CTA) Overlay -->
   <div id="main-menu-overlay" style="display: none;">
-    <main class="w-[390px] h-[844px] max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
+    <main class="w-[390px] h-full max-h-screen sm:h-[844px] sm:max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
       <!-- Background Grid & Doodles -->
       <div class="absolute inset-0 pointer-events-none opacity-40 bg-[linear-gradient(to_right,#b8c4ff_1px,transparent_1px),linear-gradient(to_bottom,#b8c4ff_1px,transparent_1px)] bg-[size:16px_16px]"></div>
       <div class="absolute top-2 right-4 pointer-events-none opacity-20 text-secondary z-0">
@@ -1300,7 +1300,7 @@
 
   <!-- Phase 3 Step 3.4: Visual Campaign Map & Stage Details Chit Overlay -->
   <div id="campaign-map-overlay" style="display: none;">
-    <main class="w-[390px] h-[844px] max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
+    <main class="w-[390px] h-full max-h-screen sm:h-[844px] sm:max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
       <!-- Ambient Compass / Doodles in Outer Margin -->
       <div class="absolute top-2 right-4 pointer-events-none opacity-20 text-secondary z-0">
         <svg fill="none" height="52" stroke="currentColor" stroke-width="1.5" viewBox="0 0 100 100" width="52">
@@ -1447,7 +1447,7 @@
 
   <!-- Phase 3 Step 3.5: Tin Compass Box Screen (Collectible Pen Arsenal) -->
   <div id="compass-box-overlay" style="display: none;">
-    <main class="w-[390px] h-[844px] max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
+    <main class="w-[390px] h-full max-h-screen sm:h-[844px] sm:max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
       <!-- Ambient Compass Geometry Doodles in Outer Margin -->
       <div class="absolute -top-4 -right-6 pointer-events-none opacity-20 text-secondary z-0">
         <svg fill="none" height="64" stroke="currentColor" stroke-width="1.2" viewBox="0 0 100 100" width="64">
@@ -1638,7 +1638,7 @@
 
   <!-- Phase 3 Step 3.6: Match Setup Screen (Single Player & Pass-and-Play Cards) -->
   <div id="match-setup-overlay" style="display: none;">
-    <main class="w-[390px] h-[844px] max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
+    <main class="w-[390px] h-full max-h-screen sm:h-[844px] sm:max-h-[844px] blueprint-grid relative flex flex-col justify-between overflow-hidden shadow-2xl rounded-none sm:rounded-[32px] border-0 sm:border-[6px] border-[#452a1c] min-h-screen sm:min-h-0">
       <!-- Ambient Compass Geometry Doodles in Outer Margin -->
       <div class="absolute -top-4 -right-6 pointer-events-none opacity-20 text-secondary z-0">
         <svg fill="none" height="64" stroke="currentColor" stroke-width="1.2" viewBox="0 0 100 100" width="64">
@@ -2738,10 +2738,16 @@
 
         <!-- Dual Action Buttons -->
         <div class="flex flex-col gap-1.5 pt-1">
-          <button type="button" onclick="window.changePhotoFromDossier()" class="w-full py-2.5 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs uppercase tracking-wider border border-blue-900 shadow-[0_2.5px_0_0_#0f172a] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1.5 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
-            <span class="material-symbols-outlined text-[16px]">account_box</span>
-            <span>CHANGE AVATAR / PHOTO 🖼️</span>
-          </button>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button type="button" onclick="window.changePhotoFromDossier()" class="py-2.5 px-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-[11px] uppercase tracking-wider border border-blue-900 shadow-[0_2.5px_0_0_#0f172a] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+              <span class="material-symbols-outlined text-[15px]">account_box</span>
+              <span>PHOTO 🖼️</span>
+            </button>
+            <button type="button" onclick="window.editAdmissionId()" class="py-2.5 px-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 font-black text-[11px] uppercase tracking-wider border border-amber-900 shadow-[0_2.5px_0_0_#0f172a] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+              <span class="material-symbols-outlined text-[15px]">badge</span>
+              <span>EDIT ID ✏️</span>
+            </button>
+          </div>
           <button type="button" onclick="window.hideCareerDossier()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-[11px] border border-dashed border-slate-400 active:translate-y-0.5 flex items-center justify-center gap-1 cursor-pointer">
             <span class="material-symbols-outlined text-[15px]">arrow_back</span>
             <span>CLOSE DOSSIER [✕] RETURN TO HUB</span>
@@ -2881,10 +2887,8 @@
       };
 
       window.startCompassBox = function() {
+        window.showCompassBox();
         window.hideMainMenu();
-        setTimeout(() => {
-          window.showCompassBox();
-        }, 120);
       };
 
       window.showMatchSetup = function(initialTab = 'single') {
@@ -2907,19 +2911,15 @@
       };
 
       window.startTrophyCabinet = function(initialTab = 'trophies') {
+        if (window.trophyCabinetController) {
+          window.trophyCabinetController.show(initialTab);
+        }
         window.hideMainMenu();
-        setTimeout(() => {
-          if (window.trophyCabinetController) {
-            window.trophyCabinetController.show(initialTab);
-          }
-        }, 120);
       };
 
       window.startQuickDuel = function() {
+        window.showMatchSetup('single');
         window.hideMainMenu();
-        setTimeout(() => {
-          window.showMatchSetup('single');
-        }, 120);
       };
 
       // Story Mode opens Step 3.4 Visual Campaign Map & Stage Chit!
@@ -3169,10 +3169,8 @@
       };
 
       window.startPassAndPlay = function() {
+        window.showMatchSetup('passplay');
         window.hideMainMenu();
-        setTimeout(() => {
-          window.showMatchSetup('passplay');
-        }, 120);
       };
 
       // Step 3.2 Page 1 Interactive Enhancements (House, Tooltip, Avatar, Rank)
@@ -4509,8 +4507,10 @@
           if (window.gameEngine.storage) {
             window.gameEngine.storage.save({ settings: { difficulty: selectedSetupDifficulty, mode: 'bot' } });
           }
-          if (window.gameEngine.bot && typeof window.gameEngine.bot.setDifficulty === 'function') {
-            window.gameEngine.bot.setDifficulty(selectedSetupDifficulty);
+          if (typeof window.gameEngine.setDifficulty === 'function') {
+            window.gameEngine.setDifficulty(selectedSetupDifficulty);
+          } else if (window.gameEngine.botAI && typeof window.gameEngine.botAI.setDifficulty === 'function') {
+            window.gameEngine.botAI.setDifficulty(selectedSetupDifficulty);
           }
           window.gameEngine.setGameMode('bot');
           window.gameEngine.resetSandbox();
@@ -4603,6 +4603,12 @@
             } catch(e) {}
           }
 
+          // Reset button label for future visits
+          const enterLabel = enterBtn.querySelector('span.relative');
+          if (enterLabel) {
+            enterLabel.innerHTML = `<span>ENTER CLASSROOM</span><span class="text-[22px] font-bold inline-block transform translate-y-0.5" style="font-family: 'Caveat', cursive;">➔</span>`;
+          }
+
           // Button feedback & instant direct page turn
           enterBtn.style.transform = 'translateY(3px)';
           
@@ -4617,6 +4623,33 @@
           }, 90);
         });
       }
+
+      window.editAdmissionId = function() {
+        if (window.hideCareerDossier) window.hideCareerDossier();
+        if (window.hideMainMenu) window.hideMainMenu();
+        if (splashOverlay) {
+          let saved = {};
+          try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
+          const profile = saved.profile || {};
+          if (nameInput && profile.name) nameInput.value = profile.name;
+          if (profile.house && typeof window.selectHouse === 'function') {
+            window.selectHouse(profile.house);
+          }
+          if (profile.avatar && typeof window.selectPresetAvatar === 'function' && ['boy', 'girl'].includes(profile.avatar)) {
+            window.selectPresetAvatar(profile.avatar);
+          }
+          if (enterBtn) {
+            const enterLabel = enterBtn.querySelector('span.relative');
+            if (enterLabel) {
+              enterLabel.innerHTML = `<span>SAVE & RETURN TO HUB</span><span class="text-[22px] font-bold inline-block transform translate-y-0.5" style="font-family: 'Caveat', cursive;">➔</span>`;
+            }
+          }
+          splashOverlay.style.display = 'flex';
+          requestAnimationFrame(() => {
+            splashOverlay.classList.remove('splash-dismissed');
+          });
+        }
+      };
     })();
   </script>
 
