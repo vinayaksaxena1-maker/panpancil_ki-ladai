@@ -1415,19 +1415,14 @@
           </div>
         </div>
 
-        <!-- Recess Bell Alert Toast (Shown when timer hits 00:00) -->
-        <div id="recess-bell-toast" class="hidden mb-1.5 px-3 py-1 bg-amber-100 border border-amber-400 rounded-lg text-amber-900 text-[11px] font-bold text-center shadow-xs select-none" style="font-family: 'Patrick Hand', cursive;">
-          🔔 RECESS PERIOD OVER! Peon Bhaiya ne agle period ki bell baja di! New Recess Timer started!
-        </div>
-
-        <!-- Floating Recess Bell Timer Pill -->
+        <!-- Floating Recess Action Pill -->
         <aside class="w-full mb-1.5 z-20">
           <div class="bg-[#00288e] text-white rounded-full px-3 py-1.5 shadow-md flex items-center justify-between border-2 border-slate-900" style="box-shadow: 2px 2.5px 0px #1e293b;">
             <div class="flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-amber-300 text-[18px] animate-bounce">notifications_active</span>
+              <span class="material-symbols-outlined text-amber-300 text-[18px]">sports_martial_arts</span>
               <div class="flex flex-col leading-none">
-                <span class="text-[8px] uppercase tracking-wider font-extrabold text-blue-200" style="font-family: 'Patrick Hand', cursive;">Recess Bell Timer</span>
-                <span class="text-[13px] font-black tracking-tight" id="recess-timer" style="font-family: 'Permanent Marker', cursive;">03:45 mins left</span>
+                <span class="text-[8px] uppercase tracking-wider font-extrabold text-blue-200" style="font-family: 'Patrick Hand', cursive;">School Recess Period</span>
+                <span class="text-[12px] font-black tracking-tight" style="font-family: 'Permanent Marker', cursive;">CLASSROOM DESK BATTLE</span>
               </div>
             </div>
             <button id="quick-floating-fight-btn" onclick="window.launchCurrentStageMatch()" class="bg-amber-400 text-slate-900 hover:bg-amber-300 active:scale-95 px-3 py-1 rounded-full font-black text-[12px] uppercase tracking-wider shadow flex items-center gap-1 cursor-pointer sketch-btn-hatch border border-slate-900 select-none" style="font-family: 'Permanent Marker', cursive;">
@@ -3176,14 +3171,6 @@
         }, 120);
       };
 
-      window.openFeatureNotice = function(featureName) {
-        alert(`🔔 ${featureName}\nMaster Development Plan ke agle steps me unlock hoga!`);
-      };
-
-      window.toggleSettingsAlert = function() {
-        alert("⚙️ CLASSROOM SETTINGS\n• Sound & SFX: ON (Active)\n• Match Format: Best of 5 (Target 3)\n• Physics: Rapier 120Hz Desk (Locked)");
-      };
-
       // Step 3.2 Page 1 Interactive Enhancements (House, Tooltip, Avatar, Rank)
       const HOUSES = [
         { name: "Nehru Red", labelColor: "#b91c1c", valColor: "#b91c1c", bg: "#fee2e2", border: "#ef4444" },
@@ -3965,34 +3952,6 @@
           `;
 
           container.innerHTML = html;
-
-          // 6. Recess Timer Interval
-          if (!window._recessTimerStarted) {
-            window._recessTimerStarted = true;
-            let secondsLeft = 225;
-            const timerElem = document.getElementById('recess-timer');
-            if (timerElem) {
-              setInterval(() => {
-                if (secondsLeft > 0) {
-                  secondsLeft--;
-                  const mins = Math.floor(secondsLeft / 60);
-                  const secs = secondsLeft % 60;
-                  timerElem.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')} mins left`;
-                } else {
-                  // Timer reached 00:00 - Nostalgic period bell notification + soft reset
-                  secondsLeft = 240;
-                  timerElem.textContent = "04:00 mins left";
-                  const bellToast = document.getElementById('recess-bell-toast');
-                  if (bellToast) {
-                    bellToast.classList.remove('hidden');
-                    setTimeout(() => {
-                      bellToast.classList.add('hidden');
-                    }, 4000);
-                  }
-                }
-              }, 1000);
-            }
-          }
         } catch(err) {
           console.error("Error in syncCampaignMap:", err);
         }
