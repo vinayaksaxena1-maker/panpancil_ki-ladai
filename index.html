@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="./css/match_setup.css?v=p3_s6">
   <link rel="stylesheet" href="./css/hud.css?v=p3_s7">
   <link rel="stylesheet" href="./css/match_result.css?v=p3_s8">
+  <link rel="stylesheet" href="./css/trophy_cabinet.css?v=p3_s9">
   <script src="https://cdn.tailwindcss.com"></script>
   <script id="tailwind-config">
     tailwind.config = {
@@ -1042,7 +1043,7 @@
             <span class="font-label-md text-[11px] tracking-wider uppercase font-extrabold">RECESS BREAK • BENCH #4</span>
             <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping ml-0.5"></span>
           </div>
-          <button aria-label="School Rules & Settings" class="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all transform active:scale-90 shadow-sm cursor-pointer" id="settingsBtn" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" onclick="window.toggleSettingsAlert()">
+          <button aria-label="School Rules & Settings" class="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all transform active:scale-90 shadow-sm cursor-pointer" id="settingsBtn" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" onclick="window.startTrophyCabinet('settings')">
             <span class="material-symbols-outlined text-[16px]">settings</span>
           </button>
         </header>
@@ -1258,7 +1259,7 @@
                 </div>
 
                 <!-- Trophy Rack -->
-                <div class="bg-white/95 p-2 rounded-lg shadow-xs flex flex-col justify-between cursor-pointer active:scale-98 transition-transform group" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 4px 7px 5px 8px;" onclick="window.openFeatureNotice('Trophy Rack (Step 3.9 Achievements)')">
+                <div class="bg-white/95 p-2 rounded-lg shadow-xs flex flex-col justify-between cursor-pointer active:scale-98 transition-transform group" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 4px 7px 5px 8px;" onclick="window.startTrophyCabinet('trophies')">
                   <div class="flex items-start justify-between">
                     <div class="w-6 h-6 rounded bg-rose-100 text-tertiary flex items-center justify-center border border-rose-300/60">
                       <span class="material-symbols-outlined text-[15px]">emoji_events</span>
@@ -2267,6 +2268,337 @@
 </div>
 
 
+  
+  <!-- ====================================================================== -->
+  <!-- STEP 3.9: TROPHY CABINET & OFFLINE SETTINGS OVERLAY                     -->
+  <!-- ====================================================================== -->
+  <div id="trophy-cabinet-overlay" style="display: none;">
+    <!-- Main Notebook Pad Shell (Max Width Mobile 420px) -->
+    <div class="relative w-full max-w-[420px] my-auto bg-[#fffdfa] rounded-2xl border-4 border-slate-900 shadow-[0_12px_0_0_#0f172a,0_20px_40px_rgba(0,0,0,0.6)] overflow-hidden flex flex-col mb-8" style="background-color: #fffef8; background-image: repeating-linear-gradient(transparent, transparent 23px, rgba(30, 64, 175, 0.07) 24px);">
+      
+      <!-- Top Spiral Wire Binding Ring Indicators -->
+      <div class="w-full bg-[#1e293b] py-1.5 px-4 flex items-center justify-between border-b-2 border-slate-900">
+        <div class="flex items-center gap-1.5">
+          <span class="w-3 h-3 rounded-full bg-slate-400 border border-slate-900"></span>
+          <span class="w-3 h-3 rounded-full bg-slate-400 border border-slate-900"></span>
+          <span class="w-3 h-3 rounded-full bg-slate-400 border border-slate-900"></span>
+          <span class="text-[10px] font-black text-amber-300 tracking-wider font-mono uppercase ml-1">SARASWATI VIDYALAYA 1998</span>
+        </div>
+        <span class="text-[10px] font-black text-slate-300 font-mono">REG: #7B-98</span>
+      </div>
+
+      <!-- Red Margin Lines (Left Edge) -->
+      <div class="absolute left-6 top-7 bottom-0 w-0.5 bg-rose-400/40 pointer-events-none z-10"></div>
+      <div class="absolute left-7 top-7 bottom-0 w-0.5 bg-rose-300/30 pointer-events-none z-10"></div>
+
+      <!-- Scrollable Inner Content Area -->
+      <div class="p-4 pl-9 flex flex-col gap-3.5 z-20">
+
+        <!-- Header Chit -->
+        <div class="bg-amber-100/70 border-2 border-slate-900 rounded-xl p-3 shadow-[0_2.5px_0_0_#0f172a] relative">
+          <div class="flex items-center justify-between border-b border-dashed border-amber-900/30 pb-1.5">
+            <span class="text-[10px] font-black uppercase text-amber-900 tracking-wider">🔔 RECESS • BENCH #4 • TROPHY ROOM</span>
+            <span class="text-[10px] font-black text-slate-700 font-mono">PAGE: 09</span>
+          </div>
+          <div class="mt-1.5">
+            <h2 class="text-sm font-black text-slate-900 uppercase tracking-tight" style="font-family: 'Permanent Marker', cursive;">STUDENT HONOR ROLL & DESK REGULATION CHIT</h2>
+            <div class="flex items-center justify-between mt-1 text-slate-800 text-[11px] font-bold">
+              <span id="cabinet-student-name">KHILADI: ARJUN "THUNDER"</span>
+              <span id="cabinet-student-roll" class="font-mono text-[10px] text-slate-600">ROLL NO: #14 | CLASS: 7TH - B</span>
+            </div>
+            <div class="flex items-center justify-between mt-1 pt-1 border-t border-amber-900/20 text-[10.5px]">
+              <span class="text-slate-700 font-bold">Current Rank: <span id="cabinet-current-rank" class="text-amber-800 font-black uppercase">BENCH KING</span></span>
+              <span id="cabinet-pins-count-header" class="font-black text-emerald-800 bg-emerald-100/90 border border-emerald-400 px-1.5 py-0.2 rounded text-[9.5px]">9 of 16 Pins Pinned</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Segmented Tabs -->
+        <div class="flex items-center gap-2 p-1 bg-slate-100 rounded-2xl border-2 border-slate-900 shadow-[0_2px_0_0_#0f172a]">
+          <button id="cabinet-tab-trophies-btn" onclick="window.switchDeskTab('trophies')" class="flex-1 py-2 px-3 rounded-xl bg-amber-200 border-2 border-slate-900 font-black text-[12px] text-slate-900 shadow-[0_2.5px_0_0_#0f172a] flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-[16px]">military_tech</span>
+            <span id="cabinet-pins-count-tab">Trophies (9/16)</span>
+          </button>
+          <button id="cabinet-tab-settings-btn" onclick="window.switchDeskTab('settings')" class="flex-1 py-2 px-3 rounded-xl bg-white hover:bg-slate-50 border-2 border-slate-900 font-bold text-[12px] text-slate-700 shadow-[0_2px_0_0_#0f172a] flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-[16px]">tune</span>
+            <span>Audio & Rules</span>
+          </button>
+        </div>
+
+        <!-- VIEW 1: TROPHIES ENAMEL PIN GRID -->
+        <div id="cabinet-view-trophies" class="flex flex-col gap-2.5">
+          <div class="flex items-center justify-between px-1">
+            <span class="text-xs font-black text-slate-800 uppercase tracking-wider flex items-center gap-1">
+              <span class="material-symbols-outlined text-amber-600 text-[16px]">stars</span> Classroom Enamel Pins
+            </span>
+            <span class="text-[9.5px] font-bold text-slate-500 bg-slate-200/80 px-2 py-0.5 rounded-full border border-slate-300">Tap pin to inspect lore</span>
+          </div>
+
+          <!-- 16-Pin Badges Grid -->
+          <div id="cabinet-pin-grid" class="grid grid-cols-2 gap-2">
+            <!-- Dynamically populated by trophy_cabinet.js -->
+          </div>
+
+          <!-- Return Button -->
+          <div class="pt-2">
+            <button onclick="window.hideTrophyCabinet()" class="w-full py-3 px-4 rounded-xl bg-white hover:bg-amber-50 border-2 border-slate-900 text-slate-900 font-black text-xs uppercase tracking-wider shadow-[0_3px_0_0_#0f172a] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-2 cursor-pointer">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              <span>RETURN TO CLASSROOM ARCADE</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- VIEW 2: AUDIO & RULES SETTINGS -->
+        <div id="cabinet-view-settings" class="flex flex-col gap-3" style="display: none;">
+          <!-- 1. AUDIO & SFX CONTROLS -->
+          <div class="bg-white border-2 border-slate-900 rounded-xl p-3 shadow-[0_2.5px_0_0_#0f172a] flex flex-col gap-2.5">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-slate-900 text-[18px]">volume_up</span>
+                <span class="text-xs font-black text-slate-900 uppercase">Audio & Recess SFX</span>
+              </div>
+              <span class="text-[9px] font-black bg-blue-100 text-blue-900 border border-blue-400 px-1.5 py-0.2 rounded font-mono">1998 SOUND</span>
+            </div>
+
+            <!-- Pen Flick SFX Slider -->
+            <div class="flex flex-col gap-1">
+              <div class="flex items-center justify-between text-[11px] font-black text-slate-800">
+                <span class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px] text-blue-600">edit</span>
+                  Pen Flick & Knock SFX
+                </span>
+                <span id="setting-sfx-val" class="font-mono text-blue-700">85%</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="setting-sfx-slider" type="range" min="0" max="100" value="85" class="cabinet-slider accent-blue-600" oninput="window.updateSFX(this.value)">
+                <button onclick="window.playClashSample()" class="px-2.5 py-1 rounded-lg bg-blue-600 text-white font-black text-[10px] border border-slate-900 shadow-[0_2px_0_0_#0f172a] active:translate-y-0.5 active:shadow-none flex items-center gap-1 flex-shrink-0 cursor-pointer">
+                  <span class="material-symbols-outlined text-[13px]">sports_martial_arts</span> TEST
+                </button>
+              </div>
+              <span class="text-[9px] font-bold text-slate-500">Ballpoint tip friction, table knock & plastic snap</span>
+            </div>
+
+            <!-- Ambiance Slider -->
+            <div class="flex flex-col gap-1 pt-1.5 border-t border-slate-100">
+              <div class="flex items-center justify-between text-[11px] font-black text-slate-800">
+                <span class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px] text-amber-600">groups</span>
+                  Classroom Murmur Chatter
+                </span>
+                <span id="setting-ambiance-val" class="font-mono text-amber-700">70%</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <input id="setting-ambiance-slider" type="range" min="0" max="100" value="70" class="cabinet-slider accent-amber-600" oninput="window.updateAmbiance(this.value)">
+                <button onclick="window.toggleSwitch(this)" class="w-12 h-6 px-0.5 rounded-full bg-amber-300 flex items-center justify-end transition-colors flex-shrink-0 shadow-inner border border-amber-600 cursor-pointer">
+                  <span class="w-5 h-5 rounded-full bg-amber-800 shadow-md transform transition-transform"></span>
+                </button>
+              </div>
+              <span class="text-[9px] font-bold text-slate-500">Recess murmur of students, distant brass school bell</span>
+            </div>
+
+            <!-- PT Sir Alarm Toggle -->
+            <div class="flex items-center justify-between pt-1.5 border-t border-slate-100">
+              <div class="flex flex-col pr-1">
+                <span class="text-[11px] font-black text-slate-800 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px] text-rose-600">sports</span>
+                  PT Sir Whistle & Alert Alarm
+                </span>
+                <span class="text-[9px] font-bold text-slate-500">Emergency whistle trigger when pen flies off-desk</span>
+              </div>
+              <button id="setting-whistle-toggle" onclick="window.toggleSwitch(this)" class="w-12 h-6 px-0.5 rounded-full bg-amber-300 flex items-center justify-end transition-colors flex-shrink-0 shadow-inner border border-amber-600 cursor-pointer">
+                <span class="w-5 h-5 rounded-full bg-amber-800 shadow-md transform transition-transform"></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. CODE OF CONDUCT RULES -->
+          <div class="bg-white border-2 border-slate-900 rounded-xl p-3 shadow-[0_2.5px_0_0_#0f172a] flex flex-col gap-2">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-amber-700 text-[18px]">gavel</span>
+                <span class="text-xs font-black text-slate-900 uppercase">Recess Code of Conduct</span>
+              </div>
+              <span class="text-[9px] font-black text-slate-600 uppercase">Official Rules</span>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <div class="p-1.5 rounded-lg bg-slate-50 border-l-4 border-blue-600 flex items-start gap-2">
+                <span class="px-1.5 py-0.2 rounded bg-blue-100 text-blue-900 text-[9.5px] font-black flex-shrink-0">#01</span>
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-black text-slate-900">Pen falling off desk is OUT!</span>
+                  <span class="text-[9px] font-bold text-slate-600 italic">Immediate forfeit for the thrower upon desk boundary breach.</span>
+                </div>
+              </div>
+
+              <div class="p-1.5 rounded-lg bg-slate-50 border-l-4 border-blue-600 flex items-start gap-2">
+                <span class="px-1.5 py-0.2 rounded bg-blue-100 text-blue-900 text-[9.5px] font-black flex-shrink-0">#02</span>
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-black text-slate-900">Elbow behind desk edge</span>
+                  <span class="text-[9px] font-bold text-slate-600 italic">Elbow must stay behind desk edge during flick. Leaning forward is a foul.</span>
+                </div>
+              </div>
+
+              <div class="p-1.5 rounded-lg bg-slate-50 border-l-4 border-blue-600 flex items-start gap-2">
+                <span class="px-1.5 py-0.2 rounded bg-blue-100 text-blue-900 text-[9.5px] font-black flex-shrink-0">#03</span>
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-black text-slate-900">No hardware tampering</span>
+                  <span class="text-[9px] font-bold text-slate-600 italic">No metal compass scratching, lead weight tampering or nib bending.</span>
+                </div>
+              </div>
+
+              <div class="p-1.5 rounded-lg bg-slate-50 border-l-4 border-rose-600 flex items-start gap-2">
+                <span class="px-1.5 py-0.2 rounded bg-rose-100 text-rose-900 text-[9.5px] font-black flex-shrink-0">#04</span>
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-black text-rose-900">Teacher Emergency Protocol</span>
+                  <span class="text-[9px] font-bold text-slate-600 italic">In case of teacher arrival, all pens return to Camlin box instantly!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. RED INK DANGER ZONE (RESET DATA) -->
+          <div class="bg-rose-50 border-2 border-rose-600 rounded-xl p-3 shadow-[0_2.5px_0_0_#991b1b] flex flex-col gap-2">
+            <div class="flex items-center gap-1.5 text-rose-900">
+              <span class="material-symbols-outlined text-[18px]">warning</span>
+              <span class="text-xs font-black uppercase">Red Ink Danger Zone</span>
+            </div>
+            <p class="text-[9.5px] font-bold text-slate-700 leading-snug">
+              Erases all unlocked enamel pins, clears battle tally marks, and strikes student name from Saraswati Vidyalaya honor roll.
+            </p>
+            <button onclick="window.confirmResetProgress()" class="w-full py-2.5 px-3 rounded-lg bg-rose-600 text-white font-black text-[11px] uppercase tracking-wide border border-rose-950 shadow-[0_2.5px_0_0_#991b1b] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1.5 cursor-pointer">
+              <span class="material-symbols-outlined text-[15px]">delete_forever</span>
+              <span>Reset Khiladi Record & Refill History</span>
+            </button>
+          </div>
+
+          <!-- Teacher Notice Chit Note -->
+          <div class="bg-amber-50 border border-amber-300 p-2.5 rounded-xl flex items-start gap-2">
+            <span class="text-base select-none leading-none">✏️</span>
+            <div class="flex flex-col">
+              <span class="text-[9px] font-black text-amber-900 uppercase">Class 7th-B Regulation #08:</span>
+              <span class="text-[9.5px] font-bold text-slate-700 italic">
+                "Harne par dost ki pen chheenna ya todna sakht mana hai. Pakde jaane par Headmaster office me peshi hogi!"
+              </span>
+            </div>
+          </div>
+
+          <!-- Return Button -->
+          <div class="pt-1">
+            <button onclick="window.hideTrophyCabinet()" class="w-full py-3 px-4 rounded-xl bg-white hover:bg-amber-50 border-2 border-slate-900 text-slate-900 font-black text-xs uppercase tracking-wider shadow-[0_3px_0_0_#0f172a] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-2 cursor-pointer">
+              <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+              <span>RETURN TO CLASSROOM ARCADE</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- STEP 3.9: ENAMEL PIN INSPECT MODAL SHEET                                -->
+  <!-- ====================================================================== -->
+  <div id="pin-inspect-modal" class="inspect-dismissed" style="display: none;">
+    <!-- Backdrop Blur -->
+    <div class="fixed inset-0 bg-[#2d1b0e]/75 backdrop-blur-sm" onclick="window.closePinModal()"></div>
+
+    <!-- Handcrafted Inspection Chit Card -->
+    <div class="relative w-full max-w-[360px] my-auto bg-[#fffdf8] rounded-2xl border-4 border-slate-900 shadow-[0_16px_0_0_#0f172a,0_24px_50px_rgba(0,0,0,0.6)] overflow-hidden z-20 flex flex-col" style="background-color: #fffef8; background-image: repeating-linear-gradient(transparent, transparent 23px, rgba(30, 64, 175, 0.07) 24px);">
+      <!-- Paper Tape at Top Center -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2.5 w-24 h-5 bg-[#fef3c7] border border-[#d97706]/40 rotate-1 shadow-sm rounded-sm pointer-events-none z-30 flex items-center justify-center">
+        <span class="text-[8px] tracking-widest text-[#92400e] font-mono font-black uppercase">OFFICIAL INSPECTION</span>
+      </div>
+
+      <!-- Red Margin Line -->
+      <div class="absolute left-5 top-0 bottom-0 w-0.5 bg-rose-400/40 pointer-events-none z-10"></div>
+      <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-rose-300/30 pointer-events-none z-10"></div>
+
+      <!-- Header Chit Banner -->
+      <div class="pt-5 pb-2 px-4 pl-8 border-b-2 border-dashed border-amber-900/30 bg-amber-50/80 flex items-start justify-between">
+        <div class="flex flex-col">
+          <div class="inline-flex items-center gap-1 text-[9.5px] font-black uppercase text-rose-700 border border-rose-300 rounded px-1.5 py-0.2 bg-rose-50 w-fit">
+            <span>★ SARASWATI VIDYALAYA</span>
+            <span>•</span>
+            <span id="pin-inspect-badge-no">HONOR ROLL</span>
+          </div>
+          <span class="text-[10px] text-slate-600 font-extrabold tracking-wide mt-1 uppercase">TROPHY SPECIFICATION DOSSIER</span>
+        </div>
+        <button onclick="window.closePinModal()" class="w-7 h-7 rounded-lg bg-white border border-slate-300 text-slate-700 flex items-center justify-center active:scale-95 shadow-sm font-black cursor-pointer" title="Close Chit">
+          <span class="material-symbols-outlined text-[16px]">close</span>
+        </button>
+      </div>
+
+      <!-- Body Content -->
+      <div class="p-3 pl-8 flex flex-col gap-2.5 relative">
+        <!-- Metallic Pin Showcase Visual -->
+        <div class="relative py-3 flex flex-col items-center justify-center bg-gradient-to-b from-amber-50/80 via-white to-amber-100/60 rounded-xl border border-amber-300/60 shadow-[inset_0_2px_6px_rgba(129,83,59,0.15)]">
+          <!-- 3D Heavy Brass Pin -->
+          <div id="pin-inspect-icon" class="w-16 h-16 metallic-pin-circle pin-gold text-3xl mx-auto shadow-md">
+            👑
+          </div>
+          <!-- Title & Subtitle -->
+          <div class="mt-2 flex flex-col items-center text-center px-2">
+            <h3 id="pin-inspect-title" class="text-base font-black text-slate-900 tracking-tight leading-tight" style="font-family: 'Permanent Marker', cursive;">
+              Bench King
+            </h3>
+            <span id="pin-inspect-sub" class="text-[11px] font-bold text-slate-600" style="font-family: 'Patrick Hand', cursive;">
+              Defeated Bench #1 champion
+            </span>
+            <div id="pin-inspect-status-pill" class="mt-1.5 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-100 border border-emerald-400 text-emerald-900 text-[10px] font-black uppercase">
+              <span class="material-symbols-outlined text-[13px]">military_tech</span> UNLOCKED & PINNED TO SHIRT
+            </div>
+          </div>
+        </div>
+
+        <!-- Dossier Table -->
+        <div class="bg-white rounded-xl p-2.5 border border-slate-200 shadow-sm flex flex-col gap-1.5">
+          <div class="flex flex-col gap-0.5">
+            <span class="text-[10px] font-black uppercase tracking-wide text-blue-900 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px]">swords</span> Recess Battle Feat:
+            </span>
+            <p id="pin-inspect-feat" class="text-[11px] leading-snug text-slate-800 font-bold italic pl-1" style="font-family: 'Patrick Hand', cursive;">
+              "Defeated Bench #1 champion Bunty with a clean 1-shot cliffhanger flick using Reynolds 045 Fine."
+            </p>
+          </div>
+
+          <!-- Reward Bonus -->
+          <div class="bg-blue-50 border border-blue-200 rounded p-1.5 px-2 flex items-center justify-between">
+            <span class="text-[10px] font-black text-blue-900 uppercase tracking-wider flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-blue-700">military_tech</span> Bonus:
+            </span>
+            <span id="pin-inspect-bonus" class="text-[10.5px] font-black text-blue-900">
+              +150 Khiladi XP • Desk Grip +5%
+            </span>
+          </div>
+        </div>
+
+        <!-- Teacher's Red Ink Note -->
+        <div class="bg-rose-50/80 border-2 border-dashed border-rose-400 rounded-xl p-2 flex items-start gap-1.5">
+          <span class="text-base select-none leading-none">✍️</span>
+          <div class="flex flex-col">
+            <span class="text-[9px] font-black uppercase text-rose-800">Teacher's Red Ink Remark:</span>
+            <p id="pin-inspect-note" class="text-[11px] font-bold italic text-rose-900 leading-snug mt-0.5 font-serif">
+              "Monitor ki shikayat bekar gayi. Fair game! - Signed Sharma Sir"
+            </p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col gap-1.5 pt-1">
+          <button id="pin-inspect-pin-btn" onclick="window.pinBadgeAction()" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-b from-amber-300 via-amber-400 to-amber-500 text-amber-950 font-black text-xs uppercase tracking-wider border border-amber-600 shadow-[0_3px_0_0_#92400e] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1.5 cursor-pointer">
+            <span class="material-symbols-outlined text-[16px]">push_pin</span>
+            <span>PIN TO KHILADI BADGE 📌</span>
+          </button>
+          <button onclick="window.closePinModal()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-[11px] border border-dashed border-slate-400 active:translate-y-0.5 flex items-center justify-center gap-1 cursor-pointer">
+            <span class="material-symbols-outlined text-[15px]">arrow_back</span>
+            <span>CLOSE CHIT [✕] RETURN TO SHELF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <script>
     // Step 3.2 & Step 3.3: Splash Screen & Main Menu Hub Lifecycle
     (function initUIOrchestrator() {
@@ -2360,6 +2692,15 @@
         setTimeout(() => {
           setupOverlay.style.display = 'none';
         }, 350);
+      };
+
+      window.startTrophyCabinet = function(initialTab = 'trophies') {
+        window.hideMainMenu();
+        setTimeout(() => {
+          if (window.trophyCabinetController) {
+            window.trophyCabinetController.show(initialTab);
+          }
+        }, 120);
       };
 
       window.startQuickDuel = function() {
@@ -3905,6 +4246,7 @@
 
   <script src="./js/hud.js?v=p3_s7"></script>
   <script src="./js/match_result.js?v=p3_s8"></script>
+  <script src="./js/trophy_cabinet.js?v=p3_s9"></script>
   <script type="module" src="./js/main.js?v=phase3_step3_menu"></script>
 </body>
 </html>
