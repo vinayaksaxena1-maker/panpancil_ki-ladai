@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, viewport-fit=cover">
   <title>Pen Fight: Desk Wars — Phase 1 Prototype</title>
   <link rel="stylesheet" href="./css/base.css?v=p3_s1">
   <link rel="stylesheet" href="./css/splash.css?v=p3_s2">
@@ -376,8 +376,8 @@
           </div>
 
           <!-- Pause Button (Tactile 3D Circular Pill) -->
-          <button id="hud-pause-btn" type="button" aria-label="Pause Match" class="w-8 h-8 rounded-full bg-white border-2 border-slate-900 text-slate-900 flex items-center justify-center active:scale-95 transition-transform shadow-[0_2px_0_0_#0f172a] cursor-pointer">
-            <span class="material-symbols-outlined text-[18px]">pause</span>
+          <button id="hud-pause-btn" type="button" aria-label="Pause Match" class="w-10 h-10 min-w-[40px] min-h-[40px] rounded-full bg-white border-2 border-slate-900 text-slate-900 flex items-center justify-center active:scale-95 transition-transform shadow-[0_2px_0_0_#0f172a] cursor-pointer">
+            <span class="material-symbols-outlined text-[20px]">pause</span>
           </button>
         </div>
       </div>
@@ -1043,8 +1043,8 @@
             <span class="font-label-md text-[11px] tracking-wider uppercase font-extrabold">RECESS BREAK • BENCH #4</span>
             <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping ml-0.5"></span>
           </div>
-          <button aria-label="School Rules & Settings" class="w-7 h-7 rounded-full bg-white/90 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all transform active:scale-90 shadow-sm cursor-pointer" id="settingsBtn" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" onclick="window.startTrophyCabinet('settings')">
-            <span class="material-symbols-outlined text-[16px]">settings</span>
+          <button aria-label="School Rules & Settings" class="w-9 h-9 min-w-[36px] min-h-[36px] rounded-full bg-white/90 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all transform active:scale-90 shadow-sm cursor-pointer" id="settingsBtn" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" onclick="window.startTrophyCabinet('settings')">
+            <span class="material-symbols-outlined text-[18px]">settings</span>
           </button>
         </header>
 
@@ -1318,8 +1318,8 @@
       <div class="flex flex-col w-full relative px-2.5 pt-2 pb-2 select-none flex-1 overflow-y-auto">
         <!-- Top Recess & Status Header Pill with Back Button -->
         <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
-          <button type="button" onclick="window.hideCampaignMap(); window.showMainMenu();" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#1e293b] font-bold text-[11px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
-            <span class="text-[12px] font-bold">←</span>
+          <button type="button" onclick="window.hideCampaignMap(); window.showMainMenu();" class="inline-flex items-center gap-1 px-3 py-1 min-h-[34px] rounded-full bg-white text-[#1e293b] font-bold text-[12px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[13px] font-bold">←</span>
             <span>HUB</span>
           </button>
 
@@ -1461,8 +1461,8 @@
       <div class="flex flex-col w-full relative px-2.5 pt-2 pb-2 select-none flex-1 overflow-y-auto">
         <!-- Top Status Header Pill with Back Button -->
         <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
-          <button type="button" onclick="window.hideCompassBox(); window.showMainMenu();" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#1e293b] font-bold text-[11px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
-            <span class="text-[12px] font-bold">←</span>
+          <button type="button" onclick="window.hideCompassBox(); window.showMainMenu();" class="inline-flex items-center gap-1 px-3 py-1 min-h-[34px] rounded-full bg-white text-[#1e293b] font-bold text-[12px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[13px] font-bold">←</span>
             <span>HUB</span>
           </button>
 
@@ -1652,8 +1652,8 @@
       <div class="flex flex-col w-full relative px-2.5 pt-2 pb-2 select-none flex-1 overflow-y-auto">
         <!-- Top Status Header Pill with Back Button -->
         <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
-          <button type="button" onclick="window.hideMatchSetup(); window.showMainMenu();" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[#1e293b] font-bold text-[11px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
-            <span class="text-[12px] font-bold">←</span>
+          <button type="button" onclick="window.hideMatchSetup(); window.showMainMenu();" class="inline-flex items-center gap-1 px-3 py-1 min-h-[34px] rounded-full bg-white text-[#1e293b] font-bold text-[12px] shadow-sm cursor-pointer active:scale-95 transition-transform select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; font-family: 'Patrick Hand', cursive;">
+            <span class="text-[13px] font-bold">←</span>
             <span>HUB</span>
           </button>
 
@@ -2291,7 +2291,11 @@
         <!-- Header Chit -->
         <div class="bg-amber-100/70 border-2 border-slate-900 rounded-xl p-3 shadow-[0_2.5px_0_0_#0f172a] relative">
           <div class="flex items-center justify-between border-b border-dashed border-amber-900/30 pb-1.5">
-            <span class="text-[10px] font-black uppercase text-amber-900 tracking-wider">🔔 RECESS • BENCH #4 • TROPHY ROOM</span>
+            <button type="button" onclick="window.hideTrophyCabinet()" class="inline-flex items-center gap-1 px-3 py-1 min-h-[32px] rounded-full bg-white text-[#1e293b] font-bold text-[11px] shadow-sm cursor-pointer active:scale-95 transition-transform border border-slate-900 select-none" style="font-family: 'Patrick Hand', cursive;">
+              <span class="text-[12px] font-bold">←</span>
+              <span>HUB</span>
+            </button>
+            <span class="text-[10px] font-black uppercase text-amber-900 tracking-wider">🔔 RECESS • BENCH #4</span>
             <span class="text-[10px] font-black text-slate-700 font-mono">PAGE: 09</span>
           </div>
           <div class="mt-1.5">
