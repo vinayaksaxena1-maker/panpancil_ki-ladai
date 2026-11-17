@@ -4663,9 +4663,31 @@
         let saved = {};
         try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
         const profile = saved.profile || {};
+        const progression = saved.progression || {};
+        const currentStageId = Math.min(11, Math.max(1, (progression.highestStageUnlocked || progression.currentStageId || 1)));
+        const stage = CAMPAIGN_OPPONENTS.find(s => s.stage === currentStageId) || CAMPAIGN_OPPONENTS[0];
+
         const p1Avatar = profile.avatarCustom || (profile.avatar === 'girl' ? './assets/student_avatar_girl.jpg' : './assets/student_avatar.jpg');
+        const equippedPenKey = profile.selectedPlayerPen || 'reynolds045';
+        const p1PenObj = PASSPLAY_PENS.find(p => p.key === equippedPenKey) || PASSPLAY_PENS[0];
+
+        const penKeyMap = {
+          "NATARAJ 621": "nataraj621",
+          "REYNOLDS 045": "reynolds045",
+          "BUTTERFLOW": "butterflow",
+          "PILOT V5": "pilotV5",
+          "TRIMAX GOLD": "trimax",
+          "APSARA PLATINUM": "apsaraPlatinum",
+          "TRIMAX LEGEND": "trimax"
+        };
+        const rivalPenKey = penKeyMap[stage.pen] || 'trimax';
+        const stagePhoto = `./assets/opponents/stage_${String(currentStageId).padStart(2, '0')}.jpg`;
 
         if (window.gameEngine) {
+          window.gameEngine.currentStageId = currentStageId;
+          if (window.gameEngine.progression) {
+            window.gameEngine.progression.currentStageId = currentStageId;
+          }
           if (window.gameEngine.storage) {
             window.gameEngine.storage.save({ settings: { difficulty: selectedSetupDifficulty, mode: 'bot' } });
           }
@@ -4674,6 +4696,8 @@
           } else if (window.gameEngine.botAI && typeof window.gameEngine.botAI.setDifficulty === 'function') {
             window.gameEngine.botAI.setDifficulty(selectedSetupDifficulty);
           }
+          window.gameEngine.changePen('player', equippedPenKey);
+          window.gameEngine.changePen('opponent', rivalPenKey);
           window.gameEngine.setGameMode('bot');
           window.gameEngine.resetSandbox();
         }
@@ -4681,9 +4705,10 @@
 
         if (window.hudController) {
           window.hudController.show();
+          window.hudController.setStage(currentStageId);
           window.hudController.setPlayers(
-            { name: profile.name || 'Student Fighter', pen: 'REYNOLDS 045', roll: profile.rollNo || '14', avatar: p1Avatar },
-            { name: "Bunty 'Backbencher'", pen: 'NATARAJ 621', roll: '09', avatar: './assets/opponents/stage_01.jpg' }
+            { name: profile.name || 'Student Fighter', pen: p1PenObj.name.toUpperCase(), roll: profile.rollNo || '14', avatar: p1Avatar },
+            { name: stage.name, pen: stage.pen, roll: `Stage 0${currentStageId}`, avatar: stagePhoto }
           );
           window.hudController.updateScore(0, 0, 3);
           window.hudController.setTurn('P1');
