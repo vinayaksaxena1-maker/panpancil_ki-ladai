@@ -52,7 +52,8 @@ public class MainActivity extends Activity {
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
-        settings.setMediaPlaybackRequiresUserGesture(false);
+        // Only allow audio after physical user tap / gesture
+        settings.setMediaPlaybackRequiresUserGesture(true);
 
         // 3D Acceleration
         mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
