@@ -416,10 +416,10 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 *Goal: 100% Offline tactile audio, zero runtime API calls, Kenney.nl / OpenGameArt CC0 assets + Web Audio procedural fallback, sound-by-sound user approval.*
 
 - [x] **Phase 4 Architecture & Governance Approved:** 1-by-1 Sound Selection & Approval Protocol locked (`PHASE_4_AUDIO_PLAN.md`).
-- [ ] **Step 4.0: Foundation Audio Engines:**
-  - [ ] **Step 4.0A:** Procedural Web Audio Synth fallback (`js/audio_synth.js`) — zero external dependency backup.
-  - [ ] **Step 4.0B:** Central Sound Manager (`js/audio_manager.js`) — pooling, mobile touch unlock, Trophy Cabinet settings sync.
-- [ ] **Step 4.1:** `sfx_flick` (Slingshot release) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [x] **Step 4.0: Foundation Audio Engines:**
+  - [x] **Step 4.0A:** Procedural Web Audio Synth fallback (`js/audio_synth.js`) — zero external dependency backup.
+  - [x] **Step 4.0B:** Central Sound Manager (`js/audio_manager.js`) — pooling, mobile touch unlock, Trophy Cabinet settings sync.
+- [x] **Step 4.1 (COMPLETED & APPROVED):** `sfx_flick` (Slingshot release) — Option 2 (Finger-snap + desk friction, 140ms, 2.5KB) integrated & user approved (`e346013`).
 - [ ] **Step 4.2:** `sfx_impact` (Pen-to-pen collision) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
 - [ ] **Step 4.3:** `sfx_wood_slide` (Desk friction) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
 - [ ] **Step 4.4:** `sfx_desk_fall` (Out-of-bounds drop) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
