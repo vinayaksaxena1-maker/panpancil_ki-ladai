@@ -32,6 +32,8 @@
     DOM.benchPill = document.getElementById('result-bench-pill');
     DOM.pageNo = document.getElementById('result-page-no');
     DOM.dateStamp = document.getElementById('result-date-stamp');
+    DOM.dDateStamp = document.getElementById('result-d-date-stamp');
+    DOM.pDateStamp = document.getElementById('result-p-date-stamp');
     DOM.rollBadge = document.getElementById('result-roll-badge');
 
     // Victory Elements
@@ -94,6 +96,8 @@
       const dd = String(today.getDate()).padStart(2, '0');
       const mm = String(today.getMonth() + 1).padStart(2, '0');
       if (DOM.dateStamp) DOM.dateStamp.textContent = `${dd}/${mm}/98`;
+      if (DOM.dDateStamp) DOM.dDateStamp.textContent = `${dd}/${mm}/98`;
+      if (DOM.pDateStamp) DOM.pDateStamp.textContent = `${dd}/${mm}/98 • RECESS BELL FINAL • DESK WARS`;
       if (DOM.pageNo) DOM.pageNo.textContent = '07';
 
       // Load Saved Profile Data
@@ -161,25 +165,47 @@
       const p2Score = (data.score && data.score.opponent) || 0;
       const oppName = data.opponentName || "Bunty 'Backbencher'";
 
+      const is2P = (data.mode === 'pass_and_play');
+
       if (viewName === 'victory') {
         if (DOM.btnNext) {
-          DOM.btnNext.style.display = 'flex';
-          DOM.btnNext.innerHTML = `<span>NEXT CLASSMATE</span><span class="material-symbols-outlined text-[17px]">arrow_forward</span>`;
-          DOM.btnNext.onclick = () => this.nextOpponent();
+          if (is2P) {
+            DOM.btnNext.style.display = 'none'; // 2-Player duel has no campaign next classmate!
+          } else {
+            DOM.btnNext.style.display = 'flex';
+            DOM.btnNext.innerHTML = `<span>NEXT CLASSMATE</span><span class="material-symbols-outlined text-[17px]">arrow_forward</span>`;
+            DOM.btnNext.onclick = () => this.nextOpponent();
+          }
         }
         if (DOM.btnRematch) {
           DOM.btnRematch.style.display = 'flex';
-          DOM.btnRematch.innerHTML = `<span class="material-symbols-outlined text-[16px] text-blue-700">refresh</span><span>REMATCH (PASS PHONE) 🔄</span>`;
+          DOM.btnRematch.innerHTML = is2P
+            ? `<span class="material-symbols-outlined text-[16px] text-blue-700">refresh</span><span>REMATCH (P1 vs P2) ⚔️</span>`
+            : `<span class="material-symbols-outlined text-[16px] text-blue-700">refresh</span><span>REMATCH (RETRY DUEL) 🔄</span>`;
         }
         if (DOM.btnHub) DOM.btnHub.style.display = 'flex';
 
-        if (DOM.vP1Name) DOM.vP1Name.textContent = profile.name || 'Student Fighter';
+        if (DOM.vP1Name) DOM.vP1Name.textContent = profile.name || (is2P ? 'Player 1' : 'Student Fighter');
         if (DOM.vP1Pen) DOM.vP1Pen.textContent = p1PenName;
-        if (DOM.vP1Score) DOM.vP1Score.textContent = `${p1Score} SETS`;
+        if (DOM.vP1Score) DOM.vP1Score.textContent = `${p1Score} WINS`;
 
-        if (DOM.vP2Name) DOM.vP2Name.textContent = oppName;
+        if (DOM.vP2Name) DOM.vP2Name.textContent = is2P ? 'Player 2 (Rival)' : oppName;
         if (DOM.vP2Pen) DOM.vP2Pen.textContent = p2PenName;
-        if (DOM.vP2Score) DOM.vP2Score.textContent = `${p2Score} SET`;
+        if (DOM.vP2Score) DOM.vP2Score.textContent = `${p2Score} WINS`;
+
+        // Dynamic Teacher Remark & Signature based on performance
+        if (DOM.vTeacherNote && DOM.vTeacherSign) {
+          if (p2Score === 0) {
+            DOM.vTeacherNote.textContent = `"Remark: Exceptional wrist precision! Clean sweep without conceding a single round. Master of Desk Wars!"`;
+            DOM.vTeacherSign.textContent = `— Sharma Sir (Maths & Examination Proctor)`;
+          } else if (p1Score - p2Score === 1) {
+            DOM.vTeacherNote.textContent = `"Remark: Sensational clutch comeback under extreme table pressure! Outstanding fighting spirit."`;
+            DOM.vTeacherSign.textContent = `— Sharmila Ma'am (Class Teacher & Proctor)`;
+          } else {
+            DOM.vTeacherNote.textContent = `"Remark: Solid wrist flick trajectory. Keep pens safely inside geometry box during period changes!"`;
+            DOM.vTeacherSign.textContent = `— Sharmila Ma'am (Class Teacher & Proctor)`;
+          }
+        }
 
         // Populate Round History List
         if (DOM.vRoundList) {
@@ -220,20 +246,32 @@
         if (DOM.btnNext) DOM.btnNext.style.display = 'none';
         if (DOM.btnRematch) {
           DOM.btnRematch.style.display = 'flex';
-          DOM.btnRematch.innerHTML = `<span class="material-symbols-outlined text-[16px] text-rose-700">swords</span><span>REMATCH! RECLAIM BENCH ⚔️</span>`;
+          DOM.btnRematch.innerHTML = is2P
+            ? `<span class="material-symbols-outlined text-[16px] text-rose-700">swords</span><span>REMATCH (P1 vs P2) ⚔️</span>`
+            : `<span class="material-symbols-outlined text-[16px] text-rose-700">swords</span><span>REMATCH! RECLAIM BENCH ⚔️</span>`;
         }
         if (DOM.btnHub) DOM.btnHub.style.display = 'flex';
 
-        if (DOM.dP1Name) DOM.dP1Name.textContent = profile.name || 'Student Fighter';
+        if (DOM.dP1Name) DOM.dP1Name.textContent = profile.name || (is2P ? 'Player 1' : 'Student Fighter');
         if (DOM.dP1Pen) DOM.dP1Pen.textContent = p1PenName;
-        if (DOM.dP1Score) DOM.dP1Score.textContent = `${p1Score} SET`;
+        if (DOM.dP1Score) DOM.dP1Score.textContent = `${p1Score} WINS`;
 
-        if (DOM.dP2Name) DOM.dP2Name.textContent = oppName;
+        if (DOM.dP2Name) DOM.dP2Name.textContent = is2P ? 'Player 2 (Rival)' : oppName;
         if (DOM.dP2Pen) DOM.dP2Pen.textContent = p2PenName;
-        if (DOM.dP2Score) DOM.dP2Score.textContent = `${p2Score} SETS`;
+        if (DOM.dP2Score) DOM.dP2Score.textContent = `${p2Score} WINS`;
 
         if (DOM.dSurrenderMsg) {
-          DOM.dSurrenderMsg.textContent = `BENCH SURRENDERED TO ${oppName.toUpperCase()}`;
+          DOM.dSurrenderMsg.textContent = is2P
+            ? `BENCH CLAIMED BY PLAYER 2`
+            : `BENCH SURRENDERED TO ${oppName.toUpperCase()}`;
+        }
+
+        if (DOM.dTeacherNote) {
+          if (p1Score === 0) {
+            DOM.dTeacherNote.textContent = `"Remark: Table se pen neeche gira diya! Agle recess tak zero duel permission! Murga bano corridor me!"`;
+          } else {
+            DOM.dTeacherNote.textContent = `"Remark: Close match but lost bench grip! Work on table edge deflection angles before next recess."`;
+          }
         }
 
         if (DOM.dRoundList) {
