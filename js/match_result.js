@@ -35,6 +35,9 @@
     DOM.dDateStamp = document.getElementById('result-d-date-stamp');
     DOM.pDateStamp = document.getElementById('result-p-date-stamp');
     DOM.rollBadge = document.getElementById('result-roll-badge');
+    DOM.vSchoolName = document.getElementById('result-v-school-name');
+    DOM.dSchoolName = document.getElementById('result-d-school-name');
+    DOM.pSchoolName = document.getElementById('result-p-school-name');
 
     // Victory Elements
     DOM.vP1Name = document.getElementById('result-v-p1-name');
@@ -149,6 +152,14 @@
       try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
       const profile = saved.profile || {};
       const progResult = data.progResult || {};
+
+      // Dynamic School Name Injection
+      const schoolDisplayName = (profile.schoolName && profile.schoolName.trim().length > 0)
+        ? profile.schoolName.trim().toUpperCase()
+        : 'SARASWATI VIDYALAYA';
+      if (DOM.vSchoolName) DOM.vSchoolName.textContent = schoolDisplayName;
+      if (DOM.dSchoolName) DOM.dSchoolName.textContent = schoolDisplayName;
+      if (DOM.pSchoolName) DOM.pSchoolName.textContent = `★ ${schoolDisplayName} • OFFICIAL PROMOTION CHIT ★`;
 
       const penDisplayNames = {
         reynolds045: 'Reynolds 045',
