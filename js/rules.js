@@ -201,6 +201,51 @@ export class MatchRules {
     this.activeTurn = 'player';
   }
 
+  awardFoulPoint(timedOutTurn) {
+    const is2P = this.mode === 'pass_and_play';
+    const p1Label = is2P ? "Player 1" : "Player";
+    const p2Label = is2P ? "Player 2" : "Opponent";
+    const winner = (timedOutTurn === 'P1') ? 'opponent' : 'player';
+
+    if (winner === 'player') {
+      this.score.player++;
+      const isMatchWin = this.score.player >= this.targetWins;
+      if (isMatchWin) {
+        this.matchOver = true;
+        this.winner = 'player';
+      }
+      this.roundHistory.push({ round: this.currentRound, winner: 'player', reason: 'TIME_OUT' });
+      this.currentRound++;
+      return {
+        winner: 'player',
+        type: isMatchWin ? 'MATCH_WIN_PLAYER' : 'ROUND_WIN_PLAYER',
+        message: isMatchWin 
+          ? `🏆 ${p1Label} Wins Match on Time Foul! [${this.score.player} - ${this.score.opponent}]`
+          : `⚡ ${p1Label} won round (Rival timed out)! [${this.score.player} - ${this.score.opponent}]`,
+        score: { ...this.score },
+        matchOver: isMatchWin
+      };
+    } else {
+      this.score.opponent++;
+      const isMatchWin = this.score.opponent >= this.targetWins;
+      if (isMatchWin) {
+        this.matchOver = true;
+        this.winner = 'opponent';
+      }
+      this.roundHistory.push({ round: this.currentRound, winner: 'opponent', reason: 'TIME_OUT' });
+      this.currentRound++;
+      return {
+        winner: 'opponent',
+        type: isMatchWin ? 'MATCH_WIN_OPPONENT' : 'ROUND_WIN_OPPONENT',
+        message: isMatchWin 
+          ? `💀 ${p2Label} Wins Match on Time Foul! [${this.score.opponent} - ${this.score.player}]`
+          : `⚡ ${p2Label} won round (${p1Label} timed out)! [${p1Label} ${this.score.player} - ${this.score.opponent}]`,
+        score: { ...this.score },
+        matchOver: isMatchWin
+      };
+    }
+  }
+
   isInteractionAllowed(side) {
     if (this.matchOver) return false;
     if (this.state === MatchState.P1_AIMING && side === 'player') return true;

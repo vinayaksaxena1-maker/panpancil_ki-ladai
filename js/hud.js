@@ -460,9 +460,17 @@
             DOM.matchTimer.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
           }
         } else {
-          // Timer reached 00:00 - Sudden Death or Time Out
-          hudController.setBanner("TIME'S UP! 🔔", "Period Bell ringing! Sudden death sudden flick!", "SUDDEN DEATH ⚡", 4000);
-          emit('timeUp');
+          // Timer reached 00:00 - Stop interval immediately to prevent repeating loops
+          hudController.stopTimer();
+          const timedOutTurn = state.currentTurn; // 'P1' | 'BOT' | 'P2'
+          const isPlayerTurn = (timedOutTurn === 'P1');
+          hudController.setBanner(
+            "TIME'S UP! 🔔",
+            isPlayerTurn ? "Period Bell! You ran out of time — point to Rival!" : "Period Bell! Rival timed out — point to You!",
+            "TIME FOUL ⚡",
+            2400
+          );
+          emit('timeUp', { timedOutTurn });
         }
       }, 1000);
     },

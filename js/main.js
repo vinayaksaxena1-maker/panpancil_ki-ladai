@@ -5,7 +5,7 @@ import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
 import { storage } from './storage.js?v=p2_s5';
-import { MatchRules, MatchState } from './rules.js?v=p2_s1';
+import { MatchRules, MatchState } from './rules.js?v=p3_s14';
 import { PCOpponentController } from './bot.js?v=p2_s2';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
@@ -481,6 +481,9 @@ class GameEngine {
           this.executeFlick('player', 0, -1, 140);
         }
       });
+      window.hudController.on('timeUp', (data) => {
+        this.handleTimeUp(data);
+      });
     }
   }
 
@@ -717,6 +720,71 @@ class GameEngine {
           ? "👥 Player 1 (South) ki baari! Drag pen to flick."
           : "Your Turn! Drag pen to flick.";
       }
+    }
+  }
+
+  handleTimeUp(data) {
+    if (this.rules.matchOver) return;
+    if (window.hudController && typeof window.hudController.isVisible === 'function' && !window.hudController.isVisible()) return;
+
+    const timedOutTurn = (data && data.timedOutTurn) || (this.rules.activeTurn === 'player' ? 'P1' : 'BOT');
+    const outcome = this.rules.awardFoulPoint(timedOutTurn);
+    const is2P = this.rules.mode === 'pass_and_play';
+
+    if (this.statusMsgEl) {
+      this.statusMsgEl.innerText = outcome.message;
+    }
+
+    if (window.hudController && outcome.score) {
+      window.hudController.updateScore(outcome.score.player, outcome.score.opponent, this.rules.targetWins || 3);
+    }
+
+    this.updateTurnBadge();
+
+    if (!outcome.matchOver) {
+      setTimeout(() => {
+        updateBlackboardDisplay(null);
+        this.resetRound();
+        if (window.hudController) {
+          window.hudController.startTimer(165);
+          window.hudController.setTurn('P1');
+        }
+      }, 2000);
+    } else {
+      // Match Over on Time Foul!
+      const isWin = outcome.winner === 'player';
+      const progResult = this.progression.processMatchEnd({
+        isWin,
+        score: outcome.score,
+        difficulty: this.difficulty || 'normal',
+        mode: this.rules.mode,
+        stageId: this.currentStageId || this.progression.currentStageId || 1,
+        playerPen: this.playerPenConfigKey || 'reynolds045',
+        hasSpinFlick: this.playerUsedSpin || false,
+        roundHistory: this.rules.roundHistory.map(r => r.winner)
+      });
+
+      this.storage.save({ progression: this.progression.getState() });
+
+      const chalkMsg = isWin 
+        ? `VICTORY! +${progResult.earnedXp} XP (${progResult.levelInfo.title})`
+        : `DEFEAT! +${progResult.earnedXp} XP (${progResult.levelInfo.title})`;
+      updateBlackboardDisplay(chalkMsg);
+
+      setTimeout(() => {
+        if (window.matchResultController) {
+          window.matchResultController.show({
+            isWin,
+            mode: this.rules.mode,
+            score: outcome.score,
+            roundHistory: this.rules.roundHistory,
+            progResult,
+            playerPen: this.playerPenConfigKey || 'reynolds045',
+            opponentPen: this.opponentPenConfigKey || 'trimax',
+            opponentName: is2P ? 'Player 2 (Rival)' : (window.currentStageOpponent?.name || "Bunty 'Backbencher'")
+          });
+        }
+      }, 2200);
     }
   }
 
