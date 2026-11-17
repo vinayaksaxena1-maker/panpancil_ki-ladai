@@ -90,10 +90,8 @@ class GameEngine {
       targetWins: 3, // Best of 5 (First to 3 wins)
       mode: initialMode,
       onScoreUpdate: (pScore, oScore, round) => {
-        if (this.statusMsgEl && !this.rules.matchOver) {
-          const is2P = this.rules.mode === 'pass_and_play';
-          const p2Name = is2P ? 'P2' : 'Opponent';
-          this.statusMsgEl.innerText = `Round ${round} (Best of 5) | [P1: ${pScore} - ${oScore} ${p2Name}]`;
+        if (window.hudController && !this.rules.matchOver) {
+          window.hudController.updateScore(pScore, oScore, this.rules.targetWins || 3);
         }
       }
     });
@@ -108,11 +106,6 @@ class GameEngine {
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
     this.aimArrow = null;
-
-    // HUD references
-    this.powerMeterEl = document.getElementById('power-fill');
-    this.turnBadgeEl = document.getElementById('turn-badge');
-    this.statusMsgEl = document.getElementById('status-msg');
 
     // 120 Hz Fixed Timestep Accumulator & Interpolation State
     this.lastTime = 0;
@@ -248,77 +241,26 @@ class GameEngine {
   }
 
   syncUIWithStorage() {
-    const saved = this.storage.load();
-    const modeEl = document.getElementById('mode-select');
-    if (modeEl && saved.settings && saved.settings.mode) {
-      modeEl.value = saved.settings.mode;
-    }
-    const diffEl = document.getElementById('diff-select');
-    if (diffEl && saved.settings && saved.settings.difficulty) {
-      diffEl.value = saved.settings.difficulty;
-      if (saved.settings.mode === 'pass_and_play') {
-        diffEl.style.display = 'none';
-      }
-    }
-    const p1Select = document.querySelector('select[title="Player 1 Pen"]');
-    if (p1Select && this.playerPenConfigKey) {
-      p1Select.value = this.playerPenConfigKey;
-    }
-    const p2Select = document.getElementById('p2-pen-select');
-    if (p2Select && this.opponentPenConfigKey) {
-      p2Select.value = this.opponentPenConfigKey;
-      if (saved.settings && saved.settings.mode === 'pass_and_play') {
-        p2Select.title = 'Player 2 Pen';
-      }
-    }
-    const lvl = this.progression.getCurrentLevel();
-    if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = `Lvl ${lvl.level}: ${lvl.title} (${this.progression.xp} XP) | Flick to play!`;
-    }
+    // Internal state synced with persistent local storage
   }
 
   setDifficulty(mode) {
     if (!['easy', 'normal', 'hard'].includes(mode)) return;
     this.difficulty = mode;
     this.botAI.setDifficulty(mode);
-    const diffSelect = document.getElementById('diff-select');
-    if (diffSelect && diffSelect.value !== mode) diffSelect.value = mode;
-
     this.storage.save({ settings: { difficulty: mode } });
-
-    if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = `Bot AI: ${this.botAI.getPreset().label}`;
-    }
   }
 
   setGameMode(mode) {
     if (!['bot', 'pass_and_play'].includes(mode)) return;
     this.rules.startMatch(mode);
-    const modeSelect = document.getElementById('mode-select');
-    if (modeSelect && modeSelect.value !== mode) modeSelect.value = mode;
-
-    const diffSelect = document.getElementById('diff-select');
-    if (diffSelect) {
-      diffSelect.style.display = mode === 'pass_and_play' ? 'none' : '';
-    }
-
-    const p2Select = document.getElementById('p2-pen-select');
-    if (p2Select) {
-      p2Select.title = mode === 'pass_and_play' ? 'Player 2 Pen' : 'Bot Pen';
-    }
-
     this.storage.save({ settings: { mode: mode } });
-
-    if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = mode === 'pass_and_play'
-        ? "👥 Pass & Play Mode: Player 1 (South) vs Player 2 (North)"
-        : "🤖 VS Bot Mode: Player vs AI";
-    }
 
     updateBlackboardDisplay(mode === 'pass_and_play' ? "PASS & PLAY (2P)" : "VS BOT DUEL");
     setTimeout(() => updateBlackboardDisplay(null), 1500);
 
     this.resetRound();
+    this.updateTurnBadge();
   }
 
   spawnPen(config, pos, rotY) {
@@ -421,12 +363,6 @@ class GameEngine {
       this.aimArrow.position.set(this.flickAnchorPoint.x, 0.015, this.flickAnchorPoint.z);
       this.aimArrow.visible = true;
 
-      if (this.statusMsgEl) {
-        const is2P = this.rules.mode === 'pass_and_play';
-        const playerLabel = activeSide === 'player' ? 'P1' : (is2P ? 'P2' : 'Opponent');
-        const zoneLabel = this.activeFlickZone === 'cap' ? 'DHAKKAN (Cap)' : 'NIB (Tip)';
-        this.statusMsgEl.innerText = `🎯 [${playerLabel}] Aiming from ${zoneLabel}...`;
-      }
     };
 
     const onPointerMove = (e) => {
@@ -439,7 +375,9 @@ class GameEngine {
       const dragPx = Math.hypot(pxDiffX, pxDiffY);
 
       if (dragPx < DEAD_ZONE_PX) {
-        if (this.powerMeterEl) this.powerMeterEl.style.width = '0%';
+        if (window.hudController) {
+          window.hudController.updatePower(0);
+        }
         return;
       }
 
@@ -447,9 +385,6 @@ class GameEngine {
       const pullFrac = Math.min(Math.max(0, dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
       const curvedPower = Math.pow(pullFrac, GAMMA);
 
-      if (this.powerMeterEl) {
-        this.powerMeterEl.style.width = `${curvedPower * 100}%`;
-      }
       if (window.hudController) {
         window.hudController.updatePower(curvedPower * 100);
       }
@@ -463,7 +398,6 @@ class GameEngine {
       if (!this.isDragging) return;
       this.isDragging = false;
       this.aimArrow.visible = false;
-      if (this.powerMeterEl) this.powerMeterEl.style.width = '0%';
       if (window.hudController) {
         window.hudController.updatePower(0);
       }
@@ -577,12 +511,6 @@ class GameEngine {
         this.playerUsedSpin = true;
       }
     }
-
-    if (this.statusMsgEl) {
-      const is2P = this.rules.mode === 'pass_and_play';
-      const playerLabel = side === 'player' ? 'Player 1' : (is2P ? 'Player 2' : 'Opponent');
-      this.statusMsgEl.innerText = `${playerLabel} ne flick kiya!`;
-    }
   }
 
   executeBotFlick() {
@@ -626,7 +554,6 @@ class GameEngine {
     if (!this.playerPen.isFallen && isOutOfBounds(pPos)) {
       this.playerPen.isFallen = true;
       synth.playThud();
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "💥 Player ki pen desk se gir gayi!";
       this.playerPen.body.setLinvel(new RAPIER.Vector3(0, -1.5, 0), true);
       this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
     }
@@ -634,7 +561,6 @@ class GameEngine {
     if (!this.opponentPen.isFallen && isOutOfBounds(oPos)) {
       this.opponentPen.isFallen = true;
       synth.playThud();
-      if (this.statusMsgEl) this.statusMsgEl.innerText = "🎉 Opponent ki pen table se out!";
       this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, -1.5, 0), true);
       this.opponentPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
     }
@@ -686,10 +612,6 @@ class GameEngine {
     }
 
     // 2. HUD Status message
-    if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = outcome.message;
-    }
-
     if (window.hudController && outcome.score) {
       window.hudController.updateScore(outcome.score.player, outcome.score.opponent, this.rules.targetWins || 3);
       if (outcome.winner === 'player') {
@@ -729,17 +651,6 @@ class GameEngine {
         // Step 2.5: Auto-save progression state to persistent storage
         this.storage.save({ progression: this.progression.getState() });
 
-        const badgeMsg = progResult.newBadges.length > 0 
-          ? ` 🎖️ ${progResult.newBadges.map(b => b.title).join(', ')}!` 
-          : '';
-
-        if (this.statusMsgEl) {
-          const winnerName = outcome.winner === 'player' ? (is2P ? 'Player 1' : 'Player') : (is2P ? 'Player 2' : 'Opponent');
-          const p1Final = outcome.score.player;
-          const p2Final = outcome.score.opponent;
-          this.statusMsgEl.innerText = `🏆 ${winnerName} Wins! [${p1Final} - ${p2Final}] | +${progResult.earnedXp} XP (${progResult.levelInfo.title})${badgeMsg}`;
-        }
-
         const chalkMsg = isWin 
           ? `VICTORY! +${progResult.earnedXp} XP (${progResult.levelInfo.title})`
           : `DEFEAT! +${progResult.earnedXp} XP (${progResult.levelInfo.title})`;
@@ -768,15 +679,6 @@ class GameEngine {
     if (outcome.nextTurn === 'opponent') {
       if (this.rules.mode === 'bot') {
         setTimeout(() => this.executeBotFlick(), 750);
-      } else {
-        // Pass & Play Mode: Player 2 (North) is waiting to flick
-        if (this.statusMsgEl) this.statusMsgEl.innerText = "👥 Player 2 (North) ki baari! Drag pen to flick.";
-      }
-    } else if (outcome.nextTurn === 'player') {
-      if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = is2P
-          ? "👥 Player 1 (South) ki baari! Drag pen to flick."
-          : "Your Turn! Drag pen to flick.";
       }
     }
   }
@@ -788,10 +690,6 @@ class GameEngine {
     const timedOutTurn = (data && data.timedOutTurn) || (this.rules.activeTurn === 'player' ? 'P1' : 'BOT');
     const outcome = this.rules.awardFoulPoint(timedOutTurn);
     const is2P = this.rules.mode === 'pass_and_play';
-
-    if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = outcome.message;
-    }
 
     if (window.hudController && outcome.score) {
       window.hudController.updateScore(outcome.score.player, outcome.score.opponent, this.rules.targetWins || 3);
@@ -846,30 +744,7 @@ class GameEngine {
   }
 
   updateTurnBadge() {
-    if (!this.turnBadgeEl) return;
     const is2P = this.rules.mode === 'pass_and_play';
-
-    if (this.rules.matchOver) {
-      if (this.rules.winner === 'player') {
-        this.turnBadgeEl.innerText = is2P ? "🏆 PLAYER 1 WINS" : "🏆 MATCH WON";
-        this.turnBadgeEl.style.background = "#3f8b61";
-      } else {
-        this.turnBadgeEl.innerText = is2P ? "🏆 PLAYER 2 WINS" : "💀 MATCH LOST";
-        this.turnBadgeEl.style.background = is2P ? "#2b6cb0" : "#c85b4a";
-      }
-      return;
-    }
-
-    if (this.rules.state === MatchState.P1_AIMING) {
-      this.turnBadgeEl.innerText = is2P ? "P1 Turn (South)" : "Your Turn (Drag to Flick)";
-      this.turnBadgeEl.style.background = "#3f8b61";
-    } else if (this.rules.state === MatchState.OPPONENT_AIMING) {
-      this.turnBadgeEl.innerText = is2P ? "P2 Turn (North)" : "Opponent Aiming...";
-      this.turnBadgeEl.style.background = is2P ? "#2b6cb0" : "#c85b4a";
-    } else if (this.rules.state === MatchState.SIMULATING || this.rules.state === MatchState.SETTLING) {
-      this.turnBadgeEl.innerText = "Flicking...";
-      this.turnBadgeEl.style.background = "#d9822b";
-    }
 
     if (window.hudController) {
       if (this.rules.matchOver) {
@@ -911,9 +786,6 @@ class GameEngine {
     }
 
     this.resetRound();
-    if (this.statusMsgEl) {
-      this.statusMsgEl.innerText = `${side === 'player' ? 'Player' : 'Opponent'} pen: ${config.name} (${config.type}, ${(config.mass * 1000).toFixed(1)}g)`;
-    }
   }
 
   clearCareerData() {
@@ -930,11 +802,6 @@ class GameEngine {
     updateBlackboardDisplay("MATCH RESET: 0 - 0");
     setTimeout(() => updateBlackboardDisplay(null), 1200);
     this.resetRound();
-    if (this.statusMsgEl) {
-      const is2P = this.rules.mode === 'pass_and_play';
-      const p2Label = is2P ? "P2" : "Opponent";
-      this.statusMsgEl.innerText = `🔄 Match Reset: Round 1 (Best of 5) | [P1: 0 - 0 ${p2Label}]`;
-    }
   }
 
   resetRound() {
@@ -975,7 +842,6 @@ class GameEngine {
     this.opponentPen.prevQuat.copy(qBot);
     this.opponentPen.currQuat.copy(qBot);
 
-    if (this.powerMeterEl) this.powerMeterEl.style.width = '0%';
     if (window.hudController) {
       window.hudController.updatePower(0);
     }
@@ -984,19 +850,9 @@ class GameEngine {
     if (!this.rules.matchOver) {
       this.rules.prepareNextRound();
       this.updateTurnBadge();
-      const is2P = this.rules.mode === 'pass_and_play';
-      const p2Label = is2P ? "P2" : "Opponent";
-      const openerLabel = this.rules.activeTurn === 'player' ? (is2P ? "Player 1" : "Player") : p2Label;
-
-      if (this.statusMsgEl) {
-        this.statusMsgEl.innerText = `Round ${this.rules.currentRound} (Best of 5) | [P1: ${this.rules.score.player} - ${this.rules.score.opponent} ${p2Label}] • ${openerLabel} opens!`;
-      }
 
       // If it's Opponent/Bot's turn to take the opening shot of the round:
       if (this.rules.mode === 'bot' && this.rules.activeTurn === 'opponent') {
-        if (this.statusMsgEl) {
-          this.statusMsgEl.innerText = `Round ${this.rules.currentRound} | Opponent taking opening shot...`;
-        }
         setTimeout(() => {
           if (!this.rules.matchOver && this.rules.activeTurn === 'opponent' && !this.isSimulating) {
             this.executeBotFlick();
