@@ -705,14 +705,17 @@
                   </div>
 
                   <!-- School Medium Selector (English Medium School vs Hindi Medium School) -->
-                  <div class="mt-1 pt-1 border-t border-[#c4c5d5]/40 flex items-center justify-between gap-1.5">
-                    <label class="block uppercase font-bold tracking-wider text-[#00288e] text-[9.5px] shrink-0" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.medium_label">🏫 MEDIUM / माध्यम:</label>
-                    <div class="inline-flex rounded-md p-0.5 bg-[#f1f5f9] border border-[#0f172a] shadow-xs gap-1 select-none">
-                      <button type="button" id="splash-med-english-btn" onclick="window.setSchoolMedium('english_school')" class="pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black">
-                        🏫 English Medium School
+                  <div class="mt-1.5 pt-1.5 border-t border-[#c4c5d5]/50 flex flex-col gap-1 select-none">
+                    <div class="flex items-center justify-between">
+                      <label class="block uppercase font-bold tracking-wider text-[#00288e] text-[10px]" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.medium_label">🏫 SCHOOL MEDIUM / स्कूल माध्यम:</label>
+                      <span id="splash-medium-badge" class="px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 border border-amber-400 font-mono text-[8px] font-black uppercase">📖 ENGLISH MEDIUM</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5">
+                      <button type="button" id="splash-med-english-btn" onclick="window.setSchoolMedium('english_school')" class="pencil-btn-tactile w-full py-1.5 px-2 rounded-md text-[11px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black text-center flex items-center justify-center gap-1">
+                        🏫 English School
                       </button>
-                      <button type="button" id="splash-med-hindi-btn" onclick="window.setSchoolMedium('hindi_school')" class="pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70">
-                        🏫 Hindi Medium School
+                      <button type="button" id="splash-med-hindi-btn" onclick="window.setSchoolMedium('hindi_school')" class="pencil-btn-tactile w-full py-1.5 px-2 rounded-md text-[11px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70 border border-slate-300 text-center flex items-center justify-center gap-1">
+                        🏫 Hindi School
                       </button>
                     </div>
                   </div>
@@ -996,7 +999,10 @@
                 <div class="flex-1 min-w-0 flex flex-col gap-1">
                   <div class="flex items-center justify-between">
                     <span class="font-bold uppercase tracking-wider text-[#b91c1c] text-[10px]" style="font-family: 'Patrick Hand', cursive;">✎ KHILADI KA NAAM:</span>
-                    <span id="menu-house-badge" class="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed text-[9px] font-bold border border-outline-variant/20 uppercase" style="border: 1.2px solid rgb(30, 41, 59); border-radius: 4px;">NEHRU RED</span>
+                    <div class="flex items-center gap-1">
+                      <span id="menu-medium-badge" onclick="window.startTrophyCabinet('settings')" class="pencil-btn-tactile px-1.5 py-0.2 rounded bg-amber-100 text-amber-900 text-[8.5px] font-black border border-amber-400 uppercase tracking-tight cursor-pointer active:scale-95" style="border-radius: 4px;" title="School Medium: Tap to change in Settings">📖 ENG MED.</span>
+                      <span id="menu-house-badge" class="px-1.5 py-0.2 rounded bg-secondary-fixed text-on-secondary-fixed text-[9px] font-bold border border-outline-variant/20 uppercase" style="border: 1.2px solid rgb(30, 41, 59); border-radius: 4px;">NEHRU RED</span>
+                    </div>
                   </div>
                   <div id="menu-student-name" class="text-[#0038a8] font-bold text-[19px] leading-tight truncate" style="font-family: Caveat, cursive; transform: rotate(-0.5deg); text-shadow: rgba(0, 56, 168, 0.4) 0.5px 0.5px 1px, rgba(30, 41, 59, 0.3) 0.2px 0px 0.5px; letter-spacing: 0.02em;">
                     Arjun 'Thunder' Sharma
@@ -2579,7 +2585,10 @@
           <div class="flex-1 min-w-0 flex flex-col">
             <div class="flex items-center justify-between">
               <span id="dossier-roll-tag" class="text-[9px] font-mono font-black text-slate-500 uppercase">ROLL #14 • 7TH-B</span>
-              <span id="dossier-house-tag" class="px-1.5 py-0.2 rounded bg-amber-100 border border-amber-400 text-amber-900 font-black text-[8.5px] uppercase">NEHRU RED</span>
+              <div class="flex items-center gap-1">
+                <span id="dossier-medium-tag" class="px-1.5 py-0.2 rounded bg-blue-100 border border-blue-400 text-blue-900 font-black text-[8.5px] uppercase">📖 ENG MED.</span>
+                <span id="dossier-house-tag" class="px-1.5 py-0.2 rounded bg-amber-100 border border-amber-400 text-amber-900 font-black text-[8.5px] uppercase">NEHRU RED</span>
+              </div>
             </div>
             <h4 id="dossier-name-label" class="text-base font-black text-slate-900 leading-tight truncate mt-0.5" style="font-family: 'Permanent Marker', cursive;">
               Student Fighter
@@ -3195,6 +3204,11 @@
           }
         }
         if (nameLabel) nameLabel.textContent = profile.name || 'Student Fighter';
+        const mediumTag = document.getElementById('dossier-medium-tag');
+        if (mediumTag) {
+          const med = (typeof window.getSchoolMedium === 'function') ? window.getSchoolMedium() : 'english_school';
+          mediumTag.textContent = (med === 'hindi_school') ? '🇮🇳 HINDI MED.' : '📖 ENG MED.';
+        }
 
         // 3. Current Level Rank
         const xp = progression.xp || 0;

@@ -497,20 +497,36 @@
   function updateMediumSelectorsUI() {
     const isEngSchool = (currentSchoolMedium === 'english_school');
 
-    // 1. Splash Admission School Medium Buttons
+    // 1. Splash Admission School Medium Buttons & Badge
     const splashEn = document.getElementById('splash-med-english-btn');
     const splashHi = document.getElementById('splash-med-hindi-btn');
+    const splashBadge = document.getElementById('splash-medium-badge');
+    if (splashBadge) {
+      splashBadge.textContent = isEngSchool ? "📖 ENGLISH MEDIUM" : "🇮🇳 HINDI MEDIUM";
+    }
     if (splashEn && splashHi) {
       if (isEngSchool) {
-        splashEn.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black";
-        splashHi.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70";
+        splashEn.className = "pencil-btn-tactile w-full py-1.5 px-2 rounded-md text-[11px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black text-center flex items-center justify-center gap-1";
+        splashHi.className = "pencil-btn-tactile w-full py-1.5 px-2 rounded-md text-[11px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70 border border-slate-300 text-center flex items-center justify-center gap-1";
       } else {
-        splashEn.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70";
-        splashHi.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black";
+        splashEn.className = "pencil-btn-tactile w-full py-1.5 px-2 rounded-md text-[11px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70 border border-slate-300 text-center flex items-center justify-center gap-1";
+        splashHi.className = "pencil-btn-tactile w-full py-1.5 px-2 rounded-md text-[11px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black text-center flex items-center justify-center gap-1";
       }
     }
 
-    // 2. Main Menu Sub-Language Toggle Badge
+    // 2. Main Menu School Medium Badge on Profile Card
+    const menuMedBadge = document.getElementById('menu-medium-badge');
+    if (menuMedBadge) {
+      menuMedBadge.textContent = isEngSchool ? "📖 ENG MED." : "🇮🇳 HINDI MED.";
+    }
+
+    // 3. Career Dossier School Medium Tag
+    const dossierMedTag = document.getElementById('dossier-medium-tag');
+    if (dossierMedTag) {
+      dossierMedTag.textContent = isEngSchool ? "📖 ENG MED." : "🇮🇳 HINDI MED.";
+    }
+
+    // 4. Main Menu Sub-Language Toggle Badge
     const menuBadgeText = document.getElementById('menu-medium-toggle-text');
     if (menuBadgeText) {
       if (isEngSchool) {
