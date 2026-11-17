@@ -426,7 +426,7 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 - [x] **Step 4.5 (COMPLETED & APPROVED):** `sfx_ui_click` (Tactile button & chit) — Option 1 (Crisp wooden pencil tap + soft paper rustle, 48ms, 1.2KB) integrated & user approved (`2126e77`).
 - [x] **Step 4.6 (COMPLETED & APPROVED):** `arena_ambience` (Match Arena classroom background loop) — Freesound #217491 ("Kids chatter Primary School Birmingham UK" by sbyandiji, authentic multi-kid classroom chatter) integrated into `school-hubbub.mp3` & committed (`c9a1a2d`).
 - [x] **Step 4.7 (COMPLETED & APPROVED):** `sfx_round_win` (Round win celebration) — Freesound #397435 ("Crowd Cheer II" by FoolBoyMedia, energetic celebratory crowd cheering) integrated into `cheer.mp3` & committed (`db558c6`).
-- [ ] **Step 4.8:** `sfx_round_loss` (Round loss sigh/groan) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [x] **Step 4.8 (COMPLETED & APPROVED):** `sfx_round_loss` (Round loss sigh/disappointment) — Freesound #619007 ("crowd oh - - disappointed" by mrrap4food, authentic natural disappointment reaction) integrated into `boo.mp3` & committed (`9593006`).
 - [ ] **Step 4.9:** `sfx_school_bell` (Match end & certificate) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
 - [ ] **Step 4.10:** `sfx_level_up` & `sfx_badge_unlock` (Progression jingles) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
 - 🎯 **APPROVAL GATE 4:** Full Audio Audit — zero latency, 60/120fps physics integrity, 390x844 mobile test sign-off.
