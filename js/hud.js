@@ -189,6 +189,24 @@
     },
 
     /**
+     * Set Current Stage and School Period Heading
+     */
+    setStage: function(stageId) {
+      const stage = parseInt(stageId, 10) || 1;
+      state.stageId = stage;
+      if (!DOM.recessPill) cacheDOMElements();
+      if (DOM.recessPill) {
+        let period = 1;
+        if (stage >= 10) period = 4;
+        else if (stage >= 7) period = 3;
+        else if (stage >= 4) period = 2;
+        
+        const periodLabel = (period === 4) ? `RECESS PERIOD 4` : `PERIOD ${period}`;
+        DOM.recessPill.textContent = `${periodLabel} • BENCH #${stage}`;
+      }
+    },
+
+    /**
      * Update Slingshot Tension Power (0 to 100%)
      * Dynamically shifts color gradient, updates labels and glow effects
      */
@@ -465,11 +483,8 @@
         if (!raw) return;
         const save = JSON.parse(raw);
         const profile = save.profile || {};
-        const stage = (save.progression && save.progression.currentStageId) || 1;
-
-        if (DOM.recessPill) {
-          DOM.recessPill.textContent = `RECESS PERIOD 4 • BENCH #${stage}`;
-        }
+        const stage = (window.gameEngine && window.gameEngine.currentStageId) || (save.progression && save.progression.currentStageId) || state.stageId || 1;
+        hudController.setStage(stage);
 
         const penNames = {
           reynolds045: 'REYNOLDS 045',

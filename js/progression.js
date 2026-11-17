@@ -359,6 +359,9 @@ export class ProgressionEngine {
       // Advance campaign if playing current highest unlocked stage
       if (stageId === this.highestStageUnlocked && stageId < CAMPAIGN_STAGES.length) {
         this.highestStageUnlocked = stageId + 1;
+        this.currentStageId = stageId + 1;
+      } else if (isWin && stageId < CAMPAIGN_STAGES.length) {
+        this.currentStageId = stageId + 1;
       }
 
       // Evaluate Badges

@@ -3182,10 +3182,12 @@
           try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
           const profile = saved.profile || {};
           const p1Avatar = profile.avatarCustom || (profile.avatar === 'girl' ? './assets/student_avatar_girl.jpg' : './assets/student_avatar.jpg');
+          const stagePhoto = stage.photo || `./assets/opponents/stage_${String(stageId).padStart(2, '0')}.jpg`;
           window.hudController.show();
+          window.hudController.setStage(stageId);
           window.hudController.setPlayers(
             { name: profile.name || 'Student Fighter', pen: 'REYNOLDS 045', roll: profile.rollNo || '14', avatar: p1Avatar },
-            { name: stage.name, pen: stage.pen, roll: `Stage 0${stageId}`, avatar: stage.photo }
+            { name: stage.name, pen: stage.pen, roll: `Stage 0${stageId}`, avatar: stagePhoto }
           );
           window.hudController.updateScore(0, 0, 3);
           window.hudController.setTurn('P1');
@@ -4703,8 +4705,8 @@
     })();
   </script>
 
-  <script src="./js/hud.js?v=p3_s11"></script>
-  <script src="./js/match_result.js?v=p3_s8"></script>
+  <script src="./js/hud.js?v=p3_s12"></script>
+  <script src="./js/match_result.js?v=p3_s9"></script>
   <script src="./js/trophy_cabinet.js?v=p3_s9"></script>
   <script type="module" src="./js/main.js?v=phase3_step3_menu"></script>
 </body>

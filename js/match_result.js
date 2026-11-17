@@ -101,10 +101,15 @@
       try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
       const profile = saved.profile || {};
       const progression = saved.progression || {};
-      const currentStage = progression.currentStageId || 1;
+      const currentStage = (window.gameEngine && window.gameEngine.currentStageId) || progression.currentStageId || 1;
 
       if (DOM.rollBadge) DOM.rollBadge.textContent = `#${profile.rollNo || '14'}`;
-      if (DOM.benchPill) DOM.benchPill.textContent = `RECESS: BENCH #${currentStage}`;
+      let period = 1;
+      if (currentStage >= 10) period = 4;
+      else if (currentStage >= 7) period = 3;
+      else if (currentStage >= 4) period = 2;
+      const periodLabel = (period === 4) ? `RECESS` : `PERIOD ${period}`;
+      if (DOM.benchPill) DOM.benchPill.textContent = `${periodLabel}: BENCH #${currentStage}`;
 
       const isWin = !!matchData.isWin;
       const isLevelUp = !!(matchData.progResult && matchData.progResult.isLevelUp);
@@ -297,15 +302,27 @@
     },
 
     /**
-     * Next Opponent / Stage action
+     * Next Opponent / Stage action (Stay in Arena for Next Bench)
      */
     nextOpponent: function() {
       this.hide();
       setTimeout(() => {
-        if (window.showCampaignMap) {
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
+        const progression = saved.progression || {};
+        const currentStage = (window.gameEngine && window.gameEngine.currentStageId) || progression.currentStageId || 1;
+        
+        if (currentStage >= 11) {
+          if (window.showCampaignMap) window.showCampaignMap();
+          else if (window.showMainMenu) window.showMainMenu();
+          return;
+        }
+
+        const nextStage = currentStage + 1;
+        if (typeof window.launchStageMatch === 'function') {
+          window.launchStageMatch(nextStage);
+        } else if (window.showCampaignMap) {
           window.showCampaignMap();
-        } else if (window.showMainMenu) {
-          window.showMainMenu();
         }
       }, 150);
     },
