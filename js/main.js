@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import RAPIER from 'rapier';
-import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=sv1998_pbr_v1';
+import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=sv1998_pbr_v2';
 import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
@@ -122,16 +122,16 @@ class GameEngine {
     this.scene.fog = new THREE.FogExp2(0xe4dac2, 0.045); // Atmospheric classroom depth
 
     // Warm sunlit ambient bounce
-    const ambientLight = new THREE.AmbientLight(0xfff3dc, 1.35);
+    const ambientLight = new THREE.AmbientLight(0xfff3dc, 1.25);
     this.scene.add(ambientLight);
 
     // Warm fill hemisphere light (preserves rich shadow side detail on pens)
-    const hemiLight = new THREE.HemisphereLight(0xfff8eb, 0x6e583f, 0.45);
+    const hemiLight = new THREE.HemisphereLight(0xfff8eb, 0x6e583f, 0.40);
     this.scene.add(hemiLight);
 
     // Warm afternoon sunlight streaming from left classroom window
-    const deskLight = new THREE.DirectionalLight(0xfff0d4, 2.45);
-    deskLight.position.set(-1.45, 2.15, 0.35);
+    const deskLight = new THREE.DirectionalLight(0xfff1d6, 2.60);
+    deskLight.position.set(-1.6, 2.2, 0.2);
     deskLight.castShadow = true;
     deskLight.shadow.mapSize.width = 2048;
     deskLight.shadow.mapSize.height = 2048;
@@ -141,7 +141,7 @@ class GameEngine {
     deskLight.shadow.camera.right = 1.5;
     deskLight.shadow.camera.top = 2.0;
     deskLight.shadow.camera.bottom = -2.0;
-    deskLight.shadow.bias = -0.0005;
+    deskLight.shadow.bias = -0.0004;
     this.scene.add(deskLight);
 
     // 3. Perspective Camera (Exact penfight.xyz elevated framing)
@@ -159,7 +159,7 @@ class GameEngine {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1.05;
+    this.renderer.toneMappingExposure = 1.08;
     this.container.appendChild(this.renderer.domElement);
 
     // 5. Central Desk & Classroom Environment
@@ -1071,6 +1071,11 @@ class GameEngine {
     let dt = (timestamp - this.lastTime) / 1000;
     this.lastTime = timestamp;
     if (dt > 0.1) dt = 0.1;
+
+    // Rotate nostalgic classroom ceiling fan
+    if (this.deskMesh && this.deskMesh.userData && this.deskMesh.userData.ceilingFan) {
+      this.deskMesh.userData.ceilingFan.rotation.y += dt * 2.8;
+    }
 
     // Freeze physics if match is paused
     if (window.hudController && typeof window.hudController.isPaused === 'function' && window.hudController.isPaused()) {
