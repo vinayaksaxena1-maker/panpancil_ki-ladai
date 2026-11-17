@@ -1,9 +1,10 @@
 /**
  * Pen Fight: Desk Wars — 100% Offline 2-Medium Language Engine
- * Supports: 'english' (English Medium - 100% original UI untouched)
- *           'hindi'   (Hindi Medium - Simple casual UI for everyday users)
+ * Supports: 
+ *   - 'english': English Medium (100% original UI untouched)
+ *   - 'hindi': Hindi Medium (Simple casual UI for everyday users)
  * 
- * Invariant: Zero external dependencies. Complete client-side offline persistence.
+ * Strict Binary Medium: No third tab, zero unsolicited translations.
  */
 
 (function(window) {
@@ -42,8 +43,7 @@
         enter_classroom: "ENTER CLASSROOM",
         rule_footer: "Rule #1: Desk se neeche gira pen out maana jayega!",
         avatar_khiladi: "KHILADI",
-        avatar_attested: "● ATTESTED",
-        choose_avatar: "CHOOSE AVATAR"
+        avatar_attested: "● ATTESTED"
       },
       menu: {
         period_badge: "RECESS BREAK • BENCH #4",
@@ -55,46 +55,34 @@
         roll_label: "ROLL NO:",
         class_label: "CLASS:",
         avatar_khiladi: "KHILADI",
-        level_label: "LEVEL 02 • FRONT BENCHER",
         toss_play_title: "TOSS & PLAY",
-        toss_play_sub: "VS BOT",
+        toss_play_sub: "1-Finger Flick • Recess Desk Duel",
         story_title: "Story Mode / Levels",
         story_sub: "Class 7th to 10th",
-        story_btn: "OPEN CAMPAIGN ➔",
+        story_btn: "FIGHT ➔",
         pass_play_title: "Pass & Play / 2 Players",
         pass_play_sub: "1 Device • Two Friends",
-        pass_play_btn: "START 2P DUEL ⇄",
+        pass_play_btn: "TOSS ⇄",
         compass_title: "Compass Box / My Pens",
         compass_sub: "6 Classic Ballpens",
-        compass_btn: "OPEN PENCIL BOX 🖊️",
+        compass_btn: "OPEN 🧰",
         trophy_title: "Trophy Rack / Records",
         trophy_sub: "Career Dossier & Stats",
-        trophy_btn: "INSPECT CABINET 🏆",
-        footer_warning: "WARNING: Class monitor keeps looking. Strike fast & silent!"
+        trophy_btn: "VIEW 🎖️"
       },
       setup: {
         hub_btn: "HUB",
-        title: "MATCH SETUP",
         tab_single: "Single Player (VS CPU)",
         tab_pass: "Pass & Play (2-Player)",
-        opponent_title: "RIVAL SCOUT REPORT",
         diff_title: "SELECT DIFFICULTY",
         diff_easy: "1st Bencher (Easy)",
         diff_normal: "Desk Regular (Normal)",
         diff_hard: "Monitor (Hard 🔥)",
-        bench_rule: "Desk Rule: Out upon table boundary breach!",
-        start_duel_1p: "START DESK DUEL ▶",
-        start_duel_2p: "START 2-PLAYER DUEL ▶",
-        blue_corner: "Blue Corner",
-        red_corner: "Red Corner",
-        tap_change_pen: "Tap to change pen",
-        toss_strip: "COIN TOSS: Winner strikes first!"
+        bench_rule: "Bench Rule: White chalk boundary • Drop from teak bench = instant defeat!",
+        start_duel_1p: "START DUEL",
+        start_duel_2p: "START 2-PLAYER DUEL ▶"
       },
       hud: {
-        recess_pill: "RECESS PERIOD 4 • BENCH #1",
-        stake_1p: "1P DESK DUEL",
-        stake_2p: "2P DESK DUEL",
-        bounty_chip: "★ 3 ROUNDS",
         you_tag: "YOU",
         bot_tag: "BOT",
         p2_tag: "P2",
@@ -129,11 +117,8 @@
         conduct_note: "\"Code of Conduct: Flick velocity release ke dauran pause dabaya toh Table Foul maana jayega!\""
       },
       result: {
-        victory_title: "PASSED WITH DISTINCTION!",
-        defeat_title: "FAILED! PEN FELL OFF DESK!",
-        promotion_title: "PROMOTION CHIT GRANTED!",
-        score_tag_win: "VICTORY!",
-        score_tag_loss: "DEFEAT!",
+        victory_title: "★ PASSED WITH DISTINCTION (A+) ★",
+        defeat_title: "DEFEAT! OUT OF BOUNDS!",
         next_classmate: "NEXT CLASSMATE",
         rematch_1p: "REMATCH (RETRY DUEL) 🔄",
         rematch_2p: "REMATCH (P1 vs P2) ⚔️",
@@ -143,28 +128,7 @@
       settings: {
         medium_title: "Medium / भाषा माध्यम",
         audio_title: "Audio & Recess SFX",
-        audio_badge: "1998 SOUND",
-        flick_sfx: "Pen Flick & Knock SFX",
-        flick_desc: "Ballpoint tip friction, table knock & plastic snap",
-        ambiance_title: "Classroom Murmur Chatter",
-        ambiance_desc: "Recess murmur of students, distant brass school bell",
-        whistle_title: "PT Sir Whistle & Alert Alarm",
-        whistle_desc: "Emergency whistle trigger when pen flies off-desk",
-        conduct_title: "Recess Code of Conduct",
-        conduct_badge: "Official Rules"
-      },
-      compass: {
-        title: "CAMLIN COMPASS BOX",
-        subtitle: "Desk Weapon Locker • Standard Issue 1998",
-        equipped: "EQUIPPED",
-        equip_btn: "EQUIP PEN",
-        locked: "LOCKED"
-      },
-      campaign: {
-        title: "CLASSROOM CONQUEST",
-        subtitle: "Front Bench to Back Bench (Stages 1 - 11)",
-        start_stage: "CHALLENGE BENCH",
-        locked_stage: "LOCKED"
+        audio_badge: "1998 SOUND"
       }
     },
     hindi: {
@@ -188,7 +152,7 @@
         school_placeholder: "सरस्वती विद्यालय (डिफ़ॉल्ट)",
         house_label: "सदन (हाउस):",
         rank_label: "रैंक:",
-        weapon_label: "मुख्य पेन (हथियार):",
+        weapon_label: "मुख्य पेन:",
         speed_label: "रफ़्तार / गति",
         grip_label: "टेबल पर पकड़",
         locked_label: "बंद पेन:",
@@ -197,8 +161,7 @@
         enter_classroom: "खेल शुरू करें ▶",
         rule_footer: "नियम #1: डेस्क से नीचे गिरा पेन आउट माना जाएगा!",
         avatar_khiladi: "खिलाड़ी",
-        avatar_attested: "● प्रमाणित",
-        choose_avatar: "अवतार चुनें"
+        avatar_attested: "● प्रमाणित"
       },
       menu: {
         period_badge: "लंच ब्रेक • बेंच #4",
@@ -210,46 +173,34 @@
         roll_label: "रोल नं:",
         class_label: "कक्षा:",
         avatar_khiladi: "खिलाड़ी",
-        level_label: "लेवल 02 • आगे बैठने वाले",
-        toss_play_title: "⚡ तुरंत खेलें",
-        toss_play_sub: "(VS CPU)",
+        toss_play_title: "⚡ तुरंत खेलें (VS CPU)",
+        toss_play_sub: "1-उंगली से फ्लिक करें • डेस्क मुकाबला",
         story_title: "लेवल मैच (1 - 11)",
-        story_sub: "कक्षा 7वीं से 10वीं तक",
+        story_sub: "11 विरोधियों को हराएं!",
         story_btn: "खेलें ➔",
         pass_play_title: "2 खिलाड़ी (1 फोन)",
         pass_play_sub: "1 फोन • दो दोस्त",
         pass_play_btn: "खेलें ⇄",
         compass_title: "मेरे पेन",
-        compass_sub: "6 क्लासिक पेन",
+        compass_sub: "पेन बॉक्स व हथियार",
         compass_btn: "खोलें 🖊️",
         trophy_title: "ट्रॉफी व इनाम",
-        trophy_sub: "रिकॉर्ड व उपलब्धियां",
-        trophy_btn: "देखें 🏆",
-        footer_warning: "सावधान: क्लास मॉनिटर देख रहा है। फुर्ती और शांति से खेलें!"
+        trophy_sub: "उपलब्धियां व रिकॉर्ड",
+        trophy_btn: "देखें 🏆"
       },
       setup: {
         hub_btn: "होम",
-        title: "मैच सेटअप",
         tab_single: "कंप्यूटर से खेलें",
         tab_pass: "2 खिलाड़ी (दोस्त)",
-        opponent_title: "विरोधी की जानकारी",
         diff_title: "कठिनाई चुनें",
         diff_easy: "आसान (Easy)",
         diff_normal: "सामान्य (Medium)",
         diff_hard: "कठिन (Hard 🔥)",
         bench_rule: "डेस्क नियम: टेबल से नीचे गिरते ही खिलाड़ी आउट!",
         start_duel_1p: "मैच शुरू करें ▶",
-        start_duel_2p: "2-खिलाड़ी मैच शुरू करें ▶",
-        blue_corner: "नीला कोना",
-        red_corner: "लाल कोना",
-        tap_change_pen: "पेन बदलने के लिए टैप करें",
-        toss_strip: "सिक्का उछाल: टॉस जीतने वाला पहला शॉट मारेगा!"
+        start_duel_2p: "2-खिलाड़ी मैच शुरू करें ▶"
       },
       hud: {
-        recess_pill: "लंच पीरियड 4 • बेंच #1",
-        stake_1p: "1 खिलाड़ी मैच",
-        stake_2p: "2 खिलाड़ी मैच",
-        bounty_chip: "★ 3 राउंड",
         you_tag: "आप",
         bot_tag: "कंप्यूटर",
         p2_tag: "खिलाड़ी 2",
@@ -286,9 +237,6 @@
       result: {
         victory_title: "शानदार जीत! ✪",
         defeat_title: "हार! टेबल से बाहर गिरे! 💔",
-        promotion_title: "अगली कक्षा में प्रमोशन!",
-        score_tag_win: "जीत!",
-        score_tag_loss: "हार!",
         next_classmate: "अगला सहपाठी ➔",
         rematch_1p: "दोबारा खेलें 🔄",
         rematch_2p: "दोबारा मुकाबला (P1 vs P2) ⚔️",
@@ -298,28 +246,7 @@
       settings: {
         medium_title: "भाषा माध्यम (Medium)",
         audio_title: "साउंड व आवाज (SFX)",
-        audio_badge: "1998 साउंड",
-        flick_sfx: "पेन शॉट व टक्कर की आवाज",
-        flick_desc: "पेन की नोक, टेबल पर खटखट और प्लास्टिक की आवाज",
-        ambiance_title: "क्लासरूम की आवाज",
-        ambiance_desc: "बच्चों की बातें और दूर बजती स्कूल की घंटी",
-        whistle_title: "पीटी सर की सीटी",
-        whistle_desc: "पेन टेबल से बाहर गिरने पर बजने वाली सीटी",
-        conduct_title: "खेल के नियम",
-        conduct_badge: "आधिकारिक नियम"
-      },
-      compass: {
-        title: "पेन बॉक्स (कैमलिन)",
-        subtitle: "हथियार लॉकर • 1998 संस्करण",
-        equipped: "चुना हुआ पेन",
-        equip_btn: "यह पेन चुनें",
-        locked: "बंद पेन"
-      },
-      campaign: {
-        title: "क्लासरूम अभियान",
-        subtitle: "आगे की बेंच से आखिरी बेंच तक (1 - 11)",
-        start_stage: "चुनौती दें",
-        locked_stage: "बंद"
+        audio_badge: "1998 साउंड"
       }
     }
   };
@@ -336,9 +263,7 @@
           return parsed.settings.language;
         }
       }
-    } catch (e) {
-      console.warn('[i18n] Failed to read saved language:', e);
-    }
+    } catch (e) {}
     return 'english';
   }
 
@@ -346,7 +271,6 @@
 
   /**
    * Translate key with optional variable replacements
-   * Example: window.t('hud.round_label', { cur: '01', max: '03' })
    */
   function t(key, vars = {}) {
     if (!key) return '';
@@ -364,7 +288,6 @@
       }
     }
 
-    // Fallback to English if not found in current language
     if (val === null || val === undefined) {
       val = fallbackPack;
       for (const p of parts) {
@@ -379,7 +302,6 @@
 
     if (typeof val !== 'string') return key;
 
-    // Replace variables e.g. {cur}, {max}
     let res = val;
     Object.keys(vars).forEach(k => {
       res = res.replace(new RegExp(`\\{${k}\\}`, 'g'), vars[k]);
@@ -388,10 +310,9 @@
   }
 
   /**
-   * Apply language to all DOM elements tagged with data-i18n & data-i18n-placeholder
+   * Apply language to DOM
    */
   function translateDOM() {
-    // 1. Text elements
     const elements = document.querySelectorAll('[data-i18n]');
     elements.forEach(el => {
       const key = el.getAttribute('data-i18n');
@@ -403,7 +324,6 @@
       }
     });
 
-    // 2. Input placeholders
     const inputs = document.querySelectorAll('[data-i18n-placeholder]');
     inputs.forEach(input => {
       const key = input.getAttribute('data-i18n-placeholder');
@@ -415,17 +335,15 @@
       }
     });
 
-    // 3. Update Medium Selector Buttons UI state
     updateMediumSelectorsUI();
 
-    // 4. Preserve School Name
     if (typeof window.applySchoolName === 'function') {
       window.applySchoolName();
     }
   }
 
   /**
-   * Update visual highlight on medium buttons
+   * Update visual state of 2-Medium buttons
    */
   function updateMediumSelectorsUI() {
     const isHindi = (currentLanguage === 'hindi');
@@ -454,11 +372,11 @@
     const pauseHi = document.getElementById('pause-med-hindi-btn');
     if (pauseEn && pauseHi) {
       if (isHindi) {
-        pauseEn.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
-        pauseHi.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
+        pauseEn.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
+        pauseHi.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
       } else {
-        pauseEn.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
-        pauseHi.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
+        pauseEn.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
+        pauseHi.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
       }
     }
 
@@ -481,27 +399,21 @@
    */
   function setGameLanguage(lang) {
     if (lang !== 'english' && lang !== 'hindi') {
-      console.warn(`[i18n] Invalid language "${lang}", defaulting to english`);
       lang = 'english';
     }
 
     currentLanguage = lang;
 
-    // Persist to localStorage
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       let save = raw ? JSON.parse(raw) : {};
       if (!save.settings) save.settings = {};
       save.settings.language = lang;
       localStorage.setItem(STORAGE_KEY, JSON.stringify(save));
-    } catch (e) {
-      console.warn('[i18n] Failed to persist language to localStorage:', e);
-    }
+    } catch (e) {}
 
-    // Update DOM
     translateDOM();
 
-    // Notify other controllers if active
     if (window.hudController && typeof window.hudController.onLanguageChange === 'function') {
       window.hudController.onLanguageChange(lang);
     }
@@ -511,13 +423,8 @@
     if (window.trophyCabinetController && typeof window.trophyCabinetController.onLanguageChange === 'function') {
       window.trophyCabinetController.onLanguageChange(lang);
     }
-
-    console.log(`[i18n] Medium switched to: ${lang}`);
   }
 
-  /**
-   * Toggle between English and Hindi Medium
-   */
   function toggleMedium() {
     const next = (currentLanguage === 'english') ? 'hindi' : 'english';
     setGameLanguage(next);
@@ -527,16 +434,12 @@
     return currentLanguage;
   }
 
-  // Auto-initialize when DOM ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => {
-      translateDOM();
-    });
+    document.addEventListener('DOMContentLoaded', translateDOM);
   } else {
     translateDOM();
   }
 
-  // Export to window
   window.I18N_PACK = I18N_PACK;
   window.t = t;
   window.setGameLanguage = setGameLanguage;

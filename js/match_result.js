@@ -185,7 +185,7 @@
           } else {
             DOM.btnNext.style.display = 'flex';
             const nextText = (window.t ? window.t('result.next_classmate') : 'NEXT CLASSMATE');
-            DOM.btnNext.innerHTML = `<span>${nextText}</span><span class="material-symbols-outlined text-[17px]">arrow_forward</span>`;
+            DOM.btnNext.innerHTML = `<span>${nextText}</span><span class="material-symbols-outlined text-[17px] ml-1.5">arrow_forward</span>`;
             DOM.btnNext.onclick = () => this.nextOpponent();
           }
         }
@@ -194,12 +194,12 @@
           const rematchText = is2P
             ? (window.t ? window.t('result.rematch_2p') : 'REMATCH (P1 vs P2) ⚔️')
             : (window.t ? window.t('result.rematch_1p') : 'REMATCH (RETRY DUEL) 🔄');
-          DOM.btnRematch.innerHTML = `<span class="material-symbols-outlined text-[16px] text-blue-700">refresh</span><span>${rematchText}</span>`;
+          DOM.btnRematch.innerHTML = `<span class="material-symbols-outlined text-[16px] text-blue-700 mr-1.5">refresh</span><span>${rematchText}</span>`;
         }
         if (DOM.btnHub) {
           DOM.btnHub.style.display = 'flex';
           const hubText = (window.t ? window.t('result.return_hub') : 'RETURN TO CLASSROOM HUB 🚪');
-          DOM.btnHub.innerHTML = `<span class="material-symbols-outlined text-[16px]">logout</span><span>${hubText}</span>`;
+          DOM.btnHub.innerHTML = `<span class="material-symbols-outlined text-[16px] mr-1.5">logout</span><span>${hubText}</span>`;
         }
 
         if (DOM.vP1Name) DOM.vP1Name.textContent = profile.name || (is2P ? 'Player 1' : 'Student Fighter');
@@ -266,12 +266,12 @@
           const rematchText = is2P
             ? (window.t ? window.t('result.rematch_2p') : 'REMATCH (P1 vs P2) ⚔️')
             : (window.t ? window.t('result.rematch_defeat') : 'REMATCH! RECLAIM BENCH ⚔️');
-          DOM.btnRematch.innerHTML = `<span class="material-symbols-outlined text-[16px] text-rose-700">swords</span><span>${rematchText}</span>`;
+          DOM.btnRematch.innerHTML = `<span class="material-symbols-outlined text-[16px] text-rose-700 mr-1.5">swords</span><span>${rematchText}</span>`;
         }
         if (DOM.btnHub) {
           DOM.btnHub.style.display = 'flex';
           const hubText = (window.t ? window.t('result.return_hub') : 'RETURN TO CLASSROOM HUB 🚪');
-          DOM.btnHub.innerHTML = `<span class="material-symbols-outlined text-[16px]">logout</span><span>${hubText}</span>`;
+          DOM.btnHub.innerHTML = `<span class="material-symbols-outlined text-[16px] mr-1.5">logout</span><span>${hubText}</span>`;
         }
 
         if (DOM.dP1Name) DOM.dP1Name.textContent = profile.name || (is2P ? 'Player 1' : 'Student Fighter');

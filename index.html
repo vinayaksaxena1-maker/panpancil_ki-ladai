@@ -4998,8 +4998,7 @@
             name: chosenName,
             schoolName: chosenSchool,
             house: HOUSES[currentHouseIndex].name,
-            avatar: currentAvatar,
-            admission_saved: true
+            avatar: currentAvatar
           };
           if (typeof window.applySchoolName === 'function') {
             window.applySchoolName(chosenSchool);
@@ -5067,23 +5066,6 @@
           });
         }
       };
-
-      // Smart Launch: If user already has saved language / profile, show Main Menu directly
-      try {
-        const rawSave = localStorage.getItem('penfight_save_v2');
-        if (rawSave) {
-          const parsed = JSON.parse(rawSave);
-          const hasSavedLanguage = parsed && parsed.settings && (parsed.settings.language === 'hindi' || parsed.settings.language === 'english');
-          const hasAdmissionSaved = parsed && parsed.profile && parsed.profile.admission_saved;
-          if ((hasSavedLanguage || hasAdmissionSaved) && splashOverlay && menuOverlay) {
-            splashOverlay.style.display = 'none';
-            splashOverlay.classList.add('splash-dismissed');
-            window.showMainMenu();
-          }
-        }
-      } catch (e) {
-        console.warn('Smart launch check failed:', e);
-      }
     })();
   </script>
 
