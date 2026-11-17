@@ -19,34 +19,34 @@ import RAPIER from 'rapier';
 export const DIFFICULTY_PRESETS = {
   easy: {
     name: 'Easy (Aasan)',
-    aimSpreadRad: 0.18,      // ±10° spread error
-    spinChance: 0.05,        // 5% spin
-    maxSpeedLimit: 1.70,     // Gentle max speed
-    punchSpeedRange: [0.15, 0.35],
-    runwayAdvancement: 0.65, // Stops ~65% into runway on start
+    aimSpreadRad: 0.24,      // ±14° natural human error (45-55% bot win rate)
+    spinChance: 0.05,        // 5% rare spin
+    maxSpeedLimit: 1.65,     // Gentle speed
+    punchSpeedRange: [0.12, 0.30],
+    runwayAdvancement: 0.60, // Stops ~60% into runway on start
     tacticalEdgeOffset: 0.0, // No tactical edge targeting
     selfPreservation: false,
     label: 'Easy Mode (Aasan Classmate)'
   },
   normal: {
     name: 'Normal (Balanced)',
-    aimSpreadRad: 0.07,      // ±4° spread error
-    spinChance: 0.25,        // 25% subtle spin cut-shot
-    maxSpeedLimit: 2.15,     // Balanced speed
-    punchSpeedRange: [0.35, 0.60],
+    aimSpreadRad: 0.07,      // ±4.0° accurate aim (75-85% bot win rate)
+    spinChance: 0.35,        // 35% spin cut-shot
+    maxSpeedLimit: 2.20,     // Strong competitive speed
+    punchSpeedRange: [0.40, 0.65],
     runwayAdvancement: 0.85, // Advances close to player safely
-    tacticalEdgeOffset: 0.012,
+    tacticalEdgeOffset: 0.016, // Edge deflection targeting
     selfPreservation: true,
-    label: 'Normal Mode (Balanced Contest)'
+    label: 'Normal Mode (Challenging Contest)'
   },
   hard: {
     name: 'Hard (Class Champion)',
-    aimSpreadRad: 0.025,     // ±1.5° sharp razor spread
-    spinChance: 0.65,        // 65% aggressive spin cut-shot
-    maxSpeedLimit: 2.30,     // Fast decisive knockout speed
-    punchSpeedRange: [0.60, 0.85],
+    aimSpreadRad: 0.014,     // ±0.8° Laser razor accuracy (92-95% bot win rate)
+    spinChance: 0.75,        // 75% aggressive spin cut-shots on pen pivot
+    maxSpeedLimit: 2.45,     // Decisive knockout speed
+    punchSpeedRange: [0.65, 0.95],
     runwayAdvancement: 0.92,
-    tacticalEdgeOffset: 0.022,
+    tacticalEdgeOffset: 0.026, // Surgical nearest-edge deflection
     selfPreservation: true,
     label: 'Hard Mode (Class Champion)'
   }
@@ -155,7 +155,7 @@ export class PCOpponentController {
     const flickOffsetLocal = new THREE.Vector3(0, 0, 0);
 
     if (useSpinShot) {
-      const spinMultiplier = this.difficulty === 'hard' ? 0.72 : 0.40;
+      const spinMultiplier = this.difficulty === 'hard' ? 0.85 : 0.45;
       const hitEnd = Math.random() > 0.5 ? spinMultiplier : -spinMultiplier;
       flickOffsetLocal.set(0, 0, penHalfLen * hitEnd);
     }

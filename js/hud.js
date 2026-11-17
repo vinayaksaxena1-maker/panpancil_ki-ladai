@@ -418,6 +418,19 @@
       if (!DOM.pauseModal) return;
       state.isPaused = true;
       DOM.pauseModal.style.display = 'flex';
+      const curDiff = (window.gameEngine && window.gameEngine.difficulty) || 'normal';
+      const statusEl = document.getElementById('pause-diff-status');
+      if (statusEl) statusEl.textContent = curDiff.toUpperCase();
+      ['easy', 'normal', 'hard'].forEach(d => {
+        const btn = document.getElementById(`pause-diff-${d}-btn`);
+        if (btn) {
+          if (d === curDiff) {
+            btn.className = "py-1 px-1 rounded-lg border text-[10px] text-center cursor-pointer bg-amber-400 border-slate-900 text-slate-900 shadow-2xs font-black";
+          } else {
+            btn.className = "py-1 px-1 rounded-lg border text-[10px] font-bold text-center cursor-pointer bg-white border-slate-300 text-slate-700 hover:bg-slate-100";
+          }
+        }
+      });
       requestAnimationFrame(() => {
         DOM.pauseModal.classList.add('pause-modal-open');
       });
