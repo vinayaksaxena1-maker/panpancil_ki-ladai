@@ -739,17 +739,16 @@ class GameEngine {
       window.hudController.updateScore(outcome.score.player, outcome.score.opponent, this.rules.targetWins || 3);
     }
 
-    this.updateTurnBadge();
-
     if (!outcome.matchOver) {
       setTimeout(() => {
         updateBlackboardDisplay(null);
         this.resetRound();
+        this.updateTurnBadge();
         if (window.hudController) {
           window.hudController.startTimer(165);
           window.hudController.setTurn('P1');
         }
-      }, 2000);
+      }, 2200);
     } else {
       // Match Over on Time Foul!
       const isWin = outcome.winner === 'player';

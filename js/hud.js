@@ -265,8 +265,8 @@
       state.currentTurn = turn;
       if (!DOM.turnBanner) cacheDOMElements();
 
-      // Keep center desk area clean and unobstructed during normal play
-      if (DOM.turnBanner) {
+      // Keep center desk area clean during normal play, but do not cut off an active referee popup
+      if (DOM.turnBanner && !state.isBannerActive) {
         DOM.turnBanner.style.display = 'none';
       }
 
@@ -398,6 +398,7 @@
 
       // Show center referee banner on demand
       DOM.turnBanner.style.display = 'block';
+      state.isBannerActive = true;
       DOM.turnBanner.style.animation = 'none';
       void DOM.turnBanner.offsetWidth;
       DOM.turnBanner.style.animation = 'hudBannerPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
@@ -405,6 +406,7 @@
       if (durationMs > 0) {
         if (state._bannerTimer) clearTimeout(state._bannerTimer);
         state._bannerTimer = setTimeout(() => {
+          state.isBannerActive = false;
           if (DOM.turnBanner) {
             DOM.turnBanner.style.display = 'none';
           }
