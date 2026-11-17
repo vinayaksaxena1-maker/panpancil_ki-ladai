@@ -101,7 +101,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | :--- | :--- | :--- | :--- | :--- |
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
-| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟢 **100% (All 8 Screens Complete & Verified!)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Page 4 Tin Compass Box), Step 3.6 (Page 5 Match Setup), Step 3.7 (Page 6 Live HUD & Slingshot Gauge), Step 3.8 (Page 7 Match Result Certificate - 3 States), Step 3.9 (Page 8 Trophy Cabinet & Offline Settings - 3 States) ready & verified | • Steps 3.1-3.8 internal debt: Tailwind/Google Fonts local bundling for offline APK in Phase 5. |
+| **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟢 **100% (All 8 Screens + 2-Medium Complete & Verified!)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Page 4 Tin Compass Box), Step 3.6 (Page 5 Match Setup), Step 3.7 (Page 6 Live HUD & Slingshot Gauge), Step 3.8 (Page 7 Match Result Certificate - 3 States), Step 3.9 (Page 8 Trophy Cabinet & Offline Settings - 3 States), Step 3.10 (Offline 2-School-Medium Language Engine & Tactile Pencil-Hatch Polish) ready & verified | • Steps 3.1-3.8 internal debt: Tailwind/Google Fonts local bundling for offline APK in Phase 5. |
 | **Phase 4** | Audio Synthesizer & SFX | 🟢 **100% (All 11 Sounds Complete & Verified!)** | Step 4.0 Foundation Engines (`js/audio_synth.js`, `js/audio_manager.js`), Steps 4.1 to 4.10 all sounds selected, downloaded from Freesound/CC0, optimized to 96k MP3 and wired into live physics & match lifecycle | Ready for Final Phase 4 Gate Sign-off ➔ Phase 5 (Android Packaging) |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
@@ -407,12 +407,20 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - 🚨 **Pending Debt / Future Connectors (Step 3.9):**
     - Phase 4 Sound Engine: Audio volume sliders Phase 4 ke Web Audio gain node controls se bind honge.
 
-- 🎯 **APPROVAL GATE 3 (Complete End-to-End Walkthrough UNLOCKED & READY FOR APPROVAL):** All 8 Phase 3 screens (Steps 3.1 to 3.9) are 100% complete, fully responsive, and integrated into the live build! Full round-trip flow: `Splash ➔ ID Card ➔ Menu Hub ➔ Compass Box ➔ Match Setup ➔ 3D Duel with Live HUD ➔ Match Result Certificate (3 States) ➔ Trophy Cabinet (3 States) ➔ Return to Hub`. Ready for User Sign-Off!
+- [x] **Step 3.10 (COMPLETED & VERIFIED): 100% Offline 2-School-Medium Language Engine & Tactile Polish:**
+  - **Implementation (`js/i18n.js` & `css/`):** Dedicated offline zero-dependency internationalization module (`MULTI_LANGUAGE_PACK_PLAN.md`).
+    - **English Medium (`english`):** Original nostalgic classroom terminology (`STUDENT BATTLE PASS`, `TOSS & PLAY`, `Story Mode`, `1st Bencher`, `Desk Regular`, `RECESS TIMEOUT!`). Zero wording regressions.
+    - **Hindi Medium (`hindi`):** Natural everyday Hindi translation for all 8 screens without bureaucratic jargon or artificial Hindi leaks (`खिलाड़ी पहचान पत्र`, `खेल शुरू करें ▶`, `कक्षा 7वीं - ब`).
+    - **School Medium Badges:** Dynamic medium badges across Page 1 Admission Form, Main Menu Hub ID Card, and Career Dossier in a clean 2-column layout.
+    - **Tactile Pencil-Hatch UI Polish:** Unified all game action buttons and navigation controls with Page 1 transparent pencil-hatch styling (`pencil-btn-tactile`) and dashed notebook margins.
+  - *Verification Receipts:* Commits `cf53558` (Pencil-Hatch Polish), `c580789` & `b73b20e` (2-Medium Architecture), `271f8ba` (School Medium Badges). Fully verified in mobile viewports.
+
+- 🎯 **APPROVAL GATE 3 (Complete End-to-End Walkthrough UNLOCKED & READY FOR APPROVAL):** All 8 Phase 3 screens + 2-Medium Language Engine (Steps 3.1 to 3.10) are 100% complete, fully responsive, and integrated into the live build! Full round-trip flow: `Splash ➔ ID Card ➔ Menu Hub ➔ Compass Box ➔ Match Setup ➔ 3D Duel with Live HUD ➔ Match Result Certificate (3 States) ➔ Trophy Cabinet (3 States) ➔ Return to Hub`. Ready for User Sign-Off!
 
 ---
 
 ### 🔊 Phase 4: Audio Synthesis & Sound Effects
-*(Current Status: 🟡 In Progress — Approved 1-by-1 Sound Selection Protocol)*
+*(Current Status: 🟢 100% Complete & Audit Verified — Ready for Gate 4 Sign-Off)*
 *Goal: 100% Offline tactile audio, zero runtime API calls, Kenney.nl / OpenGameArt CC0 assets + Web Audio procedural fallback, sound-by-sound user approval.*
 
 - [x] **Phase 4 Architecture & Governance Approved:** 1-by-1 Sound Selection & Approval Protocol locked (`PHASE_4_AUDIO_PLAN.md`).
