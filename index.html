@@ -3411,22 +3411,39 @@
 
       window.launchStageMatch = function(stageId, isWarmup = false) {
         const stage = CAMPAIGN_OPPONENTS.find(s => s.stage === stageId) || CAMPAIGN_OPPONENTS[0];
+        let saved = {};
+        try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
+        const profile = saved.profile || {};
+        const equippedPenKey = profile.selectedPlayerPen || 'reynolds045';
+        const p1Avatar = profile.avatarCustom || (profile.avatar === 'girl' ? './assets/student_avatar_girl.jpg' : './assets/student_avatar.jpg');
+        const stagePhoto = stage.photo || `./assets/opponents/stage_${String(stageId).padStart(2, '0')}.jpg`;
+
+        const penKeyMap = {
+          "NATARAJ 621": "nataraj621",
+          "REYNOLDS 045": "reynolds045",
+          "BUTTERFLOW": "butterflow",
+          "PILOT V5": "pilotV5",
+          "TRIMAX GOLD": "trimax",
+          "APSARA PLATINUM": "apsaraPlatinum",
+          "TRIMAX LEGEND": "trimax"
+        };
+        const penNameMap = {
+          "nataraj621": "NATARAJ 621",
+          "reynolds045": "REYNOLDS 045",
+          "butterflow": "CELLO BUTTERFLOW",
+          "pilotV5": "PILOT V5",
+          "trimax": "REYNOLDS TRIMAX",
+          "apsaraPlatinum": "APSARA PLATINUM"
+        };
+        const mappedPen = penKeyMap[stage.pen] || 'trimax';
+
         if (window.gameEngine) {
           window.gameEngine.currentStageId = stageId;
           if (window.gameEngine.progression) {
             window.gameEngine.progression.currentStageId = stageId;
           }
           window.gameEngine.setGameMode('bot');
-          const penKeyMap = {
-            "NATARAJ 621": "nataraj621",
-            "REYNOLDS 045": "reynolds045",
-            "BUTTERFLOW": "butterflow",
-            "PILOT V5": "pilotV5",
-            "TRIMAX GOLD": "trimax",
-            "APSARA PLATINUM": "apsaraPlatinum",
-            "TRIMAX LEGEND": "trimax"
-          };
-          const mappedPen = penKeyMap[stage.pen] || 'trimax';
+          window.gameEngine.changePen('player', equippedPenKey);
           window.gameEngine.changePen('opponent', mappedPen);
           window.gameEngine.resetSandbox();
         }
@@ -3434,22 +3451,12 @@
         if (window.hideMainMenu) window.hideMainMenu();
         const splashEl = document.getElementById('splash-screen-overlay');
         if (splashEl) splashEl.style.display = 'none';
-        const statusEl = document.getElementById('status-msg');
-        if (statusEl) {
-          statusEl.textContent = isWarmup 
-            ? `Warmup Practice: Stage ${stageId} (${stage.name})` 
-            : `Stage ${stageId}: Defeat ${stage.name} (${stage.pen})!`;
-        }
+
         if (window.hudController) {
-          let saved = {};
-          try { saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}'); } catch(e) {}
-          const profile = saved.profile || {};
-          const p1Avatar = profile.avatarCustom || (profile.avatar === 'girl' ? './assets/student_avatar_girl.jpg' : './assets/student_avatar.jpg');
-          const stagePhoto = stage.photo || `./assets/opponents/stage_${String(stageId).padStart(2, '0')}.jpg`;
           window.hudController.show();
           window.hudController.setStage(stageId);
           window.hudController.setPlayers(
-            { name: profile.name || 'Student Fighter', pen: 'REYNOLDS 045', roll: profile.rollNo || '14', avatar: p1Avatar },
+            { name: profile.name || 'Student Fighter', pen: penNameMap[equippedPenKey] || 'REYNOLDS 045', roll: profile.rollNo || '14', avatar: p1Avatar },
             { name: stage.name, pen: stage.pen, roll: `Stage 0${stageId}`, avatar: stagePhoto }
           );
           window.hudController.updateScore(0, 0, 3);
