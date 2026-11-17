@@ -130,6 +130,11 @@
         this.switchView('defeat');
       }
 
+      // Stop arena background hubbub while inspecting certificate
+      if (window.AudioManager) {
+        window.AudioManager.stopArenaAmbience();
+      }
+
       // Play nostalgic school period bell when match certificate opens!
       if (window.AudioManager) {
         window.AudioManager.playBell();
@@ -371,6 +376,9 @@
       setTimeout(() => {
         if (window.gameEngine) {
           window.gameEngine.resetSandbox();
+        }
+        if (window.AudioManager) {
+          window.AudioManager.startArenaAmbience();
         }
         if (window.hudController) {
           window.hudController.show();
