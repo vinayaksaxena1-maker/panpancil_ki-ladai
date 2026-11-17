@@ -417,6 +417,11 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-slate-200 border border-slate-400" data-pip="2"></span>
                 <span class="w-2.5 h-2.5 rounded-full bg-slate-200 border border-slate-400" data-pip="3"></span>
               </div>
+              <!-- Turn Indicator under P1 Profile -->
+              <div id="hud-p1-turn-pill" class="flex items-center gap-1 mt-1 px-1.5 py-0.2 rounded-full bg-emerald-100 border border-emerald-600 text-emerald-900 font-extrabold text-[8px] tracking-wide shadow-2xs uppercase animate-pulse w-fit" style="font-family: 'Patrick Hand', cursive;">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                <span>YOUR TURN 🎯</span>
+              </div>
             </div>
           </div>
 
@@ -456,6 +461,11 @@
                 <span class="w-2.5 h-2.5 rounded-full bg-slate-200 border border-slate-400" data-pip="2"></span>
                 <span class="w-2.5 h-2.5 rounded-full bg-slate-200 border border-slate-400" data-pip="3"></span>
               </div>
+              <!-- Turn Indicator under P2 Profile -->
+              <div id="hud-p2-turn-pill" class="hidden items-center gap-1 mt-1 px-1.5 py-0.2 rounded-full bg-blue-100 border border-blue-600 text-blue-900 font-extrabold text-[8px] tracking-wide shadow-2xs uppercase animate-pulse w-fit" style="font-family: 'Patrick Hand', cursive;">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+                <span id="hud-p2-turn-text">RIVAL TURN ⏳</span>
+              </div>
             </div>
 
             <div class="relative shrink-0">
@@ -469,28 +479,20 @@
       </div>
     </header>
 
-    <!-- FLOATING CENTER POPUP (Torn Ruled Paper Banner: YOUR TURN / KNOCKOUT) -->
+    <!-- FLOATING CENTER REFEREE POPUP (KNOCKOUT / DOUBLE FALL / TIME'S UP) -->
     <div class="flex flex-col items-center justify-center my-auto px-4 pointer-events-none">
-      <div id="hud-turn-banner" class="relative transition-all duration-300 transform scale-100 pointer-events-auto cursor-pointer" style="animation: hudBannerPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
+      <div id="hud-turn-banner" style="display: none;" class="relative transition-all duration-300 transform scale-100 pointer-events-none">
         <!-- Torn Paper Body -->
-        <div class="relative bg-white border-2 border-slate-900 text-slate-900 px-5 py-2.5 rounded-lg shadow-[3px_3px_0_0_#0f172a] -rotate-1 flex flex-col items-center">
-          <!-- Top Jagged Edge Motif -->
+        <div class="relative bg-white border-2 border-slate-900 text-slate-900 px-5 py-2 rounded-lg shadow-[3px_3px_0_0_#0f172a] -rotate-1 flex flex-col items-center">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-rose-600 animate-ping"></span>
             <span id="hud-turn-title" class="text-[16px] font-black text-[#00288e] tracking-wide uppercase" style="font-family: 'Permanent Marker', cursive;">
-              YOUR TURN! 🎯
+              KNOCKOUT! 💥
             </span>
           </div>
           <p id="hud-turn-sub" class="text-[11px] font-bold text-slate-700 text-center mt-0.5 leading-tight" style="font-family: Caveat, cursive;">
-            Aim on Reynolds Nib • Release to Strike rival off the teak bench!
+            Player scored a point!
           </p>
-        </div>
-
-        <!-- Rubber Stamp Badge pinned to edge -->
-        <div id="hud-turn-stamp" class="absolute -bottom-2.5 -right-2 rotate-6 bg-[#b91c1c] text-white px-2 py-0.5 rounded border border-slate-900 shadow-md">
-          <span class="text-[9px] font-black uppercase tracking-wider" style="font-family: 'Permanent Marker', cursive;">
-            OUT OF DESK ⚡
-          </span>
         </div>
       </div>
     </div>
@@ -4701,7 +4703,7 @@
     })();
   </script>
 
-  <script src="./js/hud.js?v=p3_s10"></script>
+  <script src="./js/hud.js?v=p3_s11"></script>
   <script src="./js/match_result.js?v=p3_s8"></script>
   <script src="./js/trophy_cabinet.js?v=p3_s9"></script>
   <script type="module" src="./js/main.js?v=phase3_step3_menu"></script>

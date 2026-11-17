@@ -96,6 +96,9 @@
     DOM.turnTitle = document.getElementById('hud-turn-title');
     DOM.turnSub = document.getElementById('hud-turn-sub');
     DOM.turnStamp = document.getElementById('hud-turn-stamp');
+    DOM.p1TurnPill = document.getElementById('hud-p1-turn-pill');
+    DOM.p2TurnPill = document.getElementById('hud-p2-turn-pill');
+    DOM.p2TurnText = document.getElementById('hud-p2-turn-text');
 
     DOM.powerCard = document.getElementById('hud-power-card');
     DOM.powerBarFill = document.getElementById('hud-power-bar-fill');
@@ -243,17 +246,20 @@
     setTurn: function(turn) {
       state.currentTurn = turn;
       if (!DOM.turnBanner) cacheDOMElements();
-      if (!DOM.turnBanner) return;
 
-      DOM.turnBanner.classList.remove('turn-p1', 'turn-p2', 'turn-bot');
+      // Keep center desk area clean and unobstructed during normal play
+      if (DOM.turnBanner) {
+        DOM.turnBanner.style.display = 'none';
+      }
 
       if (turn === 'P1') {
-        DOM.turnBanner.classList.add('turn-p1');
-        if (DOM.turnTitle) DOM.turnTitle.textContent = 'YOUR TURN! 🎯';
-        if (DOM.turnSub) DOM.turnSub.textContent = 'Aim on Nib • Release to Strike rival off the teak bench!';
-        if (DOM.turnStamp) {
-          DOM.turnStamp.innerHTML = '<span class="text-[9px] font-black uppercase tracking-wider">OUT OF DESK ⚡</span>';
-          DOM.turnStamp.className = 'absolute -bottom-2.5 -right-2 rotate-6 bg-[#b91c1c] text-white px-2 py-0.5 rounded border border-slate-900 shadow-md';
+        if (DOM.p1TurnPill) {
+          DOM.p1TurnPill.classList.remove('hidden');
+          DOM.p1TurnPill.classList.add('flex');
+        }
+        if (DOM.p2TurnPill) {
+          DOM.p2TurnPill.classList.add('hidden');
+          DOM.p2TurnPill.classList.remove('flex');
         }
         if (DOM.flickCta) {
           DOM.flickCta.classList.remove('opacity-60', 'cursor-not-allowed');
@@ -261,23 +267,22 @@
         }
       } else {
         const isBot = (turn === 'BOT');
-        DOM.turnBanner.classList.add(isBot ? 'turn-bot' : 'turn-p2');
-        if (DOM.turnTitle) DOM.turnTitle.textContent = isBot ? "OPPONENT AIMING... ⏳" : "PLAYER 2 TURN! 🎯";
-        if (DOM.turnSub) DOM.turnSub.textContent = isBot ? "Stay steady! Rival is calculating desk rebound angles." : "Pass phone to Player 2 for their flick!";
-        if (DOM.turnStamp) {
-          DOM.turnStamp.innerHTML = `<span class="text-[9px] font-black uppercase tracking-wider">${isBot ? 'DEFEND DESK 🛡️' : 'P2 ATTACK ⚡'}</span>`;
-          DOM.turnStamp.className = 'absolute -bottom-2.5 -right-2 -rotate-6 bg-[#1e40af] text-white px-2 py-0.5 rounded border border-slate-900 shadow-md';
+        if (DOM.p1TurnPill) {
+          DOM.p1TurnPill.classList.add('hidden');
+          DOM.p1TurnPill.classList.remove('flex');
+        }
+        if (DOM.p2TurnPill) {
+          DOM.p2TurnPill.classList.remove('hidden');
+          DOM.p2TurnPill.classList.add('flex');
+          if (DOM.p2TurnText) {
+            DOM.p2TurnText.textContent = isBot ? 'RIVAL TURN ⏳' : 'PLAYER 2 TURN 🎯';
+          }
         }
         if (DOM.flickCta && isBot) {
           DOM.flickCta.classList.add('opacity-60', 'cursor-not-allowed');
           DOM.flickCta.disabled = true;
         }
       }
-
-      // Re-trigger bounce animation
-      DOM.turnBanner.style.animation = 'none';
-      void DOM.turnBanner.offsetWidth; // reflow
-      DOM.turnBanner.style.animation = 'hudBannerPop 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 
       emit('turnChange', turn);
     },
@@ -361,9 +366,9 @@
     },
 
     /**
-     * Show custom animated banner (e.g. KNOCKOUT, TABLE FOUL)
+     * Show custom animated referee banner (e.g. KNOCKOUT, TABLE FOUL)
      */
-    setBanner: function(title, sub, stamp, durationMs = 3000) {
+    setBanner: function(title, sub, stamp, durationMs = 2400) {
       if (!DOM.turnBanner) cacheDOMElements();
       if (!DOM.turnBanner) return;
 
@@ -373,12 +378,18 @@
         DOM.turnStamp.innerHTML = `<span class="text-[9px] font-black uppercase tracking-wider">${stamp}</span>`;
       }
 
+      // Show center referee banner on demand
+      DOM.turnBanner.style.display = 'block';
       DOM.turnBanner.style.animation = 'none';
       void DOM.turnBanner.offsetWidth;
       DOM.turnBanner.style.animation = 'hudBannerPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
 
       if (durationMs > 0) {
-        setTimeout(() => {
+        if (state._bannerTimer) clearTimeout(state._bannerTimer);
+        state._bannerTimer = setTimeout(() => {
+          if (DOM.turnBanner) {
+            DOM.turnBanner.style.display = 'none';
+          }
           hudController.setTurn(state.currentTurn);
         }, durationMs);
       }
