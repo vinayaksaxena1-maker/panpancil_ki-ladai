@@ -102,7 +102,7 @@ Pehle external references ke confusion ki wajah se phases strictly serial order 
 | **Phase 1** | Core 3D Desk & Physics Engine | 🔒 **100% Complete & LOCKED** | Rapier 120Hz WASM physics, drag flick parabola ($\text{pull}^{1.45}$), 6 procedural 3D pens (`js/pens.js`), cel-shaded outlines, vertical desk ($0.70m \times 1.00m$), out-of-bounds drop settlement, 6-pen sandbox selector, pure decoupling | **LOCKED BY USER (FROZEN):** Zero changes permitted to engine without explicit user approval. |
 | **Phase 2** | Rules, Match Loop & Bot AI | 🔒 **100% Complete & LOCKED** | Step 2.1 (`js/rules.js`), Step 2.2 (`js/bot.js`), Step 2.3 (Pass & Play), Step 2.4 (`js/progression.js`), Step 2.5 (`js/storage.js`) complete & verified | **LOCKED BY USER (FROZEN):** Zero changes permitted under Rule 11 without explicit user approval. |
 | **Phase 3** | Stitch 2D UI & Nostalgia Screens | 🟢 **100% (All 8 Screens Complete & Verified!)** | Step 3.1 (Tokens), Step 3.2 (Page 1 Splash/ID), Step 3.3 (Page 2 Main Menu Hub), Step 3.4 (Page 3 Campaign Map & Chit), Step 3.5 (Page 4 Tin Compass Box), Step 3.6 (Page 5 Match Setup), Step 3.7 (Page 6 Live HUD & Slingshot Gauge), Step 3.8 (Page 7 Match Result Certificate - 3 States), Step 3.9 (Page 8 Trophy Cabinet & Offline Settings - 3 States) ready & verified | • Steps 3.1-3.8 internal debt: Tailwind/Google Fonts local bundling for offline APK in Phase 5. |
-| **Phase 4** | Audio Synthesizer & SFX | ⚪ **0% (Waiting Gate 3)** | Audio assets preserved in `assets/audio/` | Step 4.1 Standalone Web Audio synth, Step 4.2 SFX slotting to live match events, Step 4.3 Classroom ambiance loop |
+| **Phase 4** | Audio Synthesizer & SFX | 🟡 **Ready / Step-by-Step** | Architecture & 1-by-1 Governance Approved (`PHASE_4_AUDIO_PLAN.md`) | Step 4.0 Foundation Engines, Steps 4.1-4.10 (3 options per sound ➔ user pick ➔ approval gate) |
 | **Phase 5** | Google Play Compliant Android Packaging | ⚪ **0% (Not Started)** | None (Strict approval gate rule ke tehat intentionally untouched) | Step 5.1 Policy Pre-flight (`retrieving-developer-knowledge`), Step 5.2 Flutter Container, Step 5.3 Gradle 64-bit Setup (`android-cli`), Step 5.4 Families Compliance, Step 5.5 Production Release `.aab` |
 
 ---
@@ -412,13 +412,24 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
 ---
 
 ### 🔊 Phase 4: Audio Synthesis & Sound Effects
-*(Current Status: ⚪ Reset to 0% — Execution starts after Phase 3 Gate Approval)*
-*Goal: Zero-latency tactile feedback without broken remote URLs, connecting sound triggers to live Phase 2 match events.*
+*(Current Status: 🟡 In Progress — Approved 1-by-1 Sound Selection Protocol)*
+*Goal: 100% Offline tactile audio, zero runtime API calls, Kenney.nl / OpenGameArt CC0 assets + Web Audio procedural fallback, sound-by-sound user approval.*
 
-- [ ] **Step 4.1:** 20-line standalone Web Audio API synthesizer for instant mechanical audio (`synth_flick`, `synth_clack`, `synth_thud`).
-- [ ] **Step 4.2:** Local assets slotting for the 10 core sounds (`assets/audio/`: flick, impact, slide, fall, UI click, round win, round loss, victory bell, level up, badge unlock).
-- [ ] **Step 4.3:** Sound manager with audio toggles, ambient classroom chatter loop, & fallback.
-- 🎯 **APPROVAL GATE 4:** Sound triggers verified during flick, collision, button clicks, round win, and match victory.
+- [x] **Phase 4 Architecture & Governance Approved:** 1-by-1 Sound Selection & Approval Protocol locked (`PHASE_4_AUDIO_PLAN.md`).
+- [ ] **Step 4.0: Foundation Audio Engines:**
+  - [ ] **Step 4.0A:** Procedural Web Audio Synth fallback (`js/audio_synth.js`) — zero external dependency backup.
+  - [ ] **Step 4.0B:** Central Sound Manager (`js/audio_manager.js`) — pooling, mobile touch unlock, Trophy Cabinet settings sync.
+- [ ] **Step 4.1:** `sfx_flick` (Slingshot release) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.2:** `sfx_impact` (Pen-to-pen collision) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.3:** `sfx_wood_slide` (Desk friction) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.4:** `sfx_desk_fall` (Out-of-bounds drop) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.5:** `sfx_ui_click` (Tactile button & chit) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.6:** `arena_ambience` (Match Arena classroom background loop) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.7:** `sfx_round_win` (Round win cheer/seeti) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.8:** `sfx_round_loss` (Round loss sigh/groan) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.9:** `sfx_school_bell` (Match end & certificate) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [ ] **Step 4.10:** `sfx_level_up` & `sfx_badge_unlock` (Progression jingles) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- 🎯 **APPROVAL GATE 4:** Full Audio Audit — zero latency, 60/120fps physics integrity, 390x844 mobile test sign-off.
 
 ---
 
