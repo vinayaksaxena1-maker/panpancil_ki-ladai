@@ -19,25 +19,25 @@ import RAPIER from 'rapier';
 export const DIFFICULTY_PRESETS = {
   easy: {
     name: 'Easy (Aasan)',
-    aimSpreadRad: 0.24,      // ±14° natural human error (45-55% bot win rate)
-    spinChance: 0.05,        // 5% rare spin
-    maxSpeedLimit: 1.65,     // Gentle speed
-    punchSpeedRange: [0.12, 0.30],
-    runwayAdvancement: 0.60, // Stops ~60% into runway on start
-    tacticalEdgeOffset: 0.0, // No tactical edge targeting
+    aimSpreadRad: 0.15,      // ±8.6° focused aim (55-65% bot win rate)
+    spinChance: 0.15,        // 15% spin cut-shots
+    maxSpeedLimit: 1.85,     // Active competitive speed
+    punchSpeedRange: [0.25, 0.45],
+    runwayAdvancement: 0.72, // Advances 72% into runway
+    tacticalEdgeOffset: 0.008, // Subtle edge deflection
     selfPreservation: false,
-    label: 'Easy Mode (Aasan Classmate)'
+    label: 'Easy Mode (55-65% Bot Win Rate)'
   },
   normal: {
     name: 'Normal (Balanced)',
-    aimSpreadRad: 0.07,      // ±4.0° accurate aim (75-85% bot win rate)
-    spinChance: 0.35,        // 35% spin cut-shot
-    maxSpeedLimit: 2.20,     // Strong competitive speed
-    punchSpeedRange: [0.40, 0.65],
-    runwayAdvancement: 0.85, // Advances close to player safely
-    tacticalEdgeOffset: 0.016, // Edge deflection targeting
+    aimSpreadRad: 0.052,     // ±3.0° sharp accurate aim (80-85% bot win rate)
+    spinChance: 0.45,        // 45% tactical spin cut-shots
+    maxSpeedLimit: 2.30,     // Strong decisive speed
+    punchSpeedRange: [0.50, 0.75],
+    runwayAdvancement: 0.88, // Strong forward control
+    tacticalEdgeOffset: 0.020, // Sharp edge targeting
     selfPreservation: true,
-    label: 'Normal Mode (Challenging Contest)'
+    label: 'Normal Mode (80-85% Bot Win Rate)'
   },
   hard: {
     name: 'Hard (Class Champion)',

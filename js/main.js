@@ -6,7 +6,7 @@ import { synth } from './sound.js';
 import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
 import { storage } from './storage.js?v=p2_s5';
 import { MatchRules, MatchState } from './rules.js?v=p3_s17_alt_turns';
-import { PCOpponentController } from './bot.js?v=p3_s17_rush_punisher';
+import { PCOpponentController } from './bot.js?v=p3_s18_winrate_tuned';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
 const DESK_WIDTH = 0.70;      // 70 cm width (X-axis, East-West)
