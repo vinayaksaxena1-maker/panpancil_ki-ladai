@@ -268,6 +268,7 @@ class GameEngine {
 
   setDifficulty(mode) {
     if (!['easy', 'normal', 'hard'].includes(mode)) return;
+    this.difficulty = mode;
     this.botAI.setDifficulty(mode);
     const diffSelect = document.getElementById('diff-select');
     if (diffSelect && diffSelect.value !== mode) diffSelect.value = mode;
