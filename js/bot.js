@@ -56,7 +56,7 @@ export class PCOpponentController {
   constructor(options = {}) {
     this.difficulty = options.difficulty || 'normal';
     this.thinkTimeMs = options.thinkTimeMs || 800; // 0.8s human contemplation pause
-    this.deskFriction = options.deskFriction || 0.33;
+    this.deskFriction = options.deskFriction || 0.40;
     this.gravity = 9.81;
     this.isThinking = false;
     this.lastShotData = null;
@@ -153,7 +153,7 @@ export class PCOpponentController {
     dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), aimErrorRad);
 
     // 3. Distance Kinematics & Velocity Calculation
-    const effectiveDecel = (this.deskFriction * this.gravity) + 0.40; // ~3.6 m/s²
+    const effectiveDecel = (this.deskFriction * this.gravity) + 0.45; // ~4.4 m/s² calibrated for 0.40 desk friction
     let targetSpeed = 0;
 
     if (forceHighPowerCounter) {
