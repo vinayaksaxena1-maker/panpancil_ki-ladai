@@ -2983,6 +2983,7 @@
 
       // Global navigation helpers
       window.showMainMenu = function() {
+        if (window.AudioManager) window.AudioManager.stopArenaAmbience();
         if (window.hudController) window.hudController.hide();
         if (window.matchResultController) window.matchResultController.hide();
         if (!menuOverlay) return;
@@ -3675,6 +3676,10 @@
         if (window.hideMainMenu) window.hideMainMenu();
         const splashEl = document.getElementById('splash-screen-overlay');
         if (splashEl) splashEl.style.display = 'none';
+
+        if (window.AudioManager) {
+          window.AudioManager.startArenaAmbience();
+        }
 
         if (window.hudController) {
           window.hudController.show();
@@ -4937,6 +4942,10 @@
         }
         window.hideMatchSetup();
 
+        if (window.AudioManager) {
+          window.AudioManager.startArenaAmbience();
+        }
+
         if (window.hudController) {
           window.hudController.show();
           window.hudController.setStage(currentStageId);
@@ -4964,6 +4973,10 @@
           window.gameEngine.resetSandbox();
         }
         window.hideMatchSetup();
+
+        if (window.AudioManager) {
+          window.AudioManager.startArenaAmbience();
+        }
 
         if (window.hudController) {
           window.hudController.show();
