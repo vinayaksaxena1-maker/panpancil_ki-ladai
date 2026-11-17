@@ -5,8 +5,8 @@ import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
 import { storage } from './storage.js?v=p2_s5';
-import { MatchRules, MatchState } from './rules.js?v=p3_s14';
-import { PCOpponentController } from './bot.js?v=p3_winrate_tiers';
+import { MatchRules, MatchState } from './rules.js?v=p3_s17_alt_turns';
+import { PCOpponentController } from './bot.js?v=p3_s17_rush_punisher';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
 const DESK_WIDTH = 0.70;      // 70 cm width (X-axis, East-West)
@@ -29,10 +29,10 @@ const SPAWN_Z_OPPONENT = -0.37;
 // Input & flick parameters (Calibrated mass-velocity impulse scaling)
 const DEAD_ZONE_PX = 10;
 const V_MIN = 0.40; // m/s (tactical micro-positioning)
-const V_MAX = 2.82; // m/s (fast strike across 74cm; calibrated so unobstructed miss stops safely before edge)
+const V_MAX = 3.25; // m/s (controlled 65-80% settles safely; full 100% blind rush overshoots off 1.00m desk)
 const J_MIN = 0.0040;
-const J_MAX = 0.0345;
-const GAMMA = 1.10; // Gentle near-linear response
+const J_MAX = 0.066; // Calibrated overshoot risk at full 100% pull
+const GAMMA = 1.42; // Progressive response: 65-75% drag = safe positioning, 100% drag = overshoot foul risk
 const MAX_DRAG_PX = 115; // Natural ergonomic mobile touch drag distance
 
 // Settle thresholds
@@ -515,10 +515,10 @@ class GameEngine {
     const pullFrac = Math.min(Math.max(0, dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
     const curvedPower = Math.pow(pullFrac, GAMMA);
 
-    // Dynamic mass-scaled velocity impulse:
-    // Prevents 1-hit KO from center, introduces self-overshoot risk on 100% missed flick
-    const targetSpeed = V_MIN + curvedPower * (V_MAX - V_MIN);
-    const impulseMag = penMass * targetSpeed;
+    // Mass-normalized impulse scaling:
+    // Controlled 65-75% power positions safely on 1.00m desk; full 100% blind rush (J_MAX: 0.066) risks overshooting off desk
+    const massScale = penMass / 0.0122;
+    const impulseMag = massScale * (J_MIN + curvedPower * (J_MAX - J_MIN));
 
     const dirWorld = new THREE.Vector3(dirX, 0, dirZ).normalize();
     const impulse = new RAPIER.Vector3(
@@ -764,7 +764,7 @@ class GameEngine {
         this.updateTurnBadge();
         if (window.hudController) {
           window.hudController.startTimer(165);
-          window.hudController.setTurn('P1');
+          window.hudController.setTurn(this.rules.activeTurn === 'player' ? 'P1' : (is2P ? 'P2' : 'BOT'));
         }
       }, 2200);
     } else {
@@ -937,12 +937,25 @@ class GameEngine {
 
     if (!this.rules.matchOver) {
       this.rules.prepareNextRound();
-      this.rules.setState(MatchState.P1_AIMING);
       this.updateTurnBadge();
+      const is2P = this.rules.mode === 'pass_and_play';
+      const p2Label = is2P ? "P2" : "Opponent";
+      const openerLabel = this.rules.activeTurn === 'player' ? (is2P ? "Player 1" : "Player") : p2Label;
+
       if (this.statusMsgEl) {
-        const is2P = this.rules.mode === 'pass_and_play';
-        const p2Label = is2P ? "P2" : "Opponent";
-        this.statusMsgEl.innerText = `Round ${this.rules.currentRound} (Best of 5) | [P1: ${this.rules.score.player} - ${this.rules.score.opponent} ${p2Label}]`;
+        this.statusMsgEl.innerText = `Round ${this.rules.currentRound} (Best of 5) | [P1: ${this.rules.score.player} - ${this.rules.score.opponent} ${p2Label}] • ${openerLabel} opens!`;
+      }
+
+      // If it's Opponent/Bot's turn to take the opening shot of the round:
+      if (this.rules.mode === 'bot' && this.rules.activeTurn === 'opponent') {
+        if (this.statusMsgEl) {
+          this.statusMsgEl.innerText = `Round ${this.rules.currentRound} | Opponent taking opening shot...`;
+        }
+        setTimeout(() => {
+          if (!this.rules.matchOver && this.rules.activeTurn === 'opponent' && !this.isSimulating) {
+            this.executeBotFlick();
+          }
+        }, 900);
       }
     }
   }
@@ -1029,10 +1042,10 @@ class GameEngine {
         linvel.x *= dragFactor;
         linvel.z *= dragFactor;
 
-        // Border safety deceleration: unobstructed slide on 100% miss stops safely 5-7cm before edge (does NOT drop off desk)
-        if (pos.y >= -0.01 && Math.abs(pos.z) > 0.41 && Math.abs(pos.z) <= halfL) {
-          const edgeProximity = (Math.abs(pos.z) - 0.41) / (halfL - 0.41);
-          linvel.z *= Math.max(0, 1.0 - edgeProximity * dt * 4.0);
+        // Edge retention: only gentle retention for low-speed controlled slides (< 0.90 m/s); full 100% blind rushes overshoot off the edge into a self-fall foul!
+        if (speed < 0.90 && pos.y >= -0.01 && Math.abs(pos.z) > 0.44 && Math.abs(pos.z) <= halfL) {
+          const edgeProximity = (Math.abs(pos.z) - 0.44) / (halfL - 0.44);
+          linvel.z *= Math.max(0, 1.0 - edgeProximity * dt * 3.0);
         }
 
         // Static Threshold (Damp Stop): smooth micro-deceleration curve

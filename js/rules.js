@@ -28,6 +28,7 @@ export class MatchRules {
     
     this.state = MatchState.IDLE;
     this.activeTurn = 'player'; // 'player' | 'opponent'
+    this.roundOpener = 'player'; // Alternates opening turn each round (R1: player, R2: opponent...)
     
     this.score = {
       player: 0,
@@ -55,6 +56,7 @@ export class MatchRules {
     this.roundHistory = [];
     this.matchOver = false;
     this.winner = null;
+    this.roundOpener = 'player';
     this.activeTurn = 'player';
     
     this.setState(MatchState.P1_AIMING);
@@ -130,7 +132,10 @@ export class MatchRules {
       };
 
       this.roundHistory.push({ round: this.currentRound, winner: 'player' });
-      if (!isMatchWin) this.currentRound++;
+      if (!isMatchWin) {
+        this.currentRound++;
+        this.roundOpener = (this.roundOpener === 'player') ? 'opponent' : 'player';
+      }
 
       if (this.onScoreUpdate) {
         this.onScoreUpdate(this.score.player, this.score.opponent, this.currentRound);
@@ -165,7 +170,10 @@ export class MatchRules {
       };
 
       this.roundHistory.push({ round: this.currentRound, winner: 'opponent' });
-      if (!isMatchWin) this.currentRound++;
+      if (!isMatchWin) {
+        this.currentRound++;
+        this.roundOpener = (this.roundOpener === 'player') ? 'opponent' : 'player';
+      }
 
       if (this.onScoreUpdate) {
         this.onScoreUpdate(this.score.player, this.score.opponent, this.currentRound);
@@ -198,7 +206,8 @@ export class MatchRules {
   prepareNextRound() {
     if (this.matchOver) return;
     this.setState(MatchState.ROUND_RESET);
-    this.activeTurn = 'player';
+    this.activeTurn = this.roundOpener || 'player';
+    this.setState(this.activeTurn === 'player' ? MatchState.P1_AIMING : MatchState.OPPONENT_AIMING);
   }
 
   awardFoulPoint(timedOutTurn) {
@@ -215,7 +224,10 @@ export class MatchRules {
         this.winner = 'player';
       }
       this.roundHistory.push({ round: this.currentRound, winner: 'player', reason: 'TIME_OUT' });
-      this.currentRound++;
+      if (!isMatchWin) {
+        this.currentRound++;
+        this.roundOpener = (this.roundOpener === 'player') ? 'opponent' : 'player';
+      }
       return {
         winner: 'player',
         type: isMatchWin ? 'MATCH_WIN_PLAYER' : 'ROUND_WIN_PLAYER',
@@ -233,7 +245,10 @@ export class MatchRules {
         this.winner = 'opponent';
       }
       this.roundHistory.push({ round: this.currentRound, winner: 'opponent', reason: 'TIME_OUT' });
-      this.currentRound++;
+      if (!isMatchWin) {
+        this.currentRound++;
+        this.roundOpener = (this.roundOpener === 'player') ? 'opponent' : 'player';
+      }
       return {
         winner: 'opponent',
         type: isMatchWin ? 'MATCH_WIN_OPPONENT' : 'ROUND_WIN_OPPONENT',

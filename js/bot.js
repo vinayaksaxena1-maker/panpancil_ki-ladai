@@ -89,9 +89,41 @@ export class PCOpponentController {
     const toPlayer = new THREE.Vector3(pPos.x - oPos.x, 0, pPos.z - oPos.z);
     const distanceToTarget = toPlayer.length();
 
-    // 1. Tactical Target Offset (Aiming to deflect player off desk edges in Hard/Normal)
+    // 1. Reckless Rush Punisher & Tactical Edge Offset Logic
+    const isRecklessRush = distanceToTarget <= 0.28;
+    let aimSpread = preset.aimSpreadRad;
     let aimOffsetX = 0;
-    if (preset.tacticalEdgeOffset > 0) {
+    let aimOffsetZ = 0;
+    let forceHighPowerCounter = false;
+    let forceSpinCut = false;
+
+    if (isRecklessRush) {
+      // Reckless Rush Punisher: Player rushed close without knocking bot out.
+      // Determine nearest table edge from player pen position (West, East, North, South)
+      const distToWest = Math.abs(pPos.x - (-halfW));
+      const distToEast = Math.abs(halfW - pPos.x);
+      const distToNorth = Math.abs(pPos.z - (-halfL));
+      const distToSouth = Math.abs(halfL - pPos.z);
+      const minEdgeDist = Math.min(distToWest, distToEast, distToNorth, distToSouth);
+
+      const edgeDropOffset = this.difficulty === 'hard' ? 0.032 : 0.024;
+      if (minEdgeDist === distToWest) {
+        aimOffsetX = -edgeDropOffset; // Surgical push towards West (Left) edge
+      } else if (minEdgeDist === distToEast) {
+        aimOffsetX = edgeDropOffset;  // Surgical push towards East (Right) edge
+      } else if (minEdgeDist === distToNorth) {
+        aimOffsetZ = -edgeDropOffset; // Surgical push towards North edge
+      } else {
+        aimOffsetZ = edgeDropOffset;  // Surgical push towards South edge
+      }
+
+      // Temporarily tighten Bot aim error in normal mode from ±4.0° down to ±1.2° (0.021 rad)
+      if (this.difficulty === 'normal') {
+        aimSpread = 0.021; // ±1.2° razor focus
+      }
+      forceHighPowerCounter = true;
+      forceSpinCut = Math.random() < 0.85; // High-probability lethal spin sweep
+    } else if (preset.tacticalEdgeOffset > 0) {
       const distToLeft = Math.abs(pPos.x - (-halfW));
       const distToRight = Math.abs(halfW - pPos.x);
       const edgeThreshold = this.difficulty === 'hard' ? 0.22 : 0.12;
@@ -103,21 +135,35 @@ export class PCOpponentController {
       }
     }
 
-    const targetPos = new THREE.Vector3(pPos.x + aimOffsetX, oPos.y, pPos.z);
+    const targetPos = new THREE.Vector3(pPos.x + aimOffsetX, oPos.y, pPos.z + aimOffsetZ);
     const dir = new THREE.Vector3().subVectors(targetPos, new THREE.Vector3(oPos.x, oPos.y, oPos.z));
     dir.y = 0;
     dir.normalize();
 
+    // Flanking angle when far (> 0.45m):
+    // Rather than just sliding straight into player's line of fire, use flanking angles (±15° off-center)
+    if (distanceToTarget > 0.45 && !isRecklessRush) {
+      const flankSign = oPos.x > 0.02 ? 1 : (oPos.x < -0.02 ? -1 : (Math.random() > 0.5 ? 1 : -1));
+      const flankRad = flankSign * (15 * Math.PI / 180); // ±15°
+      dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), flankRad);
+    }
+
     // 2. Angular Aim Spread Error
-    const aimErrorRad = (Math.random() - 0.5) * preset.aimSpreadRad * 2;
+    const aimErrorRad = (Math.random() - 0.5) * aimSpread * 2;
     dir.applyAxisAngle(new THREE.Vector3(0, 1, 0), aimErrorRad);
 
     // 3. Distance Kinematics & Velocity Calculation
     const effectiveDecel = (this.deskFriction * this.gravity) + 0.40; // ~3.6 m/s²
     let targetSpeed = 0;
 
-    // START-OF-ROUND RUNWAY SAFETY (> 0.42m distance): No instant turn-1 KO
-    if (distanceToTarget > 0.42) {
+    if (forceHighPowerCounter) {
+      // Reckless Rush Punisher: High-power counter-strike toward nearest table edge
+      const reachSpeed = Math.sqrt(2 * effectiveDecel * Math.max(distanceToTarget, 0.10));
+      const counterPunch = this.difficulty === 'hard' ? 1.05 : 0.85;
+      targetSpeed = reachSpeed + counterPunch;
+      targetSpeed = Math.max(targetSpeed, 2.35);
+    } else if (distanceToTarget > 0.42) {
+      // START-OF-ROUND RUNWAY ADVANCEMENT (> 0.42m distance): Flanking maneuver
       if (this.difficulty === 'easy') {
         targetSpeed = Math.sqrt(2 * effectiveDecel * distanceToTarget * preset.runwayAdvancement);
       } else {
@@ -125,21 +171,22 @@ export class PCOpponentController {
         targetSpeed = reach * preset.runwayAdvancement + (this.difficulty === 'hard' ? 0.30 : 0.15);
       }
     } else {
-      // MID-TO-CLOSE RANGE (< 0.42m): Competitive duel punch
+      // MID-RANGE (0.28m - 0.42m): Competitive duel punch
       const reachSpeed = Math.sqrt(2 * effectiveDecel * Math.max(distanceToTarget, 0.10));
       const [punchMin, punchMax] = preset.punchSpeedRange;
       const punchSpeed = punchMin + Math.random() * (punchMax - punchMin);
       targetSpeed = reachSpeed + punchSpeed;
     }
 
-    // Clamp speed safely per difficulty preset
-    targetSpeed = Math.min(targetSpeed, preset.maxSpeedLimit);
+    // Clamp speed safely per difficulty preset (with counter-strike allowance)
+    const effectiveMaxSpeed = forceHighPowerCounter ? Math.max(preset.maxSpeedLimit, 2.45) : preset.maxSpeedLimit;
+    targetSpeed = Math.min(targetSpeed, effectiveMaxSpeed);
 
     const botMass = botConfig.mass || 0.015;
     let botImpulseMagnitude = botMass * targetSpeed;
 
     // 4. Self-Preservation (Prevent over-flick suicide when target is close to player edge)
-    if (preset.selfPreservation) {
+    if (preset.selfPreservation && !forceHighPowerCounter) {
       const distToPlayerEdge = Math.abs(halfL - targetPos.z);
       if (distToPlayerEdge < 0.10 && distanceToTarget < 0.25) {
         botImpulseMagnitude *= 0.85;
@@ -147,15 +194,15 @@ export class PCOpponentController {
     }
 
     // Safe bounds clamping
-    botImpulseMagnitude = Math.min(Math.max(botImpulseMagnitude, 0.008), 0.048);
+    botImpulseMagnitude = Math.min(Math.max(botImpulseMagnitude, 0.008), 0.052);
 
     // 5. Spin Cut-Shot vs Direct Strike Point
-    const useSpinShot = Math.random() < preset.spinChance;
+    const useSpinShot = forceSpinCut || (Math.random() < preset.spinChance);
     const penHalfLen = (botConfig.length || 0.146) / 2;
     const flickOffsetLocal = new THREE.Vector3(0, 0, 0);
 
     if (useSpinShot) {
-      const spinMultiplier = this.difficulty === 'hard' ? 0.85 : 0.45;
+      const spinMultiplier = (this.difficulty === 'hard' || forceHighPowerCounter) ? 0.85 : 0.45;
       const hitEnd = Math.random() > 0.5 ? spinMultiplier : -spinMultiplier;
       flickOffsetLocal.set(0, 0, penHalfLen * hitEnd);
     }
