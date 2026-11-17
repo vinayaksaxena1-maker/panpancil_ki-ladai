@@ -313,6 +313,12 @@ class GameEngine {
     };
 
     const onPointerDown = (e) => {
+      // Hide First-Shot Visual Finger Guide on user tap/aim
+      const firstShotHint = document.getElementById('hud-first-shot-hint');
+      if (firstShotHint && firstShotHint.style.display !== 'none') {
+        firstShotHint.style.display = 'none';
+      }
+
       if (this.isSimulating) return;
       if (window.hudController && typeof window.hudController.isPaused === 'function' && window.hudController.isPaused()) return;
 

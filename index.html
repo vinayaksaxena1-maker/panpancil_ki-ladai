@@ -409,6 +409,13 @@
         </div>
       </div>
     </aside>
+
+    <!-- BOTTOM: FIRST-SHOT VISUAL FINGER GUIDE -->
+    <div class="relative flex flex-col items-center justify-end pb-3 pointer-events-none z-30">
+      <div id="hud-first-shot-hint" class="pointer-events-none px-3.5 py-1.5 rounded-full bg-white/95 border-2 border-slate-900 shadow-[0_3px_0_0_#0f172a] text-[#00288e] text-[11px] font-bold tracking-wide flex items-center gap-1.5 animate-bounce select-none" style="font-family: 'Patrick Hand', cursive;" data-i18n="hud.first_shot_hint">
+        👆 Pull your pen back & release to shoot!
+      </div>
+    </div>
   </div>
 </div>
 
@@ -428,14 +435,14 @@
       <!-- Header Chit -->
       <div class="flex items-center justify-between border-b-2 border-dashed border-slate-400 pb-1.5">
         <div>
-          <span class="text-[9px] font-extrabold text-rose-700 bg-rose-100 border border-rose-300 px-1.5 py-0.2 rounded" style="font-family: 'Patrick Hand', cursive;">
+          <span class="text-[9px] font-extrabold text-rose-700 bg-rose-100 border border-rose-300 px-1.5 py-0.2 rounded" style="font-family: 'Patrick Hand', cursive;" data-i18n="pause.whistle_frozen">
             WHISTLE BLOWN • MATCH FROZEN
           </span>
-          <h2 class="text-[17px] font-semibold text-[#00288e] leading-tight mt-0.5 uppercase tracking-wide" style="font-family: 'Permanent Marker', cursive;">
+          <h2 class="text-[17px] font-semibold text-[#00288e] leading-tight mt-0.5 uppercase tracking-wide" style="font-family: 'Permanent Marker', cursive;" data-i18n="pause.title">
             RECESS TIMEOUT! ⏸️
           </h2>
         </div>
-        <div class="px-2 py-0.5 bg-amber-100 border border-amber-400 rounded text-amber-900 text-[10px] font-black" style="font-family: 'Permanent Marker', cursive;">
+        <div class="px-2 py-0.5 bg-amber-100 border border-amber-400 rounded text-amber-900 text-[10px] font-black" style="font-family: 'Permanent Marker', cursive;" data-i18n="pause.period_badge">
           PERIOD 4
         </div>
       </div>
@@ -446,10 +453,10 @@
           👨‍🏫
         </div>
         <div class="flex flex-col">
-          <span class="text-[10px] font-black text-rose-800 uppercase" style="font-family: 'Permanent Marker', cursive;">
+          <span class="text-[10px] font-black text-rose-800 uppercase" style="font-family: 'Permanent Marker', cursive;" data-i18n="pause.teacher_title">
             PT TIWARI SIR ON ROUND!
           </span>
-          <p class="text-[10px] font-bold text-slate-700 leading-tight" style="font-family: Caveat, cursive;">
+          <p class="text-[10px] font-bold text-slate-700 leading-tight" style="font-family: Caveat, cursive;" data-i18n="pause.teacher_desc">
             Staff room se nikal chuke hain! Board duster in hand. Arena is safe & frozen under desk bench.
           </p>
         </div>
@@ -473,11 +480,27 @@
 
       <!-- Settings & Toggles -->
       <div class="flex flex-col gap-1.5 py-1">
+        <!-- 2-Medium Language Selector -->
+        <div class="flex items-center justify-between px-2 py-1 rounded bg-white border border-slate-300">
+          <div class="flex items-center gap-1.5">
+            <span class="text-sm">🌐</span>
+            <span class="text-[11px] font-bold text-slate-800" style="font-family: 'Patrick Hand', cursive;" data-i18n="pause.medium_label">MEDIUM / माध्यम:</span>
+          </div>
+          <div class="inline-flex rounded-md p-0.5 bg-slate-100 border border-slate-400 gap-1 select-none">
+            <button type="button" id="pause-med-english-btn" onclick="window.setGameLanguage('english')" class="pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs">
+              📖 English
+            </button>
+            <button type="button" id="pause-med-hindi-btn" onclick="window.setGameLanguage('hindi')" class="pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70">
+              🇮🇳 हिंदी
+            </button>
+          </div>
+        </div>
+
         <!-- SFX Toggle -->
         <div class="flex items-center justify-between px-2 py-1 rounded bg-white border border-slate-300">
           <div class="flex items-center gap-1.5">
             <span class="text-sm">🔊</span>
-            <span class="text-[11px] font-bold text-slate-800" style="font-family: 'Patrick Hand', cursive;">Desk Sound Effects (SFX)</span>
+            <span class="text-[11px] font-bold text-slate-800" style="font-family: 'Patrick Hand', cursive;" data-i18n="pause.sfx_label">Desk Sound Effects (SFX)</span>
           </div>
           <button id="pause-sfx-toggle" type="button" class="w-10 h-5 rounded-full bg-emerald-500 p-0.5 transition-colors relative cursor-pointer" data-state="on">
             <div class="w-4 h-4 rounded-full bg-white shadow-xs transform translate-x-5 transition-transform"></div>
@@ -488,7 +511,7 @@
         <div class="flex items-center justify-between px-2 py-1 rounded bg-white border border-slate-300">
           <div class="flex items-center gap-1.5">
             <span class="text-sm">📳</span>
-            <span class="text-[11px] font-bold text-slate-800" style="font-family: 'Patrick Hand', cursive;">Teacher Whistle Alert</span>
+            <span class="text-[11px] font-bold text-slate-800" style="font-family: 'Patrick Hand', cursive;" data-i18n="pause.whistle_label">Teacher Whistle Alert</span>
           </div>
           <button id="pause-haptic-toggle" type="button" class="w-10 h-5 rounded-full bg-emerald-500 p-0.5 transition-colors relative cursor-pointer" data-state="on">
             <div class="w-4 h-4 rounded-full bg-white shadow-xs transform translate-x-5 transition-transform"></div>
@@ -497,7 +520,7 @@
         <!-- In-Match Difficulty Selector -->
         <div class="flex flex-col gap-1 p-2 rounded-xl bg-amber-50/90 border-2 border-amber-400">
           <div class="flex items-center justify-between text-[10px] font-bold text-slate-700" style="font-family: 'Patrick Hand', cursive;">
-            <span>BOT AI DIFFICULTY:</span>
+            <span data-i18n="pause.diff_label">BOT AI DIFFICULTY:</span>
             <span id="pause-diff-status" class="text-blue-800 font-extrabold uppercase">Normal</span>
           </div>
           <div class="grid grid-cols-3 gap-1 mt-0.5">
@@ -514,26 +537,26 @@
         <!-- Resume -->
         <button id="pause-resume-btn" type="button" class="w-full py-2.5 rounded-xl text-[14px] font-bold tracking-wide flex items-center justify-center gap-1.5 select-none pencil-btn-tactile pencil-btn-green" style="font-family: 'Patrick Hand', cursive;">
           <span class="material-symbols-outlined text-[17px]">play_arrow</span>
-          <span>RESUME DUEL ⏱️</span>
+          <span data-i18n="pause.resume_btn">RESUME DUEL ⏱️</span>
         </button>
 
         <!-- Restart -->
         <button id="pause-restart-btn" type="button" class="w-full py-2 rounded-xl text-[12px] font-bold tracking-wide flex items-center justify-center gap-1.5 select-none pencil-btn-tactile pencil-btn-white" style="font-family: 'Patrick Hand', cursive;">
           <span class="material-symbols-outlined text-[15px]">refresh</span>
-          <span>RESTART ROUND 🔄</span>
+          <span data-i18n="pause.restart_btn">RESTART ROUND 🔄</span>
         </button>
 
         <!-- Quit to Hub -->
         <button id="pause-quit-btn" type="button" class="w-full py-1.5 rounded-xl text-[11.5px] font-bold tracking-wide flex items-center justify-center gap-1.5 select-none pencil-btn-tactile pencil-btn-rose" style="font-family: 'Patrick Hand', cursive;">
           <span class="material-symbols-outlined text-[15px]">logout</span>
-          <span>QUIT TO CLASSROOM HUB 🚪</span>
+          <span data-i18n="pause.quit_btn">QUIT TO CLASSROOM HUB 🚪</span>
         </button>
       </div>
 
       <!-- Code of Conduct Note -->
       <div class="p-1.5 rounded bg-amber-50 border border-amber-300 text-[9px] font-bold text-slate-700 flex items-start gap-1" style="font-family: Caveat, cursive;">
         <span class="text-rose-700 text-[10px]">⚠️</span>
-        <span>"Code of Conduct: Flick velocity release ke dauran pause dabaya toh Table Foul maana jayega!"</span>
+        <span data-i18n="pause.conduct_note">"Code of Conduct: Flick velocity release ke dauran pause dabaya toh Table Foul maana jayega!"</span>
       </div>
     </div>
   </div>
@@ -572,7 +595,7 @@
         <header class="relative z-10 flex flex-col items-center mt-space-xs mb-space-sm pt-2">
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
             <span class="material-symbols-outlined text-base text-secondary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
-            <span class="font-label-md text-label-md tracking-wider uppercase font-extrabold text-[12px]">PERIOD: RECESS • BENCH #4</span>
+            <span class="font-label-md text-label-md tracking-wider uppercase font-extrabold text-[12px]" data-i18n="admission.period_pill">PERIOD: RECESS • BENCH #4</span>
           </div>
         </header>
 
@@ -585,9 +608,9 @@
                 <span class="text-[13px] font-extrabold tracking-[0.22em] text-secondary uppercase leading-none" style="font-family: 'Nunito Sans', sans-serif;">DESK WARS</span>
               </div>
               <div class="inline-flex items-center gap-1.5 px-3 py-0.5 bg-white/90 border border-outline-variant/30 rounded-full shadow-xs text-on-surface">
-                <span class="font-bold text-[11px] text-[#1e293b] tracking-wide uppercase" style="font-family: 'Patrick Hand', cursive;">Classroom Championship</span>
+                <span class="font-bold text-[11px] text-[#1e293b] tracking-wide uppercase" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.subheading_championship">Classroom Championship</span>
                 <span class="text-[#64748b] font-extrabold text-[10px] opacity-70">•</span>
-                <span class="font-bold text-[11px] text-[#334155] tracking-wider uppercase" style="font-family: 'Patrick Hand', cursive;">1998 Edition</span>
+                <span class="font-bold text-[11px] text-[#334155] tracking-wider uppercase" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.subheading_edition">1998 Edition</span>
               </div>
             </div>
           </div>
@@ -612,15 +635,15 @@
             <div class="relative z-10 pl-6 flex flex-col gap-2.5">
               <!-- Notebook Index Header -->
               <div class="flex items-center justify-between border-b border-[#dc2626]/40 pb-1 mb-0.5 select-none">
-                <div class="text-[9px] font-bold text-[#dc2626] tracking-wider uppercase opacity-80" style="font-family: 'Patrick Hand', cursive;">★ CLASSMATE NOTEBOOK INDEX ★</div>
+                <div class="text-[9px] font-bold text-[#dc2626] tracking-wider uppercase opacity-80" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.index_header">★ CLASSMATE NOTEBOOK INDEX ★</div>
                 <div class="border-2 border-[#dc2626] rounded-xs px-2 py-0.5 bg-white/90 shadow-2xs flex items-center gap-2 text-[10px] text-[#dc2626] font-bold tracking-tight" style="font-family: 'Nunito Sans', sans-serif;">
                   <div class="flex items-center gap-1">
-                    <span>PAGE:</span>
+                    <span data-i18n="admission.page_label">PAGE:</span>
                     <span class="text-[#0038a8] font-bold text-[13px]" style="font-family: Caveat, cursive;">01</span>
                   </div>
                   <div class="w-[1px] h-3 bg-[#dc2626]/50"></div>
                   <div class="flex items-center gap-1">
-                    <span>DATE:</span>
+                    <span data-i18n="admission.date_label">DATE:</span>
                     <span class="text-[#0038a8] font-bold text-[13px]" style="font-family: Caveat, cursive;">14/08/98</span>
                   </div>
                 </div>
@@ -630,11 +653,11 @@
               <div class="flex items-start justify-between border-b border-[#c4c5d5]/40 pb-1.5">
                 <div>
                   <span id="pass-school-name" class="block tracking-wider uppercase font-bold text-[#b91c1c] text-[12px] truncate max-w-[220px]" style="font-family: Kalam, cursive; letter-spacing: 0.08em; text-shadow: rgba(185, 28, 28, 0.2) 0.5px 0.5px 0px;">★ SARASWATI VIDYALAYA ★</span>
-                  <h2 class="leading-none tracking-wide font-semibold text-[#00288e] text-[18px] uppercase" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(0, 40, 142, 0.15) 1px 1px 0px; transform: rotate(-0.5deg); display: inline-block;">STUDENT BATTLE PASS</h2>
+                  <h2 class="leading-none tracking-wide font-semibold text-[#00288e] text-[18px] uppercase" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(0, 40, 142, 0.15) 1px 1px 0px; transform: rotate(-0.5deg); display: inline-block;" data-i18n="admission.title">STUDENT BATTLE PASS</h2>
                 </div>
                 <div class="text-right pr-1 flex flex-col justify-center">
-                  <div class="text-[11px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">ROLL: <span class="font-bold text-[#0038a8] text-[16px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">#14</span></div>
-                  <div class="text-[11px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">CLASS: <span class="font-bold text-[#0038a8] text-[15px] rotate-1 inline-block" style="font-family: Caveat, cursive;">7th - B</span></div>
+                  <div class="text-[11px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;"><span data-i18n="admission.roll_label">ROLL:</span> <span class="font-bold text-[#0038a8] text-[16px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">#14</span></div>
+                  <div class="text-[11px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;"><span data-i18n="admission.class_label">CLASS:</span> <span class="font-bold text-[#0038a8] text-[15px] rotate-1 inline-block" style="font-family: Caveat, cursive;">7th - B</span></div>
                 </div>
               </div>
 
@@ -644,40 +667,53 @@
                   <div id="student-avatar-frame" class="w-16 h-20 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm cursor-pointer active:scale-95 transition-transform" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px, rgba(15, 23, 42, 0.25) 0px 0px 0px 1px inset; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;" title="Tap to switch Boy / Girl Avatar">
                     <img id="student-avatar-img" class="w-full h-full object-cover transition-opacity duration-200" alt="Student avatar" src="./assets/student_avatar.jpg">
                     <div class="absolute bottom-0 inset-x-0 bg-surface-container/90 py-0.5 text-center flex items-center justify-center gap-0.5">
-                      <span id="student-avatar-label" class="text-[9px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
+                      <span id="student-avatar-label" class="text-[9px] font-semibold text-on-surface uppercase tracking-tight" data-i18n="admission.avatar_khiladi">KHILADI</span>
                       <span class="text-[8px] font-bold text-primary">⇄</span>
                     </div>
                   </div>
-                  <div class="absolute -bottom-1.5 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[8px] font-bold select-none pointer-events-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED</div>
+                  <div class="absolute -bottom-1.5 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[8px] font-bold select-none pointer-events-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px; border-radius: 4px 2px 5px 3px;" data-i18n="admission.avatar_attested">● ATTESTED</div>
                 </div>
 
                 <div class="flex-1 min-w-0 flex flex-col gap-1">
-                  <label class="block uppercase font-bold tracking-wider text-[#b91c1c] text-[11px]" for="student-name-input" style="font-family: 'Patrick Hand', cursive; letter-spacing: 0.05em;">✎ KHILADI KA NAAM (ENTER NAME):</label>
+                  <label class="block uppercase font-bold tracking-wider text-[#b91c1c] text-[11px]" for="student-name-input" style="font-family: 'Patrick Hand', cursive; letter-spacing: 0.05em;" data-i18n="admission.name_label">✎ KHILADI KA NAAM (ENTER NAME):</label>
                   <div class="bg-white/85 backdrop-blur-xs rounded-lg p-1.5 shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgba(30, 41, 59, 0.45) 2px 2px 0px, rgba(30, 41, 59, 0.15) 0px 0px 0px 1px inset; border-radius: 12px 6px 14px 5px / 6px 13px 5px 12px;">
-                    <input aria-label="Student battle name" class="w-full bg-transparent text-[#0038a8] font-bold focus:outline-hidden p-0 m-0 leading-tight text-[19px] tracking-wide" id="student-name-input" style="font-family: 'Caveat', cursive; transform: rotate(-0.8deg);" type="text" placeholder="Enter Name" value="Enter Name">
+                    <input aria-label="Student battle name" class="w-full bg-transparent text-[#0038a8] font-bold focus:outline-hidden p-0 m-0 leading-tight text-[19px] tracking-wide" id="student-name-input" style="font-family: 'Caveat', cursive; transform: rotate(-0.8deg);" type="text" placeholder="Enter Name" value="Enter Name" data-i18n-placeholder="admission.name_placeholder">
                     <div class="text-[#64748b] text-xs mt-0.5 flex items-center gap-1">
                       <span class="material-symbols-outlined text-[13px] text-primary">edit</span>
-                      <span class="font-medium text-[11px]" style="font-family: 'Patrick Hand', cursive;">Tap to enter your name</span>
+                      <span class="font-medium text-[11px]" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.name_tap_hint">Tap to enter your name</span>
                     </div>
                   </div>
 
                   <!-- School Name Input (Optional) -->
                   <div class="mt-0.5">
-                    <label class="block uppercase font-bold tracking-wider text-[#00288e] text-[9.5px]" for="student-school-input" style="font-family: 'Patrick Hand', cursive;">🏫 SCHOOL KA NAAM (OPTIONAL):</label>
+                    <label class="block uppercase font-bold tracking-wider text-[#00288e] text-[9.5px]" for="student-school-input" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.school_label">🏫 SCHOOL KA NAAM (OPTIONAL):</label>
                     <div class="bg-white/85 backdrop-blur-xs rounded-lg px-2 py-0.5 shadow-xs mt-0.5" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgba(30, 41, 59, 0.25) 1px 1.5px 0px; border-radius: 6px;">
-                      <input aria-label="Student school name" class="w-full bg-transparent text-[#b91c1c] font-bold focus:outline-hidden p-0 m-0 leading-tight text-[15px] tracking-wide uppercase truncate" id="student-school-input" maxlength="28" style="font-family: 'Caveat', cursive;" type="text" placeholder="SARASWATI VIDYALAYA (Default)">
+                      <input aria-label="Student school name" class="w-full bg-transparent text-[#b91c1c] font-bold focus:outline-hidden p-0 m-0 leading-tight text-[15px] tracking-wide uppercase truncate" id="student-school-input" maxlength="28" style="font-family: 'Caveat', cursive;" type="text" placeholder="SARASWATI VIDYALAYA (Default)" data-i18n-placeholder="admission.school_placeholder">
                     </div>
                   </div>
 
                   <div class="flex flex-wrap gap-1.5 items-center mt-0.5">
                     <div id="student-house-chip" class="interactive-chip px-2 py-0.5 rounded shadow-xs text-[10px] flex items-center gap-1 select-none" style="border: 1.5px solid #ef4444; background-color: #fee2e2; box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 2px;" title="Tap to select House">
-                      <span id="student-house-label" class="font-bold text-[#b91c1c] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">HOUSE:</span>
+                      <span id="student-house-label" class="font-bold text-[#b91c1c] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.house_label">HOUSE:</span>
                       <span id="student-house-val" class="font-bold text-[#b91c1c] text-[13px]" style="font-family: Caveat, cursive;">Nehru Red</span>
                       <span class="text-[9px] text-[#b91c1c] opacity-70">▼</span>
                     </div>
                     <div id="student-rank-badge" class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed shadow-xs text-[10px] flex items-center gap-1 select-none" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 3px 6px 2px 5px;">
-                      <span class="font-bold text-[#00288e] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;">RANK:</span>
+                      <span class="font-bold text-[#00288e] uppercase text-[9px]" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.rank_label">RANK:</span>
                       <span id="student-rank-text" class="font-bold text-[#0038a8] text-[13px]" style="font-family: Caveat, cursive;">#02 Front Bencher</span>
+                    </div>
+                  </div>
+
+                  <!-- Medium / Language Selector (Only 2 Options: English Medium vs Hindi Medium) -->
+                  <div class="mt-1 pt-1 border-t border-[#c4c5d5]/40 flex items-center justify-between gap-1.5">
+                    <label class="block uppercase font-bold tracking-wider text-[#00288e] text-[9.5px] shrink-0" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.medium_label">🏫 MEDIUM / माध्यम:</label>
+                    <div class="inline-flex rounded-md p-0.5 bg-[#f1f5f9] border border-[#0f172a] shadow-xs gap-1 select-none">
+                      <button type="button" id="splash-med-english-btn" onclick="window.setGameLanguage('english')" class="pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black">
+                        📖 English Medium
+                      </button>
+                      <button type="button" id="splash-med-hindi-btn" onclick="window.setGameLanguage('hindi')" class="pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70">
+                        🇮🇳 हिंदी मीडियम
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -688,7 +724,7 @@
                 <div class="flex items-center justify-between mb-1.5">
                   <div class="flex items-center gap-1.5">
                     <span class="material-symbols-outlined text-primary text-base">ink_pen</span>
-                    <span class="font-bold text-[#475569] uppercase tracking-wider text-[11px]" style="font-family: 'Patrick Hand', cursive;">PRIMARY WEAPON:</span>
+                    <span class="font-bold text-[#475569] uppercase tracking-wider text-[11px]" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.weapon_label">PRIMARY WEAPON:</span>
                     <span class="font-bold text-[#0038a8] text-[16px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">Reynolds 045 Fine - 0.5mm Tip</span>
                   </div>
                 </div>
@@ -696,7 +732,7 @@
                 <div class="grid grid-cols-2 gap-2 mb-1.5">
                   <div class="rounded-md p-1.5 shadow-xs bg-surface-container-lowest" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgba(30, 41, 59, 0.3) 1.5px 1.5px 0px; border-radius: 6px 3px 7px 4px;">
                     <div class="flex justify-between items-center mb-0.5 text-xs">
-                      <span class="text-[#475569] font-bold text-[10px] uppercase tracking-wider" style="font-family: 'Patrick Hand', cursive;">Speed / Velocity</span>
+                      <span class="text-[#475569] font-bold text-[10px] uppercase tracking-wider" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.speed_label">Speed / Velocity</span>
                       <span class="text-[#0038a8] font-bold text-[15px]" style="font-family: Caveat, cursive;">+30 km/h</span>
                     </div>
                     <div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
@@ -705,7 +741,7 @@
                   </div>
                   <div class="rounded-md p-1.5 shadow-xs bg-surface-container-lowest" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgba(30, 41, 59, 0.3) 1.5px 1.5px 0px; border-radius: 4px 7px 3px 6px;">
                     <div class="flex justify-between items-center mb-0.5 text-xs">
-                      <span class="text-[#475569] font-bold text-[10px] uppercase tracking-wider" style="font-family: 'Patrick Hand', cursive;">Table Grip</span>
+                      <span class="text-[#475569] font-bold text-[10px] uppercase tracking-wider" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.grip_label">Table Grip</span>
                       <span class="text-secondary font-bold text-[15px]" style="font-family: Caveat, cursive;">82%</span>
                     </div>
                     <div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
@@ -715,7 +751,7 @@
                 </div>
 
                 <div class="relative flex items-center gap-1.5 pt-0.5 text-xs">
-                  <span class="font-bold text-[#475569] uppercase text-[10px] tracking-wider" style="font-family: 'Patrick Hand', cursive;">LOCKED:</span>
+                  <span class="font-bold text-[#475569] uppercase text-[10px] tracking-wider" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.locked_label">LOCKED:</span>
                   
                   <div class="relative inline-block">
                     <span id="chip-trimax-lock" class="interactive-chip inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-surface-variant/90 text-on-surface-variant font-medium shadow-xs text-[11px]" style="font-family: 'Patrick Hand', cursive; border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 5px 3px 6px 4px;">Trimax Gold 🔒</span>
@@ -734,10 +770,10 @@
                 <div class="flex items-center gap-1 text-[#64748b] font-medium tracking-wide" style="font-family: 'Patrick Hand', cursive;">
                   <span id="pass-school-footer" class="truncate max-w-[150px]">SARASWATI VIDYALAYA</span>
                   <span class="text-[8px]">•</span>
-                  <span>BENCH #4 OFFICIAL</span>
+                  <span data-i18n="admission.school_footer_suffix">BENCH #4 OFFICIAL</span>
                 </div>
                 <div class="flex items-center gap-1.5 text-right relative pr-1">
-                  <span class="text-[10px] font-bold text-[#475569] uppercase" style="font-family: 'Patrick Hand', cursive;">Teacher's Sign:</span>
+                  <span class="text-[10px] font-bold text-[#475569] uppercase" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.teacher_sign_label">Teacher's Sign:</span>
                   <span class="text-[#b91c1c] text-[10px] font-bold" style="font-family: Caveat, cursive;">14/8/98 ✔️</span>
                 </div>
               </div>
@@ -751,7 +787,7 @@
             <div class="absolute inset-0 pointer-events-none opacity-15" style="background: repeating-linear-gradient(45deg, #1e293b 0, #1e293b 1px, transparent 0, transparent 8px);"></div>
             <div class="absolute inset-x-1 inset-y-0.5 pointer-events-none border border-[#334155]/40 rounded-lg" style="border: 1.5px dashed rgb(15, 23, 42); border-radius: 240px 12px 215px 14px / 14px 215px 12px 240px;"></div>
             <span class="relative z-10 font-bold uppercase tracking-wide inline-flex items-center gap-2" style="font-family: 'Patrick Hand', cursive; font-size: 22px; color: #0f172a; text-shadow: 0.5px 0.5px 0px rgba(15, 23, 42, 0.35);">
-              <span>ENTER CLASSROOM</span>
+              <span data-i18n="admission.enter_classroom">ENTER CLASSROOM</span>
               <span class="text-[22px] font-bold inline-block transform translate-y-0.5" style="font-family: 'Caveat', cursive;">➔</span>
             </span>
           </button>
@@ -761,7 +797,7 @@
         <div class="relative z-10 text-center pb-2">
           <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-surface-container rounded-full text-secondary font-label-md text-label-md font-bold shadow-xs" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
             <span class="material-symbols-outlined text-sm">edit</span>
-            <span class="text-[#0038a8] text-base font-bold tracking-wide -rotate-1 inline-block" style="font-family: Caveat, cursive; text-shadow: rgba(0, 56, 168, 0.2) 0.2px 0.2px 0px;">Rule #1: Desk se neeche gira pen out maana jayega!</span>
+            <span class="text-[#0038a8] text-base font-bold tracking-wide -rotate-1 inline-block" style="font-family: Caveat, cursive; text-shadow: rgba(0, 56, 168, 0.2) 0.2px 0.2px 0px;" data-i18n="admission.rule_footer">Rule #1: Desk se neeche gira pen out maana jayega!</span>
           </div>
         </div>
       </div>
@@ -889,12 +925,17 @@
         <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
           <div class="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
             <span class="material-symbols-outlined text-sm text-secondary" style="font-variation-settings: 'FILL' 1;">notifications_active</span>
-            <span class="font-label-md text-[11px] tracking-wider uppercase font-extrabold">RECESS BREAK • BENCH #4</span>
+            <span class="font-label-md text-[11px] tracking-wider uppercase font-extrabold" data-i18n="menu.period_badge">RECESS BREAK • BENCH #4</span>
             <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping ml-0.5"></span>
           </div>
-          <button aria-label="School Rules & Settings" class="w-9 h-9 min-w-[36px] min-h-[36px] rounded-full bg-white/90 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all transform active:scale-90 shadow-sm cursor-pointer" id="settingsBtn" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" onclick="window.startTrophyCabinet('settings')">
-            <span class="material-symbols-outlined text-[18px]">settings</span>
-          </button>
+          <div class="flex items-center gap-1.5">
+            <button id="menu-medium-toggle-btn" type="button" onclick="window.toggleMedium()" class="pencil-btn-tactile px-2.5 py-1 rounded-full bg-white/95 text-[10.5px] font-bold text-[#00288e] flex items-center gap-1 cursor-pointer active:scale-95 shadow-xs whitespace-nowrap" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" title="Switch Language Medium">
+              <span id="menu-medium-toggle-text">📖 ENG MED.</span>
+            </button>
+            <button aria-label="School Rules & Settings" class="w-9 h-9 min-w-[36px] min-h-[36px] rounded-full bg-white/90 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all transform active:scale-90 shadow-sm cursor-pointer" id="settingsBtn" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" onclick="window.startTrophyCabinet('settings')">
+              <span class="material-symbols-outlined text-[18px]">settings</span>
+            </button>
+          </div>
         </header>
 
         <!-- Torn Notebook Page Shell matching Screen 18 -->
@@ -913,15 +954,15 @@
             <div class="relative z-10 pl-5 flex flex-col gap-2.5">
               <!-- 1. Classmate Notebook Index Strip -->
               <div class="flex items-center justify-between border-b border-[#dc2626]/40 pb-1 select-none">
-                <div class="text-[9px] font-bold text-[#dc2626] tracking-wider uppercase opacity-85" style="font-family: 'Patrick Hand', cursive;">★ CLASSMATE NOTEBOOK INDEX ★</div>
+                <div class="text-[9px] font-bold text-[#dc2626] tracking-wider uppercase opacity-85" style="font-family: 'Patrick Hand', cursive;" data-i18n="menu.index_header">★ CLASSMATE NOTEBOOK INDEX ★</div>
                 <div class="border-2 border-[#dc2626] rounded-xs px-2 py-0.5 bg-white/90 shadow-2xs flex items-center gap-2 text-[10px] text-[#dc2626] font-bold tracking-tight" style="font-family: 'Nunito Sans', sans-serif;">
                   <div class="flex items-center gap-1">
-                    <span>PAGE NO:</span>
+                    <span data-i18n="menu.page_label">PAGE NO:</span>
                     <span class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">02</span>
                   </div>
                   <div class="w-[1px] h-3 bg-[#dc2626]/50"></div>
                   <div class="flex items-center gap-1">
-                    <span>DATE:</span>
+                    <span data-i18n="menu.date_label">DATE:</span>
                     <span class="text-[#0038a8] font-bold text-[12px]" style="font-family: Caveat, cursive;">14/08/98</span>
                   </div>
                 </div>
@@ -931,11 +972,11 @@
               <div class="flex items-start justify-between border-b border-[#c4c5d5]/40 pb-1.5">
                 <div>
                   <span id="menu-school-name" class="block tracking-wider uppercase font-bold text-[#b91c1c] text-[11px] truncate max-w-[200px]" style="font-family: Kalam, cursive; letter-spacing: 0.08em; text-shadow: rgba(185, 28, 28, 0.2) 0.5px 0.5px 0px;">★ SARASWATI VIDYALAYA ★</span>
-                  <h2 class="leading-none tracking-wide font-semibold text-[#00288e] text-[16px] uppercase" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(0, 40, 142, 0.3) 0.5px 0.5px 1px; letter-spacing: 0.05em; transform: rotate(-0.5deg); display: inline-block;">STUDENT BATTLE PASS</h2>
+                  <h2 class="leading-none tracking-wide font-semibold text-[#00288e] text-[16px] uppercase" style="font-family: 'Permanent Marker', cursive; text-shadow: rgba(0, 40, 142, 0.3) 0.5px 0.5px 1px; letter-spacing: 0.05em; transform: rotate(-0.5deg); display: inline-block;" data-i18n="menu.title">STUDENT BATTLE PASS</h2>
                 </div>
                 <div class="text-right pr-1 flex flex-col justify-center">
-                  <div class="text-[10px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">ROLL NO: <span class="font-bold text-[#0038a8] text-[15px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">#14</span></div>
-                  <div class="text-[10px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;">CLASS: <span class="font-bold text-[#0038a8] text-[14px] rotate-1 inline-block" style="font-family: Caveat, cursive;">7th - B</span></div>
+                  <div class="text-[10px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;"><span data-i18n="menu.roll_label">ROLL NO:</span> <span class="font-bold text-[#0038a8] text-[15px] -rotate-1 inline-block" style="font-family: Caveat, cursive;">#14</span></div>
+                  <div class="text-[10px] font-bold text-[#64748b] uppercase tracking-wide" style="font-family: 'Patrick Hand', cursive;"><span data-i18n="menu.class_label">CLASS:</span> <span class="font-bold text-[#0038a8] text-[14px] rotate-1 inline-block" style="font-family: Caveat, cursive;">7th - B</span></div>
                 </div>
               </div>
 
@@ -946,7 +987,7 @@
                   <div class="w-14 h-16 bg-surface-container-high rounded-md overflow-hidden relative shadow-sm border border-outline-variant/30 group-hover:border-blue-600" style="border: 2px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 6px 3px 7px 4px / 4px 7px 3px 6px;">
                     <img id="menu-student-avatar" class="w-full h-full object-cover" alt="Student avatar" src="./assets/student_avatar.jpg">
                     <div class="absolute bottom-0 inset-x-0 bg-surface-container/90 py-0.5 text-center">
-                      <span id="menu-avatar-label" class="text-[8px] font-semibold text-on-surface uppercase tracking-tight">KHILADI</span>
+                      <span id="menu-avatar-label" class="text-[8px] font-semibold text-on-surface uppercase tracking-tight" data-i18n="menu.avatar_khiladi">KHILADI</span>
                     </div>
                   </div>
                   <div class="absolute -bottom-1 -left-1 bg-surface-container-lowest shadow-xs text-primary px-1.5 py-0.5 rounded font-label-sm text-[7px] font-bold border border-outline-variant/30 group-hover:bg-amber-100" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1px 0px; border-radius: 4px 2px 5px 3px;">● ATTESTED 🪪</div>
@@ -1041,11 +1082,11 @@
                 <!-- Ultra-Tactile 3D Arcade 'TOSS & PLAY' Button -->
                 <button class="w-full py-2.5 px-3 rounded-lg uppercase tracking-wide flex items-center justify-center gap-2 select-none pencil-btn-tactile pencil-btn-amber" id="quickBattleBtn" style="font-size: 19px;" onclick="window.startQuickDuel()">
                   <span class="flex items-center justify-center gap-2 font-bold" style="font-family: 'Patrick Hand', cursive;">
-                    <span>⚡ TOSS & PLAY</span>
+                    <span data-i18n="menu.toss_play_title">⚡ TOSS & PLAY</span>
                     <span class="text-[20px] font-bold" style="font-family: 'Caveat', cursive;">➔</span>
                   </span>
                 </button>
-                <div class="text-center text-[9px] text-[#452a1c] mt-1 uppercase font-bold tracking-widest opacity-90" style="font-family: 'Patrick Hand', cursive;">
+                <div class="text-center text-[9px] text-[#452a1c] mt-1 uppercase font-bold tracking-widest opacity-90" style="font-family: 'Patrick Hand', cursive;" data-i18n="menu.toss_play_sub">
                   1-Finger Flick • Recess Desk Duel
                 </div>
               </div>
@@ -1061,13 +1102,12 @@
                     <span id="menu-story-stage-badge" class="bg-primary-fixed text-primary font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive; text-shadow: 0.3px 0.3px 0.5px rgba(0, 40, 142, 0.3);">STG 01/11</span>
                   </div>
                   <div class="mt-1">
-                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Story Mode</h4>
-                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;">Defeat 11 rivals bench-by-bench!</p>
+                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;" data-i18n="menu.story_title">Story Mode</h4>
+                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;" data-i18n="menu.story_sub">Defeat 11 rivals bench-by-bench!</p>
                   </div>
                   <button class="mt-1.5 w-full py-1 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-0.5 select-none pencil-btn-tactile pencil-btn-blue" style="font-family: 'Patrick Hand', cursive;">
                     <span class="flex items-center gap-1">
-                      <span>FIGHT</span>
-                      <span class="text-[12px]">➔</span>
+                      <span data-i18n="menu.story_btn">FIGHT ➔</span>
                     </span>
                   </button>
                 </div>
@@ -1081,13 +1121,12 @@
                     <span class="bg-secondary-fixed text-on-secondary-fixed font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive; text-shadow: 0.3px 0.3px 0.5px rgba(50, 19, 2, 0.3);">1V1 LOCAL</span>
                   </div>
                   <div class="mt-1">
-                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Pass & Play</h4>
-                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;">Turn-based 2-player flick on 1 phone!</p>
+                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;" data-i18n="menu.pass_play_title">Pass & Play</h4>
+                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;" data-i18n="menu.pass_play_sub">Turn-based 2-player flick on 1 phone!</p>
                   </div>
                   <button class="mt-1.5 w-full py-1 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-0.5 select-none pencil-btn-tactile pencil-btn-amber" style="font-family: 'Patrick Hand', cursive;">
                     <span class="flex items-center gap-1">
-                      <span>TOSS</span>
-                      <span class="text-[12px]">⇄</span>
+                      <span data-i18n="menu.pass_play_btn">TOSS ⇄</span>
                     </span>
                   </button>
                 </div>
@@ -1101,13 +1140,12 @@
                     <span id="menu-pens-badge" class="bg-surface-container-high text-on-surface-variant font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive;">2/6 PENS</span>
                   </div>
                   <div class="mt-1">
-                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Compass Box</h4>
-                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;">Camlin box, refills & grip tape.</p>
+                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;" data-i18n="menu.compass_title">Compass Box</h4>
+                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;" data-i18n="menu.compass_sub">Camlin box, refills & grip tape.</p>
                   </div>
                   <button class="mt-1.5 w-full py-1 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 select-none pencil-btn-tactile pencil-btn-green" style="font-family: 'Patrick Hand', cursive;">
                     <span class="flex items-center gap-1">
-                      <span>OPEN</span>
-                      <span>🧰</span>
+                      <span data-i18n="menu.compass_btn">OPEN 🧰</span>
                     </span>
                   </button>
                 </div>
@@ -1121,13 +1159,12 @@
                     <span id="menu-trophies-badge" class="bg-tertiary-fixed text-on-tertiary-fixed font-bold text-[8px] px-1 py-0.2 rounded uppercase" style="font-family: 'Patrick Hand', cursive;">0/16 CUPS</span>
                   </div>
                   <div class="mt-1">
-                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;">Trophy Rack</h4>
-                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;">Bench King Cup & 16 retro honors.</p>
+                    <h4 class="font-bold text-[12px] text-on-surface leading-tight" style="font-family: 'Permanent Marker', cursive; text-shadow: 0.5px 0.5px 1px rgba(30, 41, 59, 0.35); letter-spacing: 0.02em;" data-i18n="menu.trophy_title">Trophy Rack</h4>
+                    <p class="text-[10px] text-[#64748b] leading-tight mt-0.5 line-clamp-2" style="font-family: 'Patrick Hand', cursive;" data-i18n="menu.trophy_sub">Bench King Cup & 16 retro honors.</p>
                   </div>
                   <button class="mt-1.5 w-full py-1 text-[11px] font-bold uppercase tracking-wider flex items-center justify-center gap-1 select-none pencil-btn-tactile pencil-btn-rose" style="font-family: 'Patrick Hand', cursive;">
                     <span class="flex items-center gap-1">
-                      <span>VIEW</span>
-                      <span>🎖️</span>
+                      <span data-i18n="menu.trophy_btn">VIEW 🎖️</span>
                     </span>
                   </button>
                 </div>
@@ -1503,7 +1540,7 @@
         <header class="relative z-10 flex items-center justify-between mt-0.5 mb-1.5 px-1">
           <button type="button" onclick="window.hideMatchSetup(); window.showMainMenu();" class="inline-flex items-center gap-1 px-3 py-1 min-h-[34px] font-bold text-[12px] select-none pencil-btn-tactile pencil-btn-white pencil-btn-compact" style="font-family: 'Patrick Hand', cursive;">
             <span class="text-[13px] font-bold">←</span>
-            <span>HUB</span>
+            <span data-i18n="setup.hub_btn">HUB</span>
           </button>
 
           <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed shadow-sm" style="border: 1.8px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1.5px 2px 0px; border-radius: 9999px;">
@@ -1561,12 +1598,12 @@
                 <!-- Tab 1: Single Player -->
                 <button type="button" id="tab-setup-single" onclick="window.switchMatchSetupTab('single')" class="py-2 px-2 rounded-lg text-center transition-all min-h-[44px] flex items-center justify-center gap-1.5 border-2 border-slate-900 text-white text-[13px] tracking-wider hatched-primary shadow-[0_3px_0_0_#0f172a] active:translate-y-0.5 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
                   <span class="material-symbols-outlined text-[18px]">person</span>
-                  <span>Single Player</span>
+                  <span data-i18n="setup.tab_single">Single Player</span>
                 </button>
                 <!-- Tab 2: Pass & Play -->
                 <button type="button" id="tab-setup-passplay" onclick="window.switchMatchSetupTab('passplay')" class="py-2 px-2 rounded-lg text-center transition-all min-h-[44px] flex items-center justify-center gap-1.5 border-2 border-slate-800 bg-[#faf6ed] text-slate-700 text-[13px] tracking-wider shadow-[0_2.5px_0_0_#475569] active:translate-y-0.5 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
                   <span class="material-symbols-outlined text-[18px]">group</span>
-                  <span>Pass & Play</span>
+                  <span data-i18n="setup.tab_pass">Pass & Play</span>
                 </button>
               </div>
 
@@ -1630,26 +1667,26 @@
                   <!-- Tactile Difficulty Selector Pills -->
                   <div class="mt-2.5">
                     <div class="flex items-center justify-between mb-1 text-[10px] uppercase font-bold text-slate-600" style="font-family: 'Patrick Hand', cursive;">
-                      <span>SELECT DIFFICULTY</span>
+                      <span data-i18n="setup.diff_title">SELECT DIFFICULTY</span>
                       <span class="text-amber-800">Recess Match Stakes</span>
                     </div>
                     <div class="grid grid-cols-3 gap-1.5">
                       <!-- Easy Pill -->
                       <button type="button" id="diff-btn-easy" onclick="window.selectSetupDifficulty('easy')" class="diff-btn diff-btn-inactive flex flex-col items-center justify-center p-1.5 rounded-lg active:translate-y-0.5 min-h-[46px] cursor-pointer">
-                        <span class="text-[11px] font-bold leading-tight" style="font-family: 'Permanent Marker', cursive;">1st Bencher</span>
+                        <span class="text-[11px] font-bold leading-tight" style="font-family: 'Permanent Marker', cursive;" data-i18n="setup.diff_easy">1st Bencher</span>
                         <span class="text-[10px] font-bold" style="font-family: Caveat, cursive;">1x Standard XP</span>
                       </button>
                       <!-- Normal Pill (Default Selected) -->
                       <button type="button" id="diff-btn-normal" onclick="window.selectSetupDifficulty('normal')" class="diff-btn diff-btn-active flex flex-col items-center justify-center p-1.5 rounded-lg active:translate-y-0.5 min-h-[46px] relative hatched-paper cursor-pointer">
                         <div class="flex items-center gap-0.5 text-[11px] font-black leading-tight" style="font-family: 'Permanent Marker', cursive;">
-                          <span>Desk Regular</span>
+                          <span data-i18n="setup.diff_normal">Desk Regular</span>
                           <span class="material-symbols-outlined text-[13px] text-emerald-700">check_circle</span>
                         </div>
                         <span class="text-[10px] font-extrabold text-amber-900" style="font-family: Caveat, cursive;">1.5x Bonus XP</span>
                       </button>
                       <!-- Hard Pill -->
                       <button type="button" id="diff-btn-hard" onclick="window.selectSetupDifficulty('hard')" class="diff-btn diff-btn-inactive flex flex-col items-center justify-center p-1.5 rounded-lg active:translate-y-0.5 min-h-[46px] cursor-pointer">
-                        <span class="text-[11px] font-bold leading-tight text-[#b91c1c]" style="font-family: 'Permanent Marker', cursive;">Monitor</span>
+                        <span class="text-[11px] font-bold leading-tight text-[#b91c1c]" style="font-family: 'Permanent Marker', cursive;" data-i18n="setup.diff_hard">Monitor</span>
                         <span class="text-[10px] font-bold text-[#b91c1c]" style="font-family: Caveat, cursive;">2x Master XP</span>
                       </button>
                     </div>
@@ -1658,7 +1695,7 @@
                   <!-- Bench Rule Warning Strip -->
                   <div class="mt-2.5 flex items-center gap-1.5 p-1.5 rounded bg-amber-100 border border-amber-400 text-amber-950 text-[10px]" style="font-family: 'Patrick Hand', cursive;">
                     <span class="material-symbols-outlined text-[15px] text-[#b91c1c] shrink-0">warning</span>
-                    <span class="leading-tight font-bold">
+                    <span class="leading-tight font-bold" data-i18n="setup.bench_rule">
                       Bench Rule: White chalk boundary • Drop from teak bench = instant defeat!
                     </span>
                   </div>
@@ -1666,7 +1703,7 @@
 
                 <!-- Single Player Action Button -->
                 <button type="button" onclick="window.launchSingleDuelMatch()" class="w-full py-3 px-4 rounded-xl text-base tracking-wide flex items-center justify-center gap-2 select-none pencil-btn-tactile pencil-btn-amber" style="font-family: 'Patrick Hand', cursive; font-size: 18px; font-weight: bold;">
-                  <span>START DUEL</span>
+                  <span data-i18n="setup.start_duel_1p">START DUEL</span>
                   <span class="material-symbols-outlined text-[20px]">swords</span>
                   <span class="text-[11px] font-bold bg-white/90 text-slate-900 px-2 py-0.5 rounded-full border border-slate-900" style="font-family: 'Patrick Hand', cursive;">
                     1P RECESS
@@ -1816,7 +1853,7 @@
         </p>
         <!-- Tilted Rubber Stamp Badge -->
         <div class="inline-block mt-1.5 px-3 py-1 rounded-md rubber-stamp-pass">
-          <span class="text-[10px] font-black tracking-wide uppercase" style="font-family: 'Permanent Marker', cursive;">
+          <span class="text-[10px] font-black tracking-wide uppercase" style="font-family: 'Permanent Marker', cursive;" data-i18n="result.victory_title">
             ★ PASSED WITH DISTINCTION (A+) ★
           </span>
         </div>
@@ -1931,7 +1968,7 @@
       <div class="relative z-10 text-center my-2 p-2 rounded-lg bg-rose-50 border border-rose-300 flex flex-col items-center">
         <div class="flex items-center gap-1.5">
           <span class="text-rose-600 text-sm">💔</span>
-          <h2 class="text-[17px] font-bold text-rose-700 uppercase tracking-wide leading-tight" style="font-family: 'Permanent Marker', cursive;">
+          <h2 class="text-[17px] font-bold text-rose-700 uppercase tracking-wide leading-tight" style="font-family: 'Permanent Marker', cursive;" data-i18n="result.defeat_title">
             DEFEAT! OUT OF BOUNDS!
           </h2>
         </div>
@@ -2197,14 +2234,33 @@
 
         <!-- VIEW 2: AUDIO & RULES SETTINGS -->
         <div id="cabinet-view-settings" class="flex flex-col gap-3" style="display: none;">
+          <!-- 0. MEDIUM / LANGUAGE SELECTION -->
+          <div class="bg-white border-2 border-slate-900 rounded-xl p-3 shadow-[0_2.5px_0_0_#0f172a] flex flex-col gap-2">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-slate-900 text-[18px]">translate</span>
+                <span class="text-xs font-black text-slate-900 uppercase" data-i18n="settings.medium_title">Medium / भाषा माध्यम</span>
+              </div>
+              <span class="text-[9px] font-black bg-amber-100 text-amber-900 border border-amber-400 px-1.5 py-0.2 rounded font-mono">LANGUAGE</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mt-1">
+              <button type="button" id="settings-med-english-btn" onclick="window.setGameLanguage('english')" class="pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[12px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black">
+                📖 English Medium
+              </button>
+              <button type="button" id="settings-med-hindi-btn" onclick="window.setGameLanguage('hindi')" class="pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[12px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70">
+                🇮🇳 हिंदी मीडियम
+              </button>
+            </div>
+          </div>
+
           <!-- 1. AUDIO & SFX CONTROLS -->
           <div class="bg-white border-2 border-slate-900 rounded-xl p-3 shadow-[0_2.5px_0_0_#0f172a] flex flex-col gap-2.5">
             <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
               <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-slate-900 text-[18px]">volume_up</span>
-                <span class="text-xs font-black text-slate-900 uppercase">Audio & Recess SFX</span>
+                <span class="text-xs font-black text-slate-900 uppercase" data-i18n="settings.audio_title">Audio & Recess SFX</span>
               </div>
-              <span class="text-[9px] font-black bg-blue-100 text-blue-900 border border-blue-400 px-1.5 py-0.2 rounded font-mono">1998 SOUND</span>
+              <span class="text-[9px] font-black bg-blue-100 text-blue-900 border border-blue-400 px-1.5 py-0.2 rounded font-mono" data-i18n="settings.audio_badge">1998 SOUND</span>
             </div>
 
             <!-- Pen Flick SFX Slider -->
@@ -4942,7 +4998,8 @@
             name: chosenName,
             schoolName: chosenSchool,
             house: HOUSES[currentHouseIndex].name,
-            avatar: currentAvatar
+            avatar: currentAvatar,
+            admission_saved: true
           };
           if (typeof window.applySchoolName === 'function') {
             window.applySchoolName(chosenSchool);
@@ -5010,9 +5067,27 @@
           });
         }
       };
+
+      // Smart Launch: If user already has saved language / profile, show Main Menu directly
+      try {
+        const rawSave = localStorage.getItem('penfight_save_v2');
+        if (rawSave) {
+          const parsed = JSON.parse(rawSave);
+          const hasSavedLanguage = parsed && parsed.settings && (parsed.settings.language === 'hindi' || parsed.settings.language === 'english');
+          const hasAdmissionSaved = parsed && parsed.profile && parsed.profile.admission_saved;
+          if ((hasSavedLanguage || hasAdmissionSaved) && splashOverlay && menuOverlay) {
+            splashOverlay.style.display = 'none';
+            splashOverlay.classList.add('splash-dismissed');
+            window.showMainMenu();
+          }
+        }
+      } catch (e) {
+        console.warn('Smart launch check failed:', e);
+      }
     })();
   </script>
 
+  <script src="./js/i18n.js?v=p4_i18n_v2"></script>
   <script src="./js/hud.js?v=p3_s16_diff"></script>
   <script src="./js/match_result.js?v=p4_result_dynamic_v10"></script>
   <script src="./js/trophy_cabinet.js?v=p3_s9"></script>

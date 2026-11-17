@@ -184,17 +184,23 @@
             DOM.btnNext.style.display = 'none'; // 2-Player duel has no campaign next classmate!
           } else {
             DOM.btnNext.style.display = 'flex';
-            DOM.btnNext.innerHTML = `<span>NEXT CLASSMATE</span><span class="material-symbols-outlined text-[17px]">arrow_forward</span>`;
+            const nextText = (window.t ? window.t('result.next_classmate') : 'NEXT CLASSMATE');
+            DOM.btnNext.innerHTML = `<span>${nextText}</span><span class="material-symbols-outlined text-[17px]">arrow_forward</span>`;
             DOM.btnNext.onclick = () => this.nextOpponent();
           }
         }
         if (DOM.btnRematch) {
           DOM.btnRematch.style.display = 'flex';
-          DOM.btnRematch.innerHTML = is2P
-            ? `<span class="material-symbols-outlined text-[16px] text-blue-700">refresh</span><span>REMATCH (P1 vs P2) ⚔️</span>`
-            : `<span class="material-symbols-outlined text-[16px] text-blue-700">refresh</span><span>REMATCH (RETRY DUEL) 🔄</span>`;
+          const rematchText = is2P
+            ? (window.t ? window.t('result.rematch_2p') : 'REMATCH (P1 vs P2) ⚔️')
+            : (window.t ? window.t('result.rematch_1p') : 'REMATCH (RETRY DUEL) 🔄');
+          DOM.btnRematch.innerHTML = `<span class="material-symbols-outlined text-[16px] text-blue-700">refresh</span><span>${rematchText}</span>`;
         }
-        if (DOM.btnHub) DOM.btnHub.style.display = 'flex';
+        if (DOM.btnHub) {
+          DOM.btnHub.style.display = 'flex';
+          const hubText = (window.t ? window.t('result.return_hub') : 'RETURN TO CLASSROOM HUB 🚪');
+          DOM.btnHub.innerHTML = `<span class="material-symbols-outlined text-[16px]">logout</span><span>${hubText}</span>`;
+        }
 
         if (DOM.vP1Name) DOM.vP1Name.textContent = profile.name || (is2P ? 'Player 1' : 'Student Fighter');
         if (DOM.vP1Pen) DOM.vP1Pen.textContent = p1PenName;
@@ -257,11 +263,16 @@
         if (DOM.btnNext) DOM.btnNext.style.display = 'none';
         if (DOM.btnRematch) {
           DOM.btnRematch.style.display = 'flex';
-          DOM.btnRematch.innerHTML = is2P
-            ? `<span class="material-symbols-outlined text-[16px] text-rose-700">swords</span><span>REMATCH (P1 vs P2) ⚔️</span>`
-            : `<span class="material-symbols-outlined text-[16px] text-rose-700">swords</span><span>REMATCH! RECLAIM BENCH ⚔️</span>`;
+          const rematchText = is2P
+            ? (window.t ? window.t('result.rematch_2p') : 'REMATCH (P1 vs P2) ⚔️')
+            : (window.t ? window.t('result.rematch_defeat') : 'REMATCH! RECLAIM BENCH ⚔️');
+          DOM.btnRematch.innerHTML = `<span class="material-symbols-outlined text-[16px] text-rose-700">swords</span><span>${rematchText}</span>`;
         }
-        if (DOM.btnHub) DOM.btnHub.style.display = 'flex';
+        if (DOM.btnHub) {
+          DOM.btnHub.style.display = 'flex';
+          const hubText = (window.t ? window.t('result.return_hub') : 'RETURN TO CLASSROOM HUB 🚪');
+          DOM.btnHub.innerHTML = `<span class="material-symbols-outlined text-[16px]">logout</span><span>${hubText}</span>`;
+        }
 
         if (DOM.dP1Name) DOM.dP1Name.textContent = profile.name || (is2P ? 'Player 1' : 'Student Fighter');
         if (DOM.dP1Pen) DOM.dP1Pen.textContent = p1PenName;
@@ -386,6 +397,16 @@
           window.showMainMenu();
         }
       }, 150);
+    },
+
+    /**
+     * React to language change
+     */
+    onLanguageChange: function(lang) {
+      if (!cacheDOM()) return;
+      if (state.visible && state.matchData) {
+        this.switchView(state.currentView);
+      }
     }
   };
 

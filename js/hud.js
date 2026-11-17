@@ -269,6 +269,10 @@
         if (DOM.p1TurnPill) {
           DOM.p1TurnPill.classList.remove('hidden');
           DOM.p1TurnPill.classList.add('flex');
+          const turnSpan = DOM.p1TurnPill.querySelector('span:last-child');
+          if (turnSpan) {
+            turnSpan.textContent = window.t ? window.t('hud.your_turn') : 'YOUR TURN 🎯';
+          }
         }
         if (DOM.p2TurnPill) {
           DOM.p2TurnPill.classList.add('hidden');
@@ -288,7 +292,9 @@
           DOM.p2TurnPill.classList.remove('hidden');
           DOM.p2TurnPill.classList.add('flex');
           if (DOM.p2TurnText) {
-            DOM.p2TurnText.textContent = isBot ? 'RIVAL TURN ⏳' : 'PLAYER 2 TURN 🎯';
+            DOM.p2TurnText.textContent = isBot
+              ? (window.t ? window.t('hud.rival_turn') : 'RIVAL TURN ⏳')
+              : (window.t ? window.t('hud.p2_turn') : 'PLAYER 2 TURN 🎯');
           }
         }
         if (DOM.flickCta && isBot) {
@@ -311,7 +317,11 @@
 
       const currentRoundNum = Math.min(maxRounds, p1Score + p2Score + 1);
       if (DOM.roundLabel) {
-        DOM.roundLabel.textContent = `ROUND 0${currentRoundNum} / 0${maxRounds}`;
+        const curStr = String(currentRoundNum).padStart(2, '0');
+        const maxStr = String(maxRounds).padStart(2, '0');
+        DOM.roundLabel.textContent = window.t
+          ? window.t('hud.round_label', { cur: curStr, max: maxStr })
+          : `ROUND ${curStr} / ${maxStr}`;
       }
 
       // Update P1 Pips
@@ -385,8 +395,26 @@
       if (!DOM.turnBanner) cacheDOMElements();
       if (!DOM.turnBanner) return;
 
-      if (title && DOM.turnTitle) DOM.turnTitle.textContent = title;
-      if (sub && DOM.turnSub) DOM.turnSub.textContent = sub;
+      let displayTitle = title;
+      let displaySub = sub;
+      if (window.t) {
+        if (title && title.includes('KNOCKOUT')) {
+          displayTitle = window.t('hud.knockout_title');
+          displaySub = window.t('hud.knockout_sub');
+        } else if (title && title.includes('DOUBLE')) {
+          displayTitle = window.t('hud.double_fall_title');
+          displaySub = window.t('hud.double_fall_sub');
+        } else if (title && title.includes('TABLE FALL')) {
+          displayTitle = window.t('hud.table_fall_title');
+          displaySub = window.t('hud.table_fall_sub');
+        } else if (title && title.includes('TIMEOUT')) {
+          displayTitle = window.t('hud.timeout_title');
+          displaySub = window.t('hud.timeout_sub');
+        }
+      }
+
+      if (displayTitle && DOM.turnTitle) DOM.turnTitle.textContent = displayTitle;
+      if (displaySub && DOM.turnSub) DOM.turnSub.textContent = displaySub;
       if (stamp && DOM.turnStamp) {
         DOM.turnStamp.innerHTML = `<span class="text-[9px] font-black uppercase tracking-wider">${stamp}</span>`;
       }
@@ -407,6 +435,41 @@
           }
           hudController.setTurn(state.currentTurn);
         }, durationMs);
+      }
+    },
+
+    /**
+     * React to language change
+     */
+    onLanguageChange: function(lang) {
+      cacheDOMElements();
+      const currentRoundNum = Math.min(state.maxRounds, state.p1Score + state.p2Score + 1);
+      if (DOM.roundLabel) {
+        const curStr = String(currentRoundNum).padStart(2, '0');
+        const maxStr = String(state.maxRounds).padStart(2, '0');
+        DOM.roundLabel.textContent = window.t
+          ? window.t('hud.round_label', { cur: curStr, max: maxStr })
+          : `ROUND ${curStr} / ${maxStr}`;
+      }
+      if (DOM.pauseRoundSummary) {
+        DOM.pauseRoundSummary.textContent = window.t
+          ? window.t('hud.pause_round_summary', { cur: currentRoundNum, max: state.maxRounds })
+          : `ROUND ${currentRoundNum}/${state.maxRounds}`;
+      }
+      if (state.currentTurn === 'P1') {
+        if (DOM.p1TurnPill) {
+          const turnSpan = DOM.p1TurnPill.querySelector('span:last-child');
+          if (turnSpan) turnSpan.textContent = window.t ? window.t('hud.your_turn') : 'YOUR TURN 🎯';
+        }
+      } else if (DOM.p2TurnText) {
+        const isBot = (state.currentTurn === 'BOT');
+        DOM.p2TurnText.textContent = isBot
+          ? (window.t ? window.t('hud.rival_turn') : 'RIVAL TURN ⏳')
+          : (window.t ? window.t('hud.p2_turn') : 'PLAYER 2 TURN 🎯');
+      }
+      const hint = document.getElementById('hud-first-shot-hint');
+      if (hint && window.t) {
+        hint.textContent = window.t('hud.first_shot_hint');
       }
     },
 

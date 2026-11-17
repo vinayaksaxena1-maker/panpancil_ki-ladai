@@ -468,6 +468,15 @@
 
       alert("✅ Student record erased. Refreshing classroom register!");
       window.location.reload();
+    },
+
+    onLanguageChange: function(lang) {
+      if (!DOM.root) cacheDOMElements();
+      if (DOM.root && DOM.root.style.display !== 'none') {
+        this.renderPinGrid();
+        this.renderMilestones();
+        this.renderRules();
+      }
     }
   };
 
