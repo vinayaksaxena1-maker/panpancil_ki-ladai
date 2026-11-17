@@ -2,20 +2,28 @@ package com.deskduel.penfight;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
+import android.webkit.ConsoleMessage;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import androidx.webkit.WebViewAssetLoader;
+import androidx.webkit.WebViewClientCompat;
 
 public class MainActivity extends Activity {
 
+    private static final String TAG = "PenFight";
     private WebView mWebView;
+    private WebViewAssetLoader mAssetLoader;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -31,25 +39,49 @@ public class MainActivity extends Activity {
         mWebView = new WebView(this);
         setContentView(mWebView);
 
+        // Official Google Android WebViewAssetLoader:
+        // Maps assets to https://appassets.androidplatform.net/assets/
+        // Guarantees CORS, ES Modules, WASM, and WebGL work on ALL physical phones (Android 9-15+)
+        mAssetLoader = new WebViewAssetLoader.Builder()
+                .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(this))
+                .build();
+
         WebSettings settings = mWebView.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setAllowFileAccess(true);
         settings.setAllowContentAccess(true);
-        settings.setAllowFileAccessFromFileURLs(true);
-        settings.setAllowUniversalAccessFromFileURLs(true);
         settings.setMediaPlaybackRequiresUserGesture(false);
 
         // 3D Acceleration
         mWebView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         mWebView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
-        mWebView.setWebViewClient(new WebViewClient());
-        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.setWebViewClient(new WebViewClientCompat() {
+            @Override
+            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
+                return mAssetLoader.shouldInterceptRequest(request.getUrl());
+            }
 
-        // Load offline game from assets
-        mWebView.loadUrl("file:///android_asset/index.html");
+            @Override
+            @SuppressWarnings("deprecation")
+            public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+                return mAssetLoader.shouldInterceptRequest(Uri.parse(url));
+            }
+        });
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
+                Log.d(TAG, "[WebView Console] " + consoleMessage.message() + " -- From line "
+                        + consoleMessage.lineNumber() + " of " + consoleMessage.sourceId());
+                return true;
+            }
+        });
+
+        // Load game via secure local appassets origin
+        mWebView.loadUrl("https://appassets.androidplatform.net/assets/index.html");
     }
 
     private void hideSystemUI() {
