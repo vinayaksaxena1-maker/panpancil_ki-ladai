@@ -421,7 +421,7 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - [x] **Step 4.0B:** Central Sound Manager (`js/audio_manager.js`) — pooling, mobile touch unlock, Trophy Cabinet settings sync.
 - [x] **Step 4.1 (COMPLETED & APPROVED):** `sfx_flick` (Slingshot release) — Option 2 (Finger-snap + desk friction, 140ms, 2.5KB) integrated & user approved (`e346013`).
 - [x] **Step 4.2 (COMPLETED & APPROVED):** `sfx_impact` (Pen-to-pen collision) — Option 2 (Dense resin knock with subtle thump, 55ms, 1.6KB) integrated & user approved (`890f3fe`).
-- [ ] **Step 4.3:** `sfx_wood_slide` (Desk friction) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [x] **Step 4.3 (COMPLETED & APPROVED):** `sfx_wood_slide` (Desk friction) — Option 1 (Authentic 90s school bench grainy wood drag, 120ms, 2.2KB) integrated & user approved (`5398044`).
 - [ ] **Step 4.4:** `sfx_desk_fall` (Out-of-bounds drop) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
 - [ ] **Step 4.5:** `sfx_ui_click` (Tactile button & chit) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
 - [ ] **Step 4.6:** `arena_ambience` (Match Arena classroom background loop) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
