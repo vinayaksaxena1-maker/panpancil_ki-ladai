@@ -429,7 +429,9 @@
     },
 
     testSound: function() {
-      if (window.gameEngine && window.gameEngine.synth) {
+      if (window.AudioManager) {
+        window.AudioManager.playImpact(1.2);
+      } else if (window.gameEngine && window.gameEngine.synth) {
         window.gameEngine.synth.playClack();
       } else {
         try {
@@ -450,8 +452,14 @@
     },
 
     updateAudioSetting: function(type, val) {
-      if (type === 'sfx' && DOM.sfxVal) DOM.sfxVal.textContent = `${val}%`;
-      if (type === 'ambiance' && DOM.ambianceVal) DOM.ambianceVal.textContent = `${val}%`;
+      if (type === 'sfx') {
+        if (DOM.sfxVal) DOM.sfxVal.textContent = `${val}%`;
+        if (window.AudioManager) window.AudioManager.setSFXVolume(val);
+      }
+      if (type === 'ambiance') {
+        if (DOM.ambianceVal) DOM.ambianceVal.textContent = `${val}%`;
+        if (window.AudioManager) window.AudioManager.setAmbianceVolume(val);
+      }
     },
 
     resetCareerData: function() {
@@ -520,9 +528,16 @@
     if (isOff) {
       btn.className = "w-12 h-6 px-0.5 rounded-full bg-amber-300 flex items-center justify-end transition-colors flex-shrink-0 shadow-inner border border-amber-600";
       if (dot) dot.className = "w-5 h-5 rounded-full bg-amber-800 shadow-md transform transition-transform";
+      if (btn.previousElementSibling && btn.previousElementSibling.id === 'setting-ambiance-slider') {
+        const slider = btn.previousElementSibling;
+        if (window.AudioManager) window.AudioManager.setAmbianceVolume(Number(slider.value) || 70);
+      }
     } else {
       btn.className = "w-12 h-6 px-0.5 rounded-full bg-slate-300 flex items-center justify-start transition-colors flex-shrink-0 shadow-inner border border-slate-500";
       if (dot) dot.className = "w-5 h-5 rounded-full bg-slate-600 shadow-md transform transition-transform";
+      if (btn.previousElementSibling && btn.previousElementSibling.id === 'setting-ambiance-slider') {
+        if (window.AudioManager) window.AudioManager.setAmbianceVolume(0);
+      }
     }
   };
 })();
