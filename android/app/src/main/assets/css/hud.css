@@ -1,0 +1,188 @@
+/* ========================================================================== */
+/* D:\FInal\css\hud.css                                                       */
+/* Step 3.7: Live 3D Arena - Slingshot HUD & Pause Drawer Modal Styles        */
+/* Standalone, 100% offline compliant, scoped under #game-hud-overlay         */
+/* ========================================================================== */
+
+/* 1. ROOT HUD OVERLAY SCOPE & POINTER EVENTS */
+#game-hud-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none !important;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  transition: opacity 0.25s ease-out;
+}
+
+#game-hud-overlay * {
+  box-sizing: border-box;
+}
+
+/* Turn banner should never block pointer interactions with the 3D canvas */
+#hud-turn-banner {
+  pointer-events: none !important;
+  transition: opacity 0.2s ease-out, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Re-enable pointer events only for interactive components */
+#game-hud-overlay .pointer-events-auto,
+#game-hud-overlay button,
+#game-hud-overlay #hud-pause-btn,
+#game-hud-overlay #hud-power-card,
+#game-hud-overlay #hud-aim-btn,
+#game-hud-overlay #hud-flick-cta,
+#game-hud-overlay #hud-spin-btn {
+  pointer-events: auto !important;
+}
+
+/* 2. TURN BANNER SPRING ANIMATIONS */
+@keyframes hudBannerPop {
+  0% {
+    transform: scale(0.8) translateY(-10px) rotate(-3deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.05) translateY(2px) rotate(1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) translateY(0) rotate(-1deg);
+    opacity: 1;
+  }
+}
+
+@keyframes hudBannerIdle {
+  0%, 100% {
+    transform: translateY(0px) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(0.5deg);
+  }
+}
+
+#hud-turn-banner {
+  animation: hudBannerPop 0.38s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#hud-turn-banner.banner-active-idle {
+  animation: hudBannerIdle 3s ease-in-out infinite;
+}
+
+/* Turn state variations */
+#hud-turn-banner.turn-p1 {
+  border-color: #00288e;
+}
+#hud-turn-banner.turn-p1 #hud-turn-title {
+  color: #00288e;
+}
+
+#hud-turn-banner.turn-bot,
+#hud-turn-banner.turn-p2 {
+  border-color: #b91c1c;
+}
+#hud-turn-banner.turn-bot #hud-turn-title,
+#hud-turn-banner.turn-p2 #hud-turn-title {
+  color: #b91c1c;
+}
+
+/* 3. SLINGSHOT POWER METER & GAUGE (VERTICAL SCHOOL RULER) */
+#hud-power-card {
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+#hud-power-bar-fill {
+  transition: height 0.08s ease-out;
+}
+
+/* Power Overdrive (>80%) Glow */
+@keyframes hudPowerOverdrive {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(239, 68, 68, 0.7), inset 0 1px 2px rgba(255, 255, 255, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(239, 68, 68, 0.95), inset 0 1px 4px rgba(255, 255, 255, 0.8);
+  }
+}
+
+#hud-power-card.power-overdrive #hud-power-bar-fill {
+  animation: hudPowerOverdrive 0.6s ease-in-out infinite;
+}
+
+/* 4. ROUND SCORE PIPS */
+.round-pip-won {
+  background-color: #16a34a !important;
+  border-color: #14532d !important;
+  box-shadow: 0 0 6px rgba(22, 163, 74, 0.6) !important;
+}
+
+.round-pip-lost {
+  background-color: #ef4444 !important;
+  border-color: #7f1d1d !important;
+}
+
+.round-pip-pending {
+  background-color: #e2e8f0 !important;
+  border-color: #94a3b8 !important;
+}
+
+/* 5. TACTILE 3D BUTTON STATES */
+#hud-flick-cta:active,
+#hud-aim-btn:active,
+#hud-spin-btn:active {
+  transform: translateY(3px) !important;
+  box-shadow: 0 1px 0 #0f172a !important;
+}
+
+#hud-aim-btn.aim-locked {
+  background-color: #eff6ff !important;
+  border-color: #1d4ed8 !important;
+  color: #1d4ed8 !important;
+}
+
+#hud-spin-btn.spin-active {
+  background-color: #fef3c7 !important;
+  border-color: #b45309 !important;
+  color: #b45309 !important;
+}
+
+/* 6. PAUSE MODAL STYLING */
+#pause-menu-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background-color: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#pause-menu-modal.pause-modal-open {
+  opacity: 1;
+  pointer-events: auto !important;
+}
+
+#pause-menu-modal .relative {
+  transform: scale(0.92) translateY(12px) rotate(-1deg);
+  transition: transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#pause-menu-modal.pause-modal-open .relative {
+  transform: scale(1) translateY(0) rotate(-1deg);
+}
+
+/* Toggle Switches */
+#pause-sfx-toggle[data-state="off"],
+#pause-haptic-toggle[data-state="off"] {
+  background-color: #cbd5e1 !important;
+}
+
+#pause-sfx-toggle[data-state="off"] div,
+#pause-haptic-toggle[data-state="off"] div {
+  transform: translateX(0px) !important;
+}

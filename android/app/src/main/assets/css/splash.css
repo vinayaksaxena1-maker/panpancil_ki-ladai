@@ -1,0 +1,115 @@
+/* css/splash.css - Step 3.2: Splash Screen & Student ID Card (Stitch Exact Reproduction) */
+@import url('../assets/fonts/fonts.css');
+
+#splash-screen-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(252, 250, 244);
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-overflow-scrolling: touch;
+}
+
+#splash-screen-overlay.splash-dismissed {
+  opacity: 0;
+  transform: translateY(-24px);
+  pointer-events: none;
+}
+
+/* Custom scrollbar hide for cleaner mobile feel */
+#splash-screen-overlay::-webkit-scrollbar {
+  display: none;
+}
+
+/* Step 3.2 Interactive Touches: Tooltip & Chips */
+.pencil-tooltip-box {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px) scale(0.92);
+  background: #ffffff;
+  border: 1.8px solid #0f172a;
+  box-shadow: 2.5px 3px 0px #0f172a;
+  border-radius: 8px 12px 7px 11px / 11px 7px 12px 8px;
+  padding: 5px 10px;
+  font-family: 'Patrick Hand', cursive;
+  font-size: 11px;
+  color: #0f172a;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.18s ease, transform 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 100;
+}
+
+.pencil-tooltip-box::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #0f172a transparent transparent transparent;
+}
+
+.pencil-tooltip-box.tooltip-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.interactive-chip {
+  cursor: pointer;
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.interactive-chip:active {
+  transform: scale(0.94) translateY(1px);
+}
+
+/* Step 3.2 Modal Popup Dialogs (House & Avatar Picker) */
+.notebook-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 1500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease;
+}
+
+.notebook-modal-backdrop.modal-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.notebook-modal-card {
+  width: 100%;
+  max-width: 330px;
+  background: #ffffff;
+  border: 2.5px solid #0f172a;
+  box-shadow: 4px 5px 0px #0f172a;
+  border-radius: 14px 8px 16px 7px / 8px 15px 7px 14px;
+  padding: 14px;
+  position: relative;
+  transform: translateY(12px) scale(0.95);
+  transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.notebook-modal-backdrop.modal-open .notebook-modal-card {
+  transform: translateY(0) scale(1);
+}
+
+
