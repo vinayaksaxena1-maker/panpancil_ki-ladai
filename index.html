@@ -497,23 +497,8 @@
       </div>
     </div>
 
-    <!-- BOTTOM ENVIRONMENT CHIPS & TACTICAL FLICK TRAY -->
+    <!-- BOTTOM TACTICAL FLICK TRAY -->
     <section class="flex flex-col gap-2 pointer-events-none">
-      <!-- Desk Micro-Climate Environment Chips -->
-      <div class="flex items-center justify-between px-1 text-slate-700 text-[10px] pointer-events-none">
-        <div id="hud-env-fan" class="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 border border-slate-700/60 shadow-xs backdrop-blur-xs pointer-events-auto" style="font-family: 'Patrick Hand', cursive;">
-          <span>💨</span>
-          <span class="font-bold">Fan Drift:</span>
-          <strong class="text-blue-800">0.4 km/h West</strong>
-        </div>
-
-        <div id="hud-env-grip" class="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white/90 border border-slate-700/60 shadow-xs backdrop-blur-xs pointer-events-auto" style="font-family: 'Patrick Hand', cursive;">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-          <span class="font-bold">Desk Grip:</span>
-          <strong class="text-emerald-800">Teak Wood (High)</strong>
-        </div>
-      </div>
-
       <!-- TACTILE SLINGSHOT POWER METER CARD -->
       <div id="hud-power-card" class="p-2.5 rounded-xl bg-[#faf6ed] border-2 border-slate-900 shadow-[0_3px_0_0_#0f172a] relative overflow-hidden pointer-events-auto">
         <!-- Notebook Header with Ruler Icon -->
@@ -3666,6 +3651,8 @@
         }
         window.hideCampaignMap();
         if (window.hideMainMenu) window.hideMainMenu();
+        const splashEl = document.getElementById('splash-screen-overlay');
+        if (splashEl) splashEl.style.display = 'none';
         const statusEl = document.getElementById('status-msg');
         if (statusEl) {
           statusEl.textContent = isWarmup 
