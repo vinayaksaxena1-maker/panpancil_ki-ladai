@@ -420,7 +420,7 @@ Aapke dono sawalon ki poori clarity yeh hai ki yeh dono features kis-kis phase m
   - [x] **Step 4.0A:** Procedural Web Audio Synth fallback (`js/audio_synth.js`) — zero external dependency backup.
   - [x] **Step 4.0B:** Central Sound Manager (`js/audio_manager.js`) — pooling, mobile touch unlock, Trophy Cabinet settings sync.
 - [x] **Step 4.1 (COMPLETED & APPROVED):** `sfx_flick` (Slingshot release) — Option 2 (Finger-snap + desk friction, 140ms, 2.5KB) integrated & user approved (`e346013`).
-- [ ] **Step 4.2:** `sfx_impact` (Pen-to-pen collision) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
+- [x] **Step 4.2 (COMPLETED & APPROVED):** `sfx_impact` (Pen-to-pen collision) — Option 2 (Dense resin knock with subtle thump, 55ms, 1.6KB) integrated & user approved (`890f3fe`).
 - [ ] **Step 4.3:** `sfx_wood_slide` (Desk friction) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
 - [ ] **Step 4.4:** `sfx_desk_fall` (Out-of-bounds drop) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
 - [ ] **Step 4.5:** `sfx_ui_click` (Tactile button & chit) — 3 candidate options presented ➔ User selection ➔ Tested ➔ Approved.
