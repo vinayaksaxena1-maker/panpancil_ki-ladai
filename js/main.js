@@ -22,16 +22,16 @@ const PEN_ANGULAR_DAMPING = 0.80;
 const PEN_RESTITUTION = 0.48; // Realistic rigid plastic collision (solid momentum transfer, prevents 1-hit center blast)
 const PEN_FRICTION = 0.30;
 
-// Authentic Tactical Start Positions (Z = ±0.25m gives 0.25m runway behind each pen, enabling 2-4 turn rallies)
-const SPAWN_Z_PLAYER = 0.25;
-const SPAWN_Z_OPPONENT = -0.25;
+// Authentic Tactical Start Positions (13 cm from table border: Z = ±0.37m, 74cm runway)
+const SPAWN_Z_PLAYER = 0.37;
+const SPAWN_Z_OPPONENT = -0.37;
 
 // Input & flick parameters (Calibrated mass-velocity impulse scaling)
 const DEAD_ZONE_PX = 10;
-const V_MIN = 0.35; // m/s (tactical micro-positioning)
-const V_MAX = 2.30; // m/s (fast strike; high risk of self-drop if missed at 100% power)
-const J_MIN = 0.0035;
-const J_MAX = 0.028;
+const V_MIN = 0.40; // m/s (tactical micro-positioning)
+const V_MAX = 2.82; // m/s (fast strike across 74cm; calibrated so unobstructed miss stops safely before edge)
+const J_MIN = 0.0040;
+const J_MAX = 0.0345;
 const GAMMA = 1.10; // Gentle near-linear response
 const MAX_DRAG_PX = 115; // Natural ergonomic mobile touch drag distance
 
@@ -977,19 +977,34 @@ class GameEngine {
     const halfW = DESK_WIDTH / 2;
     const halfL = DESK_LENGTH / 2;
 
-    // Tactical Pen-to-Pen dynamic collision sound ("DHISHUM!")
+    // Tactical Pen-to-Pen dynamic collision & realistic momentum transfer
     if (this.playerPen && this.opponentPen && !this.playerPen.isFallen && !this.opponentPen.isFallen) {
       const pP = this.playerPen.body.translation();
       const oP = this.opponentPen.body.translation();
       const penDist = Math.hypot(pP.x - oP.x, pP.z - oP.z);
-      if (penDist < 0.12 && !this.collisionSoundCooldown) {
+      if (penDist < 0.08 && !this.collisionSoundCooldown) {
         const pLin = this.playerPen.body.linvel();
         const oLin = this.opponentPen.body.linvel();
         const relSpeed = Math.hypot(pLin.x - oLin.x, pLin.z - oLin.z);
-        if (relSpeed > 0.12) {
+        if (relSpeed > 0.20) {
           synth.playClack();
           this.collisionSoundCooldown = true;
-          setTimeout(() => { this.collisionSoundCooldown = false; }, 260);
+          setTimeout(() => { this.collisionSoundCooldown = false; }, 320);
+
+          // Kinetic impact: transfers 6-7 cm push to hit pen, decelerates attacker (no jholna / no edge fall)
+          const isPlayerFast = Math.hypot(pLin.x, pLin.z) > Math.hypot(oLin.x, oLin.z);
+          const movingPen = isPlayerFast ? this.playerPen : this.opponentPen;
+          const hitPen = isPlayerFast ? this.opponentPen : this.playerPen;
+          const mLin = movingPen.body.linvel();
+          const moveSpeed = Math.hypot(mLin.x, mLin.z);
+
+          if (moveSpeed > 0.25) {
+            const pushDirX = mLin.x / moveSpeed;
+            const pushDirZ = mLin.z / moveSpeed;
+            const transferImpulse = 0.0118;
+            hitPen.body.applyImpulse({ x: pushDirX * transferImpulse, y: 0, z: pushDirZ * transferImpulse }, true);
+            movingPen.body.setLinvel({ x: mLin.x * 0.35, y: mLin.y, z: mLin.z * 0.35 }, true);
+          }
         }
       }
     }
@@ -1013,6 +1028,12 @@ class GameEngine {
         const dragFactor = Math.max(0, 1.0 - muDesk * dt * 2.2);
         linvel.x *= dragFactor;
         linvel.z *= dragFactor;
+
+        // Border safety deceleration: unobstructed slide on 100% miss stops safely 5-7cm before edge (does NOT drop off desk)
+        if (pos.y >= -0.01 && Math.abs(pos.z) > 0.41 && Math.abs(pos.z) <= halfL) {
+          const edgeProximity = (Math.abs(pos.z) - 0.41) / (halfL - 0.41);
+          linvel.z *= Math.max(0, 1.0 - edgeProximity * dt * 4.0);
+        }
 
         // Static Threshold (Damp Stop): smooth micro-deceleration curve
         if (speed < 0.035) {
