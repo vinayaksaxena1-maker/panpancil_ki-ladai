@@ -339,7 +339,7 @@ class GameEngine {
     const halfLen = config.length / 2;
     const colliderDesc = RAPIER.ColliderDesc.cuboid(config.radius, config.radius, halfLen)
       .setMass(config.mass)
-      .setFriction(config.friction || PEN_FRICTION)
+      .setFriction(DESK_FRICTION * (config.friction ? (config.friction / 0.35) : 1.0))
       .setRestitution(PEN_RESTITUTION); // 0.48 Balanced Deflection Elasticity (realistic glancing hits, no rocket launch)
 
     this.world.createCollider(colliderDesc, body);
@@ -522,7 +522,8 @@ class GameEngine {
       if (pen && pen.body) {
         pen.body.setLinearDamping(pen.config.linearDamping || PEN_LINEAR_DAMPING);
         if (typeof pen.body.collider === 'function' && pen.body.collider(0)) {
-          pen.body.collider(0).setFriction(pen.config.friction || PEN_FRICTION);
+          const normalFric = DESK_FRICTION * (pen.config.friction ? (pen.config.friction / 0.35) : 1.0);
+          pen.body.collider(0).setFriction(normalFric);
         }
         delete pen.customFriction;
       }
@@ -1080,9 +1081,9 @@ class GameEngine {
       const isOverDesk = Math.abs(pos.x) <= halfW && Math.abs(pos.z) <= halfL && pos.y >= -0.01;
 
       if (isOverDesk && speed > 0.0001) {
-        // Principle 1: Dual-Friction Model (Coulomb Kinetic + Viscous Friction)
-        // v_next = v * (1 - mu_desk * dt)
-        const muDesk = pen.customFriction || pen.config.friction || DESK_FRICTION;
+        // Principle 1: Dual-Friction Model (Desk friction 0.60 scaled by pen material)
+        const penMaterialFactor = pen.config.friction ? (pen.config.friction / 0.35) : 1.0;
+        const muDesk = pen.customFriction || (DESK_FRICTION * penMaterialFactor);
         const dragFactor = Math.max(0, 1.0 - muDesk * dt * 2.2);
         linvel.x *= dragFactor;
         linvel.z *= dragFactor;
