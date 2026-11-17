@@ -23,11 +23,11 @@ const PEN_RESTITUTION = 0.68; // ~70% Elasticity for crisp rigid plastic collisi
 const PEN_FRICTION = 0.30;
 
 // Input & flick parameters (Calibrated for 1.00m table runway)
-const DEAD_ZONE_PX = 12;
+const DEAD_ZONE_PX = 10;
 const J_MIN = 0.0020;
 const J_MAX = 0.054;
-const GAMMA = 1.45;
-const MAX_PULL_VIEWPORT_RATIO = 0.34;
+const GAMMA = 1.10; // Gentle near-linear response: 50% drag = ~46% power, 100% drag = 100% full force
+const MAX_DRAG_PX = 115; // Natural ergonomic mobile touch drag distance (comfortable 115px runway on screen)
 
 // Settle thresholds
 const SETTLE_LIN_VEL = 0.015;
@@ -414,7 +414,7 @@ class GameEngine {
     const onPointerMove = (e) => {
       if (!this.isDragging) return;
       this.dragCurrent.set(e.clientX, e.clientY);
-      this.smoothedDrag.lerp(this.dragCurrent, 0.45);
+      this.smoothedDrag.lerp(this.dragCurrent, 0.75);
 
       const pxDiffX = this.smoothedDrag.x - this.dragStart.x;
       const pxDiffY = this.smoothedDrag.y - this.dragStart.y;
@@ -425,8 +425,8 @@ class GameEngine {
         return;
       }
 
-      const maxPullPx = window.innerHeight * MAX_PULL_VIEWPORT_RATIO;
-      const pullFrac = Math.min((dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
+      const maxPullPx = MAX_DRAG_PX;
+      const pullFrac = Math.min(Math.max(0, dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
       const curvedPower = Math.pow(pullFrac, GAMMA);
 
       if (this.powerMeterEl) {
@@ -495,8 +495,8 @@ class GameEngine {
     this.updateTurnBadge();
     synth.playFlick();
 
-    const maxPullPx = window.innerHeight * MAX_PULL_VIEWPORT_RATIO;
-    const pullFrac = Math.min((dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
+    const maxPullPx = MAX_DRAG_PX;
+    const pullFrac = Math.min(Math.max(0, dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
     const curvedPower = Math.pow(pullFrac, GAMMA);
     const impulseMag = J_MIN + curvedPower * (J_MAX - J_MIN);
 
