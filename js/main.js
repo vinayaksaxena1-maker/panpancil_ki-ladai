@@ -550,6 +550,16 @@ class GameEngine {
     const pPos = this.playerPen.body.translation();
     const oPos = this.opponentPen.body.translation();
 
+    // Throttled desk friction slide sound
+    const maxSpeed = Math.max(pSpeed, oSpeed);
+    const now = performance.now();
+    if (maxSpeed > 0.45 && (!this._lastSlideTime || now - this._lastSlideTime > 260)) {
+      if ((!this.playerPen.isFallen && pPos.y > -0.01) || (!this.opponentPen.isFallen && oPos.y > -0.01)) {
+        this._lastSlideTime = now;
+        if (synth && synth.manager) synth.manager.play('slide');
+      }
+    }
+
     // 1.10m desk length out-of-bounds check
     const isOutOfBounds = (pos) => (
       pos.y < -0.02 || 
@@ -606,12 +616,16 @@ class GameEngine {
     if (outcome.type === 'DRAW_REFLICK') {
       updateBlackboardDisplay("ROUND DRAW! RE-FLICK");
     } else if (outcome.type === 'MATCH_WIN_PLAYER') {
+      if (synth && synth.manager) synth.manager.playRoundWin();
       updateBlackboardDisplay(`${p1Label} WINS MATCH! [${outcome.score.player} - ${outcome.score.opponent}]`);
     } else if (outcome.type === 'MATCH_WIN_OPPONENT') {
+      if (synth && synth.manager) synth.manager.playRoundLoss();
       updateBlackboardDisplay(`${p2Label} WINS MATCH! [${outcome.score.opponent} - ${outcome.score.player}]`);
     } else if (outcome.winner === 'player') {
+      if (synth && synth.manager) synth.manager.playRoundWin();
       updateBlackboardDisplay(`ROUND WON! [${p1Label}: ${outcome.score.player} - ${outcome.score.opponent}]`);
     } else if (outcome.winner === 'opponent') {
+      if (synth && synth.manager) synth.manager.playRoundLoss();
       updateBlackboardDisplay(`ROUND WON! [${p2Label}: ${outcome.score.opponent} - ${outcome.score.player}]`);
     } else {
       updateBlackboardDisplay(`R${outcome.currentRound} [${p1Label}: ${outcome.score.player} - ${outcome.score.opponent}]`);

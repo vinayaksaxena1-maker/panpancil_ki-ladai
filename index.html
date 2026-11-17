@@ -5130,6 +5130,13 @@
       } catch (e) {
         console.warn('Smart launch check failed:', e);
       }
+      // Global Tactile UI Click Audio Delegation
+      document.addEventListener('pointerdown', (e) => {
+        const clickable = e.target.closest('button, [role="button"], .pencil-btn-tactile, a, input[type="range"]');
+        if (clickable && window.AudioManager) {
+          window.AudioManager.playClick();
+        }
+      }, { passive: true });
     })();
   </script>
 

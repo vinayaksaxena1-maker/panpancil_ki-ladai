@@ -130,6 +130,25 @@
         this.switchView('defeat');
       }
 
+      // Play nostalgic school period bell when match certificate opens!
+      if (window.AudioManager) {
+        window.AudioManager.playBell();
+      }
+
+      // Progression reward audio triggers
+      if (matchData.progResult) {
+        if (matchData.progResult.isLevelUp || matchData.forcePromotion) {
+          setTimeout(() => {
+            if (window.AudioManager) window.AudioManager.play('level_up');
+          }, 1200);
+        }
+        if (matchData.progResult.newBadges && matchData.progResult.newBadges.length > 0) {
+          setTimeout(() => {
+            if (window.AudioManager) window.AudioManager.play('badge_unlock');
+          }, 2200);
+        }
+      }
+
       DOM.overlay.style.display = 'flex';
       requestAnimationFrame(() => {
         DOM.overlay.classList.remove('result-dismissed');
