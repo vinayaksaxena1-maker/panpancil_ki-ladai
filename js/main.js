@@ -22,9 +22,9 @@ const PEN_ANGULAR_DAMPING = 0.80;
 const PEN_RESTITUTION = 0.48; // Realistic rigid plastic collision (solid momentum transfer, prevents 1-hit center blast)
 const PEN_FRICTION = 0.30;
 
-// Tactical Spawn Positions (Z = ±0.38m, placed right at white chalk line, 76cm runway, 12cm border buffer)
-const SPAWN_Z_PLAYER = 0.38;
-const SPAWN_Z_OPPONENT = -0.38;
+// Tactical Spawn Positions (Z = ±0.40m, 80cm runway, 10cm border buffer)
+const SPAWN_Z_PLAYER = 0.40;
+const SPAWN_Z_OPPONENT = -0.40;
 
 // Dynamic Random Offset: (Math.random() - 0.5) * DESK_WIDTH * 0.22 (3 to 7 cm natural slight angle)
 function getRandomSpawnOffsetX() {
