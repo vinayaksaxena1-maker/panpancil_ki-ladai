@@ -144,6 +144,8 @@
       cacheDOMElements();
       if (!DOM.hudOverlay) return;
       DOM.hudOverlay.style.display = 'flex';
+      const shield = document.getElementById('menu-backdrop-shield');
+      if (shield) shield.style.opacity = '0';
       state.visible = true;
       hudController.hydrateFromSave();
       hudController.startTimer();
@@ -158,6 +160,8 @@
       if (DOM.hudOverlay) {
         DOM.hudOverlay.style.display = 'none';
       }
+      const shield = document.getElementById('menu-backdrop-shield');
+      if (shield) shield.style.opacity = '1';
       if (DOM.pauseModal) {
         DOM.pauseModal.classList.remove('pause-modal-open');
         DOM.pauseModal.style.display = 'none';

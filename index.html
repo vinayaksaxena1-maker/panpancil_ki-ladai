@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="./css/hud.css?v=p3_s15_ruler">
   <link rel="stylesheet" href="./css/match_result.css?v=p3_s8">
   <link rel="stylesheet" href="./css/trophy_cabinet.css?v=p3_s9">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./js/tailwind.cdn.js"></script>
   <script id="tailwind-config">
     tailwind.config = {
       darkMode: "class",
@@ -266,6 +266,8 @@
 </head>
 <body>
   <div id="canvas-container"></div>
+  <!-- Persistent Parchment/Notebook Shield to prevent 3D canvas flashing during transitions -->
+  <div id="menu-backdrop-shield" class="fixed inset-0 pointer-events-none z-10 bg-[#f8f3e6] transition-opacity duration-300" style="opacity: 1;"></div>
 
   <!-- Phase 3 Step 3.7: In-Game Transparent HUD & Color-Shifting Slingshot Gauge (Stitch Design) -->
 <div id="game-hud-overlay" style="display: none;" class="hud-root pointer-events-none fixed inset-0 z-50 flex flex-col justify-between select-none overflow-hidden font-sans">
