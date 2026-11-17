@@ -12,7 +12,7 @@ export const PEN_CONFIGS = {
     color: 0x152844, // Deep Metallic Navy body
     accentColor: 0xd4af37, // Golden metal ring
     capColor: 0x0f1c30,
-    restitution: 0.68, // ~70% Elasticity for crisp rigid plastic impact
+    restitution: 0.48, // Balanced Deflection Elasticity (realistic glancing hits, prevents 1-hit rocket launch)
     friction: 0.42,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -27,7 +27,7 @@ export const PEN_CONFIGS = {
     color: 0xf5f1e8, // Semi-translucent Off-white body
     accentColor: 0x1c3d73, // Classic blue cap & plug
     capColor: 0x1c3d73,
-    restitution: 0.68, // ~70% Elasticity
+    restitution: 0.48, // ~70% Elasticity
     friction: 0.35,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -42,7 +42,7 @@ export const PEN_CONFIGS = {
     color: 0x9e602e, // Warm Amber Translucent
     accentColor: 0x151515, // Black rubber grip
     capColor: 0x242424,
-    restitution: 0.68,
+    restitution: 0.48,
     friction: 0.28,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -57,7 +57,7 @@ export const PEN_CONFIGS = {
     color: 0x184a2d, // Deep Emerald
     accentColor: 0xdcdcdc, // Silver precision ring
     capColor: 0x123621,
-    restitution: 0.68,
+    restitution: 0.48,
     friction: 0.32,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -72,7 +72,7 @@ export const PEN_CONFIGS = {
     color: 0xb5241c, // Red & Black stripes
     accentColor: 0x181818,
     capColor: 0x222222, // Dark graphite lead
-    restitution: 0.65,
+    restitution: 0.48,
     friction: 0.30,
     linearDamping: 0.06,
     angularDamping: 0.80
@@ -87,7 +87,7 @@ export const PEN_CONFIGS = {
     color: 0x202020, // Silver & Black stripes
     accentColor: 0xa8a8a8,
     capColor: 0x111111,
-    restitution: 0.65,
+    restitution: 0.48,
     friction: 0.29,
     linearDamping: 0.06,
     angularDamping: 0.80

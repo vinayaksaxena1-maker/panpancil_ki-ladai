@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import RAPIER from 'rapier';
 import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=sv1998_pbr_v2';
-import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
+import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_restitution_048';
 import { synth } from './sound.js';
 import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
 import { storage } from './storage.js?v=p2_s5';
@@ -22,9 +22,11 @@ const PEN_ANGULAR_DAMPING = 0.80;
 const PEN_RESTITUTION = 0.48; // Realistic rigid plastic collision (solid momentum transfer, prevents 1-hit center blast)
 const PEN_FRICTION = 0.30;
 
-// Authentic Tactical Start Positions (13 cm from table border: Z = ±0.37m, 74cm runway)
-const SPAWN_Z_PLAYER = 0.37;
-const SPAWN_Z_OPPONENT = -0.37;
+// Staggered Diagonal Spawn Positions (Left-South vs Right-North: avoids straight 1-hit cannonball KO)
+const SPAWN_X_PLAYER = -0.15;
+const SPAWN_Z_PLAYER = 0.35;
+const SPAWN_X_OPPONENT = 0.15;
+const SPAWN_Z_OPPONENT = -0.35;
 
 // Input & flick parameters (Calibrated mass-velocity impulse scaling)
 const DEAD_ZONE_PX = 10;
@@ -187,13 +189,13 @@ class GameEngine {
 
     this.playerPen = this.spawnPen(
       pConfig, 
-      new THREE.Vector3(0, pConfig.radius, SPAWN_Z_PLAYER), 
+      new THREE.Vector3(SPAWN_X_PLAYER, pConfig.radius, SPAWN_Z_PLAYER), 
       Math.PI / 2
     );
 
     this.opponentPen = this.spawnPen(
       oConfig, 
-      new THREE.Vector3(0, oConfig.radius, SPAWN_Z_OPPONENT), 
+      new THREE.Vector3(SPAWN_X_OPPONENT, oConfig.radius, SPAWN_Z_OPPONENT), 
       Math.PI / 2
     );
 
@@ -335,7 +337,7 @@ class GameEngine {
     const colliderDesc = RAPIER.ColliderDesc.cuboid(config.radius, config.radius, halfLen)
       .setMass(config.mass)
       .setFriction(config.friction || PEN_FRICTION)
-      .setRestitution(config.restitution || PEN_RESTITUTION);
+      .setRestitution(PEN_RESTITUTION); // 0.48 Balanced Deflection Elasticity (realistic glancing hits, no rocket launch)
 
     this.world.createCollider(colliderDesc, body);
 
@@ -500,10 +502,41 @@ class GameEngine {
     }
   }
 
+  // Anti-Instant-KO: Opening Break Shot Grip on defending pen (Turn 1 only)
+  applyOpeningBreakGrip(defendingPen) {
+    if (this.roundTurnCount === 1 && defendingPen && defendingPen.body) {
+      defendingPen.body.setLinearDamping(3.2);
+      if (typeof defendingPen.body.collider === 'function' && defendingPen.body.collider(0)) {
+        defendingPen.body.collider(0).setFriction(0.85);
+      }
+      defendingPen.customFriction = 0.85;
+      this.hasAppliedTurn1Grip = true;
+    }
+  }
+
+  restoreNormalGrip() {
+    for (const pen of [this.playerPen, this.opponentPen]) {
+      if (pen && pen.body) {
+        pen.body.setLinearDamping(pen.config.linearDamping || PEN_LINEAR_DAMPING);
+        if (typeof pen.body.collider === 'function' && pen.body.collider(0)) {
+          pen.body.collider(0).setFriction(pen.config.friction || PEN_FRICTION);
+        }
+        delete pen.customFriction;
+      }
+    }
+    this.hasAppliedTurn1Grip = false;
+  }
+
   executeFlick(side, dirX, dirZ, dragPx) {
     this.isSimulating = true;
     this.simStartTime = performance.now();
     this.stableStartTime = 0;
+    this.roundTurnCount = (this.roundTurnCount || 0) + 1;
+
+    // Apply Opening Break Grip to target pen on Turn 1
+    const defendingPen = side === 'player' ? this.opponentPen : this.playerPen;
+    this.applyOpeningBreakGrip(defendingPen);
+
     this.rules.onFlickExecuted(side);
     this.updateTurnBadge();
     synth.playFlick();
@@ -555,6 +588,8 @@ class GameEngine {
       this.isSimulating = true;
       this.simStartTime = performance.now();
       this.stableStartTime = 0;
+      this.roundTurnCount = (this.roundTurnCount || 0) + 1;
+      this.applyOpeningBreakGrip(this.playerPen);
       this.rules.onFlickExecuted('opponent');
       this.updateTurnBadge();
       synth.playFlick();
@@ -625,6 +660,7 @@ class GameEngine {
   }
 
   resolveTurnOutcome() {
+    this.restoreNormalGrip();
     const outcome = this.rules.evaluateTurnOutcome(this.playerPen.isFallen, this.opponentPen.isFallen);
     const is2P = this.rules.mode === 'pass_and_play';
     const p1Label = is2P ? "P1" : "PLAYER";
@@ -858,7 +894,7 @@ class GameEngine {
         this.scene.remove(this.playerPen.mesh);
         this.world.removeRigidBody(this.playerPen.body);
       }
-      this.playerPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, SPAWN_Z_PLAYER), Math.PI / 2);
+      this.playerPen = this.spawnPen(config, new THREE.Vector3(SPAWN_X_PLAYER, config.radius, SPAWN_Z_PLAYER), Math.PI / 2);
       this.storage.save({ profile: { selectedPlayerPen: penKey } });
     } else {
       this.opponentPenConfigKey = penKey;
@@ -866,7 +902,7 @@ class GameEngine {
         this.scene.remove(this.opponentPen.mesh);
         this.world.removeRigidBody(this.opponentPen.body);
       }
-      this.opponentPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, SPAWN_Z_OPPONENT), Math.PI / 2);
+      this.opponentPen = this.spawnPen(config, new THREE.Vector3(SPAWN_X_OPPONENT, config.radius, SPAWN_Z_OPPONENT), Math.PI / 2);
       this.storage.save({ profile: { selectedOpponentPen: penKey } });
     }
 
@@ -903,28 +939,30 @@ class GameEngine {
     this.stableStartTime = 0;
     this.playerPen.isFallen = false;
     this.opponentPen.isFallen = false;
+    this.roundTurnCount = 0;
+    this.restoreNormalGrip();
 
     const pConfig = PEN_CONFIGS[this.playerPenConfigKey || 'reynolds045'];
     const oConfig = PEN_CONFIGS[this.opponentPenConfigKey || 'trimax'];
 
-    // Reset Player Pen
+    // Reset Player Pen (Left-South diagonal spawn)
     const qPlayer = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, pConfig.radius, SPAWN_Z_PLAYER), true);
+    this.playerPen.body.setTranslation(new RAPIER.Vector3(SPAWN_X_PLAYER, pConfig.radius, SPAWN_Z_PLAYER), true);
     this.playerPen.body.setRotation({ x: qPlayer.x, y: qPlayer.y, z: qPlayer.z, w: qPlayer.w }, true);
     this.playerPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.playerPen.prevPos.set(0, pConfig.radius, SPAWN_Z_PLAYER);
+    this.playerPen.prevPos.set(SPAWN_X_PLAYER, pConfig.radius, SPAWN_Z_PLAYER);
     this.playerPen.currPos.copy(this.playerPen.prevPos);
     this.playerPen.prevQuat.copy(qPlayer);
     this.playerPen.currQuat.copy(qPlayer);
 
-    // Reset Opponent Pen
+    // Reset Opponent Pen (Right-North diagonal spawn)
     const qBot = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, oConfig.radius, SPAWN_Z_OPPONENT), true);
+    this.opponentPen.body.setTranslation(new RAPIER.Vector3(SPAWN_X_OPPONENT, oConfig.radius, SPAWN_Z_OPPONENT), true);
     this.opponentPen.body.setRotation({ x: qBot.x, y: qBot.y, z: qBot.z, w: qBot.w }, true);
     this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.opponentPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.opponentPen.prevPos.set(0, oConfig.radius, SPAWN_Z_OPPONENT);
+    this.opponentPen.prevPos.set(SPAWN_X_OPPONENT, oConfig.radius, SPAWN_Z_OPPONENT);
     this.opponentPen.currPos.copy(this.opponentPen.prevPos);
     this.opponentPen.prevQuat.copy(qBot);
     this.opponentPen.currQuat.copy(qBot);
@@ -1037,7 +1075,7 @@ class GameEngine {
       if (isOverDesk && speed > 0.0001) {
         // Principle 1: Dual-Friction Model (Coulomb Kinetic + Viscous Friction)
         // v_next = v * (1 - mu_desk * dt)
-        const muDesk = pen.config.friction || DESK_FRICTION;
+        const muDesk = pen.customFriction || pen.config.friction || DESK_FRICTION;
         const dragFactor = Math.max(0, 1.0 - muDesk * dt * 2.2);
         linvel.x *= dragFactor;
         linvel.z *= dragFactor;
