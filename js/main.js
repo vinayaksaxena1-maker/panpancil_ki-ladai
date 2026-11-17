@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import RAPIER from 'rapier';
-import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=blackboard_ready_v3';
+import { createDeskMesh, updateBlackboardDisplay } from './desk.js?v=sv1998_pbr_v1';
 import { PEN_CONFIGS, createPenMesh } from './pens.js?v=pbr_cel_decals2';
 import { synth } from './sound.js';
 import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
@@ -118,14 +118,20 @@ class GameEngine {
 
     // 2. Setup Three.js Scene
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x5e7563); // Matches upper classroom wall color
+    this.scene.background = new THREE.Color(0xd8ceb4); // Warm classroom lime-plaster cream
+    this.scene.fog = new THREE.FogExp2(0xe4dac2, 0.045); // Atmospheric classroom depth
 
-    // Warm classroom overhead lighting
-    const ambientLight = new THREE.AmbientLight(0xfff7ee, 1.25);
+    // Warm sunlit ambient bounce
+    const ambientLight = new THREE.AmbientLight(0xfff3dc, 1.35);
     this.scene.add(ambientLight);
 
-    const deskLight = new THREE.DirectionalLight(0xffffff, 2.3);
-    deskLight.position.set(0.5, 2.2, 0.4);
+    // Warm fill hemisphere light (preserves rich shadow side detail on pens)
+    const hemiLight = new THREE.HemisphereLight(0xfff8eb, 0x6e583f, 0.45);
+    this.scene.add(hemiLight);
+
+    // Warm afternoon sunlight streaming from left classroom window
+    const deskLight = new THREE.DirectionalLight(0xfff0d4, 2.45);
+    deskLight.position.set(-1.45, 2.15, 0.35);
     deskLight.castShadow = true;
     deskLight.shadow.mapSize.width = 2048;
     deskLight.shadow.mapSize.height = 2048;
