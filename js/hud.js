@@ -172,6 +172,13 @@
     },
 
     /**
+     * Explicitly set pause state (e.g. for modal drawers like Career Dossier)
+     */
+    setPaused: function(paused) {
+      state.isPaused = !!paused;
+    },
+
+    /**
      * Check if HUD is currently visible
      */
     isVisible: function() {

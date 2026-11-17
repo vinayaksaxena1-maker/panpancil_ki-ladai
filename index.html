@@ -390,17 +390,17 @@
         </div>
 
         <div class="relative z-10 flex items-center justify-between pt-0.5">
-          <!-- P1: Player Info -->
-          <div class="flex items-center gap-2 flex-1 min-w-0">
-            <div class="relative shrink-0">
-              <div class="w-10 h-10 rounded-full bg-blue-100 border-2 border-slate-900 flex items-center justify-center overflow-hidden shadow-inner">
+          <!-- P1: Player Info (Clickable Profile / Progress Report) -->
+          <div class="flex items-center gap-2 flex-1 min-w-0 pointer-events-auto">
+            <button id="hud-p1-profile-btn" type="button" onclick="window.openProfileProgressFromHud()" class="relative shrink-0 active:scale-90 transition-transform cursor-pointer p-0 bg-transparent border-0" title="Touch to view Khiladi Progress Report & Dossier">
+              <div class="w-10 h-10 rounded-full bg-blue-100 border-2 border-slate-900 flex items-center justify-center overflow-hidden shadow-inner ring-2 ring-blue-400/50 hover:ring-blue-600 transition-all">
                 <img id="hud-p1-avatar" class="w-full h-full object-cover" src="./assets/student_avatar.jpg" alt="Player 1" onerror="this.src='./assets/opponents/stage_01.jpg';">
               </div>
               <span class="absolute -bottom-1 -right-1 px-1 rounded bg-blue-600 text-white font-bold text-[7.5px] border border-slate-900 shadow-xs" style="font-family: 'Patrick Hand', cursive;">YOU</span>
-            </div>
+            </button>
             
-            <div class="flex flex-col min-w-0">
-              <span id="hud-p1-name" class="font-black text-[11px] text-slate-900 truncate max-w-[80px] sm:max-w-[100px] leading-tight" style="font-family: 'Permanent Marker', cursive;">
+            <div class="flex flex-col min-w-0 cursor-pointer" onclick="window.openProfileProgressFromHud()" title="Touch to view Khiladi Progress Report">
+              <span id="hud-p1-name" class="font-black text-[11px] text-slate-900 truncate max-w-[80px] sm:max-w-[100px] leading-tight hover:text-blue-700 transition-colors" style="font-family: 'Permanent Marker', cursive;">
                 Student Fighter
               </span>
               <div class="flex items-center gap-1 mt-0.5">
@@ -2748,7 +2748,7 @@
               <span>EDIT ID ✏️</span>
             </button>
           </div>
-          <button type="button" onclick="window.hideCareerDossier()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-[11px] border border-dashed border-slate-400 active:translate-y-0.5 flex items-center justify-center gap-1 cursor-pointer">
+          <button id="dossier-close-btn" type="button" onclick="window.hideCareerDossier()" class="w-full py-2 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-[11px] border border-dashed border-slate-400 active:translate-y-0.5 flex items-center justify-center gap-1 cursor-pointer">
             <span class="material-symbols-outlined text-[15px]">arrow_back</span>
             <span>CLOSE DOSSIER [✕] RETURN TO HUB</span>
           </button>
@@ -3091,6 +3091,35 @@
         const modal = document.getElementById('career-dossier-modal');
         if (!modal) return;
         modal.style.display = 'none';
+
+        // Reset close button text back for Hub
+        const closeBtn = document.getElementById('dossier-close-btn');
+        if (closeBtn) {
+          closeBtn.innerHTML = `<span class="material-symbols-outlined text-[15px]">arrow_back</span><span>CLOSE DOSSIER [✕] RETURN TO HUB</span>`;
+        }
+
+        // If in an active match HUD, resume match timer & physics safely
+        if (window.hudController && typeof window.hudController.isVisible === 'function' && window.hudController.isVisible()) {
+          if (!window.hudController._wasPausedBeforeDossier) {
+            if (typeof window.hudController.setPaused === 'function') {
+              window.hudController.setPaused(false);
+            }
+          }
+        }
+      };
+
+      window.openProfileProgressFromHud = function() {
+        if (window.hudController && typeof window.hudController.isVisible === 'function' && window.hudController.isVisible()) {
+          window.hudController._wasPausedBeforeDossier = window.hudController.isPaused();
+          if (typeof window.hudController.setPaused === 'function') {
+            window.hudController.setPaused(true);
+          }
+        }
+        const closeBtn = document.getElementById('dossier-close-btn');
+        if (closeBtn) {
+          closeBtn.innerHTML = `<span class="material-symbols-outlined text-[15px]">play_arrow</span><span>RESUME MATCH [✕]</span>`;
+        }
+        window.showCareerDossier();
       };
 
       window.changePhotoFromDossier = function() {
@@ -3287,6 +3316,16 @@
             dossierAvatar.src = './assets/student_avatar.jpg';
           }
         }
+        const hudAvatar = document.getElementById('hud-p1-avatar');
+        if (hudAvatar) {
+          if (currentAvatar === 'custom' && customSrc) {
+            hudAvatar.src = customSrc;
+          } else if (currentAvatar === 'girl') {
+            hudAvatar.src = './assets/student_avatar_girl.jpg';
+          } else {
+            hudAvatar.src = './assets/student_avatar.jpg';
+          }
+        }
       }
 
       // Modal Controls
@@ -3404,6 +3443,10 @@
           localStorage.setItem('penfight_save_v2', JSON.stringify(data));
           if (window.gameEngine && window.gameEngine.storage) {
             window.gameEngine.storage.save({ profile: partial });
+          }
+          if (partial.name) {
+            const hudName = document.getElementById('hud-p1-name');
+            if (hudName) hudName.textContent = partial.name;
           }
         } catch(e) {}
       }
@@ -4603,6 +4646,11 @@
             } catch(e) {}
           }
 
+          const hudName = document.getElementById('hud-p1-name');
+          if (hudName) hudName.textContent = chosenName;
+          const hudAvatar = document.getElementById('hud-p1-avatar');
+          if (hudAvatar && avatarImg) hudAvatar.src = avatarImg.src;
+
           // Reset button label for future visits
           const enterLabel = enterBtn.querySelector('span.relative');
           if (enterLabel) {
@@ -4653,7 +4701,7 @@
     })();
   </script>
 
-  <script src="./js/hud.js?v=p3_s7"></script>
+  <script src="./js/hud.js?v=p3_s10"></script>
   <script src="./js/match_result.js?v=p3_s8"></script>
   <script src="./js/trophy_cabinet.js?v=p3_s9"></script>
   <script type="module" src="./js/main.js?v=phase3_step3_menu"></script>
