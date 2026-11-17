@@ -207,6 +207,13 @@
     },
 
     /**
+     * Get Current Active Stage ID
+     */
+    getStage: function() {
+      return state.stageId || 1;
+    },
+
+    /**
      * Update Slingshot Tension Power (0 to 100%)
      * Dynamically shifts color gradient, updates labels and glow effects
      */

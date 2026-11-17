@@ -442,9 +442,9 @@
           </div>
 
           <!-- P2 / Opponent Info -->
-          <div class="flex items-center justify-end gap-2 flex-1 min-w-0 text-right">
-            <div class="flex flex-col min-w-0 items-end">
-              <span id="hud-p2-name" class="font-black text-[11px] text-slate-900 truncate max-w-[80px] sm:max-w-[100px] leading-tight" style="font-family: 'Permanent Marker', cursive;">
+          <div class="flex items-center justify-end gap-2 flex-1 min-w-0 text-right pointer-events-auto">
+            <div class="flex flex-col min-w-0 items-end cursor-pointer" onclick="window.openRivalDossierFromHud()" title="Touch to view Rival Scout Dossier">
+              <span id="hud-p2-name" class="font-black text-[11px] text-slate-900 truncate max-w-[80px] sm:max-w-[100px] leading-tight hover:text-rose-700 transition-colors" style="font-family: 'Permanent Marker', cursive;">
                 Bunty 'Backbencher'
               </span>
               <div class="flex items-center gap-1 mt-0.5">
@@ -468,12 +468,12 @@
               </div>
             </div>
 
-            <div class="relative shrink-0">
-              <div class="w-10 h-10 rounded-full bg-rose-100 border-2 border-slate-900 flex items-center justify-center overflow-hidden shadow-inner">
+            <button id="hud-p2-profile-btn" type="button" onclick="window.openRivalDossierFromHud()" class="relative shrink-0 active:scale-90 transition-transform cursor-pointer p-0 bg-transparent border-0" title="Touch to view Rival Scout Dossier">
+              <div class="w-10 h-10 rounded-full bg-rose-100 border-2 border-slate-900 flex items-center justify-center overflow-hidden shadow-inner ring-2 ring-rose-400/50 hover:ring-rose-600 transition-all">
                 <img id="hud-p2-avatar" class="w-full h-full object-cover" src="./assets/opponents/stage_01.jpg" alt="Opponent" onerror="this.src='./assets/opponent_monitor.jpg';">
               </div>
               <span class="absolute -bottom-1 -left-1 px-1 rounded bg-rose-600 text-white font-bold text-[7.5px] border border-slate-900 shadow-xs" style="font-family: 'Patrick Hand', cursive;">BOT</span>
-            </div>
+            </button>
           </div>
         </div>
       </div>
@@ -2761,6 +2761,172 @@
     </div>
   </div>
 
+  <!-- ====================================================================== -->
+  <!-- SUB-PAGE: RIVAL SCOUT DOSSIER (OPPONENT STATS & TACTICS MODAL)         -->
+  <!-- ====================================================================== -->
+  <div id="rival-dossier-modal" class="fixed inset-0 flex items-center justify-center p-3 sm:p-4 overflow-y-auto" style="display: none; z-index: 1050;">
+    <!-- Backdrop Blur -->
+    <div class="fixed inset-0 bg-[#2d1b0e]/75 backdrop-blur-sm transition-opacity" onclick="window.hideRivalDossier()"></div>
+
+    <!-- Handcrafted Rival Scout Notebook Record Sheet -->
+    <div class="relative w-full max-w-[380px] my-auto bg-[#fffdf8] rounded-2xl border-4 border-slate-900 shadow-[0_16px_0_0_#0f172a,0_24px_50px_rgba(0,0,0,0.6)] overflow-hidden z-20 flex flex-col" style="background-color: #fffef8; background-image: repeating-linear-gradient(transparent, transparent 23px, rgba(185, 28, 28, 0.07) 24px);">
+      
+      <!-- Top Paper Tape -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2.5 w-36 h-5 bg-[#fee2e2] border border-[#ef4444]/40 rotate-1 shadow-sm rounded-sm pointer-events-none z-30 flex items-center justify-center">
+        <span class="text-[8px] tracking-widest text-[#991b1b] font-mono font-black uppercase">RIVAL SCOUT DOSSIER</span>
+      </div>
+
+      <!-- Red Margin Lines -->
+      <div class="absolute left-6 top-0 bottom-0 w-0.5 bg-rose-400/40 pointer-events-none z-10"></div>
+      <div class="absolute left-7 top-0 bottom-0 w-0.5 bg-rose-300/30 pointer-events-none z-10"></div>
+
+      <!-- Header Chit -->
+      <div class="pt-5 pb-2 px-4 pl-9 border-b-2 border-dashed border-rose-900/30 bg-rose-50/90 flex items-start justify-between">
+        <div class="flex flex-col">
+          <div class="inline-flex items-center gap-1 text-[9px] font-black uppercase text-rose-700 border border-rose-300 rounded px-1.5 py-0.2 bg-rose-50 w-fit">
+            <span>★ OPPONENT SCOUT REPORT</span>
+            <span>•</span>
+            <span id="rival-dossier-stage-tag">BENCH #1</span>
+          </div>
+          <h3 class="text-sm font-black text-slate-900 uppercase tracking-tight mt-1" style="font-family: 'Permanent Marker', cursive;">
+            RIVAL KHILADI DOSSIER
+          </h3>
+          <span class="text-[10px] text-slate-600 font-bold" style="font-family: 'Patrick Hand', cursive;">
+            Tactics, Weapon Mechanics & Bench Weakness
+          </span>
+        </div>
+        <button type="button" onclick="window.hideRivalDossier()" class="w-8 h-8 rounded-lg bg-white border border-slate-300 text-slate-700 flex items-center justify-center active:scale-95 shadow-sm font-black cursor-pointer" title="Close Dossier">
+          <span class="material-symbols-outlined text-[18px]">close</span>
+        </button>
+      </div>
+
+      <!-- Profile Passport Summary -->
+      <div class="p-3 pl-9 flex flex-col gap-2.5 z-20">
+        
+        <div class="flex items-center gap-3 p-2 rounded-xl bg-white/90 border-2 border-slate-900 shadow-[0_2px_0_0_#0f172a]">
+          <!-- Avatar Preview -->
+          <div class="relative shrink-0">
+            <div class="w-16 h-18 bg-rose-100 rounded-lg overflow-hidden border-2 border-slate-900 shadow-sm">
+              <img id="rival-dossier-avatar" class="w-full h-full object-cover" alt="Opponent Photo" src="./assets/opponents/stage_01.jpg" onerror="this.src='./assets/opponent_monitor.jpg';">
+            </div>
+            <span id="rival-dossier-role-badge" class="absolute -bottom-1 -right-1 text-[8px] font-black bg-rose-100 border border-rose-500 text-rose-900 px-1 rounded shadow-xs uppercase">RIVAL BOT</span>
+          </div>
+
+          <!-- Opponent Meta Info -->
+          <div class="flex-1 min-w-0 flex flex-col">
+            <div class="flex items-center justify-between">
+              <span id="rival-dossier-roll-tag" class="text-[9px] font-mono font-black text-slate-500 uppercase">ROLL #09 • 7TH-A</span>
+              <span id="rival-dossier-diff-badge" class="px-1.5 py-0.2 rounded bg-emerald-100 border border-emerald-400 text-emerald-900 font-black text-[8.5px] uppercase">EASY</span>
+            </div>
+            <h4 id="rival-dossier-name-label" class="text-base font-black text-slate-900 leading-tight truncate mt-0.5" style="font-family: 'Permanent Marker', cursive;">
+              Bunty 'Backbencher'
+            </h4>
+            <div class="flex items-center gap-1 mt-0.5">
+              <span class="text-[8px] font-bold text-slate-500 uppercase">WEAPON:</span>
+              <span id="rival-dossier-pen-badge" class="text-[8.5px] font-extrabold bg-rose-100 border border-rose-300 text-rose-800 px-1.5 py-0.2 rounded truncate max-w-[140px]" style="font-family: 'Patrick Hand', cursive;">
+                NATARAJ 621 PENCIL
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4-Box Performance Metric Grid -->
+        <div class="grid grid-cols-2 gap-2">
+          
+          <!-- Box 1: Weapon Specs & Weight -->
+          <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col">
+            <span class="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-amber-600">fitness_center</span>
+              Barrel Class
+            </span>
+            <span id="rival-dossier-barrel-val" class="text-xs font-black text-slate-900 mt-0.5 truncate" style="font-family: 'Permanent Marker', cursive;">
+              Hexagonal Wood
+            </span>
+            <span id="rival-dossier-mass-val" class="text-[9px] font-bold text-slate-500 mt-0.5 font-mono">
+              8.7 Grams Mass
+            </span>
+          </div>
+
+          <!-- Box 2: Knockout Force / Flick Power -->
+          <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col">
+            <div class="flex items-center justify-between">
+              <span class="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-rose-600">bolt</span>
+                Flick Force
+              </span>
+              <span id="rival-dossier-power-pct" class="text-[9px] font-bold text-rose-700 font-mono">65%</span>
+            </div>
+            <span id="rival-dossier-power-val" class="text-xs font-black text-rose-700 mt-0.5" style="font-family: 'Permanent Marker', cursive;">
+              +35 Knockout
+            </span>
+            <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1 border border-slate-200">
+              <div id="rival-dossier-power-bar" class="h-full bg-rose-500 rounded-full" style="width: 65%;"></div>
+            </div>
+          </div>
+
+          <!-- Box 3: Anti-Slide Traction / Grip -->
+          <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col">
+            <div class="flex items-center justify-between">
+              <span class="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+                <span class="material-symbols-outlined text-[13px] text-blue-600">shield</span>
+                Table Grip
+              </span>
+              <span id="rival-dossier-grip-pct" class="text-[9px] font-bold text-blue-700 font-mono">72%</span>
+            </div>
+            <span id="rival-dossier-grip-val" class="text-xs font-black text-blue-900 mt-0.5 truncate" style="font-family: 'Permanent Marker', cursive;">
+              72% Anti-Slide
+            </span>
+            <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden mt-1 border border-slate-200">
+              <div id="rival-dossier-grip-bar" class="h-full bg-blue-500 rounded-full" style="width: 72%;"></div>
+            </div>
+          </div>
+
+          <!-- Box 4: Tactical Playstyle Trait -->
+          <div class="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col">
+            <span class="text-[9px] font-black text-slate-500 uppercase flex items-center gap-1">
+              <span class="material-symbols-outlined text-[13px] text-indigo-600">psychology</span>
+              Tactic Style
+            </span>
+            <span id="rival-dossier-playstyle-val" class="text-[10px] font-extrabold text-slate-900 mt-0.5 line-clamp-2 leading-tight" style="font-family: 'Patrick Hand', cursive;">
+              Scrappy Aggressive
+            </span>
+            <span class="text-[8.5px] font-bold text-slate-500 mt-0.5" style="font-family: Caveat, cursive;">
+              Wild table edge flicks
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Teacher's & Backbencher's Intel Note -->
+        <div class="p-2 rounded-xl bg-amber-50/80 border-2 border-dashed border-amber-300 flex items-start gap-2">
+          <span class="text-lg select-none leading-none">🔍</span>
+          <div class="flex flex-col leading-tight">
+            <span class="text-[8.5px] font-black uppercase text-amber-900 tracking-wider">Classroom Intel & Weakness:</span>
+            <p id="rival-dossier-desc" class="text-[10.5px] font-bold italic text-slate-800 mt-0.5 leading-snug" style="font-family: Caveat, cursive;">
+              "First period free hai. Bunty ne lunch se pehle challenge de diya!"
+            </p>
+            <div class="mt-1 pt-1 border-t border-amber-300/60 flex items-center gap-1">
+              <span class="text-[8.5px] font-black uppercase text-rose-800">BENCH RULE:</span>
+              <span id="rival-dossier-rule" class="text-[9.5px] font-bold text-slate-700" style="font-family: 'Patrick Hand', cursive;">
+                First shot toss coin winner flick karega!
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resume Action Button -->
+        <div class="flex flex-col gap-1.5 pt-1">
+          <button id="rival-dossier-close-btn" type="button" onclick="window.hideRivalDossier()" class="w-full py-2.5 px-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-black text-[12px] uppercase tracking-wider border-2 border-slate-900 shadow-[0_3px_0_0_#0f172a] active:translate-y-0.5 active:shadow-none flex items-center justify-center gap-1.5 cursor-pointer" style="font-family: 'Permanent Marker', cursive;">
+            <span class="material-symbols-outlined text-[17px]">play_arrow</span>
+            <span>RESUME MATCH [✕]</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
 
   <div id="level-ladder-modal" class="fixed inset-0 flex items-center justify-center p-3 sm:p-4 overflow-y-auto" style="display: none; z-index: 1050;">
     <!-- Backdrop Blur -->
@@ -3124,6 +3290,334 @@
         window.showCareerDossier();
       };
 
+      const CAMPAIGN_RIVAL_DOSSIERS = [
+        {
+          id: 1,
+          bench: "Bench #1",
+          section: "Class 7-A (Backbench)",
+          name: "Bunty 'Backbencher'",
+          roll: "ROLL #09",
+          title: "Backbencher Knockout",
+          desc: "First period free hai. Bunty ne lunch se pehle challenge de diya! Hexagonal Nataraj pencil table pe flat rehti hai, par corner se slide ho sakti hai.",
+          penDisplay: "NATARAJ 621 PENCIL",
+          barrelClass: "Hexagonal Cedar Wood",
+          massVal: "8.7 Grams Mass",
+          flickForce: "+35 Knockout",
+          flickPct: 65,
+          grip: "72% Anti-Slide",
+          gripPct: 72,
+          playstyle: "Scrappy Aggressive — Takes risky wild flicks from table corners",
+          diff: "Easy",
+          diffStars: "★☆☆☆☆",
+          diffColor: "bg-emerald-100 text-emerald-800 border-emerald-400",
+          rule: "Bench Rule: First shot toss coin winner flick karega!",
+          rewards: ["Wood Shavings", "+150 Khiladi XP", "Green House Star"]
+        },
+        {
+          id: 2,
+          bench: "Bench #2",
+          section: "Class 7-A (Middle Row)",
+          name: "Rohan 'Geometry'",
+          roll: "ROLL #18",
+          title: "Middle Row Ruler King",
+          desc: "Rohan ke paas classic 045 white pen hai, nishana bilkul seedha! Straight shots have high rebound elasticity off edges.",
+          penDisplay: "REYNOLDS 045",
+          barrelClass: "Smooth Cylinder",
+          massVal: "12.2 Grams Balanced",
+          flickForce: "+40 Knockout",
+          flickPct: 70,
+          grip: "80% Anti-Slide",
+          gripPct: 80,
+          playstyle: "Calculated Straight Lines — Uses geometry compass angles to corner player",
+          diff: "Normal",
+          diffStars: "★★☆☆☆",
+          diffColor: "bg-amber-100 text-amber-800 border-amber-400",
+          rule: "Bench Rule: Center desk compass box barrier cross karna hoga!",
+          rewards: ["Eraser Dust", "+200 Khiladi XP", "Blue House Star"]
+        },
+        {
+          id: 3,
+          bench: "Bench #3",
+          section: "Class 7-A (Monitor Desk)",
+          name: "Aditya 'Monitor'",
+          roll: "ROLL #01",
+          title: "Class 7-A Monitor (Boss)",
+          desc: "Monitor ki Butterflow super smooth hai table pe. Low rolling friction allows it to slip out of tight trap angles.",
+          penDisplay: "BUTTERFLOW 0.7",
+          barrelClass: "Lubricated Roller",
+          massVal: "13.3g Rubber Grip",
+          flickForce: "+50 Knockout",
+          flickPct: 82,
+          grip: "85% Anti-Slide",
+          gripPct: 85,
+          playstyle: "Smooth Drift & Bank Shots — Glides across wood seam with zero speed loss",
+          diff: "Boss Duel",
+          diffStars: "★★★☆☆",
+          diffColor: "bg-rose-100 text-rose-800 border-rose-400",
+          rule: "Bench Rule: Double-tap flick allowed on center seam gap!",
+          rewards: ["Butterflow Refill", "+300 Khiladi XP", "Red House Star"]
+        },
+        {
+          id: 4,
+          bench: "Bench #4",
+          section: "Class 7-B",
+          name: "Sameer 'Power Hitter'",
+          roll: "ROLL #22",
+          title: "7-B Recess Challenger",
+          desc: "Recess bell baji hai. 7-B wale humari class me aakar duel maang rahe hain. Likes high-speed frontal collisions.",
+          penDisplay: "REYNOLDS 045",
+          barrelClass: "Hard Tip Cylinder",
+          massVal: "12.2 Grams Speed",
+          flickForce: "+45 Knockout",
+          flickPct: 75,
+          grip: "78% Anti-Slide",
+          gripPct: 78,
+          playstyle: "Heavy Direct Impacts — Aims straight for opponent's tip with blunt power",
+          diff: "Normal",
+          diffStars: "★★★☆☆",
+          diffColor: "bg-amber-100 text-amber-800 border-amber-400",
+          rule: "Bench Rule: Corner bank shots count double momentum!",
+          rewards: ["Grip Tape Refill", "+350 Khiladi XP", "Yellow House Star"]
+        },
+        {
+          id: 5,
+          bench: "Bench #5",
+          section: "Class 7-C",
+          name: "Farhan 'Spin Master'",
+          roll: "ROLL #11",
+          title: "7-C Point Spin Ace",
+          desc: "Farhan Pilot V5 ki point-spin se edge shots maarta hai. Beware of glancing curve flicks that send your pen flying.",
+          penDisplay: "PILOT V5 LIQUID",
+          barrelClass: "Precision Needle Point",
+          massVal: "11.2 Grams Speed",
+          flickForce: "+55 Knockout",
+          flickPct: 85,
+          grip: "90% Anti-Slide",
+          gripPct: 90,
+          playstyle: "Angular Needle Spins — Spins around player's pen and pushes from behind",
+          diff: "Hard",
+          diffStars: "★★★★☆",
+          diffColor: "bg-rose-100 text-rose-800 border-rose-400",
+          rule: "Bench Rule: Ink leak spill area - 20% extra slide friction!",
+          rewards: ["Pilot Blue Ink Refill", "+400 Khiladi XP", "All-Rounder Crest"]
+        },
+        {
+          id: 6,
+          bench: "Bench #6",
+          section: "Class 7-C (Champion)",
+          name: "Vikram 'Topper'",
+          roll: "ROLL #02",
+          title: "Class 7 Overall Champion (Boss)",
+          desc: "Poori 7th class ka sabse khatarnak khiladi. High accuracy and rarely misses a finishing shot off the table.",
+          penDisplay: "PILOT V5 HI-TECH",
+          barrelClass: "Balanced Needle Point",
+          massVal: "11.2 Grams Apex",
+          flickForce: "+60 Knockout",
+          flickPct: 90,
+          grip: "92% Anti-Slide",
+          gripPct: 92,
+          playstyle: "Defensive Counter-Striker — Waits for player mistake then delivers lethal corner flick",
+          diff: "Class Boss",
+          diffStars: "★★★★☆",
+          diffColor: "bg-rose-100 text-rose-800 border-rose-400",
+          rule: "Bench Rule: Wooden Duster and Geometry obstacle on desk!",
+          rewards: ["Gold Nib Refill", "+500 Khiladi XP", "Senior Pass Token"]
+        },
+        {
+          id: 7,
+          bench: "Bench #7",
+          section: "Class 8-A Senior",
+          name: "Nikhil 'Senior 8-A'",
+          roll: "ROLL #07",
+          title: "8-A Frontbencher Senior",
+          desc: "Senior keh rahe hain 7th wale bachhe hain. Nikhil tries to bully lighter pens using mass momentum on turn one.",
+          penDisplay: "BUTTERFLOW 0.7",
+          barrelClass: "Heavy Flow Roller",
+          massVal: "13.3g Rubber Traction",
+          flickForce: "+55 Knockout",
+          flickPct: 84,
+          grip: "85% Anti-Slide",
+          gripPct: 85,
+          playstyle: "Heavy Sliding Pushes — Uses mass advantage to bully lighter pens",
+          diff: "Hard",
+          diffStars: "★★★★☆",
+          diffColor: "bg-rose-100 text-rose-800 border-rose-400",
+          rule: "Bench Rule: Heavy oak desk with wider edge drop bounds!",
+          rewards: ["Butterflow Gold", "+600 Khiladi XP", "Seniors Respect Badge"]
+        },
+        {
+          id: 8,
+          bench: "Bench #8",
+          section: "Class 8-B Senior",
+          name: "Rocky 'Heavyweight'",
+          roll: "ROLL #31",
+          title: "8-B Backbencher Gang",
+          desc: "Rocky bhari Trimax chalata hai, table par zor ka thud padta hai. Frontal hits will bounce lighter pens straight off.",
+          penDisplay: "TRIMAX GOLD 0.5",
+          barrelClass: "Dense Metal-Core Roller",
+          massVal: "16.5 Grams Heavy",
+          flickForce: "+70 Knockout",
+          flickPct: 94,
+          grip: "94% Anti-Slide",
+          gripPct: 94,
+          playstyle: "Brute Force Bulldozer — High momentum shockwave knocks light pens clean off",
+          diff: "Heavyweight",
+          diffStars: "★★★★★",
+          diffColor: "bg-red-200 text-red-900 border-red-500",
+          rule: "Bench Rule: High momentum shockwave knocks light pens easily!",
+          rewards: ["Trimax Metal Cap", "+750 Khiladi XP", "Heavyweight Star"]
+        },
+        {
+          id: 9,
+          bench: "Bench #9",
+          section: "Class 8-C Senior",
+          name: "Kabir 'Seniors Captain'",
+          roll: "ROLL #05",
+          title: "8-C Heavy Trimax King (Boss)",
+          desc: "Senior Captain. Kabir ki Trimax ko rokna namumkin lagta hai. Uses heavy body mass to pin you down and flick you over.",
+          penDisplay: "TRIMAX GOLD ELITE",
+          barrelClass: "Weighted Metal Barrel",
+          massVal: "16.8 Grams Heavy",
+          flickForce: "+80 Knockout",
+          flickPct: 96,
+          grip: "95% Anti-Slide",
+          gripPct: 95,
+          playstyle: "Tactical Pinning & Heavy Shove — Traps pen against desk boundary",
+          diff: "Seniors Boss",
+          diffStars: "★★★★★",
+          diffColor: "bg-red-200 text-red-900 border-red-500",
+          rule: "Bench Rule: Best of 5 with instant sudden-death off desk!",
+          rewards: ["Legend Trimax Skin", "+900 Khiladi XP", "Corridor Master Key"]
+        },
+        {
+          id: 10,
+          bench: "Bench #10",
+          section: "Staff Room Corridor",
+          name: "Arjun 'Runner-Up'",
+          roll: "ROLL #03",
+          title: "Staff Room Corridor Duel",
+          desc: "Staff room ke bahar ki bench par duel. Plays right under teacher's window. Fast, lethal, and ruthless.",
+          penDisplay: "APSARA PLATINUM",
+          barrelClass: "Hardened Core Hex",
+          massVal: "15.0 Grams Elite Hex",
+          flickForce: "+85 Knockout",
+          flickPct: 98,
+          grip: "96% Anti-Slide",
+          gripPct: 96,
+          playstyle: "Rapid Fire Sniper — Fast flicks with deadly boundary precision",
+          diff: "Extreme",
+          diffStars: "★★★★★",
+          diffColor: "bg-red-200 text-red-900 border-red-500",
+          rule: "Bench Rule: Quick shot timer - 10 seconds per flick!",
+          rewards: ["Platinum Nib", "+1,100 Khiladi XP", "Staff Room Hall Pass"]
+        },
+        {
+          id: 11,
+          bench: "Bench #11",
+          section: "Saraswati Vidyalaya Grand Arena",
+          name: "Dev 'The Legend'",
+          roll: "ROLL #01",
+          title: "School Championship Final (Grand Boss)",
+          desc: "Poore school ka Grand Finale! Desk Wars ki Ultimate Trophy ka faisla. The undisputed legend of Saraswati Vidyalaya.",
+          penDisplay: "TRIMAX LEGEND",
+          barrelClass: "Custom Balanced Tungsten",
+          massVal: "17.5g Masterpiece",
+          flickForce: "+100 Knockout",
+          flickPct: 100,
+          grip: "98% Anti-Slide",
+          gripPct: 98,
+          playstyle: "Grand Master Perfection — Flawless bank shots, unstoppable mass and surgical precision",
+          diff: "FINAL BOSS",
+          diffStars: "★★★★★",
+          diffColor: "bg-purple-200 text-purple-900 border-purple-500",
+          rule: "Bench Rule: Official Saraswati Vidyalaya Grand Championship Desk!",
+          rewards: ["Bench King Grand Cup 🏆", "+2,000 Khiladi XP", "School Pen Fight Legend"]
+        }
+      ];
+      window.CAMPAIGN_RIVAL_DOSSIERS = CAMPAIGN_RIVAL_DOSSIERS;
+
+      window.openRivalDossierFromHud = function() {
+        if (window.hudController && typeof window.hudController.isVisible === 'function' && window.hudController.isVisible()) {
+          window.hudController._wasPausedBeforeRivalDossier = window.hudController.isPaused();
+          if (typeof window.hudController.setPaused === 'function') {
+            window.hudController.setPaused(true);
+          }
+        }
+
+        let stageId = 1;
+        if (window.gameEngine && window.gameEngine.currentStageId) {
+          stageId = window.gameEngine.currentStageId;
+        } else if (window.hudController && typeof window.hudController.getStage === 'function') {
+          stageId = window.hudController.getStage();
+        } else {
+          try {
+            const saved = JSON.parse(localStorage.getItem('penfight_save_v2') || '{}');
+            stageId = (saved.progression && (saved.progression.currentStageId || saved.progression.highestStageUnlocked)) || 1;
+          } catch(e) {}
+        }
+
+        const rival = CAMPAIGN_RIVAL_DOSSIERS.find(r => r.id === stageId) || CAMPAIGN_RIVAL_DOSSIERS[0];
+        const modal = document.getElementById('rival-dossier-modal');
+        if (!modal) return;
+
+        const avatarEl = document.getElementById('rival-dossier-avatar');
+        const stageTagEl = document.getElementById('rival-dossier-stage-tag');
+        const rollTagEl = document.getElementById('rival-dossier-roll-tag');
+        const diffBadgeEl = document.getElementById('rival-dossier-diff-badge');
+        const nameLabelEl = document.getElementById('rival-dossier-name-label');
+        const penBadgeEl = document.getElementById('rival-dossier-pen-badge');
+        const barrelValEl = document.getElementById('rival-dossier-barrel-val');
+        const massValEl = document.getElementById('rival-dossier-mass-val');
+        const powerPctEl = document.getElementById('rival-dossier-power-pct');
+        const powerValEl = document.getElementById('rival-dossier-power-val');
+        const powerBarEl = document.getElementById('rival-dossier-power-bar');
+        const gripPctEl = document.getElementById('rival-dossier-grip-pct');
+        const gripValEl = document.getElementById('rival-dossier-grip-val');
+        const gripBarEl = document.getElementById('rival-dossier-grip-bar');
+        const playstyleValEl = document.getElementById('rival-dossier-playstyle-val');
+        const descEl = document.getElementById('rival-dossier-desc');
+        const ruleEl = document.getElementById('rival-dossier-rule');
+
+        if (avatarEl) {
+          avatarEl.src = `./assets/opponents/stage_${String(stageId).padStart(2, '0')}.jpg`;
+        }
+        if (stageTagEl) stageTagEl.textContent = `BENCH #${stageId} • ${rival.section || 'CLASS 7-A'}`;
+        if (rollTagEl) rollTagEl.textContent = `${rival.roll || 'ROLL #09'} • ${rival.section || '7TH-A'}`;
+        if (diffBadgeEl) {
+          diffBadgeEl.textContent = (rival.diff || 'NORMAL').toUpperCase();
+          diffBadgeEl.className = `px-1.5 py-0.2 rounded font-black text-[8.5px] uppercase border ${rival.diffColor || 'bg-amber-100 text-amber-900 border-amber-400'}`;
+        }
+        if (nameLabelEl) nameLabelEl.textContent = rival.name;
+        if (penBadgeEl) penBadgeEl.textContent = rival.penDisplay;
+        if (barrelValEl) barrelValEl.textContent = rival.barrelClass || 'Standard Barrel';
+        if (massValEl) massValEl.textContent = rival.massVal || '12.0 Grams Mass';
+        if (powerPctEl) powerPctEl.textContent = `${rival.flickPct}%`;
+        if (powerValEl) powerValEl.textContent = rival.flickForce;
+        if (powerBarEl) powerBarEl.style.width = `${rival.flickPct}%`;
+        if (gripPctEl) gripPctEl.textContent = `${rival.gripPct}%`;
+        if (gripValEl) gripValEl.textContent = rival.grip;
+        if (gripBarEl) gripBarEl.style.width = `${rival.gripPct}%`;
+        if (playstyleValEl) playstyleValEl.textContent = rival.playstyle;
+        if (descEl) descEl.textContent = `"${rival.desc}"`;
+        if (ruleEl) ruleEl.textContent = rival.rule;
+
+        modal.style.display = 'flex';
+      };
+
+      window.hideRivalDossier = function() {
+        const modal = document.getElementById('rival-dossier-modal');
+        if (modal) modal.style.display = 'none';
+
+        if (window.hudController && typeof window.hudController.isVisible === 'function' && window.hudController.isVisible()) {
+          if (!window.hudController._wasPausedBeforeRivalDossier) {
+            if (typeof window.hudController.setPaused === 'function') {
+              window.hudController.setPaused(false);
+            }
+          }
+          window.hudController._wasPausedBeforeRivalDossier = false;
+        }
+      };
+
       window.changePhotoFromDossier = function() {
         window.hideCareerDossier();
         if (window.openAvatarPicker) {
@@ -3171,6 +3665,7 @@
           window.gameEngine.resetSandbox();
         }
         window.hideCampaignMap();
+        if (window.hideMainMenu) window.hideMainMenu();
         const statusEl = document.getElementById('status-msg');
         if (statusEl) {
           statusEl.textContent = isWarmup 
@@ -3627,173 +4122,7 @@
             }
           }
 
-          const FULL_STAGES = [
-            {
-              id: 1,
-              bench: "Bench #1",
-              name: "Bunty 'Chhotu'",
-              title: "Backbencher Knockout",
-              desc: "First period free hai. Bunty ne lunch se pehle challenge de diya!",
-              penDisplay: "NATARAJ 621",
-              flickForce: "+35 Knockout",
-              flickPct: 65,
-              grip: "72% Anti-Slide",
-              gripPct: 72,
-              diff: "★☆☆☆☆ (Easy)",
-              rule: "Bench Rule: First shot toss coin winner flick karega!",
-              rewards: ["Wood Shavings", "+150 Khiladi XP", "Green House Star"]
-            },
-            {
-              id: 2,
-              bench: "Bench #2",
-              name: "Rohan 'Geometry'",
-              title: "Middle Row Ruler King",
-              desc: "Rohan ke paas classic 045 white pen hai, nishana bilkul seedha!",
-              penDisplay: "REYNOLDS 045",
-              flickForce: "+40 Knockout",
-              flickPct: 70,
-              grip: "80% Anti-Slide",
-              gripPct: 80,
-              diff: "★★☆☆☆ (Normal)",
-              rule: "Bench Rule: Center desk compass box barrier cross karna hoga!",
-              rewards: ["Eraser Dust", "+200 Khiladi XP", "Blue House Star"]
-            },
-            {
-              id: 3,
-              bench: "Bench #3",
-              name: "Aditya 'Monitor'",
-              title: "Class 7-A Monitor (Boss)",
-              desc: "Monitor ki Butterflow super smooth hai table pe. Isko harakar hero bano!",
-              penDisplay: "BUTTERFLOW 0.7",
-              flickForce: "+50 Knockout",
-              flickPct: 82,
-              grip: "85% Anti-Slide",
-              gripPct: 85,
-              diff: "★★★☆☆ (Boss Duel)",
-              rule: "Bench Rule: Double-tap flick allowed on center seam gap!",
-              rewards: ["Butterflow Refill", "+300 Khiladi XP", "Red House Star"]
-            },
-            {
-              id: 4,
-              bench: "Bench #4",
-              name: "Sameer 'Power Hitter'",
-              title: "7-B Recess Challenger",
-              desc: "Recess bell baji hai. 7-B wale humari class me aakar duel maang rahe hain.",
-              penDisplay: "REYNOLDS 045",
-              flickForce: "+45 Knockout",
-              flickPct: 75,
-              grip: "78% Anti-Slide",
-              gripPct: 78,
-              diff: "★★★☆☆ (Normal)",
-              rule: "Bench Rule: Corner bank shots count double momentum!",
-              rewards: ["Grip Tape Refill", "+350 Khiladi XP", "Yellow House Star"]
-            },
-            {
-              id: 5,
-              bench: "Bench #5",
-              name: "Farhan 'Spin Master'",
-              title: "7-C Point Spin Ace",
-              desc: "Farhan Pilot V5 ki point-spin se edge shots maarta hai.",
-              penDisplay: "PILOT V5 LIQUID",
-              flickForce: "+55 Knockout",
-              flickPct: 85,
-              grip: "90% Anti-Slide",
-              gripPct: 90,
-              diff: "★★★★☆ (Hard)",
-              rule: "Bench Rule: Ink leak spill area - 20% extra slide friction!",
-              rewards: ["Pilot Blue Ink Refill", "+400 Khiladi XP", "All-Rounder Crest"]
-            },
-            {
-              id: 6,
-              bench: "Bench #6",
-              name: "Vikram 'Topper'",
-              title: "Class 7 Overall Champion (Boss)",
-              desc: "Poori 7th class ka sabse khatarnak khiladi. Jeetne par Seniors ko challenge!",
-              penDisplay: "PILOT V5 HI-TECH",
-              flickForce: "+60 Knockout",
-              flickPct: 90,
-              grip: "92% Anti-Slide",
-              gripPct: 92,
-              diff: "★★★★☆ (Class Boss)",
-              rule: "Bench Rule: Wooden Duster and Geometry obstacle on desk!",
-              rewards: ["Gold Nib Refill", "+500 Khiladi XP", "Senior Pass Token"]
-            },
-            {
-              id: 7,
-              bench: "Bench #7",
-              name: "Nikhil 'Senior 8-A'",
-              title: "8-A Frontbencher",
-              desc: "Senior keh rahe hain 7th wale bachhe hain. Dikha do unhe!",
-              penDisplay: "BUTTERFLOW 0.7",
-              flickForce: "+55 Knockout",
-              flickPct: 84,
-              grip: "85% Anti-Slide",
-              gripPct: 85,
-              diff: "★★★★☆ (Hard)",
-              rule: "Bench Rule: Heavy oak desk with wider edge drop bounds!",
-              rewards: ["Butterflow Gold", "+600 Khiladi XP", "Seniors Respect Badge"]
-            },
-            {
-              id: 8,
-              bench: "Bench #8",
-              name: "Rocky 'Heavyweight'",
-              title: "8-B Backbencher Gang",
-              desc: "Rocky bhari Trimax chalata hai, table par zor ka thud padta hai.",
-              penDisplay: "TRIMAX GOLD 0.5",
-              flickForce: "+70 Knockout",
-              flickPct: 94,
-              grip: "94% Anti-Slide",
-              gripPct: 94,
-              diff: "★★★★★ (Heavyweight)",
-              rule: "Bench Rule: High momentum shockwave knocks light pens easily!",
-              rewards: ["Trimax Metal Cap", "+750 Khiladi XP", "Heavyweight Star"]
-            },
-            {
-              id: 9,
-              bench: "Bench #9",
-              name: "Kabir 'Seniors Captain'",
-              title: "8-C Heavy Trimax King (Boss)",
-              desc: "Kabir ki Trimax ko rokna namumkin lagta hai. Tactical spin shots use karo!",
-              penDisplay: "TRIMAX GOLD ELITE",
-              flickForce: "+80 Knockout",
-              flickPct: 96,
-              grip: "95% Anti-Slide",
-              gripPct: 95,
-              diff: "★★★★★ (Seniors Boss)",
-              rule: "Bench Rule: Best of 5 with instant sudden-death off desk!",
-              rewards: ["Legend Trimax Skin", "+900 Khiladi XP", "Corridor Master Key"]
-            },
-            {
-              id: 10,
-              bench: "Bench #10",
-              name: "Arjun 'Runner-Up'",
-              title: "Staff Room Corridor Duel",
-              desc: "Staff room ke bahar ki bench par duel. Teachers round laga rahe hain!",
-              penDisplay: "APSARA PLATINUM",
-              flickForce: "+85 Knockout",
-              flickPct: 98,
-              grip: "96% Anti-Slide",
-              gripPct: 96,
-              diff: "★★★★★ (Extreme)",
-              rule: "Bench Rule: Quick shot timer - 10 seconds per flick!",
-              rewards: ["Platinum Nib", "+1,100 Khiladi XP", "Staff Room Hall Pass"]
-            },
-            {
-              id: 11,
-              bench: "Bench #11",
-              name: "Dev 'The Legend'",
-              title: "School Championship Final (Grand Boss)",
-              desc: "Poore school ka Grand Finale! Desk Wars ki Ultimate Trophy ka faisla!",
-              penDisplay: "TRIMAX LEGEND",
-              flickForce: "+100 Knockout",
-              flickPct: 100,
-              grip: "98% Anti-Slide",
-              gripPct: 98,
-              diff: "★★★★★ (FINAL BOSS)",
-              rule: "Bench Rule: Official Saraswati Vidyalaya Grand Championship Desk!",
-              rewards: ["Bench King Grand Cup 🏆", "+2,000 Khiladi XP", "School Pen Fight Legend"]
-            }
-          ];
+          const FULL_STAGES = CAMPAIGN_RIVAL_DOSSIERS;
 
           const container = document.getElementById('campaign-stages-container');
           if (!container) return;
