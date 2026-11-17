@@ -17,7 +17,7 @@ const DESK_THICKNESS = 0.030; // 3 cm thickness
 const GRAVITY = -9.81;
 const DESK_FRICTION = 0.60; // High 60% grip (strong braking, tactile grounded resistance)
 const DESK_RESTITUTION = 0.10;
-const PEN_LINEAR_DAMPING = 0.06;
+const PEN_LINEAR_DAMPING = 0.65; // Grounded teak wood drag (stops free-floating slip)
 const PEN_ANGULAR_DAMPING = 0.80;
 const PEN_RESTITUTION = 0.48; // Realistic rigid plastic collision (solid momentum transfer, prevents 1-hit center blast)
 const PEN_FRICTION = 0.30;
@@ -33,10 +33,10 @@ function getRandomSpawnOffsetX() {
 
 // Input & flick parameters (Calibrated mass-velocity impulse scaling)
 const DEAD_ZONE_PX = 10;
-const V_MIN = 0.40; // m/s (tactical micro-positioning)
-const V_MAX = 3.25; // m/s (controlled 65-80% settles safely; full 100% blind rush overshoots off 1.00m desk)
-const J_MIN = 0.0040;
-const J_MAX = 0.066; // Calibrated overshoot risk at full 100% pull
+const V_MIN = 0.35; // m/s (tactical micro-positioning)
+const V_MAX = 2.15; // m/s (calibrated realistic speed; full 100% pull reaches edge without rocket launch)
+const J_MIN = 0.0030;
+const J_MAX = 0.042; // Calibrated 100% impulse for 0.60 desk friction
 const GAMMA = 1.42; // Progressive response: 65-75% drag = safe positioning, 100% drag = overshoot foul risk
 const MAX_DRAG_PX = 115; // Natural ergonomic mobile touch drag distance
 
@@ -1084,7 +1084,8 @@ class GameEngine {
         // Principle 1: Dual-Friction Model (Desk friction 0.60 scaled by pen material)
         const penMaterialFactor = pen.config.friction ? (pen.config.friction / 0.35) : 1.0;
         const muDesk = pen.customFriction || (DESK_FRICTION * penMaterialFactor);
-        const dragFactor = Math.max(0, 1.0 - muDesk * dt * 2.2);
+        // Grounded tactile drag multiplier (5.5x for solid wood grip feel)
+        const dragFactor = Math.max(0, 1.0 - muDesk * dt * 5.5);
         linvel.x *= dragFactor;
         linvel.z *= dragFactor;
 

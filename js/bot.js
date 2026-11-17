@@ -21,9 +21,9 @@ export const DIFFICULTY_PRESETS = {
     name: 'Easy (Aasan)',
     aimSpreadRad: 0.15,      // ±8.6° focused aim (55-65% bot win rate)
     spinChance: 0.15,        // 15% spin cut-shots
-    maxSpeedLimit: 1.85,     // Active competitive speed
-    punchSpeedRange: [0.25, 0.45],
-    runwayAdvancement: 0.72, // Advances 72% into runway
+    maxSpeedLimit: 1.65,     // Calibrated for heavy desk drag
+    punchSpeedRange: [0.20, 0.35],
+    runwayAdvancement: 0.70, // Advances 70% into runway
     tacticalEdgeOffset: 0.008, // Subtle edge deflection
     selfPreservation: false,
     label: 'Easy Mode (55-65% Bot Win Rate)'
@@ -32,9 +32,9 @@ export const DIFFICULTY_PRESETS = {
     name: 'Normal (Balanced)',
     aimSpreadRad: 0.052,     // ±3.0° sharp accurate aim (80-85% bot win rate)
     spinChance: 0.45,        // 45% tactical spin cut-shots
-    maxSpeedLimit: 2.30,     // Strong decisive speed
-    punchSpeedRange: [0.50, 0.75],
-    runwayAdvancement: 0.88, // Strong forward control
+    maxSpeedLimit: 1.95,     // Strong decisive speed
+    punchSpeedRange: [0.35, 0.55],
+    runwayAdvancement: 0.85, // Strong forward control
     tacticalEdgeOffset: 0.020, // Sharp edge targeting
     selfPreservation: true,
     label: 'Normal Mode (80-85% Bot Win Rate)'
@@ -43,9 +43,9 @@ export const DIFFICULTY_PRESETS = {
     name: 'Hard (Class Champion)',
     aimSpreadRad: 0.014,     // ±0.8° Laser razor accuracy (92-95% bot win rate)
     spinChance: 0.75,        // 75% aggressive spin cut-shots on pen pivot
-    maxSpeedLimit: 2.45,     // Decisive knockout speed
-    punchSpeedRange: [0.65, 0.95],
-    runwayAdvancement: 0.92,
+    maxSpeedLimit: 2.15,     // Knockout speed aligned with V_MAX = 2.15 m/s
+    punchSpeedRange: [0.50, 0.70],
+    runwayAdvancement: 0.90,
     tacticalEdgeOffset: 0.026, // Surgical nearest-edge deflection
     selfPreservation: true,
     label: 'Hard Mode (Class Champion)'
@@ -159,16 +159,16 @@ export class PCOpponentController {
     if (forceHighPowerCounter) {
       // Reckless Rush Punisher: High-power counter-strike toward nearest table edge
       const reachSpeed = Math.sqrt(2 * effectiveDecel * Math.max(distanceToTarget, 0.10));
-      const counterPunch = this.difficulty === 'hard' ? 1.05 : 0.85;
+      const counterPunch = this.difficulty === 'hard' ? 0.70 : 0.50;
       targetSpeed = reachSpeed + counterPunch;
-      targetSpeed = Math.max(targetSpeed, 2.35);
+      targetSpeed = Math.min(Math.max(targetSpeed, 1.80), 2.15);
     } else if (distanceToTarget > 0.42) {
       // START-OF-ROUND RUNWAY ADVANCEMENT (> 0.42m distance): Flanking maneuver
       if (this.difficulty === 'easy') {
         targetSpeed = Math.sqrt(2 * effectiveDecel * distanceToTarget * preset.runwayAdvancement);
       } else {
         const reach = Math.sqrt(2 * effectiveDecel * distanceToTarget);
-        targetSpeed = reach * preset.runwayAdvancement + (this.difficulty === 'hard' ? 0.30 : 0.15);
+        targetSpeed = reach * preset.runwayAdvancement + (this.difficulty === 'hard' ? 0.20 : 0.10);
       }
     } else {
       // MID-RANGE (0.28m - 0.42m): Competitive duel punch
@@ -179,7 +179,7 @@ export class PCOpponentController {
     }
 
     // Clamp speed safely per difficulty preset (with counter-strike allowance)
-    const effectiveMaxSpeed = forceHighPowerCounter ? Math.max(preset.maxSpeedLimit, 2.45) : preset.maxSpeedLimit;
+    const effectiveMaxSpeed = forceHighPowerCounter ? Math.min(preset.maxSpeedLimit + 0.15, 2.15) : preset.maxSpeedLimit;
     targetSpeed = Math.min(targetSpeed, effectiveMaxSpeed);
 
     const botMass = botConfig.mass || 0.015;
@@ -194,7 +194,7 @@ export class PCOpponentController {
     }
 
     // Safe bounds clamping
-    botImpulseMagnitude = Math.min(Math.max(botImpulseMagnitude, 0.008), 0.052);
+    botImpulseMagnitude = Math.min(Math.max(botImpulseMagnitude, 0.006), 0.042);
 
     // 5. Spin Cut-Shot vs Direct Strike Point
     const useSpinShot = forceSpinCut || (Math.random() < preset.spinChance);

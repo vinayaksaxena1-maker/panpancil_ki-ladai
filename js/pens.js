@@ -14,7 +14,7 @@ export const PEN_CONFIGS = {
     capColor: 0x0f1c30,
     restitution: 0.48, // Balanced Deflection Elasticity (realistic glancing hits, prevents 1-hit rocket launch)
     friction: 0.42,
-    linearDamping: 0.06,
+    linearDamping: 0.65,
     angularDamping: 0.80
   },
   reynolds045: {
@@ -29,7 +29,7 @@ export const PEN_CONFIGS = {
     capColor: 0x1c3d73,
     restitution: 0.48, // ~70% Elasticity
     friction: 0.35,
-    linearDamping: 0.06,
+    linearDamping: 0.65,
     angularDamping: 0.80
   },
   butterflow: {
@@ -44,7 +44,7 @@ export const PEN_CONFIGS = {
     capColor: 0x242424,
     restitution: 0.48,
     friction: 0.28,
-    linearDamping: 0.06,
+    linearDamping: 0.65,
     angularDamping: 0.80
   },
   pilotV5: {
@@ -59,7 +59,7 @@ export const PEN_CONFIGS = {
     capColor: 0x123621,
     restitution: 0.48,
     friction: 0.32,
-    linearDamping: 0.06,
+    linearDamping: 0.65,
     angularDamping: 0.80
   },
   nataraj621: {
@@ -74,7 +74,7 @@ export const PEN_CONFIGS = {
     capColor: 0x222222, // Dark graphite lead
     restitution: 0.48,
     friction: 0.30,
-    linearDamping: 0.06,
+    linearDamping: 0.65,
     angularDamping: 0.80
   },
   apsaraPlatinum: {
@@ -89,7 +89,7 @@ export const PEN_CONFIGS = {
     capColor: 0x111111,
     restitution: 0.48,
     friction: 0.29,
-    linearDamping: 0.06,
+    linearDamping: 0.65,
     angularDamping: 0.80
   }
 };
