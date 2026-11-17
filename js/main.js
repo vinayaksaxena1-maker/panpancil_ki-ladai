@@ -6,7 +6,7 @@ import { synth } from './sound.js';
 import { ProgressionEngine, CAMPAIGN_STAGES, BADGES, LEVELS } from './progression.js?v=p2_s4';
 import { storage } from './storage.js?v=p2_s5';
 import { MatchRules, MatchState } from './rules.js?v=p3_s17_alt_turns';
-import { PCOpponentController } from './bot.js?v=p3_s19_friction040';
+import { PCOpponentController } from './bot.js?v=p3_s20_friction060';
 
 // Table dimensions (meters) - Vertical Student Duel Desk (0.70m x 1.00m)
 const DESK_WIDTH = 0.70;      // 70 cm width (X-axis, East-West)
@@ -15,7 +15,7 @@ const DESK_THICKNESS = 0.030; // 3 cm thickness
 
 // Authentic baseline physics
 const GRAVITY = -9.81;
-const DESK_FRICTION = 0.40; // Calibrated 40% solid grip (realistic grounded teak wood friction)
+const DESK_FRICTION = 0.60; // High 60% grip (strong braking, tactile grounded resistance)
 const DESK_RESTITUTION = 0.10;
 const PEN_LINEAR_DAMPING = 0.06;
 const PEN_ANGULAR_DAMPING = 0.80;
