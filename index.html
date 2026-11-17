@@ -625,6 +625,19 @@
             <div class="w-4 h-4 rounded-full bg-white shadow-xs transform translate-x-5 transition-transform"></div>
           </button>
         </div>
+        <!-- In-Match Difficulty Selector -->
+        <div class="flex flex-col gap-1 p-2 rounded-xl bg-amber-50/90 border-2 border-amber-400">
+          <div class="flex items-center justify-between text-[10px] font-bold text-slate-700" style="font-family: 'Patrick Hand', cursive;">
+            <span>BOT AI DIFFICULTY:</span>
+            <span id="pause-diff-status" class="text-blue-800 font-extrabold uppercase">Normal</span>
+          </div>
+          <div class="grid grid-cols-3 gap-1 mt-0.5">
+            <button type="button" id="pause-diff-easy-btn" onclick="window.setPauseDifficulty('easy')" class="py-1 px-1 rounded-lg border text-[10px] font-bold text-center cursor-pointer bg-white border-slate-300 text-slate-700 hover:bg-slate-100" style="font-family: 'Permanent Marker', cursive;">Easy</button>
+            <button type="button" id="pause-diff-normal-btn" onclick="window.setPauseDifficulty('normal')" class="py-1 px-1 rounded-lg border text-[10px] font-bold text-center cursor-pointer bg-amber-400 border-slate-900 text-slate-900 shadow-2xs font-black" style="font-family: 'Permanent Marker', cursive;">Normal</button>
+            <button type="button" id="pause-diff-hard-btn" onclick="window.setPauseDifficulty('hard')" class="py-1 px-1 rounded-lg border text-[10px] font-bold text-center cursor-pointer bg-white border-slate-300 text-slate-700 hover:bg-slate-100" style="font-family: 'Permanent Marker', cursive;">Hard 🔥</button>
+          </div>
+        </div>
+
       </div>
 
       <!-- Action Buttons -->
@@ -4746,6 +4759,24 @@
         }
       };
 
+      window.setPauseDifficulty = function(diff) {
+        if (window.gameEngine && typeof window.gameEngine.setDifficulty === 'function') {
+          window.gameEngine.setDifficulty(diff);
+        }
+        const statusEl = document.getElementById('pause-diff-status');
+        if (statusEl) statusEl.textContent = diff.toUpperCase();
+        ['easy', 'normal', 'hard'].forEach(d => {
+          const btn = document.getElementById(`pause-diff-${d}-btn`);
+          if (btn) {
+            if (d === diff) {
+              btn.className = "py-1 px-1 rounded-lg border text-[10px] text-center cursor-pointer bg-amber-400 border-slate-900 text-slate-900 shadow-2xs font-black";
+            } else {
+              btn.className = "py-1 px-1 rounded-lg border text-[10px] font-bold text-center cursor-pointer bg-white border-slate-300 text-slate-700 hover:bg-slate-100";
+            }
+          }
+        });
+      };
+
       window.cyclePassPlayPen = function(playerNum) {
         if (playerNum === 1) {
           setupP1Index = (setupP1Index + 1) % PASSPLAY_PENS.length;
@@ -4999,6 +5030,6 @@
   <script src="./js/hud.js?v=p3_s15_ruler"></script>
   <script src="./js/match_result.js?v=p3_s9"></script>
   <script src="./js/trophy_cabinet.js?v=p3_s9"></script>
-  <script type="module" src="./js/main.js?v=sv1998_pbr_v2"></script>
+  <script type="module" src="./js/main.js?v=gameplay_balance_v1"></script>
 </body>
 </html>

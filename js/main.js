@@ -19,15 +19,21 @@ const DESK_FRICTION = 0.33;
 const DESK_RESTITUTION = 0.10;
 const PEN_LINEAR_DAMPING = 0.06;
 const PEN_ANGULAR_DAMPING = 0.80;
-const PEN_RESTITUTION = 0.68; // ~70% Elasticity for crisp rigid plastic collision
+const PEN_RESTITUTION = 0.48; // Realistic rigid plastic collision (solid momentum transfer, prevents 1-hit center blast)
 const PEN_FRICTION = 0.30;
 
-// Input & flick parameters (Calibrated for 1.00m table runway)
+// Authentic Tactical Start Positions (Z = ±0.25m gives 0.25m runway behind each pen, enabling 2-4 turn rallies)
+const SPAWN_Z_PLAYER = 0.25;
+const SPAWN_Z_OPPONENT = -0.25;
+
+// Input & flick parameters (Calibrated mass-velocity impulse scaling)
 const DEAD_ZONE_PX = 10;
-const J_MIN = 0.0020;
-const J_MAX = 0.054;
-const GAMMA = 1.10; // Gentle near-linear response: 50% drag = ~46% power, 100% drag = 100% full force
-const MAX_DRAG_PX = 115; // Natural ergonomic mobile touch drag distance (comfortable 115px runway on screen)
+const V_MIN = 0.35; // m/s (tactical micro-positioning)
+const V_MAX = 2.30; // m/s (fast strike; high risk of self-drop if missed at 100% power)
+const J_MIN = 0.0035;
+const J_MAX = 0.028;
+const GAMMA = 1.10; // Gentle near-linear response
+const MAX_DRAG_PX = 115; // Natural ergonomic mobile touch drag distance
 
 // Settle thresholds
 const SETTLE_LIN_VEL = 0.015;
@@ -181,13 +187,13 @@ class GameEngine {
 
     this.playerPen = this.spawnPen(
       pConfig, 
-      new THREE.Vector3(0, pConfig.radius, 0.35), 
+      new THREE.Vector3(0, pConfig.radius, SPAWN_Z_PLAYER), 
       Math.PI / 2
     );
 
     this.opponentPen = this.spawnPen(
       oConfig, 
-      new THREE.Vector3(0, oConfig.radius, -0.35), 
+      new THREE.Vector3(0, oConfig.radius, SPAWN_Z_OPPONENT), 
       Math.PI / 2
     );
 
@@ -502,10 +508,17 @@ class GameEngine {
     this.updateTurnBadge();
     synth.playFlick();
 
+    const targetPen = side === 'player' ? this.playerPen : this.opponentPen;
+    const penMass = (targetPen && targetPen.config && targetPen.config.mass) ? targetPen.config.mass : 0.012;
+
     const maxPullPx = MAX_DRAG_PX;
     const pullFrac = Math.min(Math.max(0, dragPx - DEAD_ZONE_PX) / maxPullPx, 1.0);
     const curvedPower = Math.pow(pullFrac, GAMMA);
-    const impulseMag = J_MIN + curvedPower * (J_MAX - J_MIN);
+
+    // Dynamic mass-scaled velocity impulse:
+    // Prevents 1-hit KO from center, introduces self-overshoot risk on 100% missed flick
+    const targetSpeed = V_MIN + curvedPower * (V_MAX - V_MIN);
+    const impulseMag = penMass * targetSpeed;
 
     const dirWorld = new THREE.Vector3(dirX, 0, dirZ).normalize();
     const impulse = new RAPIER.Vector3(
@@ -513,8 +526,6 @@ class GameEngine {
       0.0,
       dirWorld.z * impulseMag
     );
-
-    const targetPen = side === 'player' ? this.playerPen : this.opponentPen;
     const flickPt = new RAPIER.Vector3(
       this.flickAnchorPoint.x,
       this.flickAnchorPoint.y,
@@ -847,7 +858,7 @@ class GameEngine {
         this.scene.remove(this.playerPen.mesh);
         this.world.removeRigidBody(this.playerPen.body);
       }
-      this.playerPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, 0.35), Math.PI / 2);
+      this.playerPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, SPAWN_Z_PLAYER), Math.PI / 2);
       this.storage.save({ profile: { selectedPlayerPen: penKey } });
     } else {
       this.opponentPenConfigKey = penKey;
@@ -855,7 +866,7 @@ class GameEngine {
         this.scene.remove(this.opponentPen.mesh);
         this.world.removeRigidBody(this.opponentPen.body);
       }
-      this.opponentPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, -0.35), Math.PI / 2);
+      this.opponentPen = this.spawnPen(config, new THREE.Vector3(0, config.radius, SPAWN_Z_OPPONENT), Math.PI / 2);
       this.storage.save({ profile: { selectedOpponentPen: penKey } });
     }
 
@@ -898,22 +909,22 @@ class GameEngine {
 
     // Reset Player Pen
     const qPlayer = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, pConfig.radius, 0.35), true);
+    this.playerPen.body.setTranslation(new RAPIER.Vector3(0, pConfig.radius, SPAWN_Z_PLAYER), true);
     this.playerPen.body.setRotation({ x: qPlayer.x, y: qPlayer.y, z: qPlayer.z, w: qPlayer.w }, true);
     this.playerPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.playerPen.prevPos.set(0, pConfig.radius, 0.35);
+    this.playerPen.prevPos.set(0, pConfig.radius, SPAWN_Z_PLAYER);
     this.playerPen.currPos.copy(this.playerPen.prevPos);
     this.playerPen.prevQuat.copy(qPlayer);
     this.playerPen.currQuat.copy(qPlayer);
 
     // Reset Opponent Pen
     const qBot = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), Math.PI / 2);
-    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, oConfig.radius, -0.35), true);
+    this.opponentPen.body.setTranslation(new RAPIER.Vector3(0, oConfig.radius, SPAWN_Z_OPPONENT), true);
     this.opponentPen.body.setRotation({ x: qBot.x, y: qBot.y, z: qBot.z, w: qBot.w }, true);
     this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, 0, 0), true);
     this.opponentPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
-    this.opponentPen.prevPos.set(0, oConfig.radius, -0.35);
+    this.opponentPen.prevPos.set(0, oConfig.radius, SPAWN_Z_OPPONENT);
     this.opponentPen.currPos.copy(this.opponentPen.prevPos);
     this.opponentPen.prevQuat.copy(qBot);
     this.opponentPen.currQuat.copy(qBot);

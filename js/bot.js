@@ -19,10 +19,10 @@ import RAPIER from 'rapier';
 export const DIFFICULTY_PRESETS = {
   easy: {
     name: 'Easy (Aasan)',
-    aimSpreadRad: 0.28,      // ±16° spread error
-    spinChance: 0.0,         // 0% spin, pure center hit
-    maxSpeedLimit: 2.0,      // Gentle max speed
-    punchSpeedRange: [0.15, 0.40],
+    aimSpreadRad: 0.18,      // ±10° spread error
+    spinChance: 0.05,        // 5% spin
+    maxSpeedLimit: 1.70,     // Gentle max speed
+    punchSpeedRange: [0.15, 0.35],
     runwayAdvancement: 0.65, // Stops ~65% into runway on start
     tacticalEdgeOffset: 0.0, // No tactical edge targeting
     selfPreservation: false,
@@ -30,23 +30,23 @@ export const DIFFICULTY_PRESETS = {
   },
   normal: {
     name: 'Normal (Balanced)',
-    aimSpreadRad: 0.11,      // ±6.5° spread error
-    spinChance: 0.20,        // 20% subtle spin cut-shot
-    maxSpeedLimit: 2.5,      // Realistic speed
-    punchSpeedRange: [0.45, 0.75],
-    runwayAdvancement: 0.90, // Advances close to player safely
-    tacticalEdgeOffset: 0.010,
+    aimSpreadRad: 0.07,      // ±4° spread error
+    spinChance: 0.25,        // 25% subtle spin cut-shot
+    maxSpeedLimit: 2.15,     // Balanced speed
+    punchSpeedRange: [0.35, 0.60],
+    runwayAdvancement: 0.85, // Advances close to player safely
+    tacticalEdgeOffset: 0.012,
     selfPreservation: true,
     label: 'Normal Mode (Balanced Contest)'
   },
   hard: {
     name: 'Hard (Class Champion)',
-    aimSpreadRad: 0.05,      // ±3° sharp razor spread
-    spinChance: 0.60,        // 60% aggressive spin cut-shot
-    maxSpeedLimit: 3.2,      // High speed champion punch
-    punchSpeedRange: [0.85, 1.25],
-    runwayAdvancement: 0.95,
-    tacticalEdgeOffset: 0.018,
+    aimSpreadRad: 0.025,     // ±1.5° sharp razor spread
+    spinChance: 0.65,        // 65% aggressive spin cut-shot
+    maxSpeedLimit: 2.30,     // Fast decisive knockout speed
+    punchSpeedRange: [0.60, 0.85],
+    runwayAdvancement: 0.92,
+    tacticalEdgeOffset: 0.022,
     selfPreservation: true,
     label: 'Hard Mode (Class Champion)'
   }
