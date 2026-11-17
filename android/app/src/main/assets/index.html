@@ -109,25 +109,33 @@
       padding: 0;
       user-select: none;
       -webkit-user-select: none;
-      touch-action: none;
     }
-    body, html {
-      width: 100%;
-      height: 100%;
-      /* Android 9+ WebView: 100vh fallback first, then 100dvh for newer */
-      min-height: 100vh;
-      min-height: 100dvh;
-      overflow: hidden;
-      background-color: #183b32;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+    /* Lock gesture events ONLY on 3D physics canvas, not on menus or chits */
     #canvas-container {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      touch-action: none;
       z-index: 1;
+    }
+    /* Explicitly allow fluid vertical touch scroll on all menus, chits & modals */
+    .overflow-y-auto,
+    [id$="-overlay"],
+    .notebook-modal-backdrop,
+    .blueprint-grid,
+    #career-dossier-modal,
+    #level-ladder-modal,
+    #splash-screen-overlay,
+    #main-menu-overlay,
+    #campaign-map-overlay,
+    #compass-box-overlay,
+    #match-setup-overlay,
+    #trophy-cabinet-overlay,
+    #match-result-overlay {
+      touch-action: pan-y !important;
+      -webkit-overflow-scrolling: touch !important;
     }
 
     /* ====================================================================== */
@@ -5134,7 +5142,6 @@
           // Explicitly unlock audio on user gesture
           if (window.AudioManager) {
             window.AudioManager.unlockAudio();
-            window.AudioManager.playClick();
           }
           
           // Immediately bring up Main Menu directly behind Splash (z-index 500 under 1000)
@@ -5195,8 +5202,9 @@
       } catch (e) {
         console.warn('Smart launch check failed:', e);
       }
-      // Global Tactile UI Click Audio Delegation
+      // Global Tactile UI Click Audio Delegation (Single source of truth with multi-touch filter)
       document.addEventListener('pointerdown', (e) => {
+        if (e.isPrimary === false) return;
         const clickable = e.target.closest('button, [role="button"], .pencil-btn-tactile, a, input[type="range"]');
         if (clickable && window.AudioManager) {
           window.AudioManager.playClick();

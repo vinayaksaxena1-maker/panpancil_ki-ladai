@@ -110,7 +110,8 @@ class AudioManager {
       const size = reg.poolSize || 1;
       for (let i = 0; i < size; i++) {
         const audio = new Audio();
-        audio.preload = 'none'; // Lazy load on demand
+        audio.preload = 'auto'; // Preload so files decode before initial playback
+        if (reg.src) audio.src = reg.src;
         this.channelPools[key].channels.push(audio);
       }
     }
@@ -125,6 +126,11 @@ class AudioManager {
   play(key, options = {}) {
     if (!this.soundEnabled) return;
     this.unlockAudio();
+
+    if (key === 'ui_click') {
+      this.playClick();
+      return;
+    }
 
     const reg = this.soundRegistry[key];
     if (!reg) return;
@@ -157,7 +163,9 @@ class AudioManager {
     const playPromise = channel.play();
     if (playPromise !== undefined) {
       playPromise.catch((err) => {
-        // Fallback to procedural synth if file missing or blocked
+        // Ignore AbortError caused by rapid re-triggering of the same channel
+        if (err && err.name === 'AbortError') return;
+        // Fallback to procedural synth only if file is missing, blocked or unsupported
         if (reg.fallback) {
           reg.fallback(options);
         }
@@ -183,7 +191,16 @@ class AudioManager {
   }
 
   playClick() {
-    this.play('ui_click');
+    if (!this.soundEnabled) return;
+    const now = performance.now();
+    // Strict 110ms debounce: eliminates duplicate pointerdown/touchstart/click echoes on same tap
+    if (this._lastClickTime && (now - this._lastClickTime) < 110) {
+      return;
+    }
+    this._lastClickTime = now;
+    this.unlockAudio();
+    // Directly use procedural audioSynth: instant 0ms response, zero channel conflict, zero pop/comb filtering
+    audioSynth.playClick();
   }
 
   playRoundWin() {

@@ -550,10 +550,10 @@ class GameEngine {
     const pPos = this.playerPen.body.translation();
     const oPos = this.opponentPen.body.translation();
 
-    // Throttled desk friction slide sound
+    // Throttled desk friction slide sound (only during active simulation)
     const maxSpeed = Math.max(pSpeed, oSpeed);
     const now = performance.now();
-    if (maxSpeed > 0.45 && (!this._lastSlideTime || now - this._lastSlideTime > 260)) {
+    if (this.isSimulating && maxSpeed > 0.45 && (!this._lastSlideTime || now - this._lastSlideTime > 260)) {
       if ((!this.playerPen.isFallen && pPos.y > -0.01) || (!this.opponentPen.isFallen && oPos.y > -0.01)) {
         this._lastSlideTime = now;
         if (synth && synth.manager) synth.manager.play('slide');
@@ -567,14 +567,14 @@ class GameEngine {
       Math.abs(pos.z) > (DESK_LENGTH / 2 + 0.02)
     );
 
-    if (!this.playerPen.isFallen && isOutOfBounds(pPos)) {
+    if (this.isSimulating && !this.playerPen.isFallen && isOutOfBounds(pPos)) {
       this.playerPen.isFallen = true;
       synth.playThud();
       this.playerPen.body.setLinvel(new RAPIER.Vector3(0, -1.5, 0), true);
       this.playerPen.body.setAngvel(new RAPIER.Vector3(0, 0, 0), true);
     }
 
-    if (!this.opponentPen.isFallen && isOutOfBounds(oPos)) {
+    if (this.isSimulating && !this.opponentPen.isFallen && isOutOfBounds(oPos)) {
       this.opponentPen.isFallen = true;
       synth.playThud();
       this.opponentPen.body.setLinvel(new RAPIER.Vector3(0, -1.5, 0), true);
@@ -922,7 +922,9 @@ class GameEngine {
         const oLin = this.opponentPen.body.linvel();
         const relSpeed = Math.hypot(pLin.x - oLin.x, pLin.z - oLin.z);
         if (relSpeed > 0.20) {
-          synth.playClack();
+          if (this.isSimulating) {
+            synth.playClack();
+          }
           this.collisionSoundCooldown = true;
           setTimeout(() => { this.collisionSoundCooldown = false; }, 320);
 

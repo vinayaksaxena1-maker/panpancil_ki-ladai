@@ -5142,7 +5142,6 @@
           // Explicitly unlock audio on user gesture
           if (window.AudioManager) {
             window.AudioManager.unlockAudio();
-            window.AudioManager.playClick();
           }
           
           // Immediately bring up Main Menu directly behind Splash (z-index 500 under 1000)
@@ -5203,8 +5202,9 @@
       } catch (e) {
         console.warn('Smart launch check failed:', e);
       }
-      // Global Tactile UI Click Audio Delegation
+      // Global Tactile UI Click Audio Delegation (Single source of truth with multi-touch filter)
       document.addEventListener('pointerdown', (e) => {
+        if (e.isPrimary === false) return;
         const clickable = e.target.closest('button, [role="button"], .pencil-btn-tactile, a, input[type="range"]');
         if (clickable && window.AudioManager) {
           window.AudioManager.playClick();
