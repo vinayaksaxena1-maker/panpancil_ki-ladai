@@ -704,15 +704,15 @@
                     </div>
                   </div>
 
-                  <!-- Medium / Language Selector (Only 2 Options: English Medium vs Hindi Medium) -->
+                  <!-- School Medium Selector (English Medium School vs Hindi Medium School) -->
                   <div class="mt-1 pt-1 border-t border-[#c4c5d5]/40 flex items-center justify-between gap-1.5">
                     <label class="block uppercase font-bold tracking-wider text-[#00288e] text-[9.5px] shrink-0" style="font-family: 'Patrick Hand', cursive;" data-i18n="admission.medium_label">🏫 MEDIUM / माध्यम:</label>
                     <div class="inline-flex rounded-md p-0.5 bg-[#f1f5f9] border border-[#0f172a] shadow-xs gap-1 select-none">
-                      <button type="button" id="splash-med-english-btn" onclick="window.setGameLanguage('english')" class="pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black">
-                        📖 English Medium
+                      <button type="button" id="splash-med-english-btn" onclick="window.setSchoolMedium('english_school')" class="pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black">
+                        🏫 English Medium School
                       </button>
-                      <button type="button" id="splash-med-hindi-btn" onclick="window.setGameLanguage('hindi')" class="pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70">
-                        🇮🇳 हिंदी मीडियम
+                      <button type="button" id="splash-med-hindi-btn" onclick="window.setSchoolMedium('hindi_school')" class="pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70">
+                        🏫 Hindi Medium School
                       </button>
                     </div>
                   </div>
@@ -929,8 +929,8 @@
             <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping ml-0.5"></span>
           </div>
           <div class="flex items-center gap-1.5">
-            <button id="menu-medium-toggle-btn" type="button" onclick="window.toggleMedium()" class="pencil-btn-tactile px-2.5 py-1 rounded-full bg-white/95 text-[10.5px] font-bold text-[#00288e] flex items-center gap-1 cursor-pointer active:scale-95 shadow-xs whitespace-nowrap" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" title="Switch Language Medium">
-              <span id="menu-medium-toggle-text">📖 ENG MED.</span>
+            <button id="menu-medium-toggle-btn" type="button" onclick="window.toggleMedium()" class="pencil-btn-tactile px-2.5 py-1 rounded-full bg-white/95 text-[10.5px] font-bold text-[#00288e] flex items-center gap-1 cursor-pointer active:scale-95 shadow-xs whitespace-nowrap" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" title="Switch Language">
+              <span id="menu-medium-toggle-text">📖 ENG</span>
             </button>
             <button aria-label="School Rules & Settings" class="w-9 h-9 min-w-[36px] min-h-[36px] rounded-full bg-white/90 flex items-center justify-center text-on-surface-variant hover:bg-surface-container-highest transition-all transform active:scale-90 shadow-sm cursor-pointer" id="settingsBtn" style="border: 1.5px solid rgb(30, 41, 59); box-shadow: rgb(51, 65, 85) 1px 1.5px 0px;" onclick="window.startTrophyCabinet('settings')">
               <span class="material-symbols-outlined text-[18px]">settings</span>
@@ -2234,21 +2234,38 @@
 
         <!-- VIEW 2: AUDIO & RULES SETTINGS -->
         <div id="cabinet-view-settings" class="flex flex-col gap-3" style="display: none;">
-          <!-- 0. MEDIUM / LANGUAGE SELECTION -->
-          <div class="bg-white border-2 border-slate-900 rounded-xl p-3 shadow-[0_2.5px_0_0_#0f172a] flex flex-col gap-2">
+          <!-- 0. SCHOOL MEDIUM & SUB-LANGUAGE SELECTION -->
+          <div class="bg-white border-2 border-slate-900 rounded-xl p-3 shadow-[0_2.5px_0_0_#0f172a] flex flex-col gap-2.5">
             <div class="flex items-center justify-between border-b border-slate-200 pb-1.5">
               <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-slate-900 text-[18px]">translate</span>
-                <span class="text-xs font-black text-slate-900 uppercase" data-i18n="settings.medium_title">Medium / भाषा माध्यम</span>
+                <span class="material-symbols-outlined text-slate-900 text-[18px]">school</span>
+                <span class="text-xs font-black text-slate-900 uppercase">School Medium / स्कूल माध्यम</span>
               </div>
-              <span class="text-[9px] font-black bg-amber-100 text-amber-900 border border-amber-400 px-1.5 py-0.2 rounded font-mono">LANGUAGE</span>
+              <span class="text-[9px] font-black bg-amber-100 text-amber-900 border border-amber-400 px-1.5 py-0.2 rounded font-mono">MEDIUM</span>
             </div>
-            <div class="grid grid-cols-2 gap-2 mt-1">
-              <button type="button" id="settings-med-english-btn" onclick="window.setGameLanguage('english')" class="pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[12px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black">
-                📖 English Medium
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" id="settings-school-english-btn" onclick="window.setSchoolMedium('english_school')" class="pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black">
+                🏫 English School
               </button>
-              <button type="button" id="settings-med-hindi-btn" onclick="window.setGameLanguage('hindi')" class="pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[12px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70">
-                🇮🇳 हिंदी मीडियम
+              <button type="button" id="settings-school-hindi-btn" onclick="window.setSchoolMedium('hindi_school')" class="pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70">
+                🏫 Hindi School
+              </button>
+            </div>
+
+            <!-- Sub-Language Selector for Active School Medium -->
+            <div class="flex items-center justify-between border-t border-slate-200 pt-2 pb-0.5">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-slate-900 text-[16px]">translate</span>
+                <span class="text-[11px] font-black text-slate-900 uppercase" data-i18n="settings.medium_title">Language / भाषा</span>
+              </div>
+              <span class="text-[8.5px] font-black bg-blue-100 text-blue-900 border border-blue-400 px-1 py-0.2 rounded font-mono">LANGUAGE</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button type="button" id="settings-med-english-btn" class="pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black">
+                📖 English
+              </button>
+              <button type="button" id="settings-med-hindi-btn" class="pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70">
+                💬 Hinglish
               </button>
             </div>
           </div>
@@ -4998,7 +5015,8 @@
             name: chosenName,
             schoolName: chosenSchool,
             house: HOUSES[currentHouseIndex].name,
-            avatar: currentAvatar
+            avatar: currentAvatar,
+            schoolMedium: (typeof window.getSchoolMedium === 'function') ? window.getSchoolMedium() : 'english_school'
           };
           if (typeof window.applySchoolName === 'function') {
             window.applySchoolName(chosenSchool);
@@ -5060,12 +5078,31 @@
               enterLabel.innerHTML = `<span>SAVE & RETURN TO HUB</span><span class="text-[22px] font-bold inline-block transform translate-y-0.5" style="font-family: 'Caveat', cursive;">➔</span>`;
             }
           }
+          if (typeof window.translateDOM === 'function') {
+            window.translateDOM();
+          }
           splashOverlay.style.display = 'flex';
           requestAnimationFrame(() => {
             splashOverlay.classList.remove('splash-dismissed');
           });
         }
       };
+
+      // Smart Launch: If user already has saved schoolMedium in localStorage, show Main Menu directly
+      try {
+        const rawSave = localStorage.getItem('penfight_save_v2');
+        if (rawSave) {
+          const parsed = JSON.parse(rawSave);
+          const savedMedium = (parsed && parsed.settings && parsed.settings.schoolMedium) || (parsed && parsed.profile && parsed.profile.schoolMedium);
+          if (savedMedium && splashOverlay && menuOverlay) {
+            splashOverlay.style.display = 'none';
+            splashOverlay.classList.add('splash-dismissed');
+            window.showMainMenu();
+          }
+        }
+      } catch (e) {
+        console.warn('Smart launch check failed:', e);
+      }
     })();
   </script>
 

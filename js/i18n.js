@@ -1,10 +1,15 @@
 /**
- * Pen Fight: Desk Wars — 100% Offline 2-Medium Language Engine
- * Supports: 
- *   - 'english': English Medium (100% original UI untouched)
- *   - 'hindi': Hindi Medium (Simple casual UI for everyday users)
+ * Pen Fight: Desk Wars — 100% Offline 2-School-Medium + Sub-Language System
  * 
- * Strict Binary Medium: No third tab, zero unsolicited translations.
+ * School Mediums:
+ *   1. 'english_school' (English Medium School):
+ *      - Default language: 'english' (100% original nostalgic school UI untouched)
+ *      - Sub-language toggle: 'english' (📖 ENG) ⇄ 'hinglish' (💬 HINGLISH)
+ *   2. 'hindi_school' (Hindi Medium School — for everyday casual players):
+ *      - Default language: 'hinglish' (super easy everyday Hinglish labels)
+ *      - Sub-language toggle: 'hinglish' (💬 HINGLISH) ⇄ 'hindi' (🇮🇳 हिंदी)
+ * 
+ * Invariants: Zero external dependencies. Complete client-side offline persistence.
  */
 
 (function(window) {
@@ -25,8 +30,8 @@
         roll_label: "ROLL:",
         class_label: "CLASS:",
         medium_label: "🏫 MEDIUM / माध्यम:",
-        medium_english: "📖 English Medium",
-        medium_hindi: "🇮🇳 हिंदी मीडियम",
+        medium_english: "🏫 English Medium School",
+        medium_hindi: "🏫 Hindi Medium School",
         name_label: "✎ KHILADI KA NAAM (ENTER NAME):",
         name_placeholder: "Enter Name",
         name_tap_hint: "Tap to enter your name",
@@ -47,7 +52,7 @@
       },
       menu: {
         period_badge: "RECESS BREAK • BENCH #4",
-        medium_toggle: "📖 ENG MED.",
+        medium_toggle: "📖 ENG",
         index_header: "★ CLASSMATE NOTEBOOK INDEX ★",
         page_label: "PAGE NO:",
         date_label: "DATE:",
@@ -107,7 +112,7 @@
         period_badge: "PERIOD 4",
         teacher_title: "PT TIWARI SIR ON ROUND!",
         teacher_desc: "Staff room se nikal chuke hain! Board duster in hand. Arena is safe & frozen under desk bench.",
-        medium_label: "MEDIUM / माध्यम:",
+        medium_label: "LANGUAGE / BHAASHA:",
         sfx_label: "Desk Sound Effects (SFX)",
         whistle_label: "Teacher Whistle Alert",
         diff_label: "BOT AI DIFFICULTY:",
@@ -126,11 +131,131 @@
         return_hub: "RETURN TO CLASSROOM HUB 🚪"
       },
       settings: {
-        medium_title: "Medium / भाषा माध्यम",
+        medium_title: "School Medium & Language",
         audio_title: "Audio & Recess SFX",
         audio_badge: "1998 SOUND"
       }
     },
+
+    hinglish: {
+      admission: {
+        period_pill: "PERIOD: RECESS • BENCH #4",
+        subheading_championship: "Classroom Championship",
+        subheading_edition: "1998 Edition",
+        index_header: "★ CLASSMATE NOTEBOOK INDEX ★",
+        page_label: "PAGE:",
+        date_label: "DATE:",
+        title: "KHILADI ID CARD",
+        roll_label: "ROLL:",
+        class_label: "CLASS:",
+        medium_label: "🏫 SCHOOL MEDIUM / स्कूल माध्यम:",
+        medium_english: "🏫 English Medium School",
+        medium_hindi: "🏫 Hindi Medium School",
+        name_label: "✎ APNA NAAM LIKHEIN:",
+        name_placeholder: "Apna Naam Likhein",
+        name_tap_hint: "Naam badalne ke liye tap karein",
+        school_label: "🏫 SCHOOL KA NAAM (OPTIONAL):",
+        school_placeholder: "SARASWATI VIDYALAYA (Default)",
+        house_label: "HOUSE / SADAN:",
+        rank_label: "RANK:",
+        weapon_label: "KHAS WEAPON (MAIN PEN):",
+        speed_label: "Speed / Raftaar",
+        grip_label: "Table Grip",
+        locked_label: "LOCKED / BAND:",
+        school_footer_suffix: "BENCH #4 OFFICIAL",
+        teacher_sign_label: "Teacher's Sign:",
+        enter_classroom: "GAME SHURU KAREIN ▶",
+        rule_footer: "Rule #1: Desk se neeche gira pen out maana jayega!",
+        avatar_khiladi: "KHILADI",
+        avatar_attested: "● ATTESTED"
+      },
+      menu: {
+        period_badge: "RECESS BREAK • BENCH #4",
+        medium_toggle: "💬 HINGLISH",
+        index_header: "★ CLASSMATE NOTEBOOK INDEX ★",
+        page_label: "PAGE NO:",
+        date_label: "DATE:",
+        title: "KHILADI PROFILE",
+        roll_label: "ROLL NO:",
+        class_label: "CLASS:",
+        avatar_khiladi: "KHILADI",
+        toss_play_title: "TURANT KHELEIN (VS CPU)",
+        toss_play_sub: "1-Finger Flick • Recess Desk Duel",
+        story_title: "Levels (1 - 11)",
+        story_sub: "11 Khiladiyon ko Harayein!",
+        story_btn: "KHELEIN ➔",
+        pass_play_title: "2 Khiladi (1 Phone)",
+        pass_play_sub: "1 Phone • Do Dost",
+        pass_play_btn: "KHELEIN ⇄",
+        compass_title: "Mere Pens",
+        compass_sub: "6 Classic Ballpens",
+        compass_btn: "KHOLEN 🧰",
+        trophy_title: "Trophies & Inaam",
+        trophy_sub: "Career Record & Stats",
+        trophy_btn: "DEKHEIN 🎖️"
+      },
+      setup: {
+        hub_btn: "HUB",
+        tab_single: "CPU se Khelein",
+        tab_pass: "2 Khiladi (Dost)",
+        diff_title: "SELECT DIFFICULTY",
+        diff_easy: "Easy (Aasan)",
+        diff_normal: "Medium (Samanya)",
+        diff_hard: "Hard (Kathin 🔥)",
+        bench_rule: "Bench Rule: White chalk boundary • Teak bench se gira pen instant out!",
+        start_duel_1p: "MATCH SHURU KAREIN ▶",
+        start_duel_2p: "2-PLAYER MATCH SHURU KAREIN ▶"
+      },
+      hud: {
+        you_tag: "YOU",
+        bot_tag: "BOT",
+        p2_tag: "P2",
+        your_turn: "AAPKI BAARI 🎯",
+        rival_turn: "OPPONENT KI BAARI ⏳",
+        p2_turn: "PLAYER 2 KI BAARI 🎯",
+        round_label: "ROUND {cur} / {max}",
+        first_shot_hint: "👆 Apne pen ko peeche kheencho aur nishana laga kar chhod do!",
+        knockout_title: "KNOCKOUT! 💥",
+        knockout_sub: "Khiladi ko point mila!",
+        table_fall_title: "TABLE SE NEECHE! 💨",
+        table_fall_sub: "Pen desk boundary se neeche gir gaya!",
+        double_fall_title: "DONO PEN GIRE! TIE! 💥",
+        double_fall_sub: "Dono pen gir gaye! Round tie!",
+        timeout_title: "RECESS OVER! ⏸️",
+        timeout_sub: "Time khatam ho gaya!",
+        pause_round_summary: "ROUND {cur}/{max}"
+      },
+      pause: {
+        whistle_frozen: "WHISTLE BLOWN • MATCH RUKA HUA HAI",
+        title: "GAME RUKA HUA HAI ⏸️",
+        period_badge: "PERIOD 4",
+        teacher_title: "PT TIWARI SIR ROUND PAR HAIN!",
+        teacher_desc: "Staff room se nikal chuke hain! Haath mein duster hai. Arena bench ke neeche safe hai.",
+        medium_label: "LANGUAGE / BHAASHA:",
+        sfx_label: "Desk Sound Effects (SFX)",
+        whistle_label: "Teacher Whistle Alert",
+        diff_label: "BOT AI DIFFICULTY:",
+        resume_btn: "KHEL JAARI RAKHEIN ▶",
+        restart_btn: "ROUND DOHRAYEIN 🔄",
+        quit_btn: "HUB PAR WAPAS JAYEIN 🏠",
+        conduct_note: "\"Code of Conduct: Flick release ke dauran pause dabaya toh Table Foul maana jayega!\""
+      },
+      result: {
+        victory_title: "★ SHAANDAR JEET (A+) ★",
+        defeat_title: "HAAR GAYE! PEN TABLE SE GIRA! 💔",
+        next_classmate: "AGLA KHILADI ➔",
+        rematch_1p: "DOBARA KHELEIN 🔄",
+        rematch_2p: "DOBARA DUEL (P1 vs P2) ⚔️",
+        rematch_defeat: "DOBARA KHELEIN! BENCH WAPAS PAAYEIN ⚔️",
+        return_hub: "HUB PAR WAPAS JAYEIN 🚪"
+      },
+      settings: {
+        medium_title: "School Medium & Language",
+        audio_title: "Audio & Recess SFX",
+        audio_badge: "1998 SOUND"
+      }
+    },
+
     hindi: {
       admission: {
         period_pill: "पीरियड: लंच ब्रेक • बेंच #4",
@@ -142,9 +267,9 @@
         title: "खिलाड़ी पहचान पत्र",
         roll_label: "रोल:",
         class_label: "कक्षा:",
-        medium_label: "🏫 माध्यम:",
-        medium_english: "📖 English Medium",
-        medium_hindi: "🇮🇳 हिंदी मीडियम",
+        medium_label: "🏫 स्कूल माध्यम:",
+        medium_english: "🏫 English Medium School",
+        medium_hindi: "🏫 Hindi Medium School",
         name_label: "✎ अपना नाम लिखें:",
         name_placeholder: "अपना नाम दर्ज करें",
         name_tap_hint: "अपना नाम बदलने के लिए टैप करें",
@@ -165,7 +290,7 @@
       },
       menu: {
         period_badge: "लंच ब्रेक • बेंच #4",
-        medium_toggle: "🇮🇳 हिंदी मीडियम",
+        medium_toggle: "🇮🇳 हिंदी",
         index_header: "★ क्लासमेट नोटबुक इंडेक्स ★",
         page_label: "पेज नं:",
         date_label: "तारीख:",
@@ -178,8 +303,8 @@
         story_title: "लेवल मैच (1 - 11)",
         story_sub: "11 विरोधियों को हराएं!",
         story_btn: "खेलें ➔",
-        pass_play_title: "2 खिलाड़ी (1 फोन)",
-        pass_play_sub: "1 फोन • दो दोस्त",
+        pass_play_title: "2 खिलाड़ी (1 फ़ोन)",
+        pass_play_sub: "1 फ़ोन • दो दोस्त",
         pass_play_btn: "खेलें ⇄",
         compass_title: "मेरे पेन",
         compass_sub: "पेन बॉक्स व हथियार",
@@ -252,22 +377,46 @@
   };
 
   /**
-   * Helper: Read saved language
+   * Helper: Read saved schoolMedium
    */
-  function getSavedLanguage() {
+  function getSavedSchoolMedium() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && parsed.settings && (parsed.settings.language === 'hindi' || parsed.settings.language === 'english')) {
-          return parsed.settings.language;
+        if (parsed) {
+          if (parsed.settings && (parsed.settings.schoolMedium === 'english_school' || parsed.settings.schoolMedium === 'hindi_school')) {
+            return parsed.settings.schoolMedium;
+          }
+          if (parsed.profile && (parsed.profile.schoolMedium === 'english_school' || parsed.profile.schoolMedium === 'hindi_school')) {
+            return parsed.profile.schoolMedium;
+          }
         }
       }
     } catch (e) {}
-    return 'english';
+    return 'english_school';
   }
 
-  let currentLanguage = getSavedLanguage();
+  /**
+   * Helper: Read saved language validated against schoolMedium
+   */
+  function getSavedLanguage(medium) {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.settings && ['english', 'hinglish', 'hindi'].includes(parsed.settings.language)) {
+          const l = parsed.settings.language;
+          if (medium === 'english_school' && (l === 'english' || l === 'hinglish')) return l;
+          if (medium === 'hindi_school' && (l === 'hinglish' || l === 'hindi')) return l;
+        }
+      }
+    } catch (e) {}
+    return (medium === 'english_school') ? 'english' : 'hinglish';
+  }
+
+  let currentSchoolMedium = getSavedSchoolMedium();
+  let currentLanguage = getSavedLanguage(currentSchoolMedium);
 
   /**
    * Translate key with optional variable replacements
@@ -310,7 +459,7 @@
   }
 
   /**
-   * Apply language to DOM
+   * Apply language to DOM elements
    */
   function translateDOM() {
     const elements = document.querySelectorAll('[data-i18n]');
@@ -343,63 +492,161 @@
   }
 
   /**
-   * Update visual state of 2-Medium buttons
+   * Update visual states of all School Medium and Language selectors
    */
   function updateMediumSelectorsUI() {
-    const isHindi = (currentLanguage === 'hindi');
+    const isEngSchool = (currentSchoolMedium === 'english_school');
 
-    // Splash Admission Medium Buttons
+    // 1. Splash Admission School Medium Buttons
     const splashEn = document.getElementById('splash-med-english-btn');
     const splashHi = document.getElementById('splash-med-hindi-btn');
     if (splashEn && splashHi) {
-      if (isHindi) {
-        splashEn.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70";
-        splashHi.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black";
-      } else {
+      if (isEngSchool) {
         splashEn.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black";
         splashHi.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70";
+      } else {
+        splashEn.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-white text-slate-700 opacity-70";
+        splashHi.className = "pencil-btn-tactile px-2 py-0.5 rounded text-[10px] font-bold tracking-tight transition-all active:scale-95 cursor-pointer bg-[#00288e] text-white shadow-xs font-black";
       }
     }
 
-    // Main Menu Medium Toggle Badge
+    // 2. Main Menu Sub-Language Toggle Badge
     const menuBadgeText = document.getElementById('menu-medium-toggle-text');
     if (menuBadgeText) {
-      menuBadgeText.textContent = isHindi ? "🇮🇳 हिंदी मीडियम" : "📖 ENG MED.";
-    }
-
-    // Pause Menu Medium Buttons
-    const pauseEn = document.getElementById('pause-med-english-btn');
-    const pauseHi = document.getElementById('pause-med-hindi-btn');
-    if (pauseEn && pauseHi) {
-      if (isHindi) {
-        pauseEn.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
-        pauseHi.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
+      if (isEngSchool) {
+        menuBadgeText.textContent = (currentLanguage === 'english') ? "📖 ENG" : "💬 HINGLISH";
       } else {
-        pauseEn.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
-        pauseHi.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
+        menuBadgeText.textContent = (currentLanguage === 'hinglish') ? "💬 HINGLISH" : "🇮🇳 हिंदी";
       }
     }
 
-    // Settings Modal Medium Buttons
-    const settEn = document.getElementById('settings-med-english-btn');
-    const settHi = document.getElementById('settings-med-hindi-btn');
-    if (settEn && settHi) {
-      if (isHindi) {
-        settEn.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[12px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70";
-        settHi.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[12px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black";
+    // 3. Pause Menu Sub-Language Buttons
+    const pauseBtn1 = document.getElementById('pause-med-english-btn');
+    const pauseBtn2 = document.getElementById('pause-med-hindi-btn');
+    if (pauseBtn1 && pauseBtn2) {
+      if (isEngSchool) {
+        pauseBtn1.textContent = "📖 English";
+        pauseBtn1.onclick = () => setGameLanguage('english');
+        pauseBtn2.textContent = "💬 Hinglish";
+        pauseBtn2.onclick = () => setGameLanguage('hinglish');
+
+        if (currentLanguage === 'english') {
+          pauseBtn1.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
+          pauseBtn2.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
+        } else {
+          pauseBtn1.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
+          pauseBtn2.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
+        }
       } else {
-        settEn.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[12px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black";
-        settHi.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[12px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70";
+        pauseBtn1.textContent = "💬 Hinglish";
+        pauseBtn1.onclick = () => setGameLanguage('hinglish');
+        pauseBtn2.textContent = "🇮🇳 हिंदी";
+        pauseBtn2.onclick = () => setGameLanguage('hindi');
+
+        if (currentLanguage === 'hinglish') {
+          pauseBtn1.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
+          pauseBtn2.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
+        } else {
+          pauseBtn1.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-white text-slate-700 opacity-70";
+          pauseBtn2.className = "pencil-btn-tactile px-1.5 py-0.5 rounded text-[9.5px] font-bold cursor-pointer bg-[#00288e] text-white font-black shadow-xs";
+        }
+      }
+    }
+
+    // 4. Settings View: School Medium Toggle Buttons
+    const settSchoolEn = document.getElementById('settings-school-english-btn');
+    const settSchoolHi = document.getElementById('settings-school-hindi-btn');
+    if (settSchoolEn && settSchoolHi) {
+      if (isEngSchool) {
+        settSchoolEn.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black";
+        settSchoolHi.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70";
+      } else {
+        settSchoolEn.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70";
+        settSchoolHi.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black";
+      }
+    }
+
+    // 5. Settings View: Sub-Language Toggle Buttons
+    const settSub1 = document.getElementById('settings-med-english-btn');
+    const settSub2 = document.getElementById('settings-med-hindi-btn');
+    if (settSub1 && settSub2) {
+      if (isEngSchool) {
+        settSub1.innerHTML = `<span>📖 English</span>`;
+        settSub1.onclick = () => setGameLanguage('english');
+        settSub2.innerHTML = `<span>💬 Hinglish</span>`;
+        settSub2.onclick = () => setGameLanguage('hinglish');
+
+        if (currentLanguage === 'english') {
+          settSub1.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black";
+          settSub2.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70";
+        } else {
+          settSub1.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70";
+          settSub2.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black";
+        }
+      } else {
+        settSub1.innerHTML = `<span>💬 Hinglish</span>`;
+        settSub1.onclick = () => setGameLanguage('hinglish');
+        settSub2.innerHTML = `<span>🇮🇳 हिंदी</span>`;
+        settSub2.onclick = () => setGameLanguage('hindi');
+
+        if (currentLanguage === 'hinglish') {
+          settSub1.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black";
+          settSub2.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70";
+        } else {
+          settSub1.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-white text-slate-700 border-slate-300 opacity-70";
+          settSub2.className = "pencil-btn-tactile py-2 px-2 rounded-lg border-2 text-[11.5px] font-bold text-center cursor-pointer transition-all active:scale-95 flex items-center justify-center gap-1.5 bg-[#00288e] text-white border-slate-900 shadow-xs font-black";
+        }
       }
     }
   }
 
   /**
-   * Set active language ('english' | 'hindi')
+   * Set School Medium ('english_school' | 'hindi_school')
+   * Automatically sets default language:
+   *   english_school -> 'english'
+   *   hindi_school   -> 'hinglish'
+   */
+  function setSchoolMedium(medium) {
+    if (medium !== 'english_school' && medium !== 'hindi_school') {
+      medium = 'english_school';
+    }
+
+    currentSchoolMedium = medium;
+    const targetLang = (medium === 'english_school') ? 'english' : 'hinglish';
+    currentLanguage = targetLang;
+
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      let save = raw ? JSON.parse(raw) : {};
+      if (!save.settings) save.settings = {};
+      save.settings.schoolMedium = medium;
+      save.settings.language = targetLang;
+      if (!save.profile) save.profile = {};
+      save.profile.schoolMedium = medium;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(save));
+    } catch (e) {}
+
+    translateDOM();
+
+    if (window.hudController && typeof window.hudController.onLanguageChange === 'function') {
+      window.hudController.onLanguageChange(targetLang);
+    }
+    if (window.matchResultController && typeof window.matchResultController.onLanguageChange === 'function') {
+      window.matchResultController.onLanguageChange(targetLang);
+    }
+    if (window.trophyCabinetController && typeof window.trophyCabinetController.onLanguageChange === 'function') {
+      window.trophyCabinetController.onLanguageChange(targetLang);
+    }
+  }
+
+  /**
+   * Set sub-language ('english' | 'hinglish' | 'hindi')
    */
   function setGameLanguage(lang) {
-    if (lang !== 'english' && lang !== 'hindi') {
-      lang = 'english';
+    if (currentSchoolMedium === 'english_school') {
+      if (lang !== 'english' && lang !== 'hinglish') lang = 'english';
+    } else {
+      if (lang !== 'hinglish' && lang !== 'hindi') lang = 'hinglish';
     }
 
     currentLanguage = lang;
@@ -425,13 +672,27 @@
     }
   }
 
+  /**
+   * Main Menu Top Pill Toggle:
+   *   english_school: toggles between 'english' and 'hinglish'
+   *   hindi_school:   toggles between 'hinglish' and 'hindi'
+   */
   function toggleMedium() {
-    const next = (currentLanguage === 'english') ? 'hindi' : 'english';
-    setGameLanguage(next);
+    if (currentSchoolMedium === 'english_school') {
+      const next = (currentLanguage === 'english') ? 'hinglish' : 'english';
+      setGameLanguage(next);
+    } else {
+      const next = (currentLanguage === 'hinglish') ? 'hindi' : 'hinglish';
+      setGameLanguage(next);
+    }
   }
 
   function getGameLanguage() {
     return currentLanguage;
+  }
+
+  function getSchoolMedium() {
+    return currentSchoolMedium;
   }
 
   if (document.readyState === 'loading') {
@@ -442,6 +703,8 @@
 
   window.I18N_PACK = I18N_PACK;
   window.t = t;
+  window.setSchoolMedium = setSchoolMedium;
+  window.getSchoolMedium = getSchoolMedium;
   window.setGameLanguage = setGameLanguage;
   window.getGameLanguage = getGameLanguage;
   window.toggleMedium = toggleMedium;
