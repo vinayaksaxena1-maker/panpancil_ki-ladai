@@ -87,14 +87,15 @@
   color: #b91c1c;
 }
 
-/* 3. SLINGSHOT POWER METER & GAUGE */
+/* 3. SLINGSHOT POWER METER & GAUGE (VERTICAL SCHOOL RULER) */
 #hud-power-card {
-  box-shadow: 0 4px 0 #0f172a, 0 8px 16px rgba(15, 23, 42, 0.12);
+  box-shadow: none !important;
+  background: transparent !important;
+  border: none !important;
 }
 
 #hud-power-bar-fill {
-  background: linear-gradient(90deg, #10b981 0%, #f59e0b 50%, #ef4444 100%);
-  transition: width 0.08s ease-out;
+  transition: height 0.08s ease-out;
 }
 
 /* Power Overdrive (>80%) Glow */

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="./css/campaign.css?v=p3_s4">
   <link rel="stylesheet" href="./css/compass.css?v=p3_s5">
   <link rel="stylesheet" href="./css/match_setup.css?v=p3_s6">
-  <link rel="stylesheet" href="./css/hud.css?v=p3_s7">
+  <link rel="stylesheet" href="./css/hud.css?v=p3_s15_ruler">
   <link rel="stylesheet" href="./css/match_result.css?v=p3_s8">
   <link rel="stylesheet" href="./css/trophy_cabinet.css?v=p3_s9">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -497,50 +497,49 @@
       </div>
     </div>
 
-    <!-- BOTTOM TACTICAL FLICK TRAY -->
-    <section class="flex flex-col gap-2 pointer-events-none">
-      <!-- TACTILE SLINGSHOT POWER METER CARD -->
-      <div id="hud-power-card" class="p-2.5 rounded-xl bg-[#faf6ed] border-2 border-slate-900 shadow-[0_3px_0_0_#0f172a] relative overflow-hidden pointer-events-auto">
-        <!-- Notebook Header with Ruler Icon -->
-        <div class="flex items-center justify-between mb-1.5">
-          <div class="flex items-center gap-1.5">
-            <span class="text-sm">📐</span>
-            <span class="text-[11px] font-black text-slate-900 uppercase tracking-tight" style="font-family: 'Permanent Marker', cursive;">
-              SLINGSHOT FLICK POWER
-            </span>
-          </div>
-          <span id="hud-power-badge" class="text-[10px] font-black px-2 py-0.2 rounded-full bg-amber-100 border border-amber-400 text-amber-950" style="font-family: 'Patrick Hand', cursive;">
-            0% (PULL TO AIM)
-          </span>
-        </div>
-
-        <!-- Segmented Tactile Slingshot Gauge Bar -->
-        <div class="relative w-full h-5 rounded-full bg-slate-200 border-2 border-slate-800 p-0.5 overflow-hidden flex items-center shadow-inner">
-          <!-- Dynamic Color-Shifting Progress Fill -->
-          <div id="hud-power-bar-fill" class="h-full rounded-full transition-all duration-75 bg-gradient-to-r from-emerald-500 via-amber-400 to-rose-600" style="width: 0%;"></div>
-          <!-- Segment Threshold Guidelines -->
-          <div class="absolute left-[40%] top-0 bottom-0 w-[1.5px] bg-slate-800/40"></div>
-          <div class="absolute left-[75%] top-0 bottom-0 w-[1.5px] bg-slate-800/40"></div>
-        </div>
-
-        <!-- Power Scale Labels -->
-        <div class="flex items-center justify-between mt-1 text-[9px]" style="font-family: 'Patrick Hand', cursive;">
-          <span class="text-emerald-700 font-bold">0% Safe Glider</span>
-          <span id="hud-power-zone-label" class="text-amber-800 font-black uppercase">
-            TARGET TENSION ZONE
-          </span>
-          <span class="text-rose-700 font-bold">100% Rocket Blast</span>
-        </div>
+    <!-- RIGHT BORDER: AUTHENTIC SCHOOL WOODEN RULER (BOTTOM 100% UNCLUTTERED) -->
+    <aside id="hud-power-card" class="absolute right-3.5 bottom-10 z-40 flex flex-col items-center pointer-events-none select-none">
+      <!-- Live Dynamic Power Callout Pill on Top of Ruler -->
+      <div id="hud-power-badge" class="mb-1 px-1.5 py-0.5 rounded-md bg-[#faf6ed] border border-slate-900 shadow-[0_1.5px_0_0_#0f172a] text-[9.5px] font-black text-slate-900 text-center whitespace-nowrap min-w-[28px]" style="font-family: 'Patrick Hand', cursive;">
+        0%
       </div>
 
-      <!-- Classroom Rule #2 Footer Chit -->
-      <div class="w-full px-2 py-1 rounded-lg bg-white/90 border border-slate-700/60 shadow-xs flex items-center gap-1 pointer-events-auto">
-        <span class="text-rose-700 text-[11px]">✏️</span>
-        <p class="text-[9.5px] font-bold text-slate-700 leading-none truncate" style="font-family: Caveat, cursive;">
-          "Rule #2: Ek baar flick karne ke baad haath peeche! No body blocks on teak bench!"
-        </p>
+      <!-- Wooden / Amber Geometry Scale Body -->
+      <div class="relative w-7 h-52 bg-[#fde68a] rounded-lg border-2 border-slate-900 shadow-[2px_2.5px_0_0_#0f172a] overflow-hidden flex flex-col justify-between p-1">
+        <!-- Scale Ruler Markings (Inches & Millimeters) -->
+        <div class="absolute inset-y-0 left-0 w-2 flex flex-col justify-between py-2 pointer-events-none z-20">
+          <div class="w-2.5 h-[1.5px] bg-slate-800"></div>
+          <div class="w-1.5 h-[1px] bg-slate-600"></div>
+          <div class="w-2 h-[1px] bg-slate-600"></div>
+          <div class="w-1.5 h-[1px] bg-slate-600"></div>
+          <div class="w-2.5 h-[1.5px] bg-slate-800"></div>
+          <div class="w-1.5 h-[1px] bg-slate-600"></div>
+          <div class="w-2 h-[1px] bg-slate-600"></div>
+          <div class="w-1.5 h-[1px] bg-slate-600"></div>
+          <div class="w-2.5 h-[1.5px] bg-slate-800"></div>
+          <div class="w-1.5 h-[1px] bg-slate-600"></div>
+          <div class="w-2 h-[1px] bg-slate-600"></div>
+          <div class="w-1.5 h-[1px] bg-slate-600"></div>
+          <div class="w-2.5 h-[1.5px] bg-slate-800"></div>
+        </div>
+
+        <!-- Mini Top & Bottom Legend Labels -->
+        <div class="absolute top-1 right-1 text-[7.5px] font-black text-rose-800 leading-none z-20" style="font-family: 'Permanent Marker', cursive;">
+          MAX
+        </div>
+        <div class="absolute bottom-1 right-1 text-[7.5px] font-black text-emerald-800 leading-none z-20" style="font-family: 'Permanent Marker', cursive;">
+          0%
+        </div>
+
+        <!-- Vertical Slingshot Tension Reservoir (Fills Bottom to Top) -->
+        <div class="relative w-3.5 h-full ml-auto rounded-full bg-slate-900/15 border border-slate-800/40 overflow-hidden flex flex-col justify-end p-0.5 shadow-inner">
+          <div id="hud-power-bar-fill" class="w-full rounded-full transition-all duration-75 bg-gradient-to-t from-emerald-500 via-amber-400 to-rose-600" style="height: 0%; min-height: 0%;"></div>
+          <!-- Guideline threshold dashes -->
+          <div class="absolute inset-x-0 bottom-[40%] h-[1px] bg-white/60 pointer-events-none"></div>
+          <div class="absolute inset-x-0 bottom-[75%] h-[1px] bg-white/60 pointer-events-none"></div>
+        </div>
       </div>
-    </section>
+    </aside>
   </div>
 </div>
 
@@ -4997,7 +4996,7 @@
     })();
   </script>
 
-  <script src="./js/hud.js?v=p3_s14"></script>
+  <script src="./js/hud.js?v=p3_s15_ruler"></script>
   <script src="./js/match_result.js?v=p3_s9"></script>
   <script src="./js/trophy_cabinet.js?v=p3_s9"></script>
   <script type="module" src="./js/main.js?v=p3_s15_drag"></script>

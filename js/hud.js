@@ -223,34 +223,22 @@
       state.powerPercent = clamped;
 
       if (DOM.powerBarFill) {
-        DOM.powerBarFill.style.width = `${clamped}%`;
+        DOM.powerBarFill.style.height = `${clamped}%`;
+        DOM.powerBarFill.style.width = '100%';
       }
 
       if (DOM.powerBadge) {
-        let label = '0% (PULL TO AIM)';
+        let label = '0%';
         if (clamped > 85) {
-          label = `${clamped}% (ROCKET BLAST! 🔥)`;
+          label = `${clamped}% 🔥`;
         } else if (clamped > 60) {
-          label = `${clamped}% (DUEL PUNCH! ⚡)`;
+          label = `${clamped}% ⚡`;
         } else if (clamped > 30) {
-          label = `${clamped}% (BALANCED FLICK)`;
+          label = `${clamped}% 🎯`;
         } else if (clamped > 0) {
-          label = `${clamped}% (LIGHT TOSS)`;
+          label = `${clamped}%`;
         }
         DOM.powerBadge.textContent = label;
-      }
-
-      if (DOM.powerZoneLabel) {
-        if (clamped >= 80) {
-          DOM.powerZoneLabel.textContent = 'HIGH RISK KNOCKOUT!';
-          DOM.powerZoneLabel.className = 'text-rose-700 font-black uppercase animate-pulse';
-        } else if (clamped >= 40) {
-          DOM.powerZoneLabel.textContent = 'SWEET REBOUND ZONE';
-          DOM.powerZoneLabel.className = 'text-amber-800 font-black uppercase';
-        } else {
-          DOM.powerZoneLabel.textContent = 'TARGET TENSION ZONE';
-          DOM.powerZoneLabel.className = 'text-slate-600 font-bold uppercase';
-        }
       }
 
       if (DOM.powerCard) {
