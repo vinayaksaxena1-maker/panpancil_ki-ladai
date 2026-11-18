@@ -498,6 +498,26 @@
           }
         }
       });
+
+      // Hydrate Pause SFX Toggle state from AudioManager
+      if (DOM.pauseSfxToggle) {
+        const isSoundOn = window.AudioManager ? window.AudioManager.soundEnabled : true;
+        DOM.pauseSfxToggle.setAttribute('data-state', isSoundOn ? 'on' : 'off');
+        const knob = DOM.pauseSfxToggle.querySelector('div');
+        if (isSoundOn) {
+          DOM.pauseSfxToggle.className = "w-10 h-5 rounded-full bg-emerald-500 p-0.5 transition-colors relative cursor-pointer";
+          if (knob) knob.className = "w-4 h-4 rounded-full bg-white shadow-sm transform translate-x-5 transition-transform";
+        } else {
+          DOM.pauseSfxToggle.className = "w-10 h-5 rounded-full bg-slate-300 p-0.5 transition-colors relative cursor-pointer";
+          if (knob) knob.className = "w-4 h-4 rounded-full bg-white shadow-sm transform translate-x-0 transition-transform";
+        }
+      }
+
+      // Pause classroom ambience during match pause
+      if (window.AudioManager && window.AudioManager.arenaAmbienceAudio) {
+        window.AudioManager.arenaAmbienceAudio.pause();
+      }
+
       requestAnimationFrame(() => {
         DOM.pauseModal.classList.add('pause-modal-open');
       });
@@ -517,6 +537,12 @@
         }
       }, 260);
       state.isPaused = false;
+
+      // Resume classroom ambience if sound is active
+      if (window.AudioManager && window.AudioManager.soundEnabled && window.AudioManager.isAmbienceActive && window.AudioManager.arenaAmbienceAudio) {
+        window.AudioManager.arenaAmbienceAudio.play().catch(() => {});
+      }
+
       emit('resume');
     },
 
@@ -637,6 +663,31 @@
         const newState = isCurrentlyOn ? 'off' : 'on';
         this.setAttribute('data-state', newState);
         state.sfxEnabled = !isCurrentlyOn;
+
+        // Animate visual knob & background color
+        const knob = this.querySelector('div');
+        if (state.sfxEnabled) {
+          this.className = "w-10 h-5 rounded-full bg-emerald-500 p-0.5 transition-colors relative cursor-pointer";
+          if (knob) knob.className = "w-4 h-4 rounded-full bg-white shadow-sm transform translate-x-5 transition-transform";
+        } else {
+          this.className = "w-10 h-5 rounded-full bg-slate-300 p-0.5 transition-colors relative cursor-pointer";
+          if (knob) knob.className = "w-4 h-4 rounded-full bg-white shadow-sm transform translate-x-0 transition-transform";
+        }
+
+        // Propagate directly to AudioManager
+        if (window.AudioManager) {
+          window.AudioManager.setSoundEnabled(state.sfxEnabled);
+        }
+
+        // Persist to localStorage
+        try {
+          const raw = localStorage.getItem('penfight_save_v2');
+          const save = raw ? JSON.parse(raw) : {};
+          if (!save.settings) save.settings = {};
+          save.settings.soundEnabled = state.sfxEnabled;
+          localStorage.setItem('penfight_save_v2', JSON.stringify(save));
+        } catch (e) {}
+
         emit('soundToggle', state.sfxEnabled);
       });
     }

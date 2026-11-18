@@ -279,6 +279,7 @@
       if (window.matchResultController) window.matchResultController.hide();
 
       this.hydrateProfile();
+      this.hydrateAudioSettings();
       this.renderPinGrid();
       this.switchTab(initialTab);
 
@@ -451,6 +452,15 @@
       }
     },
 
+    hydrateAudioSettings: function() {
+      const sfx = window.AudioManager ? Math.round(window.AudioManager.sfxVolume * 100) : 100;
+      const amb = window.AudioManager ? Math.round(window.AudioManager.ambianceVolume * 100) : 45;
+      if (DOM.sfxSlider) DOM.sfxSlider.value = sfx;
+      if (DOM.sfxVal) DOM.sfxVal.textContent = `${sfx}%`;
+      if (DOM.ambianceSlider) DOM.ambianceSlider.value = amb;
+      if (DOM.ambianceVal) DOM.ambianceVal.textContent = `${amb}%`;
+    },
+
     updateAudioSetting: function(type, val) {
       if (type === 'sfx') {
         if (DOM.sfxVal) DOM.sfxVal.textContent = `${val}%`;
@@ -460,6 +470,14 @@
         if (DOM.ambianceVal) DOM.ambianceVal.textContent = `${val}%`;
         if (window.AudioManager) window.AudioManager.setAmbianceVolume(val);
       }
+      try {
+        const raw = localStorage.getItem('penfight_save_v2');
+        const save = raw ? JSON.parse(raw) : {};
+        if (!save.settings) save.settings = {};
+        if (type === 'sfx') save.settings.sfxVolume = Number(val);
+        if (type === 'ambiance') save.settings.ambianceVolume = Number(val);
+        localStorage.setItem('penfight_save_v2', JSON.stringify(save));
+      } catch (e) {}
     },
 
     resetCareerData: function() {

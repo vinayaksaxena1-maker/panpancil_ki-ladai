@@ -140,15 +140,16 @@
         window.AudioManager.playBell();
       }
 
-      // Progression reward audio triggers
+      // Progression reward audio triggers (tracked so they never leak into subsequent matches)
+      this.clearPendingAudioTimers();
       if (matchData.progResult) {
         if (matchData.progResult.isLevelUp || matchData.forcePromotion) {
-          setTimeout(() => {
+          this._levelUpTimer = setTimeout(() => {
             if (window.AudioManager) window.AudioManager.play('level_up');
           }, 1200);
         }
         if (matchData.progResult.newBadges && matchData.progResult.newBadges.length > 0) {
-          setTimeout(() => {
+          this._badgeTimer = setTimeout(() => {
             if (window.AudioManager) window.AudioManager.play('badge_unlock');
           }, 2200);
         }
@@ -355,10 +356,22 @@
       }
     },
 
+    clearPendingAudioTimers: function() {
+      if (this._levelUpTimer) {
+        clearTimeout(this._levelUpTimer);
+        this._levelUpTimer = null;
+      }
+      if (this._badgeTimer) {
+        clearTimeout(this._badgeTimer);
+        this._badgeTimer = null;
+      }
+    },
+
     /**
      * Hide certificate modal
      */
     hide: function() {
+      this.clearPendingAudioTimers();
       if (!DOM.overlay) cacheDOM();
       if (!DOM.overlay) return;
       DOM.overlay.classList.add('result-dismissed');

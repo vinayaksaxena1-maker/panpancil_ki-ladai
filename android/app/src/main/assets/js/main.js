@@ -917,16 +917,17 @@ class GameEngine {
       const pP = this.playerPen.body.translation();
       const oP = this.opponentPen.body.translation();
       const penDist = Math.hypot(pP.x - oP.x, pP.z - oP.z);
-      if (penDist < 0.08 && !this.collisionSoundCooldown) {
+      if (penDist < 0.09) {
         const pLin = this.playerPen.body.linvel();
         const oLin = this.opponentPen.body.linvel();
         const relSpeed = Math.hypot(pLin.x - oLin.x, pLin.z - oLin.z);
-        if (relSpeed > 0.20) {
-          if (this.isSimulating) {
-            synth.playClack();
+        if (relSpeed > 0.18) {
+          // Play collision audio with 75ms debounce (does not gate physics)
+          if (!this.collisionSoundCooldown && this.isSimulating) {
+            synth.playClack(Math.min(relSpeed / 1.2, 1.5));
+            this.collisionSoundCooldown = true;
+            setTimeout(() => { this.collisionSoundCooldown = false; }, 75);
           }
-          this.collisionSoundCooldown = true;
-          setTimeout(() => { this.collisionSoundCooldown = false; }, 320);
 
           // Kinetic impact: transfers 6-7 cm push to hit pen, decelerates attacker (no jholna / no edge fall)
           const isPlayerFast = Math.hypot(pLin.x, pLin.z) > Math.hypot(oLin.x, oLin.z);
@@ -935,7 +936,7 @@ class GameEngine {
           const mLin = movingPen.body.linvel();
           const moveSpeed = Math.hypot(mLin.x, mLin.z);
 
-          if (moveSpeed > 0.25) {
+          if (moveSpeed > 0.22) {
             const pushDirX = mLin.x / moveSpeed;
             const pushDirZ = mLin.z / moveSpeed;
             const transferImpulse = 0.0118;

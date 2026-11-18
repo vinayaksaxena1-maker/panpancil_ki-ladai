@@ -36,7 +36,9 @@ export const DEFAULT_SAVE_STATE = {
   settings: {
     mode: 'bot',
     difficulty: 'normal',
-    soundEnabled: true
+    soundEnabled: true,
+    sfxVolume: 100,
+    ambianceVolume: 45
   },
   lastSavedAt: null
 };
@@ -175,6 +177,8 @@ export class StorageManager {
       state.settings.mode = ['bot', 'pass_and_play'].includes(parsed.settings.mode) ? parsed.settings.mode : 'bot';
       state.settings.difficulty = ['easy', 'normal', 'hard'].includes(parsed.settings.difficulty) ? parsed.settings.difficulty : 'normal';
       state.settings.soundEnabled = parsed.settings.soundEnabled !== false;
+      state.settings.sfxVolume = typeof parsed.settings.sfxVolume === 'number' ? Math.max(0, Math.min(100, parsed.settings.sfxVolume)) : 100;
+      state.settings.ambianceVolume = typeof parsed.settings.ambianceVolume === 'number' ? Math.max(0, Math.min(100, parsed.settings.ambianceVolume)) : 45;
     }
 
     return state;
